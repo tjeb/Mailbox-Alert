@@ -1,0 +1,48 @@
+<?xml version="1.0"?> 
+
+<?xml-stylesheet href="chrome://communicator/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://messenger/skin/prefPanels.css" type="text/css"?>
+
+<!DOCTYPE window SYSTEM "chrome://mailboxalert/locale/mailboxalert.dtd">
+
+<window title="&mailboxalert.about.title;"
+	orient="vertical"
+	autostretch="always"
+	onload="sizeToContent()"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<keyset>
+  <key id="cut_cmd" modifiers="accel" key="X"/>
+  <key id="copy_cmd" modifiers="accel" key="C"/>
+  <key id="paste_cmd" modifiers="accel" key="V"/>
+  <key id="close_cmd" modifiers="control" key="W" oncommand="window.close();"/>
+</keyset>
+
+<groupbox>
+	<caption id="mailboxalert_caption" label="&mailboxalert.name;"/>
+
+	<separator class="thin"/>
+	<label value="&mailboxalert.prefs.expl.escape;"/>
+	<label value=""/>
+	<label value="&mailboxalert.prefs.expl.macros;:"/>
+	<label value="%server: &mailboxalert.prefs.expl.servername;"/>
+	<label value="%folder: &mailboxalert.prefs.expl.foldername;"/>
+	<label value="%originalfolder: &mailboxalert.prefs.expl.originalfolder;"/>
+	<label value="%count: &mailboxalert.prefs.expl.numunread;"/>
+	<label value="%countall: &mailboxalert.prefs.expl.totalunread;"/>
+	<label value="%sender: &mailboxalert.prefs.expl.sender;"/>
+	<label value="%sendername: &mailboxalert.prefs.expl.sendername;"/>
+	<label value="%senderaddress: &mailboxalert.prefs.expl.senderaddress;"/>
+	<label value="%subject: &mailboxalert.prefs.expl.subject;"/>
+	<label value="%charset: &mailboxalert.prefs.expl.charset;"/>
+	<label value="%messagebytes: &mailboxalert.prefs.expl.messagebytes;"/>
+	<label value="%messagesize: &mailboxalert.prefs.expl.messagesize;"/>
+	<label value="%enter: &mailboxalert.prefs.expl.enter;"/>
+	<label value=""/>
+	<text value="&mailboxalert.prefs.expl.see; http://jelte.nlnetlabs.nl/Projects/Mailbox_Alert &mailboxalert.prefs.expl.information;" />
+</groupbox>
+<hbox align="right">
+	<button id="help_close" label="&mailboxalert.prefs.close;" oncommand="window.close();"/>
+</hbox>
+
+</window>

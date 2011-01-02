@@ -1,0 +1,51 @@
+-: todo
+*: done
+
+Features:
+- open-in-new-window and select-message
+- allow for quoting in settings
+- Run-after-tb-filters
+- 'alert on all new messages' option
+- Mailbox-specific alerts
+
+- Automated tests
+- consistent debugging data
+- Options for alert popups
+    (several 'themes'? fully configurable?)
+- replace setTimeout
+- move catch/disable from alert2 to alert3?
+  (or remove alltogether? or ask?)
+- check windows sound issue
+    - new sound code in tb3?
+ 
+0.13.5
+Open-in-new-window and select-message:
+    * add new entity to other locales
+    - run from config screen
+    - cleanup
+        - style
+        - refactoring
+            - global getservice;
+                Component.classes[]
+                createInstance()
+                
+
+Allow for quoting in settings
+    - also in popup?
+    - execute command parser code
+
+Internationalization
+    - check babelzilla efforts
+
+0.13.6
+Run after tb filters
+
+Alert on all new messages
+    - remove 'delay for'
+    - recheck queueing parts
+    - getLast still needed? (probably)
+
+0.14 / 1.0
+Mailbox-specific alerts
+    - new config model
+    - auto-upgrade from old code

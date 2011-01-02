@@ -1,0 +1,62 @@
+<!ENTITY mailboxalert.name "Mailbox Alert">
+<!ENTITY mailboxalert.author "Jelte Jansen">
+<!ENTITY mailboxalert.website "Domovská stránka:">
+<!ENTITY mailboxalert.version "Verzia">
+<!ENTITY mailboxalert.about.title "Informácie o Mailbox Alert">
+<!ENTITY mailboxalert.about.created "Vytvoril">
+<!ENTITY mailboxalert.mute "Vypnúť zvuky Mailbox Alert">
+<!ENTITY mailboxalert.prefs.title "Predvoľby Mailbox Alert">
+<!ENTITY mailboxalert.prefs.folder "Mailbox Alert pre poštovú schránku">
+<!ENTITY mailboxalert.prefs.showmessage "Zobraziť správu">
+<!ENTITY mailboxalert.prefs.icon "Ikona">
+<!ENTITY mailboxalert.prefs.noalertsservice "Zabudovaná služba upozornení pre váš operačný systém nie je podporovaná aktuálnou verziou Thunderbirdu">
+<!ENTITY mailboxalert.prefs.playsound "Prehrať zvuk">
+<!ENTITY mailboxalert.prefs.customwav "Vlastný súbor .wav">
+<!ENTITY mailboxalert.prefs.executecommand "Vykonať príkaz">
+<!ENTITY mailboxalert.prefs.escapehtml "Použiť kód HTML pre špeciálne znaky v makrách">
+<!ENTITY mailboxalert.prefs.alertforchildren "Upozornenie pre podpriečinky (ak nemajú vlastné upozornenia)">
+<!ENTITY mailboxalert.prefs.noalerttoparent "Pre tento priečinok nepovoliť upozornenia nadradených priečinkov">
+<!ENTITY mailboxalert.prefs.test "Otestovať nastavenia">
+<!ENTITY mailboxalert.prefs.copy "Kopírovať naposledy uložené predvoľby">
+<!ENTITY mailboxalert.prefs.help "Pomocník">
+<!ENTITY mailboxalert.prefs.close "Zavrieť">
+<!ENTITY mailboxalert.prefs.expl.escape "Ak názov súboru alebo parameter obsahujú medzery, pred každú medzeru umiestnite \">
+<!ENTITY mailboxalert.prefs.expl.macros "Môžete použiť nasledujúce makrá">
+<!ENTITY mailboxalert.prefs.expl.servername "Názov servera">
+<!ENTITY mailboxalert.prefs.expl.foldername "Názov priečinka pošty">
+<!ENTITY mailboxalert.prefs.expl.originalfolder "Názov podpriečinka, v ktorom pribudla správa">
+<!ENTITY mailboxalert.prefs.expl.numunread "Počet neprečítaných správ v tomto priečinku">
+<!ENTITY mailboxalert.prefs.expl.totalunread "Počet neprečítaných správ v tomto priečinku a podpriečinkoch">
+<!ENTITY mailboxalert.prefs.expl.sender "Odosielateľ poslednej neprečítanej správy">
+<!ENTITY mailboxalert.prefs.expl.sendername "Meno odosielateľa poslednej neprečítanej správy (prvých '&lt;' znakov">
+<!ENTITY mailboxalert.prefs.expl.senderaddress "Adresa odosielateľa poslednej neprečítanej správy (v rozpätí '&lt;' a '&gt;')">
+<!ENTITY mailboxalert.prefs.expl.subject "Predmet poslednej neprečítanej správy">
+<!ENTITY mailboxalert.prefs.expl.charset "Kódovanie priečinka">
+<!ENTITY mailboxalert.prefs.expl.see "Zobraziť">
+<!ENTITY mailboxalert.prefs.expl.information "viac informácií">
+<!ENTITY mailboxalert.prefs.expl.messagebytes "Veľkosť správy v bytoch">
+<!ENTITY mailboxalert.prefs.expl.messagesize "Veľkosť správy v automaticky prispôsobených jednotkách(napr 2.1MB)">
+<!ENTITY mailboxalert.prefs.expl.enter "Zalomenie riadka (nefunguje v prvom políčku &quot;Zobraziť správu&quot;)">
+<!ENTITY mailboxalert.prefs.browse "Prehľadávať">
+<!ENTITY mailboxalert.prefs.default "Použiť predvolené">
+<!ENTITY mailboxalert.prefs.systemdefault "Predvolené systémom">
+<!ENTITY mailboxalert.prefs.alertsettings "Všeobecné predvoľby">
+<!ENTITY mailboxalert.alert.prefs.caption_general "Všeobecné">
+<!ENTITY mailboxalert.alert.prefs.caption_alert "Upozornenie vysúvacím oknom">
+<!ENTITY mailboxalert.alert_prefs.position "Pozícia">
+<!ENTITY mailboxalert.alert_prefs.position.bottomright "Vpravo dole">
+<!ENTITY mailboxalert.alert_prefs.position.bottomleft "Vľavo dole">
+<!ENTITY mailboxalert.alert_prefs.position.topright "Vpravo hore">
+<!ENTITY mailboxalert.alert_prefs.position.topleft "Vľavo hore">
+<!ENTITY mailboxalert.alert_prefs.position.center "V strede">
+<!ENTITY mailboxalert.alert_prefs.effect "Efekt">
+<!ENTITY mailboxalert.alert_prefs.effect.none "Žiadny">
+<!ENTITY mailboxalert.alert_prefs.effect.slide "Posuv">
+<!ENTITY mailboxalert.alert_prefs.effect.fade "Nábeh">
+<!ENTITY mailboxalert.alert_prefs.delay "Omeškanie pred upozornením">
+<!ENTITY mailboxalert.alert_prefs.time_unit "sekúnd">
+<!ENTITY mailboxalert.alert_prefs.duration "Čas zobrazenia upozornenia vysúvacím oknom">
+<!ENTITY mailboxalert.alert_prefs.onclick "Kliknutím">
+<!ENTITY mailboxalert.alert_prefs.onclick.close "Zatvoriť vysúvacie okno">
+<!ENTITY mailboxalert.alert_prefs.onclick.openmail "Otvoriť správu">
+<!ENTITY mailboxalert.alert_prefs.onclick.selectmail "Open the message in the current window">

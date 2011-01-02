@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+
+<?xml-stylesheet href="chrome://mailboxalert/content/newmailalert.css" type="text/css"?>
+
+<window id="alertWindow"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        windowtype="alert:alert"
+        xmlns:xhtml2="http://www.w3.org/TR/xhtml2"
+        xmlns:wairole="http://www.w3.org/2005/01/wai-rdf/GUIRoleTaxonomy#"
+        xhtml2:role="wairole:alert"
+        align="start"
+        onload="MailboxAlertNewMail.onAlertLoad()">
+  
+  <stringbundle id="bundle_messenger" src="chrome://messenger/locale/messenger.properties"/>
+  <script type="application/x-javascript" src="chrome://mailboxalert/content/newmailalert_vars.js"/>
+  <script type="application/x-javascript" src="chrome://mailboxalert/content/newmailalert.js"/>
+
+  <stack id="alertContainer" mousethrough="never" onclick="MailboxAlertNewMail.handleClick();">
+    <hbox id="alertBox">
+      <hbox id ="alertImageBox" align="center" valign="center" flex="1">
+        <image id="alertImage" valign="center"/>
+      </hbox>
+
+      <vbox id="alertTextBox">
+        <label id="subject" flex="1"/>
+	<vbox id="alertMessageField" hidden="true">
+	  <!--
+      <label id="message_field" value="" hidden="true"/>
+	  <label id="message_field1" value="" hidden="true"/>
+	  <label id="message_field2" value="" hidden="true"/>
+	  <label id="message_field3" value="" hidden="true"/>
+	  <label id="message_field4" value="" hidden="true"/>
+      <textfield id="message_field" value="asdf" hidden="true"/>
+      -->
+      <description id="message_field" style="white-space: pre;" hidden="true">
+            original text
+      </description>
+	</vbox>
+      </vbox>
+    </hbox>
+    
+  </stack>
+  <!-- This method is called inline because we want to make sure we establish the width
+       and height of the alert before we fire the onload handler. -->
+  <script type="application/x-javascript">MailboxAlertNewMail.prefillAlertInfo();</script>
+
+</window>
+

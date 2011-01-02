@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<!DOCTYPE overlay SYSTEM "chrome://mailboxalert/locale/mailboxalert.dtd">
+
+<overlay id="mailboxalertOverlay"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<stringbundleset id="stringbundleset">
+		<stringbundle id="string-bundle" src="chrome://mailboxalert/locale/mailboxalert.properties"/>
+	</stringbundleset>
+
+	<script src="chrome://mailboxalert/content/mailboxalert_vars.js">
+	</script>
+	<script src="chrome://mailboxalert/content/mailboxalert_funcs.js">
+	</script>
+	<script src="chrome://mailboxalert/content/mailboxalertOverlay.js">
+	</script>
+
+	<!-- Firefox / Thunderbird Tools Menu -->
+	<menupopup id="menu_ToolsPopup">
+		<menuseparator id="mailboxalertSeperator" insertbefore="devToolsSeparator" />
+		<menuitem id="mailboxalert-tools-menu-prefs" label="Mailbox Alert"
+					accesskey="L" class="menuitem-iconic"
+					insertbefore="devToolsSeparator" 
+					oncommand="window.openDialog('chrome://mailboxalert/content/mailboxalert_pref.xul', 'mailboxalert_prefs', 'chrome', MailboxAlert.getFolder());"/> 
+	</menupopup>
+	
+	<!-- Mozilla Tools Menu -->
+	<menupopup id="taskPopup">
+		<menuseparator id="mailboxalertSeperator" insertbefore="devToolsSeparator" />
+        <menuitem id="mailboxalert-moz-tools-menu-prefs" 
+			label="&mailboxalert.prefs.title;" accesskey="L" 
+			insertbefore="devToolsSeparator" 
+			oncommand="window.openDialog('chrome://mailboxalert/content/mailboxalert_pref.xul', 'mailboxalert_prefs', 'chrome', MailboxAlert.getFolder());"/> 
+		<menuitem id="mailboxalert-moz-tools-menu-mute"
+			type="checkbox"
+			label="&mailboxalert.mute;" accesskey="M" insertbefore="devToolsSeparator"
+			oncommand="MailboxAlert.toggleMute();"
+			autocheck="false"/>
+	</menupopup>
+
+	<!-- Folder Popup Menu -->
+	<popup id="folderPaneContext">
+		<menuitem id="folderPaneContext-mailboxalert" 
+			label="&mailboxalert.name;"
+			accesskey="a"
+			insertbefore="folderPaneContext-properties"
+			index="10"
+			oncommand="window.openDialog('chrome://mailboxalert/content/mailboxalert_pref.xul', 'mailboxalert_prefs', 'chrome', MailboxAlert.getFolder());"/> 
+	</popup> 
+</overlay>
+

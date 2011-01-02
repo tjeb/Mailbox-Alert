@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<!DOCTYPE window SYSTEM "chrome://mailboxalert/locale/mailboxalert.dtd">
+
+<window class="dialog"
+	title="&mailboxalert.about.title;"
+	orient="vertical"
+	autostretch="always"
+	onload="sizeToContent()"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+
+
+	<keyset>
+	  <key id="cut_cmd" modifiers="accel" key="X"/>
+	  <key id="copy_cmd" modifiers="accel" key="C"/>
+	  <key id="paste_cmd" modifiers="accel" key="V"/>
+	  <key id="close_cmd" modifiers="control" key="W" oncommand="window.close();"/>
+	</keyset>
+<!-- Original template by Jed Brown -->
+<groupbox align="center" orient="horizontal">
+<vbox>
+  <text value="&mailboxalert.name;" style="font-weight: bold; font-size: x-large;"/>
+  <text value="&mailboxalert.version;: 0.14.2"/>
+  <separator class="thin"/>
+  <text value="&mailboxalert.about.created;:" style="font-weight: bold;"/>
+  <text value="&mailboxalert.author;" class="url"
+        onclick="window.open('http://jelte.nlnetlabs.nl'); window.close();"/>
+  <separator class="thin"/>
+    <text value="&mailboxalert.website;" style="font-weight: bold;"/>
+    <text value="http://jelte.nlnetlabs.nl"
+          class="url"
+        onclick="window.open('http://jelte.nlnetlabs.nl'); window.close();"/>
+  <separator class="thin"/>
+</vbox>
+<spring flex="1"/>
+<image src="chrome://mailboxalert/skin/mailboxalertb.png"/>
+</groupbox>
+
+  <hbox>
+  <spacer flex="1"/>
+   <button label="&mailboxalert.prefs.close;" oncommand="window.close();"/>
+  </hbox>
+
+</window>

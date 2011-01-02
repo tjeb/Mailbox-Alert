@@ -1,0 +1,62 @@
+<!ENTITY mailboxalert.name "Mailbox Alert">
+<!ENTITY mailboxalert.author "Jelte Jansen">
+<!ENTITY mailboxalert.website "Homepage:">
+<!ENTITY mailboxalert.version "Version">
+<!ENTITY mailboxalert.about.title "Über Mailbox Alert">
+<!ENTITY mailboxalert.about.created "Erstellt von">
+<!ENTITY mailboxalert.mute "Akustische Hinweise von Mailbox Alert deaktivieren">
+<!ENTITY mailboxalert.prefs.title "Mailbox Alert - Einstellungen">
+<!ENTITY mailboxalert.prefs.folder "Benachrichtigung für Ordner">
+<!ENTITY mailboxalert.prefs.showmessage "Nachricht anzeigen">
+<!ENTITY mailboxalert.prefs.icon "Symbol">
+<!ENTITY mailboxalert.prefs.noalertsservice "Ihr Betriebssystem unterstützt den Pop-up-Service für Thunderbird nicht.">
+<!ENTITY mailboxalert.prefs.playsound "Klang abspielen">
+<!ENTITY mailboxalert.prefs.customwav "Benutzerdefinierte WAV-Datei">
+<!ENTITY mailboxalert.prefs.executecommand "Externe Anwendung ausführen">
+<!ENTITY mailboxalert.prefs.escapehtml "HTML-Kodierung für Sonderzeichen in Makros benutzen">
+<!ENTITY mailboxalert.prefs.alertforchildren "Benachrichtigung auch für Unterordner ausgeben, falls diesen keine eigene Benachrichtigung zugeordnet wurde">
+<!ENTITY mailboxalert.prefs.noalerttoparent "Übergeordneten Ordnern Benachrichtigung für diesen Ordner verbieten">
+<!ENTITY mailboxalert.prefs.test "Diese Einstellungen testen">
+<!ENTITY mailboxalert.prefs.copy "Auf zuletzt gespeicherte Einstellungen zurücksetzen">
+<!ENTITY mailboxalert.prefs.help "Hilfe">
+<!ENTITY mailboxalert.prefs.close "Schließen">
+<!ENTITY mailboxalert.prefs.expl.escape "Sollte irgendeine Datei oder ein Argument Leerzeichen enthalten, so stellen Sie bitte einen Backslash (\) voran">
+<!ENTITY mailboxalert.prefs.expl.macros "Folgende Makros stehen zur Verfügung">
+<!ENTITY mailboxalert.prefs.expl.servername "Servername">
+<!ENTITY mailboxalert.prefs.expl.foldername "Ordnername">
+<!ENTITY mailboxalert.prefs.expl.originalfolder "Name des Ordners, der die Nachricht ursprünglich erhielt">
+<!ENTITY mailboxalert.prefs.expl.numunread "Anzahl der ungelesenen Nachrichten in diesem Ordner">
+<!ENTITY mailboxalert.prefs.expl.totalunread "Anzahl der ungelesenen Nachrichten in diesem Ordner und allen Unterordnern">
+<!ENTITY mailboxalert.prefs.expl.sender "Absender der letzten ungelesenen Nachricht">
+<!ENTITY mailboxalert.prefs.expl.sendername "Name des Absenders der letzten ungelesenen Nachricht (Absender bis zum ersten &apos;&lt;&apos;)">
+<!ENTITY mailboxalert.prefs.expl.senderaddress "E-Mail-Adresse des Absenders (zwischen &apos;&lt;&apos; und &apos;&gt;&apos;)">
+<!ENTITY mailboxalert.prefs.expl.subject "Der Betreff der letzten ungelesenen Nachricht">
+<!ENTITY mailboxalert.prefs.expl.charset "Zeichensatz des Ordners">
+<!ENTITY mailboxalert.prefs.expl.see "Besuchen Sie">
+<!ENTITY mailboxalert.prefs.expl.information "für weitere Informationen">
+<!ENTITY mailboxalert.prefs.expl.messagebytes "Größe der Nachricht in Bytes">
+<!ENTITY mailboxalert.prefs.expl.messagesize "Größe der Nachricht in gekürzter Form (zum Beispiel 2.1M)">
+<!ENTITY mailboxalert.prefs.expl.enter "Zeilenumbruch (Hinweis: wird nur im zweiten Feld von &quot;Nachricht anzeigen&quot; berücksichtigt)">
+<!ENTITY mailboxalert.prefs.browse "Durchsuchen...">
+<!ENTITY mailboxalert.prefs.default "Standardsymbol verwenden">
+<!ENTITY mailboxalert.prefs.systemdefault "Standardklang des Betriebssystems verwenden">
+<!ENTITY mailboxalert.prefs.alertsettings "Allgemeine Einstellungen">
+<!ENTITY mailboxalert.alert.prefs.caption_general "Allgemein">
+<!ENTITY mailboxalert.alert.prefs.caption_alert "Pop-up">
+<!ENTITY mailboxalert.alert_prefs.position "Position:">
+<!ENTITY mailboxalert.alert_prefs.position.bottomright "unten rechts">
+<!ENTITY mailboxalert.alert_prefs.position.bottomleft "unten links">
+<!ENTITY mailboxalert.alert_prefs.position.topright "oben rechts">
+<!ENTITY mailboxalert.alert_prefs.position.topleft "oben links">
+<!ENTITY mailboxalert.alert_prefs.position.center "zentriert">
+<!ENTITY mailboxalert.alert_prefs.effect "Effekt:">
+<!ENTITY mailboxalert.alert_prefs.effect.none "Keiner">
+<!ENTITY mailboxalert.alert_prefs.effect.slide "Ein- und ausgleiten">
+<!ENTITY mailboxalert.alert_prefs.effect.fade "Ein- und ausblenden">
+<!ENTITY mailboxalert.alert_prefs.delay "Benachrichtigungsverzögerung:">
+<!ENTITY mailboxalert.alert_prefs.time_unit "Sekunden">
+<!ENTITY mailboxalert.alert_prefs.duration "Anzeigedauer:">
+<!ENTITY mailboxalert.alert_prefs.onclick "Beim Klick auf das Pop-up:">
+<!ENTITY mailboxalert.alert_prefs.onclick.close "Pop-up schließen">
+<!ENTITY mailboxalert.alert_prefs.onclick.openmail "Nachricht öffnen in neuem Fenster öffnen">
+<!ENTITY mailboxalert.alert_prefs.onclick.selectmail "Open the message in the current window">

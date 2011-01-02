@@ -1,0 +1,62 @@
+<!ENTITY mailboxalert.name "Mailbox Alert">
+<!ENTITY mailboxalert.author "Jelte Jansen">
+<!ENTITY mailboxalert.website "Website:">
+<!ENTITY mailboxalert.version "Versie">
+<!ENTITY mailboxalert.about.title "Over Mailbox Alert">
+<!ENTITY mailboxalert.about.created "Gecreëerd door">
+<!ENTITY mailboxalert.mute "Geluid uit voor Mailbox Alert">
+<!ENTITY mailboxalert.prefs.title "Mailbox Alert Instellingen">
+<!ENTITY mailboxalert.prefs.folder "Mailbox Alert voor map">
+<!ENTITY mailboxalert.prefs.showmessage "Toon een notificatie">
+<!ENTITY mailboxalert.prefs.icon "Icoon">
+<!ENTITY mailboxalert.prefs.noalertsservice "Het interne notificatiesystem wordt niet ondersteund door de huidige versie van Thunderbird voor uw Operating System.">
+<!ENTITY mailboxalert.prefs.playsound "Speel een geluid af">
+<!ENTITY mailboxalert.prefs.customwav "Specifiek .wav bestand">
+<!ENTITY mailboxalert.prefs.executecommand "Voer een commando uit">
+<!ENTITY mailboxalert.prefs.escapehtml "Gebruik HTML codes voor speciale karakters in macro's">
+<!ENTITY mailboxalert.prefs.alertforchildren "Waarschuw voor submappen (mits die zelf geen waarschuwingen hebben)">
+<!ENTITY mailboxalert.prefs.noalerttoparent "Laat bovenliggende mappen niet voor deze waarschuwen">
+<!ENTITY mailboxalert.prefs.test "Test deze instellingen">
+<!ENTITY mailboxalert.prefs.copy "Kopieer de laatst opgeslagen instellingen">
+<!ENTITY mailboxalert.prefs.help "Help">
+<!ENTITY mailboxalert.prefs.close "Sluiten">
+<!ENTITY mailboxalert.prefs.expl.escape "Als een bestandsnaam of argument spaties bevat, vergeet niet deze vooraf te gaan met een \">
+<!ENTITY mailboxalert.prefs.expl.macros "U kunt de volgende macro's gebruiken">
+<!ENTITY mailboxalert.prefs.expl.servername "The naam van de server">
+<!ENTITY mailboxalert.prefs.expl.foldername "The naam van de map">
+<!ENTITY mailboxalert.prefs.expl.originalfolder "The naam van de onderliggende map waar het bericht binnenkwam">
+<!ENTITY mailboxalert.prefs.expl.numunread "Het aantal ongelezen berichten in de map waar het bericht binnenkwam">
+<!ENTITY mailboxalert.prefs.expl.totalunread "Het aantal ongelezen berichten in deze map en alle onderliggende mappen">
+<!ENTITY mailboxalert.prefs.expl.sender "De afzender van het laatste ongelezen bericht">
+<!ENTITY mailboxalert.prefs.expl.sendername "Het deel van de afzender van het laatste ongelezen bericht (tot aan de eerste '&lt;')">
+<!ENTITY mailboxalert.prefs.expl.senderaddress "Het deel van de afzender van het laatste ongelezen bericht (tussen de '&lt;' en de '&gt;' in)">
+<!ENTITY mailboxalert.prefs.expl.subject "Het onderwerp van het laatste ongelezen bericht">
+<!ENTITY mailboxalert.prefs.expl.charset "De karakterset van de map">
+<!ENTITY mailboxalert.prefs.expl.see "Zie">
+<!ENTITY mailboxalert.prefs.expl.information "voor meer informatie">
+<!ENTITY mailboxalert.prefs.expl.messagebytes "De grootte van het bericht in bytes">
+<!ENTITY mailboxalert.prefs.expl.messagesize "De grootte van het bericht in leesbare vorm (bijvoorbeeld 2.1M)">
+<!ENTITY mailboxalert.prefs.expl.enter "Nieuwe regel (werk niet in het eerste veld van 'toon bericht')">
+<!ENTITY mailboxalert.prefs.browse "Bladeren">
+<!ENTITY mailboxalert.prefs.default "Gebruik standaard">
+<!ENTITY mailboxalert.prefs.systemdefault "Systeemstandaard">
+<!ENTITY mailboxalert.prefs.alertsettings "Globale Voorkeuren">
+<!ENTITY mailboxalert.alert.prefs.caption_general "General">
+<!ENTITY mailboxalert.alert.prefs.caption_alert "Alert Popup">
+<!ENTITY mailboxalert.alert_prefs.position "Positie">
+<!ENTITY mailboxalert.alert_prefs.position.bottomright "Rechtsonder">
+<!ENTITY mailboxalert.alert_prefs.position.bottomleft "Linksonder">
+<!ENTITY mailboxalert.alert_prefs.position.topright "Rechtsboven">
+<!ENTITY mailboxalert.alert_prefs.position.topleft "Linksboven">
+<!ENTITY mailboxalert.alert_prefs.position.center "Midden">
+<!ENTITY mailboxalert.alert_prefs.effect "Effect">
+<!ENTITY mailboxalert.alert_prefs.effect.none "Geen">
+<!ENTITY mailboxalert.alert_prefs.effect.slide "Schuiven">
+<!ENTITY mailboxalert.alert_prefs.effect.fade "Vervagen">
+<!ENTITY mailboxalert.alert_prefs.delay "Vertraging voor notificatie">
+<!ENTITY mailboxalert.alert_prefs.time_unit "seconden">
+<!ENTITY mailboxalert.alert_prefs.duration "Duur notificatie">
+<!ENTITY mailboxalert.alert_prefs.onclick "Bij klikken">
+<!ENTITY mailboxalert.alert_prefs.onclick.close "Sluit popup">
+<!ENTITY mailboxalert.alert_prefs.onclick.openmail "Open het bericht in een nieuw venster">
+<!ENTITY mailboxalert.alert_prefs.onclick.selectmail "Open het bericht in het huidige venster">

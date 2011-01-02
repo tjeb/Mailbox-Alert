@@ -1,0 +1,122 @@
+*  [0.14.1-0.14.2]
+  o Fixed the locale setup
+  o Made some internal refactors (ie. no user-visible changes)
+
+*  [0.14-0.14.1]
+  o Fixed a problem for thunderbird 2
+  o Updates locales for da-DK, tr-TR and sv-SE
+
+*  [0.13.3-0.14]
+  o New option in 'global preferences', open the message in
+    existing window (and raise it)
+  o Alert message window is immediately closed after it is clicked
+  o Added a global 'mute' selection (in the tools menu)
+  o An earlier release lost a lot of translations, these have been
+    re-added, though they are not complete yet (so some english may
+    still occur)
+
+*  [0.13.2-0.13.3]
+  o Updated to work with Thunderbird 3.1
+  o Updated allowed programs to include SeaMonkey 2.0.x
+
+*  [0.13.1-0.13.2]
+  o Updated to work with Thunderbird 3
+
+*  [0.13-0.13.1]
+  o Fixed a bug in the command section of the preferences screen
+  o Fixed a bug in the alert-to-parent code
+
+*  [0.12-0.13]
+  o the popups no longer uses the internal alerts service (which was very limited and on some platforms missing altogether). I have replaced it with a personal version of something that works a bit like the alerts in tb2.
+  o This means that there is now an extra settings screen, available through
+'global alert settings' in the normal prefs screen, where you can set:
+    + the delay of the popup
+    + the duration of the popup
+    + the position of the popup
+    + an appearance effect
+    + what to do when you click on the popup (open message or close popup)
+  o This also means that popup alerts should be available to OS X users
+  o The icon is now optional in alert popups
+  o Major change in settings storage: only non-default settings are stored; this should mean that the problems for people with a lot of mailboxes should be mitigated, unless they specify maximal separate settings for each and every folder
+  o Added it-IT locale
+  o Added pt-PT locale
+
+*  [0.11-0.12]
+  o Updated allowed version of Thunderbird to include 2.0 Release candidates
+  o It does not make any use of the improved alerts system, but still uses the old one, which has been tested and still seems to work.
+  o Fixed a bug in the %folder macro where the complete URI was shown instead of just the folder name
+
+* [0.10-0.11]
+  o Added localization for de_DE (thanks Archaeopteryx)
+  o Complete change to the way the settings are stored, settings should now be kept if you use localization, or change the name of a folder)
+    + IMPORTANT: YOUR OLD SETTINGS WILL BE GONE IF YOUR REVERT TO AN OLD VERSION
+    + Settings will be back when you upgrade back to 0.11
+    + Before you restart, you can copy your prefs.js file if you only want to test first
+
+  o Fixed bugs where localization broke storing settings, see previous point
+  o Fixed a bug in charset conversion
+
+* [0.9-0.10]
+  o Localization support (current locales: en_US, nl_NL and fr_FR, thanks Jean-Michel).
+  o Alerts that fail are automatically disabled,
+  o The built-in alert service is disabled for setups that don't support it (OSX, old Thunderbird versions)
+  o The preferences screen has been reduced in size, and the macro explanations have been moved to a separate window.
+  o Mailbox Alert is now triggered by additions to folders and does not need to search through the whole folder again, so the speed problems ('hanging script alerts') should be gone now.
+  o Manually setting a message to unread no longer triggers an alert.
+  o Virtual folders can no longer be configured, and are disabled if they are.
+  o Error messages are now more clear.
+  o File paths should now be displayed correctly on all platforms (OSX gave some Base 64 string instead of the file name).
+
+* [0.8-0.9]
+  o You can now set a folder to alert for its subfolders, and you can set alerts on complete accounts
+  o Alerting is now done through a delayed queue, which means that:
+    + When multiple new messages arrive for one folder, only one alert is shown
+    + When new messages arrive in different folders, the alerts are shown one at a time
+    + There is a 2 second delay before alerting so the junk filter can run first
+
+  o Preferences screen has been improved, unused settings boxes are disabled
+  o The Test option from the tools menu has been removed, use the button from the preferences screen now
+  o Bugfixes, most notably:
+    + Different charsets are now displayed correctly in the default message popup
+    + Empty values for macro replacements (like subject) don't break the alert anymore
+    + Alert are now shown as soon as mail arrives (sometimes this did not work with IMAP or user-defined filters)
+
+* [0.7-0.8]
+  o Added direct show message option (which calls built-in alert service)
+  o Added play sound option
+  o %sendername is stripped from surrounding quotes
+  o Added test button in preferences dialog
+  o Updated icons
+
+* [0.6-0.7]
+  o Added a Browse button to select the program to execute
+  o Added a Last command button that copies the last saved command to the current command field (convenient when setting the same command to multiple folders).
+  o Better error messages
+
+* [0.5-0.6]
+  o There is a toggle in the settings that replaces special characters in the macro contents by their HTML Entity numbers. Only the ASCII Entities from the HTML specification are replaced (", ', &, < and >).
+  o There are two new macros:
+   1. %sendername
+  This is replaced by the name part of the sender's address (up to the first <).
+   2. %senderaddress
+  This is replaced by the address part of the sender's address (between the < and the >).
+
++ If the address does not contain < and >, these values are the same as %sender
+
+# [0.4-0.5]
+
+* Arguments to executable are nog longer prepended by a space (which breaks everything you call with it that uses options).
+* The actual command and it's arguments are now dump()ed if you set browser.dom.window.dump.enabled to true.
+
+# [0.3-0.4]
+
+* Added some debug messages using the dump() function (enable them by setting browser.dom.window.dump.enabled to true in your settings)
+* No longer alerts with 'locked' or exceptions, instead it ignores the locked setting (doesn't seem to matter anyway for reading out folder data) and uses dump() for exceptions.
+
+# [0.2-0.3]
+
+* Changed the possible Thunderbird version to 1.0 - 1.9+ so that it also works in 1.5
+* Fixed bad backslashes in front of < > and & characters in the messages
+
+# [0.1-0.2] Made the function call non-blocking
+# [0.0-0.1] Initial version 
