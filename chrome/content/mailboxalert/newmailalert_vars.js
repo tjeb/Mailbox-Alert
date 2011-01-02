@@ -8,7 +8,7 @@ MailboxAlertNewMail.LEFT = 2;
 MailboxAlertNewMail.TOP = 4;
 
 MailboxAlertNewMail.gSlideDistance = 1;
-MailboxAlertNewMail.gSlideTime = 5;
+MailboxAlertNewMail.gSlideTime = 15;
 MailboxAlertNewMail.gFadeTime = 50;
 //MailboxAlertNewMail.gNumNewMsgsToShowInAlert = 4; // the more messages we show in the alert, the larger it will be
 //MailboxAlertNewMail.gOpenTime = 3000; // total time the alert should stay up once we are done animating.
@@ -30,3 +30,15 @@ MailboxAlertNewMail.effect = "none";
 MailboxAlertNewMail.onclick = "close";
 MailboxAlertNewMail.folder_url = "";
 MailboxAlertNewMail.message_key;
+
+MailboxAlertNewMail.timer = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
+
+// timer states
+MailboxAlertNewMail.SLIDING_IN_TOP = 0
+MailboxAlertNewMail.SLIDING_IN_BOTTOM = 0
+MailboxAlertNewMail.SLIDING_OUT_TOP = 1
+MailboxAlertNewMail.SLIDING_OUT_BOTTOM = 1
+MailboxAlertNewMail.WAITING = 2
+MailboxAlertNewMail.FADING_IN = 3
+MailboxAlertNewMail.FADING_OUT = 4
+MailboxAlertNewMail.DONE = 5

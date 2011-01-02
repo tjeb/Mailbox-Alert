@@ -219,108 +219,124 @@ MailboxAlertNewMail.onAlertLoad = function ()
   // if we aren't waiting to fetch preview text, then go ahead and 
   // start showing the alert.
   if (MailboxAlertNewMail.effect == "fade") {
-    setTimeout(MailboxAlertNewMail.showAlertFade, 0); // let the JS thread unwind, to give layout 
+    this.showAlertFade();
+    //setTimeout(MailboxAlertNewMail.showAlertFade, 0); // let the JS thread unwind, to give layout 
                               // a chance to recompute the styles and widths for our alert text.
   } else if (MailboxAlertNewMail.effect == "slide") {
-    setTimeout(MailboxAlertNewMail.showAlertSlide, 0);
+    this.showAlertSlide();
+    //setTimeout(MailboxAlertNewMail.showAlertSlide, 0);
   } else {
     MailboxAlertNewMail.resizeAlert(false);
     MailboxAlertNewMail.placeAlert();
-    setTimeout(MailboxAlertNewMail.closeAlert, MailboxAlertNewMail.duration * 1000);
+    this.timer_state = MailboxAlertNewMail.WAITING;
+    this.timer.initWithCallback(this, this.duration * 1000, this.timer.TYPE_ONE_SHOT);
   }
 }
 
 MailboxAlertNewMail.showAlertSlide = function ()
 {
-  var top = true;
-
-  var alertContainer = document.getElementById('alertContainer');
-  alertContainer.style.opacity = 0;
-  MailboxAlertNewMail.resizeAlert(false);
-  MailboxAlertNewMail.placeAlert();
-
-  MailboxAlertNewMail.window_y = -MailboxAlertNewMail.getWindowHeight();
-  
-  if (MailboxAlertNewMail.position == "tr") {
+    var top = true;
+    
+    var alertContainer = document.getElementById('alertContainer');
+    alertContainer.style.opacity = 0;
+    MailboxAlertNewMail.resizeAlert(false);
+    MailboxAlertNewMail.placeAlert();
+    
+    MailboxAlertNewMail.window_y = -MailboxAlertNewMail.getWindowHeight();
+    
+    if (MailboxAlertNewMail.position == "tr") {
     MailboxAlertNewMail.window_x = MailboxAlertNewMail.gOrigin & MailboxAlertNewMail.LEFT ? screen.availLeft :
         (screen.availLeft + screen.availWidth - MailboxAlertNewMail.getWindowWidth());
-  } else if (MailboxAlertNewMail.position == "br") {
+    } else if (MailboxAlertNewMail.position == "br") {
     top = false;
     MailboxAlertNewMail.window_x = MailboxAlertNewMail.gOrigin & MailboxAlertNewMail.LEFT ? screen.availLeft :
         (screen.availLeft + screen.availWidth - MailboxAlertNewMail.getWindowWidth());
     MailboxAlertNewMail.window_y = screen.height + MailboxAlertNewMail.getWindowHeight();
     MailboxAlertNewMail.window_to_y = MailboxAlertNewMail.gOrigin & MailboxAlertNewMail.TOP ? screen.availTop :
         (screen.availTop + screen.availHeight - MailboxAlertNewMail.getWindowHeight());
-  } else if (MailboxAlertNewMail.position == "bl") {
+    } else if (MailboxAlertNewMail.position == "bl") {
     top = false;
     MailboxAlertNewMail.window_y = screen.height + MailboxAlertNewMail.getWindowHeight();
     MailboxAlertNewMail.window_to_y = MailboxAlertNewMail.gOrigin & MailboxAlertNewMail.TOP ? screen.availTop :
         (screen.availTop + screen.availHeight - MailboxAlertNewMail.getWindowHeight());
-  } else if (MailboxAlertNewMail.position == "c") {
+    } else if (MailboxAlertNewMail.position == "c") {
     MailboxAlertNewMail.window_x = MailboxAlertNewMail.gOrigin & MailboxAlertNewMail.LEFT ? screen.availLeft :
         ((screen.availLeft + screen.availWidth) / 2 - (MailboxAlertNewMail.getWindowWidth() / 2));
     MailboxAlertNewMail.window_y = -MailboxAlertNewMail.getWindowHeight();
     MailboxAlertNewMail.window_to_y = MailboxAlertNewMail.gOrigin & MailboxAlertNewMail.TOP ? screen.availTop :
         ((screen.availTop + screen.availHeight) / 2 - (MailboxAlertNewMail.getWindowHeight() / 2));
-  }
-  //window.sizeToContent();
-  //window.resizeTo(MailboxAlertNewMail.getWindowWidth(), MailboxAlertNewMail.getWindowHeight());
-  window.moveTo(MailboxAlertNewMail.window_x, MailboxAlertNewMail.window_y);
-  MailboxAlertNewMail.resizeAlert(false);
-  MailboxAlertNewMail.placeAlertOutside();
-  alertContainer.style.opacity = 1;
-
-  if (top) {
-    setTimeout(MailboxAlertNewMail.slideInTop, MailboxAlertNewMail.gSlideTime);
-  } else {
-    setTimeout(MailboxAlertNewMail.slideInBottom, MailboxAlertNewMail.gSlideTime);
-  }
+    }
+    //window.sizeToContent();
+    //window.resizeTo(MailboxAlertNewMail.getWindowWidth(), MailboxAlertNewMail.getWindowHeight());
+    window.moveTo(MailboxAlertNewMail.window_x, MailboxAlertNewMail.window_y);
+    MailboxAlertNewMail.resizeAlert(false);
+    MailboxAlertNewMail.placeAlertOutside();
+    alertContainer.style.opacity = 1;
+    
+    if (top) {
+        this.timer_state = MailboxAlertNewMail.SLIDING_IN_TOP;
+    } else {
+        this.timer_state = MailboxAlertNewMail.SLIDING_IN_BOTTOM;
+    }
+    this.timer.initWithCallback(this, this.gSlideTime, this.timer.TYPE_REPEATING_PRECISE);
 }
 
 MailboxAlertNewMail.slideInTop = function ()
 {
-  if (window.screenY < MailboxAlertNewMail.window_to_y) {
-    window.moveBy(0, MailboxAlertNewMail.gSlideDistance);
-    setTimeout(MailboxAlertNewMail.slideInTop, MailboxAlertNewMail.gSlideTime);
-  } else {
-    MailboxAlertNewMail.window_to_y = -MailboxAlertNewMail.getWindowHeight();
-    setTimeout(MailboxAlertNewMail.slideOutTop, MailboxAlertNewMail.duration * 1000);
-  }
+    // called by a repeated timer now, if we need to move we move,
+    // if we are done we need to reset the timer
+    if (window.screenY < MailboxAlertNewMail.window_to_y) {
+        window.moveBy(0, MailboxAlertNewMail.gSlideDistance);
+    } else {
+        this.timer.cancel();
+        this.timer_state = MailboxAlertNewMail.WAITING;
+        MailboxAlertNewMail.window_to_y = -MailboxAlertNewMail.getWindowHeight();
+        // we only need to wait the duration once (the handler should init the slideout
+        // timer on a repeated basis again
+        this.timer.initWithCallback(this, MailboxAlertNewMail.duration * 1000, this.timer.TYPE_ONE_SHOT);
+    }
 }
 
 MailboxAlertNewMail.slideOutTop = function ()
 {
-  if (window.screenY > MailboxAlertNewMail.window_to_y) {
-  	window.moveBy(0, -MailboxAlertNewMail.gSlideDistance);
-  	setTimeout(MailboxAlertNewMail.slideOutTop, MailboxAlertNewMail.gSlideTime);
-  } else {
-  	window.close();
-  }
+    if (window.screenY > MailboxAlertNewMail.window_to_y) {
+        window.moveBy(0, -MailboxAlertNewMail.gSlideDistance);
+    } else {
+        this.timer.cancel();
+        this.timer_state = MailboxAlertNewMail.DONE;
+        window.close();
+    }
 }
 
 MailboxAlertNewMail.slideInBottom = function ()
 {
-  MailboxAlertNewMail.window_y = MailboxAlertNewMail.window_y - MailboxAlertNewMail.gSlideDistance;
-  if (MailboxAlertNewMail.window_y > MailboxAlertNewMail.window_to_y) {
-  	window.moveTo(MailboxAlertNewMail.window_x, MailboxAlertNewMail.window_y);
-  	setTimeout(MailboxAlertNewMail.slideInBottom, MailboxAlertNewMail.gSlideTime);
-  } else {
-  	window.moveTo(MailboxAlertNewMail.window_x, MailboxAlertNewMail.window_to_y);
-  	MailboxAlertNewMail.window_y = MailboxAlertNewMail.window_to_y;
-  	MailboxAlertNewMail.window_to_y = screen.height + MailboxAlertNewMail.getWindowHeight();
-  	setTimeout(MailboxAlertNewMail.slideOutBottom, MailboxAlertNewMail.duration * 1000);
-  }
+    MailboxAlertNewMail.window_y = MailboxAlertNewMail.window_y - MailboxAlertNewMail.gSlideDistance;
+    if (MailboxAlertNewMail.window_y > MailboxAlertNewMail.window_to_y) {
+        window.moveTo(MailboxAlertNewMail.window_x, MailboxAlertNewMail.window_y);
+    } else {
+        this.timer.cancel();
+        this.timer_state = MailboxAlertNewMail.WAITING;
+        
+        window.moveTo(MailboxAlertNewMail.window_x, MailboxAlertNewMail.window_to_y);
+        MailboxAlertNewMail.window_y = MailboxAlertNewMail.window_to_y;
+        MailboxAlertNewMail.window_to_y = screen.height + MailboxAlertNewMail.getWindowHeight();
+        
+        // we only need to wait the duration once (the handler should init the slideout
+        // timer on a repeated basis again
+        this.timer.initWithCallback(this, MailboxAlertNewMail.duration * 1000, this.timer.TYPE_ONE_SHOT);
+    }
 }
 
 MailboxAlertNewMail.slideOutBottom = function ()
 {
-  MailboxAlertNewMail.window_y = MailboxAlertNewMail.window_y + MailboxAlertNewMail.gSlideDistance;
-  if (MailboxAlertNewMail.window_y < MailboxAlertNewMail.window_to_y) {
-  	window.moveTo(MailboxAlertNewMail.window_x, MailboxAlertNewMail.window_y);
-  	setTimeout(MailboxAlertNewMail.slideOutBottom, MailboxAlertNewMail.gSlideTime);
-  } else {
-  	window.close();
-  }
+    MailboxAlertNewMail.window_y = MailboxAlertNewMail.window_y + MailboxAlertNewMail.gSlideDistance;
+    if (MailboxAlertNewMail.window_y < MailboxAlertNewMail.window_to_y) {
+        window.moveTo(MailboxAlertNewMail.window_x, MailboxAlertNewMail.window_y);
+    } else {
+        this.timer.cancel();
+        this.timer_state = MailboxAlertNewMail.DONE;
+        window.close();
+    }
 }
 
 MailboxAlertNewMail.showAlertFade = function ()
@@ -328,8 +344,8 @@ MailboxAlertNewMail.showAlertFade = function ()
 	var alertContainer = document.getElementById('alertContainer');
 	alertContainer.style.opacity = 0;
 	MailboxAlertNewMail.resizeAlert(false);
-        MailboxAlertNewMail.placeAlert();
-	setTimeout(MailboxAlertNewMail.fadeOpen, MailboxAlertNewMail.gFadeTime);
+    MailboxAlertNewMail.placeAlert();
+    this.timer.initWithCallback(this, this.gFadeTime, this.timer.TYPE_REPEATING_PRECISE);
 }
 
 MailboxAlertNewMail.getWindowHeight = function ()
@@ -408,44 +424,53 @@ MailboxAlertNewMail.placeAlertOutside = function () {
 
 MailboxAlertNewMail.fadeOpen = function ()
 {
-  var alertContainer = document.getElementById('alertContainer');
-  var newOpacity = parseFloat(window.getComputedStyle(alertContainer, "").opacity) + MailboxAlertNewMail.gFadeIncrement;
-  alertContainer.style.opacity = newOpacity;
-  
-  if (newOpacity < 1.0)    
-    setTimeout(MailboxAlertNewMail.fadeOpen, MailboxAlertNewMail.gFadeTime);
-  else { // switch gears and start closing the alert
-    setTimeout(MailboxAlertNewMail.fadeClose, 1000 * MailboxAlertNewMail.duration);
-  }
+    var alertContainer = document.getElementById('alertContainer');
+    var newOpacity = parseFloat(window.getComputedStyle(alertContainer, "").opacity) + MailboxAlertNewMail.gFadeIncrement;
+    alertContainer.style.opacity = newOpacity;
+    
+    if (newOpacity >= 1.0) {
+        // switch gears and start closing the alert
+        this.timer.cancel();
+        this.timer_state = MailboxAlertNewMail.WAITING;
+        this.timer.initWithCallback(this, 1000 * this.duration, this.timer.TYPE_ONE_SHOT);
+        //setTimeout(MailboxAlertNewMail.fadeClose, 1000 * MailboxAlertNewMail.duration);
+    }
 }
 
 MailboxAlertNewMail.fadeClose = function ()
 {
-  var alertContainer = document.getElementById('alertContainer');
-  var newOpacity = parseFloat(window.getComputedStyle(alertContainer, "").opacity) - MailboxAlertNewMail.gFadeIncrement;
-  alertContainer.style.opacity = newOpacity;
-  if (newOpacity <= 0) {
-    window.close();
-  } else {
-    setTimeout(MailboxAlertNewMail.fadeClose, MailboxAlertNewMail.gFadeTime);
-  }
+    var alertContainer = document.getElementById('alertContainer');
+    var newOpacity = parseFloat(window.getComputedStyle(alertContainer, "").opacity) - MailboxAlertNewMail.gFadeIncrement;
+    alertContainer.style.opacity = newOpacity;
+    if (newOpacity <= 0) {
+        this.timer.cancel();
+        this.timer_state = MailboxAlertNewMail.DONE;
+        window.close();
+    }
 }
 
 MailboxAlertNewMail.closeAlert = function ()
 {
-  if (MailboxAlertNewMail.effect == "fade") {
-    MailboxAlertNewMail.fadeClose();
-  } else if (MailboxAlertNewMail.effect == "slide") {
-    if (MailboxAlertNewMail.position == "tr" || MailboxAlertNewMail.position == "tl") {
-      MailboxAlertNewMail.slideOutTop();
-    } else if (MailboxAlertNewMail.position == "br" || MailboxAlertNewMail.position == "bl") {
-      MailboxAlertNewMail.slideOutBottom();
+    // make sure there won't be anything else firing
+    this.timer.cancel();
+    
+    if (MailboxAlertNewMail.effect == "fade") {
+        this.timer_state = MailboxAlertNewMail.FADING_OUT;
+        this.timer.initWithCallback(this, this.gFadeTime, this.timer.TYPE_REPEATING_PRECISE);
+        MailboxAlertNewMail.fadeClose();
+    } else if (MailboxAlertNewMail.effect == "slide") {
+        if (MailboxAlertNewMail.position == "tr" || MailboxAlertNewMail.position == "tl") {
+            this.timer_state = MailboxAlertNewMail.SLIDING_OUT_TOP;
+            this.timer.initWithCallback(this, this.gSlideTime, this.timer.TYPE_REPEATING_PRECISE);
+        } else if (MailboxAlertNewMail.position == "br" || MailboxAlertNewMail.position == "bl") {
+            this.timer_state = MailboxAlertNewMail.SLIDING_OUT_BOTTOM;
+            this.timer.initWithCallback(this, this.gSlideTime, this.timer.TYPE_REPEATING_PRECISE);
+        } else {
+            window.close();
+        }
     } else {
-      window.close();
+        window.close();
     }
-  } else {
-    window.close();
-  }
 }
 
 MailboxAlertNewMail.handleClick = function ()
@@ -486,5 +511,29 @@ MailboxAlertNewMail.handleClick = function ()
             dump("Could not get nsIMsgWindow service\n");
         }
     }
-    MailboxAlertNewMail.closeAlert();
+    this.closeAlert();
+}
+
+MailboxAlertNewMail.notify = function(timer) {
+    // this function is called every time a fade or slide timer fires
+    // we need to move the window or change the opacity until we're done
+    // then we need to set a new timer to wait until the window needs to
+    // close automatically, after which this function is called until
+    // we have faded or slided out again.
+    // note: every time we close the window, we should cancel the timer
+    if (this.timer_state == this.SLIDING_IN_TOP) {
+        this.slideInTop();
+    } else if (this.timer_state == this.SLIDING_IN_BOTTOM) {
+        this.slideInBottom();
+    } else if (this.timer_state == this.SLIDING_OUT_TOP) {
+        this.slideOutTop();
+    } else if (this.timer_state == this.SLIDING_OUT_BOTTOM) {
+        this.slideOutBottom();
+    } else if (this.timer_state == this.FADING_IN) {
+        this.fadeOpen();
+    } else if (this.timer_state == this.FADING_OUT) {
+        this.fadeClose();
+    } else if (this.timer_state == this.WAITING) {
+        this.closeAlert();
+    }
 }
