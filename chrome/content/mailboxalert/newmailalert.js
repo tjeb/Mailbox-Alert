@@ -220,11 +220,8 @@ MailboxAlertNewMail.onAlertLoad = function ()
   // start showing the alert.
   if (MailboxAlertNewMail.effect == "fade") {
     this.showAlertFade();
-    //setTimeout(MailboxAlertNewMail.showAlertFade, 0); // let the JS thread unwind, to give layout 
-                              // a chance to recompute the styles and widths for our alert text.
   } else if (MailboxAlertNewMail.effect == "slide") {
     this.showAlertSlide();
-    //setTimeout(MailboxAlertNewMail.showAlertSlide, 0);
   } else {
     MailboxAlertNewMail.resizeAlert(false);
     MailboxAlertNewMail.placeAlert();
@@ -345,6 +342,7 @@ MailboxAlertNewMail.showAlertFade = function ()
 	alertContainer.style.opacity = 0;
 	MailboxAlertNewMail.resizeAlert(false);
     MailboxAlertNewMail.placeAlert();
+    this.timer_state = this.FADING_IN;
     this.timer.initWithCallback(this, this.gFadeTime, this.timer.TYPE_REPEATING_PRECISE);
 }
 
@@ -427,13 +425,12 @@ MailboxAlertNewMail.fadeOpen = function ()
     var alertContainer = document.getElementById('alertContainer');
     var newOpacity = parseFloat(window.getComputedStyle(alertContainer, "").opacity) + MailboxAlertNewMail.gFadeIncrement;
     alertContainer.style.opacity = newOpacity;
-    
+
     if (newOpacity >= 1.0) {
         // switch gears and start closing the alert
         this.timer.cancel();
         this.timer_state = MailboxAlertNewMail.WAITING;
         this.timer.initWithCallback(this, 1000 * this.duration, this.timer.TYPE_ONE_SHOT);
-        //setTimeout(MailboxAlertNewMail.fadeClose, 1000 * MailboxAlertNewMail.duration);
     }
 }
 
@@ -442,6 +439,7 @@ MailboxAlertNewMail.fadeClose = function ()
     var alertContainer = document.getElementById('alertContainer');
     var newOpacity = parseFloat(window.getComputedStyle(alertContainer, "").opacity) - MailboxAlertNewMail.gFadeIncrement;
     alertContainer.style.opacity = newOpacity;
+
     if (newOpacity <= 0) {
         this.timer.cancel();
         this.timer_state = MailboxAlertNewMail.DONE;
