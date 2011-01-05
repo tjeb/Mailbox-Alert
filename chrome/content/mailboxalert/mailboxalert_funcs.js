@@ -562,8 +562,6 @@ MailboxAlert.alert3 = function(alert_data) {
             if (execute_command && command) {
                 // TODO: alert_data.escapeData()?
                 if (escape) {
-                    sender_name = MailboxAlert.escapeHTML(sender_name);
-                    sender_address = MailboxAlert.escapeHTML(sender_address);
                     MailboxAlert.executeCommand(MailboxAlert.escapeHTML(alert_data.server),
                                                 alert_data.folder_name_with_server,
                                                 MailboxAlert.escapeHTML(alert_data.orig_folder_name),
@@ -772,7 +770,11 @@ MailboxAlert.executeCommand = function (server, folder, orig_folder, new_message
                 if (prev_i > 0) {
                     if (charset && tocharset) {
                         csconv.Init(tocharset, 0, 0);
-                        cur_arg = csconv.Convert(cur_arg);
+                        try {
+                            cur_arg = csconv.Convert(cur_arg);
+                        } catch (e) {
+                            dump("Error converting " + cur_arg + ", leaving as is\n");
+                        }
                     }
                 }
                 args.push(cur_arg);
