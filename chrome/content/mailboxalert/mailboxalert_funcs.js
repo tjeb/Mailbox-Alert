@@ -25,6 +25,7 @@ MailboxAlert.createUrlListener = function () {
     this.wait = function() {
         while(this.running) {};
     }
+    return this;
 }
 
 MailboxAlert.createAlertData = function (mailbox, last_unread) {
@@ -36,7 +37,6 @@ MailboxAlert.createAlertData = function (mailbox, last_unread) {
         this.folder_name = MailboxAlert.getFullFolderName(this.mailbox, false);
         this.folder_name_with_server = MailboxAlert.getFullFolderName(this.mailbox, true);
         this.folder_uri = this.mailbox.URI;
-        this.message_count = this.mailbox.getNumUnread(false);
         this.all_message_count = this.mailbox.getNumUnread(true);
     }
     
@@ -44,7 +44,7 @@ MailboxAlert.createAlertData = function (mailbox, last_unread) {
         // derived data that stays the same
         this.orig_mailbox = this.mailbox;
         this.server = MailboxAlert.getServerName(this.mailbox);
-        this.orig_message_count = this.message_count;
+        this.message_count = this.mailbox.getNumUnread(false);
 
         this.subject = this.last_unread.mime2DecodedSubject;
         this.sender = this.last_unread.mime2DecodedAuthor;
@@ -567,7 +567,7 @@ MailboxAlert.alert3 = function(alert_data) {
                     MailboxAlert.executeCommand(MailboxAlert.escapeHTML(alert_data.server),
                                                 alert_data.folder_name_with_server,
                                                 MailboxAlert.escapeHTML(alert_data.orig_folder_name),
-                                                alert_data.orig_message_count,
+                                                alert_data.message_count,
                                                 alert_data.all_message_count,
                                                 MailboxAlert.escapeHTML(alert_data.subject),
                                                 MailboxAlert.escapeHTML(alert_data.sender),
@@ -579,7 +579,7 @@ MailboxAlert.alert3 = function(alert_data) {
                 MailboxAlert.executeCommand(alert_data.server,
                                             alert_data.folder_name_with_server,
                                             alert_data.orig_folder_name,
-                                            alert_data.orig_message_count,
+                                            alert_data.message_count,
                                             alert_data.all_message_count,
                                             alert_data.subject,
                                             alert_data.sender,
@@ -670,7 +670,7 @@ MailboxAlert.showMessage = function (alert_data, show_icon, icon_file, subject_p
     message_text = MailboxAlert.replace(message_text, "%originalfolder", alert_data.orig_folder_name);
     message_text = MailboxAlert.replace(message_text, "%folder", alert_data.folder_name);
     message_text = MailboxAlert.replace(message_text, "%countall", "" + alert_data.all_message_count);
-    message_text = MailboxAlert.replace(message_text, "%count", "" + alert_data.new_message_count);
+    message_text = MailboxAlert.replace(message_text, "%count", "" + alert_data.message_count);
     message_text = MailboxAlert.replace(message_text, "%subject", alert_data.subject);
     message_text = MailboxAlert.replace(message_text, "%senderaddress", alert_data.sender_address);
     message_text = MailboxAlert.replace(message_text, "%sendername", alert_data.sender_name);
