@@ -47,6 +47,10 @@ MailboxAlert.createAlertData = function (mailbox, last_unread) {
         this.message_count = this.mailbox.getNumUnread(false);
 
         this.subject = this.last_unread.mime2DecodedSubject;
+        // add Re: if necessary
+        if (this.last_unread.flags & 0x00000010) {
+            this.subject = "Re: " + this.subject;
+        }
         this.sender = this.last_unread.mime2DecodedAuthor;
         this.sender_name = this.sender;
         this.sender_address = this.sender;
@@ -787,7 +791,12 @@ MailboxAlert.executeCommand = function (server, folder, orig_folder, new_message
     /* also convert this one */
     if (charset && tocharset) {
         csconv.Init(tocharset, 0, 0);
-        args.push(csconv.Convert(command.substr(prev_i, i).split("\\ ").join(" ")));
+        try {
+            args.push(csconv.Convert(command.substr(prev_i, i).split("\\ ").join(" ")));
+        } catch (e) {
+            // conversion failed, just push whatever we had
+            args.push(command.substr(prev_i, i).split("\\ ").join(" "));
+        }
     } else {
         args.push(command.substr(prev_i, i).split("\\ ").join(" "));
     }
