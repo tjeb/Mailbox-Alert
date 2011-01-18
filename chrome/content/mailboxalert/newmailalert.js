@@ -173,8 +173,7 @@ MailboxAlertNewMail.prefillAlertInfo = function ()
     // we'll 'wrap' to 50 characters
     var label = document.getElementById('message_field');
     var text_node = label.childNodes[0];
-    dump("[XX] original child: " + text_node + "\n");
-    text_node.replaceWholeText(full_field);
+    text_node.data = full_field;
 
     label.hidden = false;
 
