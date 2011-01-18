@@ -530,7 +530,7 @@ MailboxAlert.alert3 = function(alert_data) {
                 // ok no command set for this mailbox
             }
 
-			dump("Show message: " + show_message + "\n");
+            dump("Show message: " + show_message + "\n");
             if (show_message) {
                 var show_icon = true;
                 try {
@@ -549,20 +549,24 @@ MailboxAlert.alert3 = function(alert_data) {
                 alerted = true;
             }
 
-			dump("Play sound: " + play_sound + "\n");
-            if (play_sound && !MailboxAlert.muted()) {
-                if (sound_wav) {
-                    dump("Play wav file: " + sound_wav_file + "\n");
-                    MailboxAlert.playSound(sound_wav_file);
+            dump("Play sound: " + play_sound + "\n");
+            if (play_sound) {
+                if (!MailboxAlert.muted()) {
+                    if (sound_wav) {
+                        dump("Play wav file: " + sound_wav_file + "\n");
+                        MailboxAlert.playSound(sound_wav_file);
+                    } else {
+                        dump("Play default system sound\n");
+                        MailboxAlert.playSound("");
+                    }
                 } else {
-                    dump("Play default system sound\n");
-                    MailboxAlert.playSound("");
+                    dump("Sound alert set, but Mailbox Alert is muted\n");
                 }
                 alerted = true;
             }
 
-			dump("Execute command: " + execute_command + "\n");
-			dump("Command: " + command + "\n");
+            dump("Execute command: " + execute_command + "\n");
+            dump("Command: " + command + "\n");
             if (execute_command && command) {
                 // TODO: alert_data.escapeData()?
                 if (escape) {
@@ -695,7 +699,7 @@ MailboxAlert.showMessage = function (alert_data, show_icon, icon_file, subject_p
 /* copied from mozilla thunderbird sourcecode */
 MailboxAlert.playSound = function (soundURL) {
     var gSound = Components.classes["@mozilla.org/sound;1"].createInstance(Components.interfaces.nsISound);
-    //gSound.init();
+    gSound.init();
     if (soundURL) {
           if (soundURL.indexOf("file://") == -1) {
               soundURL = "file://" + soundURL;
