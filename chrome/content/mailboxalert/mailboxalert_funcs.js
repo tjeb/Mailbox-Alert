@@ -709,7 +709,8 @@ MailboxAlert.playSound = function (soundURL) {
                      .getService(Components.interfaces.nsIIOService);
             var url = ioService.newURI(soundURL, null, null);
             dump("gSound.play("+url+")\n");
-            gSound.play(url)
+            var result = gSound.play(url)
+            alert("result of nsISound.play(" + url + "): " + result);
           } catch(e) {
               // some error, just 'beep' (which is system-dependent
               // these days)
