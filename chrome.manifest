@@ -12,7 +12,5 @@ locale	mailboxalert	nl          jar:chrome/mailboxalert.jar!/locale/nl/
 locale	mailboxalert	pl          jar:chrome/mailboxalert.jar!/locale/pl/
 locale	mailboxalert	pt-PT       jar:chrome/mailboxalert.jar!/locale/pt-PT/
 locale	mailboxalert	sk-SK       jar:chrome/mailboxalert.jar!/locale/sk-SK/
-locale	mailboxalert	sv-SE       jar:chrome/mailboxalert.jar!/locale/sv-SE/
-locale	mailboxalert	tr-TR       jar:chrome/mailboxalert.jar!/locale/tr-TR/
 locale	mailboxalert	zh-CN       jar:chrome/mailboxalert.jar!/locale/zh-CN/
 
