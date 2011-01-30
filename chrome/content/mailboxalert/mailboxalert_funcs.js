@@ -705,12 +705,12 @@ MailboxAlert.playSound = function (soundURL) {
               soundURL = "file://" + soundURL;
           }
           try {
-            var ioService = Components.classes["@mozilla.org/network/io-service;1"]
-                     .getService(Components.interfaces.nsIIOService);
-            var url = ioService.newURI(soundURL, null, null);
-            dump("gSound.play("+url+")\n");
-            var result = gSound.play(url)
-            alert("result of nsISound.play(" + url + "): " + result);
+              var ioService = Components.classes["@mozilla.org/network/io-service;1"]
+                       .getService(Components.interfaces.nsIIOService);
+              var url = ioService.newURI(soundURL, null, null);
+              dump("gSound.play("+soundURL+")\n");
+              gSound.play(url);
+              dump("sound played\n");
           } catch(e) {
               // some error, just 'beep' (which is system-dependent
               // these days)
