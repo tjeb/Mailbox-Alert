@@ -2,6 +2,7 @@
 *: done
 
 Features:
+- attachments to file
 - date-sent,
 - open-in-new-window and select-message
 - allow for quoting in settings
