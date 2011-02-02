@@ -2,6 +2,7 @@
 *: done
 
 Features:
+- indefinite popups
 - attachments to file
 - date-sent,
 - open-in-new-window and select-message
@@ -14,10 +15,10 @@ Features:
 - consistent debugging data
 - Options for alert popups
     (several 'themes'? fully configurable?)
-- replace setTimeout
+-- replace setTimeout
 - move catch/disable from alert2 to alert3?
   (or remove alltogether? or ask?)
-- check windows sound issue
+-- check windows sound issue
     - new sound code in tb3?
  
 0.13.5
