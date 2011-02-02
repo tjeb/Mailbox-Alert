@@ -818,21 +818,18 @@ MailboxAlert.executeCommand = function (server, folder, orig_folder, new_message
         exec.initWithPath(executable_name);
         // isExecutable is horribly broken in OSX, see
         // https://bugzilla.mozilla.org/show_bug.cgi?id=322865
-        // So use a fugly os detection here...
+        // It turns out to be broken in windows too...
+        // removing the check, we shall have to try and run it
+        // then catch NS_UNEXPECTED
         var run = true;
         if (!exec.exists()) {
-			alert("[XX] file not found");
+			//alert("[XX] file not found");
+			run = false;
+		} else if (!exec.isFile()) {
+			//alert("[XX] file is not a file");
 			run = false;
 		}
-		if (!(/Mac/.test(navigator.platform) || exec.isExecutable())) {
-			alert("[XX] file is not executable according to operating system");
-			//run = false;
-		}
-		if (!exec.isFile()) {
-			alert("[XX] file is not a file");
-			run = false;
-		}
-		if (!run) {
+		if (!exec.exists()) {
             var stringsBundle = document.getElementById("string-bundle");
             alert(stringsBundle.getString('mailboxalert.error')+"\n" + exec.leafName + " " + stringsBundle.getString('mailboxalert.error.notfound') + "\n\nFull path: "+executable_name+"\n\n" + stringsBundle.getString('mailboxalert.error.disableexecutefor') + " " + folder);
             dump("Failed command:  " +executable_name + "\r\n");
@@ -853,7 +850,21 @@ MailboxAlert.executeCommand = function (server, folder, orig_folder, new_message
             var result = pr.run(false, args, args.length);
         }
     } catch (e) {
-        if (e.name == "NS_ERROR_FILE_UNRECOGNIZED_PATH") {
+		// TODO: better error, refactor double code
+        if (e.name == "NS_ERROR_FAILURE" ||
+            e.name == "NS_ERROR_UNEXPECTED"
+           ) {
+            var stringsBundle = document.getElementById("string-bundle");
+            alert(stringsBundle.getString('mailboxalert.error')+"\n" + exec.leafName + " " + stringsBundle.getString('mailboxalert.error.notfound') + "\n\nFull path: "+executable_name+"\n\n" + stringsBundle.getString('mailboxalert.error.disableexecutefor') + " " + folder);
+            if (caller) {
+                var executecommandcheckbox = document.getElementById('mailboxalert_execute_command');
+                executecommandcheckbox.checked = false;
+                setUIExecuteCommandPrefs(false);
+            } else {
+                var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
+                prefs.setBoolPref("extensions.mailboxalert.execute_command." + folder, false);
+            }
+		} else if (e.name == "NS_ERROR_FILE_UNRECOGNIZED_PATH") {
             var stringsBundle = document.getElementById("string-bundle");
             alert(stringsBundle.getString('mailboxalert.error') + "\r\n\r\n" +
                   stringsBundle.getString('mailboxalert.error.badcommandpath1') + 
