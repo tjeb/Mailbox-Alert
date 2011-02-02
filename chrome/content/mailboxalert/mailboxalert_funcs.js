@@ -819,12 +819,25 @@ MailboxAlert.executeCommand = function (server, folder, orig_folder, new_message
         // isExecutable is horribly broken in OSX, see
         // https://bugzilla.mozilla.org/show_bug.cgi?id=322865
         // So use a fugly os detection here...
-        if (!exec.exists() || !(/Mac/.test(navigator.platform) || exec.isExecutable()) || !exec.isFile()) {
+        var run = true;
+        if (!exec.exists()) {
+			alert("[XX] file not found");
+			run = false;
+		}
+		if (!(/Mac/.test(navigator.platform) || exec.isExecutable())) {
+			alert("[XX] file is not executable according to operating system");
+			//run = false;
+		}
+		if (!exec.isFile()) {
+			alert("[XX] file is not a file");
+			run = false;
+		}
+		if (!run) {
             var stringsBundle = document.getElementById("string-bundle");
             alert(stringsBundle.getString('mailboxalert.error')+"\n" + exec.leafName + " " + stringsBundle.getString('mailboxalert.error.notfound') + "\n\nFull path: "+executable_name+"\n\n" + stringsBundle.getString('mailboxalert.error.disableexecutefor') + " " + folder);
             dump("Failed command:  " +executable_name + "\r\n");
             dump("Arguments: " + args + "\r\n");
-                    var caller = window.arguments[0];
+            var caller = window.arguments[0];
             if (caller) {
                 var executecommandcheckbox = document.getElementById('mailboxalert_execute_command');
                 executecommandcheckbox.checked = false;
