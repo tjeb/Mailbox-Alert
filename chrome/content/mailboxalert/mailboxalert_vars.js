@@ -140,13 +140,6 @@ MailboxAlert.getGlobalPreferences = function() {
 //
 // global array makes sense
 // so prefs just needs an array of 'read' values
-
-        case "alert_for_children":
-          return false;
-        case "no_alert_to_parent":
-          return false;
- 
-
 MailboxAlert.folderPrefDefs = {
 "show_message": [ "bool", false],
 "show_message_icon": [ "bool", true ],
@@ -182,7 +175,10 @@ MailboxAlert.getFolderPreferences = function(folder_uri) {
             } catch(e) {
                 // ok pref doesn't exist yet.
                 // should we not set and just return?
-                this.values[name] = MailboxAlert.folderPrefDefs[name][1];
+                pref_data = MailboxAlert.folderPrefDefs[name]
+                if (pref_data != null) {
+					this.values[name] = MailboxAlert.folderPrefDefs[name][1];
+				}
             }
         }
         return this.values[name];
@@ -194,6 +190,7 @@ MailboxAlert.getFolderPreferences = function(folder_uri) {
     }
     
     folder_prefs.store = function() {
+		dump("[XX] store prefs for " + this.folder_uri + "\n")
         for (var name in MailboxAlert.folderPrefDefs) {
             var type = MailboxAlert.folderPrefDefs[name][0];
             var pref_default = MailboxAlert.folderPrefDefs[name][1];
