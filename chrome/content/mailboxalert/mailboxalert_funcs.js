@@ -81,6 +81,8 @@ MailboxAlert.createAlertData = function (mailbox, last_unread) {
         this.last_unread.mime2DecodedAuthor = "Theo Est <test@example.com>";
         this.last_unread.Charset = "ISO-8859-1";
         this.last_unread.messageSize = 1;
+        now = new Date();
+        this.last_unread.date = now.getTime();
         this.last_unread.preview = "This is a test message body. There is not much to see here. Though one might notice the text being wrapped, while the original text is one line.\n\nYour friendly neighborhood Extension Developer.\n";
         this.last_unread.getProperty = function(propname) {
             return this.preview;
@@ -483,7 +485,7 @@ MailboxAlert.alert3 = function(alert_data, folder_prefs) {
                 alerted = true;
             }
 
-			dump("Play sound: " + folder_prefs.get("play_sound") + "\n");
+            dump("Play sound: " + folder_prefs.get("play_sound") + "\n");
             if (folder_prefs.get("play_sound") && !MailboxAlert.muted()) {
                 if (folder_prefs.get("sound_wav")) {
                     dump("Play wav file: " + folder_prefs.get("sound_wav_file") + "\n");
@@ -495,8 +497,8 @@ MailboxAlert.alert3 = function(alert_data, folder_prefs) {
                 alerted = true;
             }
 
-			dump("Execute command: " + folder_prefs.get("execute_command") + "\n");
-			dump("Command: " + folder_prefs.get("command") + "\n");
+            dump("Execute command: " + folder_prefs.get("execute_command") + "\n");
+            dump("Command: " + folder_prefs.get("command") + "\n");
             if (folder_prefs.get("execute_command") && folder_prefs.get("command")) {
                 // TODO: alert_data.escapeData()?
                 if (folder_prefs.get("escape")) {
@@ -511,7 +513,9 @@ MailboxAlert.alert3 = function(alert_data, folder_prefs) {
                                                 MailboxAlert.escapeHTML(alert_data.sender),
                                                 alert_data.charset,
                                                 folder_prefs.get("command"),
-                                                alert_data.messageBytes);
+                                                alert_data.messageBytes,
+                                                alert_data.date
+                                                );
                 }
 
                 MailboxAlert.executeCommand(alert_data.server,
@@ -523,7 +527,9 @@ MailboxAlert.alert3 = function(alert_data, folder_prefs) {
                                             alert_data.sender,
                                             alert_data.charset,
                                             folder_prefs.get("command"),
-                                            alert_data.messageBytes);
+                                            alert_data.messageBytes,
+                                            alert_data.date
+                                            );
                 alerted = true;
             }
 
@@ -587,6 +593,10 @@ MailboxAlert.showMessage = function (alert_data, show_icon, icon_file, subject_p
     dump("[XX] body:\n");
     dump(body);
     dump("\n[XX] end of body\n");
+    var date_obj = new Date();
+    date_obj.setTime(alert_data.date);
+    var date_str = date_obj.toLocaleDateString();
+    var time_str = date_obj.date_obj.toLocaleTimeString();
     
     subject_pref = MailboxAlert.replace(subject_pref, "%server", alert_data.server);
     subject_pref = MailboxAlert.replace(subject_pref, "%originalfolder", alert_data.orig_folder_name);
@@ -600,7 +610,8 @@ MailboxAlert.showMessage = function (alert_data, show_icon, icon_file, subject_p
     subject_pref = MailboxAlert.replace(subject_pref, "%charset", alert_data.charset);
     subject_pref = MailboxAlert.replace(subject_pref, "%messagebytes", alert_data.messageBytes);
     subject_pref = MailboxAlert.replace(subject_pref, "%messagesize", messageSize);
-    subject_pref = MailboxAlert.replace(subject_pref, "%date", alert_data.date);
+    subject_pref = MailboxAlert.replace(subject_pref, "%date", date_str);
+    subject_pref = MailboxAlert.replace(subject_pref, "%time", time_str);
     //subject_pref = MailboxAlert.replace(subject_pref, "%enter", "\n");
     subject_pref = MailboxAlert.replace(subject_pref, "%body", body);
 
@@ -618,7 +629,8 @@ MailboxAlert.showMessage = function (alert_data, show_icon, icon_file, subject_p
     message_text = MailboxAlert.replace(message_text, "%charset", alert_data.charset);
     message_text = MailboxAlert.replace(message_text, "%messagebytes", alert_data.messageBytes);
     message_text = MailboxAlert.replace(message_text, "%messagesize", messageSize);
-    message_text = MailboxAlert.replace(message_text, "%date", alert_data.date);
+    message_text = MailboxAlert.replace(message_text, "%date", date_str);
+    message_text = MailboxAlert.replace(message_text, "%time", time_str);
     message_text = MailboxAlert.replace(message_text, "%enter", "\n");
     message_text = MailboxAlert.replace(message_text, "%body", body);
 
@@ -655,7 +667,7 @@ MailboxAlert.playSound = function (soundURL) {
     }
 }
 
-MailboxAlert.executeCommand = function (server, folder, orig_folder, new_message_count, all_message_count, subject, sender, charset, command, message_bytes) {
+MailboxAlert.executeCommand = function (server, folder, orig_folder, new_message_count, all_message_count, subject, sender, charset, command, message_bytes, date) {
     var sender_name = sender;
     var sender_address = sender;
     if (sender.indexOf('<') > 0 && sender.indexOf('>') > 0) {
@@ -674,7 +686,9 @@ MailboxAlert.executeCommand = function (server, folder, orig_folder, new_message
         message_bytes = "0";
     }
     var messageSize = MailboxAlert.getHRMsgSize(message_bytes);
-
+    var date_obj = new Date();
+    date_obj.setTime(date);
+    var date_str = date_obj.toLocaleDateString() + " " + date_obj.toLocaleTimeString()
 
     command = MailboxAlert.replaceEscape(command, "%server", server);
     command = MailboxAlert.replaceEscape(command, "%originalfolder", orig_folder);
@@ -688,7 +702,8 @@ MailboxAlert.executeCommand = function (server, folder, orig_folder, new_message
     command = MailboxAlert.replaceEscape(command, "%charset", charset);
     command = MailboxAlert.replace(command, "%messagebytes", message_bytes);
     command = MailboxAlert.replace(command, "%messagesize", messageSize);
-    command = MailboxAlert.replace(command, "%date", alert_data.date);
+    command = MailboxAlert.replace(command, "%date", date_str);
+    command = MailboxAlert.replace(command, "%time", time_str);
 
     var args = new Array();
     var prev_i = 0;

@@ -37,6 +37,8 @@
 	<label value="%charset: &mailboxalert.prefs.expl.charset;"/>
 	<label value="%messagebytes: &mailboxalert.prefs.expl.messagebytes;"/>
 	<label value="%messagesize: &mailboxalert.prefs.expl.messagesize;"/>
+	<label value="%date: &mailboxalert.prefs.expl.date;"/>
+	<label value="%time: &mailboxalert.prefs.expl.time;"/>
 	<label value="%enter: &mailboxalert.prefs.expl.enter;"/>
 	<label value=""/>
 	<text value="&mailboxalert.prefs.expl.see; http://jelte.nlnetlabs.nl/Projects/Mailbox_Alert &mailboxalert.prefs.expl.information;" />

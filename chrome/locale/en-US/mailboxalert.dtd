@@ -36,6 +36,8 @@
 <!ENTITY mailboxalert.prefs.expl.information "for more information">
 <!ENTITY mailboxalert.prefs.expl.messagebytes "The size of the message in bytes">
 <!ENTITY mailboxalert.prefs.expl.messagesize "The size of the message in human readable form (for instance 2.1M)">
+<!ENTITY mailboxalert.prefs.expl.date "The date the message was sent">
+<!ENTITY mailboxalert.prefs.expl.time "The time the message was sent">
 <!ENTITY mailboxalert.prefs.expl.enter "Line break (does not work in the first field of &apos;show a message&apos;)">
 <!ENTITY mailboxalert.prefs.browse "Browse">
 <!ENTITY mailboxalert.prefs.default "Use default">
