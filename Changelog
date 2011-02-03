@@ -1,3 +1,7 @@
+[???]
+  o Added a %date and a %time macro
+  
+
 *  [0.14.1-0.14.2]
   o Fixed the locale setup
   o Made some internal refactors (ie. no user-visible changes)
