@@ -34,181 +34,246 @@
 
     <![CDATA[
 
-    function prefsToUIAll() {
-        folder_prefs.dump();
+	// Set the value of a checkbox according to what the
+	// boolean prefs value is
+	function setValueCheckbox(name, prefs_name) {
+		var doc_el = document.getElementById(name);
+		if (!doc_el) { alert(name + " not found!"); }
+		var value = folder_prefs.get(prefs_name);
+		doc_el.checked = value;
+	}
+
+	// Get the value of a checkbox and store it as the
+	// boolean prefs value
+	function getValueCheckbox(name, prefs_name) {
+		var doc_el = document.getElementById(name);
+		if (!doc_el) { alert(name + " not found!"); }
+		var value = doc_el.checked;
+		folder_prefs.set(prefs_name, value);
+	}
+	
+	// Set the value of a text field according to what
+	// the string prefs value is
+	function setValueTextfield(name, prefs_name) {
+		var doc_el = document.getElementById(name);
+		if (!doc_el) { alert(name + " not found!"); }
+		var value = folder_prefs.get(prefs_name);
+		doc_el.setAttribute("value", value);
     }
 
-    function setUIAll() {
-        var showmessagecheckbox = document.getElementById("mailboxalert_show_message");
-        var soundcheckbox = document.getElementById("mailboxalert_play_sound");
-        var executecommandcheckbox = document.getElementById("mailboxalert_execute_command");
-
-        var noalerttoparentcheckbox = document.getElementById("mailboxalert_no_alert_to_parent");
-
-        setUIShowMessagePrefs(folder_prefs.get("show_message"));
-        setUIPlaySoundPrefs(folder_prefs.get("play_sound"));
-        setUIExecuteCommandPrefs(folder_prefs.get("execute_command"));
-
-        if (folder_prefs.get("show_message") ||
-            folder_prefs.get("play_sound") ||
-            folder_prefs.get("execute_command")) {
-            setUIAlertForChildren(true);
-            setUINoAlertToParent(false);
-            setUITest(true);
-        } else {
-            setUIAlertForChildren(false);
-            setUINoAlertToParent(true);
-            setUITest(false);
-            
-            if (folder_prefs.get("no_alert_to_parent") == true) {
-                setUIShowMessage(false);
-                setUIPlaySound(false);
-                setUIExecuteCommand(false);
-            } else {
-                setUIShowMessage(true);
-                if (folder_prefs.get("show_message_icon")) {
-                    setUIShowMessageIcon(true);
-                }
-                setUIPlaySound(true);
-                setUIExecuteCommand(true);
-            }
-        }
-        window.sizeToContent();
-    }
-
-    function setUIShowMessage(on) {
-        var showmessagecheckbox = document.getElementById("mailboxalert_show_message");
-        showmessagecheckbox.disabled = !on;
-        setUIShowMessagePrefs(showmessagecheckbox.checked);
-    }
-
-    function setUIShowMessagePrefs(on) {
-        var messagetextbox = document.getElementById("mailboxalert_message");
-        var subjecttextbox = document.getElementById("mailboxalert_subject");
-
-        var iconfilebutton = document.getElementById("mailboxalert_icon_button");
-        var icondefaultbutton = document.getElementById("mailboxalert_icon_default_button");
-        var iconimage = document.getElementById("mailboxalert_icon_image");
-        var iconlabel = document.getElementById("mailboxalert_show_message_icon");
-
-        if (on) {
-            messagetextbox.removeAttribute("disabled");
-            subjecttextbox.removeAttribute("disabled");
-            subjecttextbox.focus();
-        } else {
-            messagetextbox.setAttribute("disabled", !on);
-            subjecttextbox.setAttribute("disabled", !on);
-        }
-
-        iconfilebutton.disabled = !(iconlabel.checked && on);
-        icondefaultbutton.disabled = !(iconlabel.checked && on);
-        iconimage.disabled = !(iconlabel.checked && on);
-        iconlabel.disabled = !on;
-    }
-
-    function setUIShowMessageIconPrefs(on) {
-        var iconfilebutton = document.getElementById("mailboxalert_icon_button");
-        var icondefaultbutton = document.getElementById("mailboxalert_icon_default_button");
-        var iconimage = document.getElementById("mailboxalert_icon_image");
-        var iconlabel = document.getElementById("mailboxalert_show_message_icon");
-
-        iconfilebutton.disabled = !on;
-        icondefaultbutton.disabled = !on;
-        iconimage.disabled = !on;
-        /*iconlabel.disabled = !on;*/
-    }
-
-    function setUIPlaySound(on) {
-        var soundcheckbox = document.getElementById("mailboxalert_play_sound");
-        soundcheckbox.disabled = !on;
-        setUIPlaySoundPrefs(soundcheckbox.checked);
-    }
-
-    function setUIPlaySoundPrefs(on) {
-        var soundradiodefault = document.getElementById("mailboxalert_sound_default");
-        var soundradiowav = document.getElementById("mailboxalert_sound_wav");
-        var soundwavfilebox = document.getElementById("mailboxalert_sound_wav_file");
-        var soundradiowavbutton = document.getElementById("mailboxalert_sound_wav_button");
-
-        soundradiodefault.setAttribute("disabled", !on);
-        soundradiowav.setAttribute("disabled", !on);
-        if (on) {
-            soundwavfilebox.removeAttribute("disabled");
-        } else {
-            soundwavfilebox.setAttribute("disabled", !on);
-        }
-        soundradiowavbutton.setAttribute("disabled", !on);
-    }
-
-    function setUIExecuteCommand(on) {
-        var executecommandcheckbox = document.getElementById("mailboxalert_execute_command");
-        executecommandcheckbox.disabled = !on;
-        setUIExecuteCommandPrefs(executecommandcheckbox.checked);
-    }
-
-    function setUIExecuteCommandPrefs(on) {
-        var commandbox = document.getElementById("mailboxalert_command");
-        var commandbutton = document.getElementById("mailboxalert_command_button");
-        var escape = document.getElementById("mailboxalert_escape");
-        if (on) {
-            commandbox.removeAttribute("disabled");
-            commandbox.focus();
-        } else {
-            commandbox.setAttribute("disabled", !on);
-        }
-        commandbutton.disabled = !on;
-        escape.disabled = !on;
-    }
-
-    function setUIAlertForChildren(on) {
-        var alertforchildrenbox = document.getElementById("mailboxalert_alert_for_children");
-        alertforchildrenbox.disabled = !on;
-    }
-
-    function setUINoAlertToParent(on) {
-        var noalerttoparentbox = document.getElementById("mailboxalert_no_alert_to_parent");
-        noalerttoparentbox.disabled = !on;
-        if (!on) {
-            noalerttoparentbox.checked = false;
-        }
-    }
-
-    function setUITest(on) {
-        var testbutton = document.getElementById("mailboxalert_test");
-        testbutton.disabled = !on;
+	// Get the value of a text field and set it as
+	// the string prefs value
+	function getValueTextfield(name, prefs_name) {
+		var doc_el = document.getElementById(name);
+		if (!doc_el) { alert(name + " not found!"); }
+		//var value = doc_el.getAttribute("value");
+		var value = doc_el.value;
+		folder_prefs.set(prefs_name, value);
     }
     
-    function toggleShowMessage() {
-        var showmessagecheckbox = document.getElementById("mailboxalert_show_message");
-        setUIShowMessagePrefs(folder_prefs.get("show_message"));
-        setUIAll();
+    // Set an image according to what the string prefs
+    // value is
+    function setValueImage(name, prefs_name) {
+		var doc_el = document.getElementById(name);
+		if (!doc_el) { alert(name + " not found!"); }
+		var value = folder_prefs.get(prefs_name);
+		if ((value.indexOf("file://") == -1) &&
+		    (value.indexOf("chrome://") == -1)) {
+		    value = "file://" + value;
+		}
+		doc_el.setAttribute("src", value);
     }
 
-    function toggleShowMessageIcon() {
-        var showmessageiconcheckbox = document.getElementById("mailboxalert_show_message_icon");
-        setUIShowMessageIconPrefs(folder_prefs.get("show_message_icon"));
-        setUIAll();
+    // Get an image according and set it as the
+    // string pref
+    function getValueImage(name, prefs_name) {
+		var doc_el = document.getElementById(name);
+		if (!doc_el) { alert(name + " not found!"); }
+		value = doc_el.getAttribute("src");
+		folder_prefs.set(prefs_name, value);
     }
 
-    function togglePlaySound() {
-        var soundcheckbox = document.getElementById("mailboxalert_play_sound");
-        setUIPlaySoundPrefs(folder_prefs.get("play_sound"));
-        setUIAll();
-    }
+	// Select the correct radio button where there
+	// are only two choices, according to the given
+	// boolean prefs value (if true, select the first)
+	function setValueRadioTwo(name1, name2, prefs_name) {
+		var doc_el1 = document.getElementById(name1);
+		if (!doc_el1) { alert(name + " not found!"); }
+		var doc_el2 = document.getElementById(name2);
+		if (!doc_el2) { alert(name + " not found!"); }
+		var value = folder_prefs.get(prefs_name);
+		if (value) {
+			doc_el1.setAttribute("selected", true);
+			doc_el2.removeAttribute("selected");
+		} else {
+			doc_el1.removeAttribute("selected");
+			doc_el2.setAttribute("selected", true);
+		}
+	}
 
-    function toggleExecuteCommand() {
-        var executecommandcheckbox = document.getElementById("mailboxalert_execute_command");
-        setUIExecuteCommandPrefs(folder_prefs.get("execute_command"));
-        setUIAll();
-    }
+	// Select the correct radio button where there
+	// are only two choices, according to the given
+	// boolean prefs value (if true, select the first)
+	function getValueRadioTwo(name1, name2, prefs_name) {
+		var doc_el1 = document.getElementById(name1);
+		if (!doc_el1) { alert(name + " not found!"); }
+		var doc_el2 = document.getElementById(name2);
+		if (!doc_el2) { alert(name + " not found!"); }
+		var value = doc_el1.getAttribute("selected");
+		folder_prefs.set(prefs_name, value);
+	}
 
-    function toggleAlertForChildren() {
-        setUIAll();
-    }
+	// Fill in the elements of the window
+	// according to the values in folder_prefs
+    function prefsToUIAll() {
+        folder_prefs.dump();
+        
+        // the 'main' checkboxes
+        setValueCheckbox("mailboxalert_show_message", "show_message");
+        setValueCheckbox("mailboxalert_play_sound", "play_sound");
+        setValueCheckbox("mailboxalert_execute_command", "execute_command");
+        
+        setValueCheckbox("mailboxalert_alert_for_children", "alert_for_children");
+        setValueCheckbox("mailboxalert_no_alert_to_parent", "no_alert_to_parent");
 
-    function toggleNoAlertForParent() {
-        setUIAll();
-    }
+		// show message part
+		setValueTextfield("mailboxalert_subject", "subject");
+		setValueTextfield("mailboxalert_message", "message");
+		
+		setValueCheckbox("mailboxalert_show_message_icon", "show_message_icon");
+		setValueImage("mailboxalert_icon_image", "icon_file");
+		
+		// play sound part
+        setValueRadioTwo("mailboxalert_sound_wav",
+                         "mailboxalert_sound_default",
+                         "sound_wav");
+        setValueTextfield("mailboxalert_sound_wav_file", "sound_wav_file");
+		
+		// execute command part
+		setValueTextfield("mailboxalert_command", "command");
+		setValueCheckbox("mailboxalert_escape", "escape");
+	}
+	
+	function uiToPrefsAll() {
+        getValueCheckbox("mailboxalert_show_message", "show_message");
+        getValueCheckbox("mailboxalert_play_sound", "play_sound");
+        getValueCheckbox("mailboxalert_execute_command", "execute_command");
+        
+        getValueCheckbox("mailboxalert_alert_for_children", "alert_for_children");
+        getValueCheckbox("mailboxalert_no_alert_to_parent", "no_alert_to_parent");
+
+		// show message part
+		getValueTextfield("mailboxalert_subject", "subject");
+		getValueTextfield("mailboxalert_message", "message");
+		
+		getValueCheckbox("mailboxalert_show_message_icon", "show_message_icon");
+		getValueImage("mailboxalert_icon_image", "icon_file");
+		
+		// play sound part
+        getValueRadioTwo("mailboxalert_sound_wav",
+                         "mailboxalert_sound_default",
+                         "sound_wav");
+        getValueTextfield("mailboxalert_sound_wav_file", "sound_wav_file");
+		
+		// execute command part
+		getValueTextfield("mailboxalert_command", "command");
+		getValueCheckbox("mailboxalert_escape", "escape");
+	}
+	
+	function isChecked(name) {
+		var doc_el = document.getElementById(name);
+		if (!doc_el) { alert(name + " not found!"); }
+		return doc_el.checked;
+	}
+
+	function enableElement(name) {
+		var doc_el = document.getElementById(name);
+		if (!doc_el) { alert(name + " not found!"); }
+		doc_el.removeAttribute("disabled");
+	}
+	
+	function disableElement(name) {
+		var doc_el = document.getElementById(name);
+		if (!doc_el) { alert(name + " not found!"); }
+		doc_el.setAttribute("disabled", true);
+	}
+	
+	// Run through all elements and either enable or disable them
+	// as necessary
+	function checkDisableAll() {
+		if (isChecked("mailboxalert_show_message")) {
+			enableElement("mailboxalert_subject");
+			enableElement("mailboxalert_message");
+			enableElement("mailboxalert_show_message_icon");
+			if (isChecked("mailboxalert_show_message_icon")) {
+				enableElement("mailboxalert_icon_image");
+				enableElement("mailboxalert_icon_button");
+				enableElement("mailboxalert_icon_default_button");
+			} else {
+				disableElement("mailboxalert_icon_image");
+				disableElement("mailboxalert_icon_button");
+				disableElement("mailboxalert_icon_default_button");
+			}
+		} else {
+			disableElement("mailboxalert_subject");
+			disableElement("mailboxalert_message");
+			disableElement("mailboxalert_show_message_icon");
+			disableElement("mailboxalert_icon_image");
+			disableElement("mailboxalert_icon_button");
+			disableElement("mailboxalert_icon_default_button");
+		}
+
+		if (isChecked("mailboxalert_play_sound")) {
+			enableElement("mailboxalert_sound_default");
+			enableElement("mailboxalert_sound_wav");
+			enableElement("mailboxalert_sound_wav_file");
+			enableElement("mailboxalert_sound_wav_button");
+		} else {
+			disableElement("mailboxalert_sound_default");
+			disableElement("mailboxalert_sound_wav");
+			disableElement("mailboxalert_sound_wav_file");
+			disableElement("mailboxalert_sound_wav_button");
+		}
+		
+		if (isChecked("mailboxalert_execute_command")) {
+			enableElement("mailboxalert_command");
+			enableElement("mailboxalert_command_button");
+			enableElement("mailboxalert_escape");
+		} else {
+			disableElement("mailboxalert_command");
+			disableElement("mailboxalert_command_button");
+			disableElement("mailboxalert_escape");
+		}
+
+		if (isChecked("mailboxalert_show_message") ||
+		    isChecked("mailboxalert_play_sound") ||
+			isChecked("mailboxalert_execute_command")) {
+			enableElement("mailboxalert_alert_for_children");
+			disableElement("mailboxalert_no_alert_to_parent");
+		} else {
+			disableElement("mailboxalert_alert_for_children");
+			enableElement("mailboxalert_no_alert_to_parent");
+		}
+
+/*
+			enableElement("mailboxalert_");
+			enableElement("mailboxalert_");
+			enableElement("mailboxalert_");
+			enableElement("mailboxalert_");
+			enableElement("mailboxalert_");
+			enableElement("mailboxalert_");
+			enableElement("mailboxalert_");
+			enableElement("mailboxalert_");
+			enableElement("mailboxalert_");
+			enableElement("mailboxalert_");
+			enableElement("mailboxalert_");
+			enableElement("mailboxalert_");
+			enableElement("mailboxalert_");
+			enableElement("mailboxalert_");
+			enableElement("mailboxalert_");
+			enableElement("");
+*/
+	}
 
     function copyLast() {
         // TODO; add 'storeLast' and 'copyFromLast'?
@@ -369,7 +434,6 @@
         window.sizeToContent();
     }
 
-
     function init()
     {
         window.setResizable(false);
@@ -407,244 +471,19 @@
 
         document.title = stringsBundle.getString('mailboxalert.prefs.folder') + " " + folder_name;
 
-        try {
-            /* intentionally left global */
-            folder_prefs = MailboxAlert.getFolderPreferences(folder_uri);
+		// intentionally global, reffed by nearly all functions
+        folder_prefs = MailboxAlert.getFolderPreferences(folder_uri);
 
-            /* set values */
-            var showmessagecheckbox = document.getElementById("mailboxalert_show_message");
-            showmessagecheckbox.setAttribute("checked", folder_prefs.get("show_message"));
-            var showmessageiconcheckbox = document.getElementById("mailboxalert_show_message_icon");
-            showmessageiconcheckbox.setAttribute("checked", folder_prefs.get("show_message_icon"));
-            var messagetextbox = document.getElementById("mailboxalert_message");
-            var subjecttextbox = document.getElementById("mailboxalert_subject");
-            var iconfileimage = document.getElementById("mailboxalert_icon_image");
-            iconlabel = document.getElementById("mailboxalert_show_message_icon");
-            iconbutton = document.getElementById("mailboxalert_icon_button");
-            icondefaultbutton = document.getElementById("mailboxalert_icon_default_button");
-            messagetextbox.setAttribute("value", folder_prefs.get("message"));
-            subjecttextbox.setAttribute("value", folder_prefs.get("subject"));
-            iconfileimage.setAttribute("src", folder_prefs.get("icon_file"));
+		prefsToUIAll();
+		checkDisableAll();
 
-            var soundcheckbox = document.getElementById("mailboxalert_play_sound");
-            soundcheckbox.setAttribute("checked", folder_prefs.get("play_sound"));
-            var soundradiogroup = document.getElementById("mailboxalert_sound_radio");
-            var soundradiowav = document.getElementById("mailboxalert_sound_wav");
-            var soundradiodefault = document.getElementById("mailboxalert_sound_default");
-            if (folder_prefs.get("sound_wav")) {
-                dump("[XX] set sound_wav\n");
-                soundradiowav.setAttribute("selected", true);
-                soundradiodefault.removeAttribute("selected");
-            } else {
-                dump("[XX] set sound_default\n");
-                soundradiodefault.setAttribute("selected", true);
-                soundradiowav.removeAttribute("selected");
-            }
-            var soundwavbutton = document.getElementById("mailboxalert_sound_wav_button");
-            var soundwavfilebox = document.getElementById("mailboxalert_sound_wav_file");
-            soundwavfilebox.setAttribute("value", folder_prefs.get("sound_wav_file"));
-
-            var executecommandcheckbox = document.getElementById("mailboxalert_execute_command");
-            executecommandcheckbox.setAttribute("checked", folder_prefs.get("execute_command"));
-            var commandbox = document.getElementById("mailboxalert_command");
-            var commandbutton = document.getElementById("mailboxalert_command_button");
-            commandbox.setAttribute("value", folder_prefs.get("command"));
-
-            var escapebox = document.getElementById("mailboxalert_escape");
-            escapebox.setAttribute("checked", folder_prefs.get("escape"));
-
-            var alertforchildrenbox = document.getElementById("mailboxalert_alert_for_children");
-            alertforchildrenbox.setAttribute("checked", folder_prefs.get("alert_for_children"));
-
-            var noalerttoparentbox = document.getElementById("mailboxalert_no_alert_to_parent");
-            noalerttoparentbox.setAttribute("checked", folder_prefs.get("no_alert_to_parent"));
-
-            //setUIAll();
-            prefsToUIAll();
-
-        } catch (e) {
-            alert(stringsBundle.getString('mailboxalert.error') + e);
-        }
         window.sizeToContent();
     }
 
     function savePrefs()
     {
+		uiToPrefsAll();
         folder_prefs.store();
-    /*
-        try {
-            var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
-
-            var show_message = document.getElementById("mailboxalert_show_message").checked;
-            var show_message_icon = document.getElementById("mailboxalert_show_message_icon").checked;
-            var message_text = document.getElementById("mailboxalert_message").value;
-            var subject_text = document.getElementById("mailboxalert_subject").value;
-            var icon_file = document.getElementById("mailboxalert_icon_image").src;
-            
-            var play_sound = document.getElementById("mailboxalert_play_sound").checked;
-            var sound_wav = true;
-            if (document.getElementById("mailboxalert_sound_default").selected) {
-                sound_wav = false;
-            }
-            if (document.getElementById("mailboxalert_sound_wav").selected) {
-                sound_wav = true;
-            }
-            var sound_wav_file = document.getElementById("mailboxalert_sound_wav_file").value;
-
-            var execute_command = document.getElementById("mailboxalert_execute_command").checked;
-            var command = document.getElementById("mailboxalert_command").value;
-            var escape = document.getElementById("mailboxalert_escape").checked;
-
-            var alertforchildren = document.getElementById("mailboxalert_alert_for_children").checked;
-            var noalerttoparent = document.getElementById("mailboxalert_no_alert_to_parent").checked;
-
-            var folder_name = document.getElementById("mailboxalert_folderName").getAttribute("value");
-            var folder_uri = document.getElementById("mailboxalert_folderURI").getAttribute("value");
-
-            dump("Saving preferences for " + folder_uri + "\n");
-            //alert("saving '"+command+"' in extensions.mailboxalert.command."+folder_name);
-
-            if (!MailboxAlert.isDefaultPrefValue("show_message", show_message)) {
-                prefs.setBoolPref("extensions.mailboxalert.show_message." + folder_uri, show_message);
-            } else {
-                try {
-                    prefs.clearUserPref("extensions.mailboxalert.show_message."+folder_uri);
-                } catch (e) {
-                    // doesn't exist, ignore
-                }
-            }
-            if (!MailboxAlert.isDefaultPrefValue("show_message_icon", show_message_icon)) {
-                prefs.setBoolPref("extensions.mailboxalert.show_message_icon." + folder_uri, show_message_icon);
-            } else {
-                try {
-                    prefs.clearUserPref("extensions.mailboxalert.show_message_icon."+folder_uri);
-                } catch (e) {
-                    // doesn't exist, ignore
-                }
-            }
-            if (!MailboxAlert.isDefaultPrefValue("subject", subject_text)) {
-                prefs.setCharPref("extensions.mailboxalert.subject." + folder_uri, subject_text);
-            } else {
-                try {
-                    prefs.clearUserPref("extensions.mailboxalert.subject."+folder_uri);
-                } catch (e) {
-                    // doesn't exist, ignore
-                }
-            }
-            if (!MailboxAlert.isDefaultPrefValue("message", message_text)) {
-                prefs.setCharPref("extensions.mailboxalert.message." + folder_uri, message_text);
-            } else {
-                try {
-                    prefs.clearUserPref("extensions.mailboxalert.message."+folder_uri);
-                } catch (e) {
-                    // doesn't exist, ignore
-                }
-            }
-            if (!MailboxAlert.isDefaultPrefValue("icon_file", icon_file)) {
-                prefs.setCharPref("extensions.mailboxalert.icon_file." + folder_uri, icon_file);
-            } else {
-                try {
-                    prefs.clearUserPref("extensions.mailboxalert.icon_file."+folder_uri);
-                } catch (e) {
-                    // doesn't exist, ignore
-                }
-            }
-            if (!MailboxAlert.isDefaultPrefValue("play_sound", play_sound)) {
-                prefs.setBoolPref("extensions.mailboxalert.play_sound." + folder_uri, play_sound);
-            } else {
-                try {
-                    prefs.clearUserPref("extensions.mailboxalert.play_sound."+folder_uri);
-                } catch (e) {
-                    // doesn't exist, ignore
-                }
-            }
-            dump("[XX] ");
-            dump("[XX] sound_wav: " + sound_wav);
-            dump("[XX] isdefault: " + MailboxAlert.isDefaultPrefValue("sound_wav", sound_wav));
-            dump("[XX] ");
-            if (!MailboxAlert.isDefaultPrefValue("sound_wav", sound_wav)) {
-                dump("sound_wav pref is non-default, storing");
-                prefs.setBoolPref("extensions.mailboxalert.sound_wav." + folder_uri, sound_wav);
-            } else {
-                try {
-                    dump("sound_wav pref is same as default, not storing");
-                    prefs.clearUserPref("extensions.mailboxalert.sound_wav."+folder_uri);
-                } catch (e) {
-                    // doesn't exist, ignore
-                }
-            }
-            if (!MailboxAlert.isDefaultPrefValue("sound_wav_file", sound_wav_file)) {
-                prefs.setCharPref("extensions.mailboxalert.sound_wav_file." + folder_uri, sound_wav_file);
-            } else {
-                try {
-                    dump("sound_wav_file pref is same as default, not storing");
-                    prefs.clearUserPref("extensions.mailboxalert.sound_wav_file."+folder_uri);
-                } catch (e) {
-                    // doesn't exist, ignore
-                }
-            }
-            if (!MailboxAlert.isDefaultPrefValue("execute_command", execute_command)) {
-                prefs.setBoolPref("extensions.mailboxalert.execute_command." + folder_uri, execute_command);
-            } else {
-                try {
-                    prefs.clearUserPref("extensions.mailboxalert.execute_command."+folder_uri);
-                } catch (e) {
-                    // doesn't exist, ignore
-                }
-            }
-            if (!MailboxAlert.isDefaultPrefValue("command", command)) {
-                prefs.setCharPref("extensions.mailboxalert.command." + folder_uri, command);
-            } else {
-                try {
-                    prefs.clearUserPref("extensions.mailboxalert.command."+folder_uri);
-                } catch (e) {
-                    // doesn't exist, ignore
-                }
-            }
-            if (!MailboxAlert.isDefaultPrefValue("escape", escape)) {
-                prefs.setBoolPref("extensions.mailboxalert.escape." + folder_uri, escape);
-            } else {
-                try {
-                    prefs.clearUserPref("extensions.mailboxalert.escape."+folder_uri);
-                } catch (e) {
-                    // doesn't exist, ignore
-                }
-            }
-            if (!MailboxAlert.isDefaultPrefValue("alert_for_children", alertforchildren)) {
-                prefs.setBoolPref("extensions.mailboxalert.alert_for_children." + folder_uri, alertforchildren);
-            } else {
-                try {
-                    prefs.clearUserPref("extensions.mailboxalert.alert_for_children."+folder_uri);
-                } catch (e) {
-                    // doesn't exist, ignore
-                }
-            }
-            if (!MailboxAlert.isDefaultPrefValue("no_alert_to_parent", noalerttoparent)) {
-                prefs.setBoolPref("extensions.mailboxalert.no_alert_to_parent." + folder_uri, noalerttoparent);            
-            } else {
-                try {
-                    prefs.clearUserPref("extensions.mailboxalert.no_alert_to_parent."+folder_uri);
-                } catch (e) {
-                    // doesn't exist, ignore
-                }
-            }
-
-            prefs.setBoolPref("extensions.mailboxalert.last.show_message", show_message);
-            prefs.setCharPref("extensions.mailboxalert.last.subject", subject_text);
-            prefs.setCharPref("extensions.mailboxalert.last.message", message_text);
-            prefs.setCharPref("extensions.mailboxalert.last.icon_file", icon_file);
-            prefs.setBoolPref("extensions.mailboxalert.last.play_sound", play_sound);
-            prefs.setBoolPref("extensions.mailboxalert.last.sound_wav", sound_wav);
-            prefs.setCharPref("extensions.mailboxalert.last.sound_wav_file", sound_wav_file);
-            prefs.setBoolPref("extensions.mailboxalert.last.execute_command", execute_command);
-            prefs.setCharPref("extensions.mailboxalert.last.command", command);
-            prefs.setBoolPref("extensions.mailboxalert.last.escape", escape);
-            prefs.setBoolPref("extensions.mailboxalert.last.alert_for_children", alertforchildren);
-            prefs.setBoolPref("extensions.mailboxalert.last.no_alert_to_parent", noalerttoparent);
-        } catch (e) {
-            alert(e);
-        }
-        */
     }
 
     function testAlert()
@@ -724,7 +563,7 @@
     <label id="mailboxalert_folderURI" value="null" hidden="true"/>
     <hbox>
         <vbox>
-            <checkbox id="mailboxalert_show_message" label="&mailboxalert.prefs.showmessage;" oncommand="toggleShowMessage();" />
+            <checkbox id="mailboxalert_show_message" label="&mailboxalert.prefs.showmessage;" oncommand="checkDisableAll();" />
             <spacer flex="1"/>
         </vbox>
         <vbox>
@@ -735,7 +574,7 @@
             <hbox>
                 <vbox >
                     <spacer flex="1"/>
-                    <checkbox id="mailboxalert_show_message_icon" label="&mailboxalert.prefs.icon;" oncommand="toggleShowMessageIcon();" />
+                    <checkbox id="mailboxalert_show_message_icon" label="&mailboxalert.prefs.icon;" oncommand="checkDisableAll();" />
                     <spacer flex="1"/>
                 </vbox>
                 <image id="mailboxalert_icon_image" maxheight="64" maxwidth="64"/>
@@ -752,7 +591,7 @@
     
     <hbox>
         <vbox>
-            <checkbox id="mailboxalert_play_sound" label="&mailboxalert.prefs.playsound;" oncommand="togglePlaySound();"/>
+            <checkbox id="mailboxalert_play_sound" label="&mailboxalert.prefs.playsound;" oncommand="checkDisableAll();"/>
             <spacer flex="1"/>
         </vbox>
         <vbox>
@@ -769,7 +608,7 @@
     <hbox>
         <vbox>
             <hbox>
-                <checkbox id="mailboxalert_execute_command" label="&mailboxalert.prefs.executecommand;:" oncommand="toggleExecuteCommand();" />
+                <checkbox id="mailboxalert_execute_command" label="&mailboxalert.prefs.executecommand;:" oncommand="checkDisableAll();" />
                 <textbox id="mailboxalert_command" size="50"/>
                 <button id="mailboxalert_command_button" label="&mailboxalert.prefs.browse;" oncommand="chooseExecFile();" />
             </hbox>
@@ -783,10 +622,10 @@
         </vbox>
     </hbox>
     <hbox>
-        <checkbox id="mailboxalert_alert_for_children" label="&mailboxalert.prefs.alertforchildren;" oncommand="toggleAlertForChildren();" />
+        <checkbox id="mailboxalert_alert_for_children" label="&mailboxalert.prefs.alertforchildren;" oncommand="checkDisableAll();" />
     </hbox>
     <hbox>
-        <checkbox id="mailboxalert_no_alert_to_parent" label="&mailboxalert.prefs.noalerttoparent;" oncommand="toggleNoAlertForParent();" />
+        <checkbox id="mailboxalert_no_alert_to_parent" label="&mailboxalert.prefs.noalerttoparent;" oncommand="checkDisableAll();" />
     </hbox>
     <hbox>
         <button id="mailboxalert_test" label="&mailboxalert.prefs.test;" oncommand="testAlert()" />

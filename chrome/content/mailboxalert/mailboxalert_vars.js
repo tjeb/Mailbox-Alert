@@ -143,7 +143,7 @@ MailboxAlert.getGlobalPreferences = function() {
 MailboxAlert.folderPrefDefs = {
 "show_message": [ "bool", false],
 "show_message_icon": [ "bool", true ],
-"show_message_icon_file": [ "string", "chrome://mailboxalert/skin/mailboxalert.png" ],
+"icon_file": [ "string", "chrome://mailboxalert/skin/mailboxalert.png" ],
 "subject": [ "string", "" ],
 "message": [ "string", "" ],
 "play_sound": [ "bool", false ],
@@ -172,17 +172,23 @@ MailboxAlert.getFolderPreferences = function(folder_uri) {
                 if (MailboxAlert.folderPrefDefs[name][0] == "bool") {
                     this.values[name] = MailboxAlert.prefService.getBoolPref("extensions.mailboxalert." + name + "." + this.folder_uri);
                 } else if (MailboxAlert.folderPrefDefs[name][0] == "string") {
-                    this.values[name] = MailboxAlert.prefService.getStringPref("extensions.mailboxalert." + name + "." + this.folder_uri);
+                    this.values[name] = MailboxAlert.prefService.getCharPref("extensions.mailboxalert." + name + "." + this.folder_uri);
                 } else if (MailboxAlert.folderPrefDefs[name][0] == "integer") {
                     this.values[name] = MailboxAlert.prefService.getIntPref("extensions.mailboxalert." + name + "." + this.folder_uri);
                 }
+                dump("[XX] found value in prefs store\n");
             } catch(e) {
+                dump("[XX] found no value in prefs store\n");
+				
                 // ok pref doesn't exist yet.
                 // should we not set and just return?
                 pref_data = MailboxAlert.folderPrefDefs[name]
                 if (pref_data != null) {
-                    this.values[name] = MailboxAlert.folderPrefDefs[name][1];
-                }
+					dump("[XX] default: " + MailboxAlert.folderPrefDefs[name][1]);
+                   this.values[name] = MailboxAlert.folderPrefDefs[name][1];
+                } else {
+					alert("[XX] pref " + name + " unknown!");
+				}
             }
         } else {
             dump("[XX] already cached\n");
@@ -193,6 +199,10 @@ MailboxAlert.getFolderPreferences = function(folder_uri) {
     
     folder_prefs.set = function(name, value) {
         // should we type-check here?)
+        dump("[XX] SET VALUE OF " + name + " TO " + value + "\n");
+        if (!(name in MailboxAlert.folderPrefDefs)) {
+			alert("Error, setting unknown pref value " + name + " to " + value);
+		}
         this.values[name] = value;
     }
 
@@ -212,14 +222,20 @@ MailboxAlert.getFolderPreferences = function(folder_uri) {
         for (var name in MailboxAlert.folderPrefDefs) {
             var type = MailboxAlert.folderPrefDefs[name][0];
             var pref_default = MailboxAlert.folderPrefDefs[name][1];
+            dump("[XX] name: " + name + "\n");
+            dump("[xX] in values: " + (name in this.values) + "\n");
+            if (name in this.values) {
+				dump("[XX] value: " + this.values[name] + "\n");
+				dump("[XX] default: " + pref_default + "\n");
+			}
             if (name in this.values && !(this.values[name] == pref_default)) {
                 // non-default, so store it
                 if (MailboxAlert.folderPrefDefs[name][0] == "bool") {
-                    this.values[name] = MailboxAlert.prefService.setBoolPref("extensions.mailboxalert." + name + "." + this.folder_uri, this.values[name]);
+                    MailboxAlert.prefService.setBoolPref("extensions.mailboxalert." + name + "." + this.folder_uri, this.values[name]);
                 } else if (MailboxAlert.folderPrefDefs[name][0] == "string") {
-                    this.values[name] = MailboxAlert.prefService.setStringPref("extensions.mailboxalert." + name + "." + this.folder_uri, this.values[name]);
+                    MailboxAlert.prefService.setCharPref("extensions.mailboxalert." + name + "." + this.folder_uri, this.values[name]);
                 } else if (MailboxAlert.folderPrefDefs[name][0] == "integer") {
-                    this.values[name] = MailboxAlert.prefService.setIntPref("extensions.mailboxalert." + name + "." + this.folder_uri, this.values[name]);
+                    MailboxAlert.prefService.setIntPref("extensions.mailboxalert." + name + "." + this.folder_uri, this.values[name]);
                 }
             } else {
                 // it is unset or it is default, remove any pref previously set
@@ -227,10 +243,10 @@ MailboxAlert.getFolderPreferences = function(folder_uri) {
                     MailboxAlert.prefService.clearUserPref("extensions.mailboxalert." + name + "." + this.folder_uri);
                 } catch (e) {
                     // That did not work, oh well, just leave it.
-                    dump("[XX] got an error while clearing " + name + " for " + this.folder_uri + ", skipping\n");
-                    dump("[XX] the error was:\n");
-                    dump(e);
-                    dump("\n");
+                    //dump("[XX] got an error while clearing " + name + " for " + this.folder_uri + ", skipping\n");
+                    //dump("[XX] the error was:\n");
+                    //dump(e);
+                    //dump("\n");
                 }
             }
         }
