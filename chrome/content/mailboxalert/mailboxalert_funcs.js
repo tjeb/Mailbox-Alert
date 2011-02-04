@@ -292,7 +292,13 @@ MailboxAlert.getHRMsgSize = function (messageBytes) {
     }
 }
 
-MailboxAlert.escapeHTML = function (string) {
+// If 'escape' is true, return a string where certain chars have been
+// replaced by html codes.
+// If 'escape' is false, just return the string
+MailboxAlert.escapeHTML = function (escape, string) {
+    if (!escape) {
+        return string;
+    }
     if (string) {
         // the literal \n should be kept
         string = string.split("\n").join("%myentercode%");
@@ -500,36 +506,7 @@ MailboxAlert.alert3 = function(alert_data, folder_prefs) {
             dump("Execute command: " + folder_prefs.get("execute_command") + "\n");
             dump("Command: " + folder_prefs.get("command") + "\n");
             if (folder_prefs.get("execute_command") && folder_prefs.get("command")) {
-                // TODO: alert_data.escapeData()?
-                if (folder_prefs.get("escape")) {
-                    sender_name = MailboxAlert.escapeHTML(sender_name);
-                    sender_address = MailboxAlert.escapeHTML(sender_address);
-                    MailboxAlert.executeCommand(MailboxAlert.escapeHTML(alert_data.server),
-                                                alert_data.folder_name_with_server,
-                                                MailboxAlert.escapeHTML(alert_data.orig_folder_name),
-                                                alert_data.orig_message_count,
-                                                alert_data.all_message_count,
-                                                MailboxAlert.escapeHTML(alert_data.subject),
-                                                MailboxAlert.escapeHTML(alert_data.sender),
-                                                alert_data.charset,
-                                                folder_prefs.get("command"),
-                                                alert_data.messageBytes,
-                                                alert_data.date
-                                                );
-                }
-
-                MailboxAlert.executeCommand(alert_data.server,
-                                            alert_data.folder_name_with_server,
-                                            alert_data.orig_folder_name,
-                                            alert_data.orig_message_count,
-                                            alert_data.all_message_count,
-                                            alert_data.subject,
-                                            alert_data.sender,
-                                            alert_data.charset,
-                                            folder_prefs.get("command"),
-                                            alert_data.messageBytes,
-                                            alert_data.date
-                                            );
+                MailboxAlert.executeCommand(alert_data, folder_prefs);
                 alerted = true;
             }
 
@@ -596,7 +573,7 @@ MailboxAlert.showMessage = function (alert_data, show_icon, icon_file, subject_p
     var date_obj = new Date();
     date_obj.setTime(alert_data.date);
     var date_str = date_obj.toLocaleDateString();
-    var time_str = date_obj.date_obj.toLocaleTimeString();
+    var time_str = date_obj.toLocaleTimeString();
     
     subject_pref = MailboxAlert.replace(subject_pref, "%server", alert_data.server);
     subject_pref = MailboxAlert.replace(subject_pref, "%originalfolder", alert_data.orig_folder_name);
@@ -667,43 +644,27 @@ MailboxAlert.playSound = function (soundURL) {
     }
 }
 
-MailboxAlert.executeCommand = function (server, folder, orig_folder, new_message_count, all_message_count, subject, sender, charset, command, message_bytes, date) {
-    var sender_name = sender;
-    var sender_address = sender;
-    if (sender.indexOf('<') > 0 && sender.indexOf('>') > 0) {
-        sender_name = sender.substring(0, sender.indexOf('<'));
-        var lastchar = sender_name.length - 1;
-        while (sender_name[lastchar] == ' ') {
-            lastchar = lastchar - 1;
-        }
-        if (sender_name[0] == '"' && sender_name[lastchar] == '"') {
-            sender_name = sender_name.substring(1, lastchar);
-        }
-        sender_address = sender.substring(sender.indexOf('<') + 1, sender.indexOf('>'));
-    }
-
-    if (!message_bytes) {
-        message_bytes = "0";
-    }
-    var messageSize = MailboxAlert.getHRMsgSize(message_bytes);
+MailboxAlert.executeCommand = function (alert_data, folder_prefs) {
+    var command = alert_data.command;
+    var escape_html = folder_prefs.get("escape");
     var date_obj = new Date();
-    date_obj.setTime(date);
+    date_obj.setTime(alert_data.date);
     var date_str = date_obj.toLocaleDateString() + " " + date_obj.toLocaleTimeString()
 
-    command = MailboxAlert.replaceEscape(command, "%server", server);
-    command = MailboxAlert.replaceEscape(command, "%originalfolder", orig_folder);
-    command = MailboxAlert.replaceEscape(command, "%folder", folder);
-    command = MailboxAlert.replaceEscape(command, "%countall", ""+all_message_count);
-    command = MailboxAlert.replaceEscape(command, "%count", ""+new_message_count);
-    command = MailboxAlert.replaceEscape(command, "%subject", subject);
-    command = MailboxAlert.replaceEscape(command, "%senderaddress", sender_address);
-    command = MailboxAlert.replaceEscape(command, "%sendername", sender_name);
-    command = MailboxAlert.replaceEscape(command, "%sender", sender);
-    command = MailboxAlert.replaceEscape(command, "%charset", charset);
-    command = MailboxAlert.replace(command, "%messagebytes", message_bytes);
-    command = MailboxAlert.replace(command, "%messagesize", messageSize);
-    command = MailboxAlert.replace(command, "%date", date_str);
-    command = MailboxAlert.replace(command, "%time", time_str);
+    command = MailboxAlert.replaceEscape(command, "%alert_data.server", MailboxAlert.escapeHTML(alert_data.server));
+    command = MailboxAlert.replaceEscape(command, "%originalalert_data.folder_name_with_server", MailboxAlert.escapeHTML(alert_data.folder_name_with_server));
+    command = MailboxAlert.replaceEscape(command, "%alert_data.folder_name_with_server", MailboxAlert.escapeHTML(alert_data.folder_name_with_server));
+    command = MailboxAlert.replaceEscape(command, "%countall", ""+alert_data.all_message_count);
+    command = MailboxAlert.replaceEscape(command, "%count", ""+alert_data.orig_message_count);
+    command = MailboxAlert.replaceEscape(command, "%alert_data.subject", MailboxAlert.escapeHTML(alert_data.subject));
+    command = MailboxAlert.replaceEscape(command, "%senderaddress", MailboxAlert.escapeHTML(alert_data.sender_address));
+    command = MailboxAlert.replaceEscape(command, "%sendername", MailboxAlert.escapeHTML(alert_data.sender_name));
+    command = MailboxAlert.replaceEscape(command, "%sender", MailboxAlert.escapeHTML(alert_data.sender));
+    command = MailboxAlert.replaceEscape(command, "%charset", MailboxAlert.escapeHTML(alert_data.charset));
+    command = MailboxAlert.replace(command, "%messagebytes", alert_data.message_bytes);
+    command = MailboxAlert.replace(command, "%messagesize", alert_data.messageSize);
+    command = MailboxAlert.replace(command, "%date", MailboxAlert.escapeHTML(date_str));
+    command = MailboxAlert.replace(command, "%time", MailboxAlert.escapeHTML(time_str));
 
     var args = new Array();
     var prev_i = 0;
@@ -762,7 +723,7 @@ MailboxAlert.executeCommand = function (server, folder, orig_folder, new_message
         // So use a fugly os detection here...
         if (!exec.exists() || !(/Mac/.test(navigator.platform) || exec.isExecutable()) || !exec.isFile()) {
             var stringsBundle = document.getElementById("string-bundle");
-            alert(stringsBundle.getString('mailboxalert.error')+"\n" + exec.leafName + " " + stringsBundle.getString('mailboxalert.error.notfound') + "\n\nFull path: "+executable_name+"\n\n" + stringsBundle.getString('mailboxalert.error.disableexecutefor') + " " + folder);
+            alert(stringsBundle.getString('mailboxalert.error')+"\n" + exec.leafName + " " + stringsBundle.getString('mailboxalert.error.notfound') + "\n\nFull path: "+executable_name+"\n\n" + stringsBundle.getString('mailboxalert.error.disableexecutefor') + " " + alert_data.folder_name_with_server);
             dump("Failed command:  " +executable_name + "\r\n");
             dump("Arguments: " + args + "\r\n");
                     var caller = window.arguments[0];
@@ -772,7 +733,7 @@ MailboxAlert.executeCommand = function (server, folder, orig_folder, new_message
                 setUIExecuteCommandPrefs(false);
             } else {
                 var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
-                prefs.setBoolPref("extensions.mailboxalert.execute_command." + folder, false);
+                prefs.setBoolPref("extensions.mailboxalert.execute_command." + alert_data.folder_name_with_server, false);
             }
         } else {
             dump("Command:  " +executable_name + "\r\n");
@@ -785,10 +746,10 @@ MailboxAlert.executeCommand = function (server, folder, orig_folder, new_message
             var stringsBundle = document.getElementById("string-bundle");
             alert(stringsBundle.getString('mailboxalert.error') + "\r\n\r\n" +
                   stringsBundle.getString('mailboxalert.error.badcommandpath1') + 
-                  " " + folder + " " +
+                  " " + alert_data.folder_name_with_server + " " +
                   stringsBundle.getString('mailboxalert.error.badcommandpath2')  +
                   "\r\n\r\n" +
-                  stringsBundle.getString('mailboxalert.error.disableexecutefor') + " " + folder);
+                  stringsBundle.getString('mailboxalert.error.disableexecutefor') + " " + alert_data.folder_name_with_server);
                     var caller = window.arguments[0];
             if (caller) {
                 var executecommandcheckbox = document.getElementById('mailboxalert_execute_command');
@@ -796,7 +757,7 @@ MailboxAlert.executeCommand = function (server, folder, orig_folder, new_message
                 setUIExecuteCommandPrefs(false);
             } else {
                 var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
-                prefs.setBoolPref("extensions.mailboxalert.execute_command." + folder, false);
+                prefs.setBoolPref("extensions.mailboxalert.execute_command." + alert_data.folder_name_with_server, false);
             }
         } else {
             throw e;

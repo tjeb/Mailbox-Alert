@@ -157,12 +157,16 @@ MailboxAlert.folderPrefDefs = {
 }
 
 MailboxAlert.getFolderPreferences = function(folder_uri) {
+    dump("[XX] Getting prefs for: " + folder_uri + "\n");
     var folder_prefs = {};
     folder_prefs.folder_uri = folder_uri;
     folder_prefs.values = {};
     
     folder_prefs.get = function (name) {
+        dump("[XX] Getting pref for " + name + "\n");
         if (!(name in this.values)) {
+            dump("[XX] pref not cached yet\n");
+            dump("[XX] full name: extensions.mailboxalert." + name + "." + this.folder_uri + "\n");
             // get it from the prefs thingy
             try {
                 if (MailboxAlert.folderPrefDefs[name][0] == "bool") {
@@ -177,10 +181,13 @@ MailboxAlert.getFolderPreferences = function(folder_uri) {
                 // should we not set and just return?
                 pref_data = MailboxAlert.folderPrefDefs[name]
                 if (pref_data != null) {
-					this.values[name] = MailboxAlert.folderPrefDefs[name][1];
-				}
+                    this.values[name] = MailboxAlert.folderPrefDefs[name][1];
+                }
             }
+        } else {
+            dump("[XX] already cached\n");
         }
+        dump("[XX] value: " + this.values[name] + "\n");
         return this.values[name];
     }
     
@@ -188,9 +195,20 @@ MailboxAlert.getFolderPreferences = function(folder_uri) {
         // should we type-check here?)
         this.values[name] = value;
     }
+
+    // in normal usage we only want to get and cache what we need
+    // but in some cases (for instance the prefs screen), we might
+    // want to get everything at once
+    // (acutally, initing the prefs screen should have this effect)
+    // removeme TODO
+    folder_prefs.cacheAll = function() {
+        for (var name in MailboxAlert.folderPrefDefs) {
+            var a = this.get(name);
+        }
+    }
     
     folder_prefs.store = function() {
-		dump("[XX] store prefs for " + this.folder_uri + "\n")
+        dump("[XX] store prefs for " + this.folder_uri + "\n")
         for (var name in MailboxAlert.folderPrefDefs) {
             var type = MailboxAlert.folderPrefDefs[name][0];
             var pref_default = MailboxAlert.folderPrefDefs[name][1];
@@ -205,8 +223,24 @@ MailboxAlert.getFolderPreferences = function(folder_uri) {
                 }
             } else {
                 // it is unset or it is default, remove any pref previously set
-                MailboxAlert.prefService.clearUserPref("extensions.mailboxalert." + name + "." + this.folder_uri);
+                try {
+                    MailboxAlert.prefService.clearUserPref("extensions.mailboxalert." + name + "." + this.folder_uri);
+                } catch (e) {
+                    // That did not work, oh well, just leave it.
+                    dump("[XX] got an error while clearing " + name + " for " + this.folder_uri + ", skipping\n");
+                    dump("[XX] the error was:\n");
+                    dump(e);
+                    dump("\n");
+                }
             }
+        }
+    }
+
+    folder_prefs.dump = function() {
+        dump("[XX] All folder prefs for " + this.folder_uri + "\n")
+        for (var name in MailboxAlert.folderPrefDefs) {
+            var type = MailboxAlert.folderPrefDefs[name][0];
+            dump(name + " (" + type + "): " + this.get(name) + "\n");
         }
     }
 
