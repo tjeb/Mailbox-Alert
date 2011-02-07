@@ -468,7 +468,13 @@ MailboxAlertNewMail.handleClick = function ()
             tabmail.selectTabByMode('folder');
             if (MailboxAlertNewMail.message_hdr) {
                 mailWindow.gFolderTreeView.selectFolder(MailboxAlertNewMail.folder);
-                mailWindow.gDBView.selectMsgByKey(MailboxAlertNewMail.message_hdr.messageKey);
+                if (mailWindow.gDBView) {
+                    mailWindow.gDBView.selectMsgByKey(MailboxAlertNewMail.message_hdr.messageKey);
+                } else if (mailWindow.gFolderDisplay) {
+                    mailWindow.gFolderDisplay.selectMessage(MailboxAlertNewMail.message_hdr);
+                } else {
+                    // don't know how to select the message :(
+                }
             }
             mailWindow.restore();
             mailWindow.focus();
