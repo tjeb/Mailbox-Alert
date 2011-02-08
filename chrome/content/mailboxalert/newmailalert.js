@@ -471,9 +471,13 @@ MailboxAlertNewMail.handleClick = function ()
                 if (mailWindow.gDBView) {
                     mailWindow.gDBView.selectMsgByKey(MailboxAlertNewMail.message_hdr.messageKey);
                 } else if (mailWindow.gFolderDisplay) {
+                    mailWindow.gFolderDisplay.selectMessageComingUp();
                     mailWindow.gFolderDisplay.selectMessage(MailboxAlertNewMail.message_hdr);
+                } else if (mailWindow.msgWindow) {
+                    var mail_uri = MailboxAlertNewMail.message_hdr.folder.getUriForMsg(MailboxAlertNewMail.message_hdr);
+                    mailWindow.msgWindow.windowCommands.selectMessage(mail_uri);
                 } else {
-                    // don't know how to select the message :(
+                    // Running out of ideas here...
                 }
             }
             mailWindow.restore();
