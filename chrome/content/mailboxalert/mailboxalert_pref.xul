@@ -120,7 +120,11 @@
 		var doc_el2 = document.getElementById(name2);
 		if (!doc_el2) { alert(name + " not found!"); }
 		var value = doc_el1.getAttribute("selected");
-		folder_prefs.set(prefs_name, value);
+		if (value) {
+			folder_prefs.set(prefs_name, true);
+		} else {
+			folder_prefs.set(prefs_name, false);
+		}
 	}
 
 	// Fill in the elements of the window

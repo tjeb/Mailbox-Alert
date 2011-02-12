@@ -164,6 +164,13 @@ MailboxAlert.createAlertData = function (mailbox, last_unread) {
     return this;
 }
 
+MailboxAlert.muted = function () {
+	// TODO: make a GlobalPrefs like Prefs
+    var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
+    var muted = prefs.getBoolPref("extensions.mailboxalert.mute");
+    dump("[XX] muted: " + muted + "\n");
+    return muted;
+}
 
 MailboxAlert.addToQueue = function (folder, message) {
     /* if this was just a move action, the message is probably not new */
@@ -491,15 +498,19 @@ MailboxAlert.alert3 = function(alert_data, folder_prefs) {
 
 			dump("Show message: " + folder_prefs.get("show_message") + "\n");
             if (folder_prefs.get("show_message")) {
-                MailboxAlert.showMessage(alert_data, folder_prefs.get("show_icon"), folder_prefs.get("icon_file"), folder_prefs.get("subject_pref"), folder_prefs.get("message"));
+                MailboxAlert.showMessage(alert_data, folder_prefs.get("show_message_icon"), folder_prefs.get("icon_file"), folder_prefs.get("subject"), folder_prefs.get("message"));
                 alerted = true;
             }
 
             dump("Play sound: " + folder_prefs.get("play_sound") + "\n");
-            if (folder_prefs.get("play_sound") && !MailboxAlert.muted()) {
-                if (folder_prefs.get("sound_wav")) {
-                    dump("Play wav file: " + folder_prefs.get("sound_wav_file") + "\n");
-                    MailboxAlert.playSound(folder_prefs.get("sound_wav_file"));
+            if (folder_prefs.get("play_sound")) {
+				if (!MailboxAlert.muted()) {
+					if (folder_prefs.get("sound_wav")) {
+						dump("Play wav file: " + folder_prefs.get("sound_wav_file") + "\n");
+						MailboxAlert.playSound(folder_prefs.get("sound_wav_file"));
+					} else {
+						MailboxAlert.playSound();
+					}
                 } else {
                     dump("Sound alert set, but Mailbox Alert is muted\n");
                 }
@@ -649,11 +660,12 @@ MailboxAlert.playSound = function (soundURL) {
 }
 
 MailboxAlert.executeCommand = function (alert_data, folder_prefs) {
-    var command = alert_data.command;
+    var command = folder_prefs.get("command");
     var escape_html = folder_prefs.get("escape");
     var date_obj = new Date();
     date_obj.setTime(alert_data.date);
-    var date_str = date_obj.toLocaleDateString() + " " + date_obj.toLocaleTimeString()
+    var date_str = date_obj.toLocaleDateString()
+    var time_str = date_obj.toLocaleTimeString()
 
     command = MailboxAlert.replaceEscape(command, "%alert_data.server", MailboxAlert.escapeHTML(alert_data.server));
     command = MailboxAlert.replaceEscape(command, "%originalalert_data.folder_name_with_server", MailboxAlert.escapeHTML(alert_data.folder_name_with_server));
@@ -673,6 +685,7 @@ MailboxAlert.executeCommand = function (alert_data, folder_prefs) {
     var args = new Array();
     var prev_i = 0;
     var i = 0;
+    dump("command now: " + command + "\n");
 
     var env = Components.classes["@mozilla.org/process/environment;1"].createInstance(Components.interfaces.nsIEnvironment);
     var csconv = Components.classes["@mozilla.org/intl/saveascharset;1"].createInstance(Components.interfaces.nsISaveAsCharset);
@@ -692,7 +705,7 @@ MailboxAlert.executeCommand = function (alert_data, folder_prefs) {
                 /* convert every argument (i.e. everything but the
                  * first) to native charset */
                 if (prev_i > 0) {
-                    if (charset && tocharset) {
+                    if (alert_data.charset && tocharset) {
                         csconv.Init(tocharset, 0, 0);
                         try {
                             cur_arg = csconv.Convert(cur_arg);
@@ -709,7 +722,7 @@ MailboxAlert.executeCommand = function (alert_data, folder_prefs) {
         }
     }
     /* also convert this one */
-    if (charset && tocharset) {
+    if (alert_data.charset && tocharset) {
         csconv.Init(tocharset, 0, 0);
         try {
             args.push(csconv.Convert(command.substr(prev_i, i).split("\\ ").join(" ")));
@@ -730,42 +743,54 @@ MailboxAlert.executeCommand = function (alert_data, folder_prefs) {
         var pr = Components.classes["@mozilla.org/process/util;1"].
         createInstance(Components.interfaces.nsIProcess);
 
+dump("1 " + executable_name+ "\n");
         exec.initWithPath(executable_name);
+dump("2\n");
         // isExecutable is horribly broken in OSX, see
         // https://bugzilla.mozilla.org/show_bug.cgi?id=322865
         // It turns out to be broken in windows too...
+dump("3\n");
         // removing the check, we shall have to try and run it
         // then catch NS_UNEXPECTED
         var run = true;
         if (!exec.exists()) {
+dump("4\n");
 			//alert("[XX] file not found");
 			run = false;
 		} else if (!exec.isFile()) {
 			//alert("[XX] file is not a file");
+dump("5\n");
 			run = false;
 		}
 		if (!exec.exists()) {
+dump("6\n");
             var stringsBundle = document.getElementById("string-bundle");
             alert(stringsBundle.getString('mailboxalert.error')+"\n" + exec.leafName + " " + stringsBundle.getString('mailboxalert.error.notfound') + "\n\nFull path: "+executable_name+"\n\n" + stringsBundle.getString('mailboxalert.error.disableexecutefor') + " " + alert_data.folder_name_with_server);
             dump("Failed command:  " +executable_name + "\r\n");
+dump("7\n");
             dump("Arguments: " + args + "\r\n");
             var caller = window.arguments[0];
             if (caller) {
+dump("8\n");
                 var executecommandcheckbox = document.getElementById('mailboxalert_execute_command');
                 executecommandcheckbox.checked = false;
                 setUIExecuteCommandPrefs(false);
             } else {
+dump("9\n");
                 var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
                 prefs.setBoolPref("extensions.mailboxalert.execute_command." + alert_data.folder_name_with_server, false);
             }
         } else {
+dump("10\n");
             dump("Command:  " +executable_name + "\r\n");
             dump("Arguments: " + args + "\r\n");
             var res1 = pr.init(exec);
+dump("11\n");
             var result = pr.run(false, args, args.length);
         }
     } catch (e) {
 		// TODO: better error, refactor double code
+dump("12\n");
         if (e.name == "NS_ERROR_FAILURE" ||
             e.name == "NS_ERROR_UNEXPECTED"
            ) {
@@ -780,6 +805,7 @@ MailboxAlert.executeCommand = function (alert_data, folder_prefs) {
                 prefs.setBoolPref("extensions.mailboxalert.execute_command." + folder, false);
             }
 		} else if (e.name == "NS_ERROR_FILE_UNRECOGNIZED_PATH") {
+			dump("NS_ERROR_FILE_UNRECOGNIZED_PATH\n");
             var stringsBundle = document.getElementById("string-bundle");
             alert(stringsBundle.getString('mailboxalert.error') + "\r\n\r\n" +
                   stringsBundle.getString('mailboxalert.error.badcommandpath1') + 

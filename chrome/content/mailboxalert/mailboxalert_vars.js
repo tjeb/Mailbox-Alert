@@ -147,7 +147,7 @@ MailboxAlert.folderPrefDefs = {
 "subject": [ "string", "" ],
 "message": [ "string", "" ],
 "play_sound": [ "bool", false ],
-"sound_wav": [ "bool", true ],
+"sound_wav": [ "bool", false ],
 "sound_wav_file": [ "string", "" ],
 "execute_command": [ "bool", false ],
 "command": [ "string", "" ],
@@ -200,6 +200,7 @@ MailboxAlert.getFolderPreferences = function(folder_uri) {
     folder_prefs.set = function(name, value) {
         // should we type-check here?)
         dump("[XX] SET VALUE OF " + name + " TO " + value + "\n");
+        dump("[XX] (which is a " + typeof(value) + ")\n");
         if (!(name in MailboxAlert.folderPrefDefs)) {
 			alert("Error, setting unknown pref value " + name + " to " + value);
 		}
@@ -229,6 +230,9 @@ MailboxAlert.getFolderPreferences = function(folder_uri) {
 				dump("[XX] default: " + pref_default + "\n");
 			}
             if (name in this.values && !(this.values[name] == pref_default)) {
+				dump("[XX] not default, store it to extensions.mailboxalert." + name + "." + this.folder_uri + "\n");
+				dump("[XX] (that is, set it to " + this.values[name] + ")\n");
+				dump("[XX] (which is a " + typeof(this.values[name]) + ")\n");
                 // non-default, so store it
                 if (MailboxAlert.folderPrefDefs[name][0] == "bool") {
                     MailboxAlert.prefService.setBoolPref("extensions.mailboxalert." + name + "." + this.folder_uri, this.values[name]);
@@ -238,12 +242,13 @@ MailboxAlert.getFolderPreferences = function(folder_uri) {
                     MailboxAlert.prefService.setIntPref("extensions.mailboxalert." + name + "." + this.folder_uri, this.values[name]);
                 }
             } else {
+				dump("[XX] not in values, or default, clear extensions.mailboxalert." + name + "." + this.folder_uri + "\n");
                 // it is unset or it is default, remove any pref previously set
                 try {
                     MailboxAlert.prefService.clearUserPref("extensions.mailboxalert." + name + "." + this.folder_uri);
                 } catch (e) {
                     // That did not work, oh well, just leave it.
-                    //dump("[XX] got an error while clearing " + name + " for " + this.folder_uri + ", skipping\n");
+                    dump("[XX] got an error while clearing " + name + " for " + this.folder_uri + ", skipping\n");
                     //dump("[XX] the error was:\n");
                     //dump(e);
                     //dump("\n");
