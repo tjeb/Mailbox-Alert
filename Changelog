@@ -1,7 +1,8 @@
 [???]
-  o Fixed a problem where the check if a command is executable failed,
-    even though it would run fine
-
+  o Fixed a problem where the check if a command is executable failed
+    on Windows, even though the command would run fine
+  o Fixed a problem where the folder was not always correctly selected
+    with the 'Open in current window' option
 
 *  [0.14.2-0.14.3]
   o Fixed a problem with older thunderbirds that don't have some functions
