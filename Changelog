@@ -1,4 +1,4 @@
-[???]
+[0.14.3-0.14.4]
   o Fixed a problem where the check if a command is executable failed
     on Windows, even though the command would run fine
   o Fixed a problem where the folder was not always correctly selected

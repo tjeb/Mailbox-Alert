@@ -23,7 +23,7 @@ xmlns:em="http://www.mozilla.org/2004/em-rdf#">
 		
 		<em:id>{9c21158b-2c76-4d0a-980a-c51fc9cefaa7}</em:id>
 		<em:name>Mailbox Alert</em:name>
-		<em:version>0.14.3</em:version>
+		<em:version>0.14.4</em:version>
 		<em:description>Mailbox Alert - Extension for Thunderbird.</em:description>
 		<em:creator>Jelte Jansen</em:creator>
 		<em:homepageURL>http://tjeb.nl</em:homepageURL>
