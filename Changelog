@@ -1,3 +1,14 @@
+[0.14.3-0.14.4]
+  o Fixed a problem where the check if a command is executable failed
+    on Windows, even though the command would run fine
+  o Fixed a problem where the folder was not always correctly selected
+    with the 'Open in current window' option
+
+*  [0.14.2-0.14.3]
+  o Fixed a problem with older thunderbirds that don't have some functions
+    newer versions do
+  o Fixed a bug in the assignment of a few of the macro variables
+
 *  [0.14.1-0.14.2]
   o Fixed the locale setup
   o Made some internal refactors (ie. no user-visible changes)

@@ -173,8 +173,7 @@ MailboxAlertNewMail.prefillAlertInfo = function ()
     // we'll 'wrap' to 50 characters
     var label = document.getElementById('message_field');
     var text_node = label.childNodes[0];
-    dump("[XX] original child: " + text_node + "\n");
-    text_node.replaceWholeText(full_field);
+    text_node.data = full_field;
 
     label.hidden = false;
 
@@ -469,7 +468,17 @@ MailboxAlertNewMail.handleClick = function ()
             tabmail.selectTabByMode('folder');
             if (MailboxAlertNewMail.message_hdr) {
                 mailWindow.gFolderTreeView.selectFolder(MailboxAlertNewMail.folder);
-                mailWindow.gDBView.selectMsgByKey(MailboxAlertNewMail.message_hdr.messageKey);
+                if (mailWindow.gDBView) {
+                    mailWindow.gDBView.selectMsgByKey(MailboxAlertNewMail.message_hdr.messageKey);
+                } else if (mailWindow.gFolderDisplay) {
+                    mailWindow.gFolderDisplay.selectMessageComingUp();
+                    mailWindow.gFolderDisplay.selectMessage(MailboxAlertNewMail.message_hdr);
+                } else if (mailWindow.msgWindow) {
+                    var mail_uri = MailboxAlertNewMail.message_hdr.folder.getUriForMsg(MailboxAlertNewMail.message_hdr);
+                    mailWindow.msgWindow.windowCommands.selectMessage(mail_uri);
+                } else {
+                    // Running out of ideas here...
+                }
             }
             mailWindow.restore();
             mailWindow.focus();

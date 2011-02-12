@@ -58,5 +58,5 @@
 <!ENTITY mailboxalert.alert_prefs.duration "Anzeigedauer:">
 <!ENTITY mailboxalert.alert_prefs.onclick "Beim Klick auf das Pop-up:">
 <!ENTITY mailboxalert.alert_prefs.onclick.close "Pop-up schließen">
-<!ENTITY mailboxalert.alert_prefs.onclick.openmail "Nachricht öffnen in neuem Fenster öffnen">
-<!ENTITY mailboxalert.alert_prefs.onclick.selectmail "Open the message in the current window">
+<!ENTITY mailboxalert.alert_prefs.onclick.openmail "Nachricht in neuem Fenster öffnen">
+<!ENTITY mailboxalert.alert_prefs.onclick.selectmail "Nachricht in aktuellem Fenster öffnen">

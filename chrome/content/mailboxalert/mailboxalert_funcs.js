@@ -25,6 +25,7 @@ MailboxAlert.createUrlListener = function () {
     this.wait = function() {
         while(this.running) {};
     }
+    return this;
 }
 
 MailboxAlert.createAlertData = function (mailbox, last_unread) {
@@ -36,7 +37,6 @@ MailboxAlert.createAlertData = function (mailbox, last_unread) {
         this.folder_name = MailboxAlert.getFullFolderName(this.mailbox, false);
         this.folder_name_with_server = MailboxAlert.getFullFolderName(this.mailbox, true);
         this.folder_uri = this.mailbox.URI;
-        this.message_count = this.mailbox.getNumUnread(false);
         this.all_message_count = this.mailbox.getNumUnread(true);
     }
     
@@ -44,9 +44,13 @@ MailboxAlert.createAlertData = function (mailbox, last_unread) {
         // derived data that stays the same
         this.orig_mailbox = this.mailbox;
         this.server = MailboxAlert.getServerName(this.mailbox);
-        this.orig_message_count = this.message_count;
+        this.message_count = this.mailbox.getNumUnread(false);
 
         this.subject = this.last_unread.mime2DecodedSubject;
+        // add Re: if necessary
+        if (this.last_unread.flags & 0x00000010) {
+            this.subject = "Re: " + this.subject;
+        }
         this.sender = this.last_unread.mime2DecodedAuthor;
         this.sender_name = this.sender;
         this.sender_address = this.sender;
@@ -526,7 +530,7 @@ MailboxAlert.alert3 = function(alert_data) {
                 // ok no command set for this mailbox
             }
 
-			dump("Show message: " + show_message + "\n");
+            dump("Show message: " + show_message + "\n");
             if (show_message) {
                 var show_icon = true;
                 try {
@@ -545,29 +549,31 @@ MailboxAlert.alert3 = function(alert_data) {
                 alerted = true;
             }
 
-			dump("Play sound: " + play_sound + "\n");
-            if (play_sound && !MailboxAlert.muted()) {
-                if (sound_wav) {
-                    dump("Play wav file: " + sound_wav_file + "\n");
-                    MailboxAlert.playSound(sound_wav_file);
+            dump("Play sound: " + play_sound + "\n");
+            if (play_sound) {
+                if (!MailboxAlert.muted()) {
+                    if (sound_wav) {
+                        dump("Play wav file: " + sound_wav_file + "\n");
+                        MailboxAlert.playSound(sound_wav_file);
+                    } else {
+                        dump("Play default system sound\n");
+                        MailboxAlert.playSound("");
+                    }
                 } else {
-                    dump("Play default system sound\n");
-                    MailboxAlert.playSound("");
+                    dump("Sound alert set, but Mailbox Alert is muted\n");
                 }
                 alerted = true;
             }
 
-			dump("Execute command: " + execute_command + "\n");
-			dump("Command: " + command + "\n");
+            dump("Execute command: " + execute_command + "\n");
+            dump("Command: " + command + "\n");
             if (execute_command && command) {
                 // TODO: alert_data.escapeData()?
                 if (escape) {
-                    sender_name = MailboxAlert.escapeHTML(sender_name);
-                    sender_address = MailboxAlert.escapeHTML(sender_address);
                     MailboxAlert.executeCommand(MailboxAlert.escapeHTML(alert_data.server),
                                                 alert_data.folder_name_with_server,
                                                 MailboxAlert.escapeHTML(alert_data.orig_folder_name),
-                                                alert_data.orig_message_count,
+                                                alert_data.message_count,
                                                 alert_data.all_message_count,
                                                 MailboxAlert.escapeHTML(alert_data.subject),
                                                 MailboxAlert.escapeHTML(alert_data.sender),
@@ -579,7 +585,7 @@ MailboxAlert.alert3 = function(alert_data) {
                 MailboxAlert.executeCommand(alert_data.server,
                                             alert_data.folder_name_with_server,
                                             alert_data.orig_folder_name,
-                                            alert_data.orig_message_count,
+                                            alert_data.message_count,
                                             alert_data.all_message_count,
                                             alert_data.subject,
                                             alert_data.sender,
@@ -670,7 +676,7 @@ MailboxAlert.showMessage = function (alert_data, show_icon, icon_file, subject_p
     message_text = MailboxAlert.replace(message_text, "%originalfolder", alert_data.orig_folder_name);
     message_text = MailboxAlert.replace(message_text, "%folder", alert_data.folder_name);
     message_text = MailboxAlert.replace(message_text, "%countall", "" + alert_data.all_message_count);
-    message_text = MailboxAlert.replace(message_text, "%count", "" + alert_data.new_message_count);
+    message_text = MailboxAlert.replace(message_text, "%count", "" + alert_data.message_count);
     message_text = MailboxAlert.replace(message_text, "%subject", alert_data.subject);
     message_text = MailboxAlert.replace(message_text, "%senderaddress", alert_data.sender_address);
     message_text = MailboxAlert.replace(message_text, "%sendername", alert_data.sender_name);
@@ -684,7 +690,7 @@ MailboxAlert.showMessage = function (alert_data, show_icon, icon_file, subject_p
     dump("[XX] Message text: " + message_text + "\n");
 
     try {
-        window.openDialog('chrome://mailboxalert/content/newmailalert.xul', "new mail", "chrome,titlebar=no,popup=yes", subject_pref, message_text, show_icon, icon_file, alert_data.mailbox, alert_data.last_unread);
+        window.openDialog('chrome://mailboxalert/content/newmailalert.xul', "new mail", "chrome,titlebar=no,popup=yes", subject_pref, message_text, show_icon, icon_file, alert_data.orig_mailbox, alert_data.last_unread);
     } catch (e) {
         alert(e);
     }
@@ -693,17 +699,18 @@ MailboxAlert.showMessage = function (alert_data, show_icon, icon_file, subject_p
 /* copied from mozilla thunderbird sourcecode */
 MailboxAlert.playSound = function (soundURL) {
     var gSound = Components.classes["@mozilla.org/sound;1"].createInstance(Components.interfaces.nsISound);
-    //gSound.init();
+    gSound.init();
     if (soundURL) {
           if (soundURL.indexOf("file://") == -1) {
               soundURL = "file://" + soundURL;
           }
           try {
-            var ioService = Components.classes["@mozilla.org/network/io-service;1"]
-                     .getService(Components.interfaces.nsIIOService);
-            var url = ioService.newURI(soundURL, null, null);
-            dump("gSound.play("+url+")\n");
-            gSound.play(url)
+              var ioService = Components.classes["@mozilla.org/network/io-service;1"]
+                       .getService(Components.interfaces.nsIIOService);
+              var url = ioService.newURI(soundURL, null, null);
+              dump("gSound.play("+soundURL+")\n");
+              gSound.play(url);
+              dump("sound played\n");
           } catch(e) {
               // some error, just 'beep' (which is system-dependent
               // these days)
@@ -772,7 +779,11 @@ MailboxAlert.executeCommand = function (server, folder, orig_folder, new_message
                 if (prev_i > 0) {
                     if (charset && tocharset) {
                         csconv.Init(tocharset, 0, 0);
-                        cur_arg = csconv.Convert(cur_arg);
+                        try {
+                            cur_arg = csconv.Convert(cur_arg);
+                        } catch (e) {
+                            dump("Error converting " + cur_arg + ", leaving as is\n");
+                        }
                     }
                 }
                 args.push(cur_arg);
@@ -785,7 +796,12 @@ MailboxAlert.executeCommand = function (server, folder, orig_folder, new_message
     /* also convert this one */
     if (charset && tocharset) {
         csconv.Init(tocharset, 0, 0);
-        args.push(csconv.Convert(command.substr(prev_i, i).split("\\ ").join(" ")));
+        try {
+            args.push(csconv.Convert(command.substr(prev_i, i).split("\\ ").join(" ")));
+        } catch (e) {
+            // conversion failed, just push whatever we had
+            args.push(command.substr(prev_i, i).split("\\ ").join(" "));
+        }
     } else {
         args.push(command.substr(prev_i, i).split("\\ ").join(" "));
     }
@@ -802,13 +818,23 @@ MailboxAlert.executeCommand = function (server, folder, orig_folder, new_message
         exec.initWithPath(executable_name);
         // isExecutable is horribly broken in OSX, see
         // https://bugzilla.mozilla.org/show_bug.cgi?id=322865
-        // So use a fugly os detection here...
-        if (!exec.exists() || !(/Mac/.test(navigator.platform) || exec.isExecutable()) || !exec.isFile()) {
+        // It turns out to be broken in windows too...
+        // removing the check, we shall have to try and run it
+        // then catch NS_UNEXPECTED
+        var run = true;
+        if (!exec.exists()) {
+			//alert("[XX] file not found");
+			run = false;
+		} else if (!exec.isFile()) {
+			//alert("[XX] file is not a file");
+			run = false;
+		}
+		if (!exec.exists()) {
             var stringsBundle = document.getElementById("string-bundle");
             alert(stringsBundle.getString('mailboxalert.error')+"\n" + exec.leafName + " " + stringsBundle.getString('mailboxalert.error.notfound') + "\n\nFull path: "+executable_name+"\n\n" + stringsBundle.getString('mailboxalert.error.disableexecutefor') + " " + folder);
             dump("Failed command:  " +executable_name + "\r\n");
             dump("Arguments: " + args + "\r\n");
-                    var caller = window.arguments[0];
+            var caller = window.arguments[0];
             if (caller) {
                 var executecommandcheckbox = document.getElementById('mailboxalert_execute_command');
                 executecommandcheckbox.checked = false;
@@ -824,7 +850,21 @@ MailboxAlert.executeCommand = function (server, folder, orig_folder, new_message
             var result = pr.run(false, args, args.length);
         }
     } catch (e) {
-        if (e.name == "NS_ERROR_FILE_UNRECOGNIZED_PATH") {
+		// TODO: better error, refactor double code
+        if (e.name == "NS_ERROR_FAILURE" ||
+            e.name == "NS_ERROR_UNEXPECTED"
+           ) {
+            var stringsBundle = document.getElementById("string-bundle");
+            alert(stringsBundle.getString('mailboxalert.error')+"\n" + exec.leafName + " " + stringsBundle.getString('mailboxalert.error.notfound') + "\n\nFull path: "+executable_name+"\n\n" + stringsBundle.getString('mailboxalert.error.disableexecutefor') + " " + folder);
+            if (caller) {
+                var executecommandcheckbox = document.getElementById('mailboxalert_execute_command');
+                executecommandcheckbox.checked = false;
+                setUIExecuteCommandPrefs(false);
+            } else {
+                var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
+                prefs.setBoolPref("extensions.mailboxalert.execute_command." + folder, false);
+            }
+		} else if (e.name == "NS_ERROR_FILE_UNRECOGNIZED_PATH") {
             var stringsBundle = document.getElementById("string-bundle");
             alert(stringsBundle.getString('mailboxalert.error') + "\r\n\r\n" +
                   stringsBundle.getString('mailboxalert.error.badcommandpath1') + 
