@@ -19,7 +19,6 @@
       <key id="paste_cmd" modifiers="accel" key="V"/>
       <key id="close_cmd" modifiers="control" key="W" oncommand="window.close();"/>
     </keyset>
-
     <stringbundleset id="stringbundleset">
         <stringbundle id="string-bundle" src="chrome://mailboxalert/locale/mailboxalert.properties"/>
     </stringbundleset>
@@ -120,11 +119,7 @@
 		var doc_el2 = document.getElementById(name2);
 		if (!doc_el2) { alert(name + " not found!"); }
 		var value = doc_el1.getAttribute("selected");
-		if (value) {
-			folder_prefs.set(prefs_name, true);
-		} else {
-			folder_prefs.set(prefs_name, false);
-		}
+		folder_prefs.set(prefs_name, value);
 	}
 
 	// Fill in the elements of the window
@@ -308,7 +303,6 @@
 
         var fp = Components.classes["@mozilla.org/filepicker;1"].
             getService(Components.interfaces.nsIFilePicker);
-
         try {
             var exec = Components.classes["@mozilla.org/file/local;1"].
                    createInstance(Components.interfaces.nsILocalFile);
