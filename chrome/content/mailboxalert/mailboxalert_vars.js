@@ -147,11 +147,7 @@ MailboxAlert.folderPrefDefs = {
 "subject": [ "string", "" ],
 "message": [ "string", "" ],
 "play_sound": [ "bool", false ],
-<<<<<<< HEAD
 "sound_wav": [ "bool", false ],
-=======
-"sound_wav": [ "bool", true ],
->>>>>>> a8f77f5833b352a8a5756b37c3ade83602e93ed4
 "sound_wav_file": [ "string", "" ],
 "execute_command": [ "bool", false ],
 "command": [ "string", "" ],
@@ -204,10 +200,7 @@ MailboxAlert.getFolderPreferences = function(folder_uri) {
     folder_prefs.set = function(name, value) {
         // should we type-check here?)
         dump("[XX] SET VALUE OF " + name + " TO " + value + "\n");
-<<<<<<< HEAD
         dump("[XX] (which is a " + typeof(value) + ")\n");
-=======
->>>>>>> a8f77f5833b352a8a5756b37c3ade83602e93ed4
         if (!(name in MailboxAlert.folderPrefDefs)) {
 			alert("Error, setting unknown pref value " + name + " to " + value);
 		}
