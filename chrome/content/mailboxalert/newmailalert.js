@@ -522,14 +522,14 @@ MailboxAlertNewMail.handleRightClick = function ()
 MailboxAlertNewMail.performAction = function (action)
 {
     dump("Alert window clicked\n");
+	const Cc = Components.classes;
+	const Ci = Components.interfaces;
     if (action == "close") {
         dump("Close alert window\n");
         // Do nothing, the window will be closed at the end of this
         // function.
     } else if (action == "selectmail") {
         dump("Select mail\n");
-        const Cc = Components.classes;
-        const Ci = Components.interfaces;
         var windowManager = Cc['@mozilla.org/appshell/window-mediator;1'].getService();
         var windowManagerInterface = windowManager.QueryInterface(Ci.nsIWindowMediator);
         //var windowManagerInterface = windowManager.QueryInterface(Ci.nsIWindowMediator);
@@ -566,7 +566,18 @@ MailboxAlertNewMail.performAction = function (action)
         } else {
             dump("Could not get nsIMsgWindow service\n");
         }
-    }
+    } else if (action == "deletemail") {
+		if (MailboxAlertNewMail.message_hdr.folder) {
+			var messages = Components.classes["@mozilla.org/array;1"]
+				.createInstance(Components.interfaces.nsIMutableArray);
+			messages.appendElement(MailboxAlertNewMail.message_hdr, false);
+	        var windowManager = Cc['@mozilla.org/appshell/window-mediator;1'].getService();
+	        var windowManagerInterface = windowManager.QueryInterface(Ci.nsIWindowMediator);
+			var mailWindow = windowManagerInterface.getMostRecentWindow( "mail:3pane" );
+			MailboxAlertNewMail.message_hdr.folder.deleteMessages(messages, mailWindow.msgWindow, false, false, null, true);
+			children.clear();
+		}
+	}
     this.closeAlert();
 }
 

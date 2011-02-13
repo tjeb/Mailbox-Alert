@@ -213,6 +213,7 @@ alert(e);
 				<menuitem value="close" label="&mailboxalert.alert_prefs.onclick.close;"/>
 				<menuitem value="openmail" label="&mailboxalert.alert_prefs.onclick.openmail;"/>
 				<menuitem value="selectmail" label="&mailboxalert.alert_prefs.onclick.selectmail;"/>
+				<menuitem value="deletemail" label="&mailboxalert.alert_prefs.onclick.deletemail;"/>
 			</menupopup>
 			</menulist>
 		</hbox>

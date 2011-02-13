@@ -6,6 +6,8 @@
   o If duration for popups is set to 0, it is never automatically closed
   o Added a %date and a %time macro
   o Sliding and fading alerts should be smoother now
+  o Added an option to delete the message from the alert popup (moves
+    it to trash)
 
 [0.14.3-0.14.4]
   o Fixed a problem where the check if a command is executable failed

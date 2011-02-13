@@ -22,11 +22,16 @@
 	<menuitem id="close" label="&mailboxalert.alert_prefs.onclick.close;"
 	          onclick="MailboxAlertNewMail.performAction('close');"
 	/>
+	<menuseparator/>
 	<menuitem id="openmail" label="&mailboxalert.alert_prefs.onclick.openmail;"
 	          onclick="MailboxAlertNewMail.performAction('openmail');"
 	/>
 	<menuitem id="selectmail" label="&mailboxalert.alert_prefs.onclick.selectmail;"
 	          onclick="MailboxAlertNewMail.performAction('selectmail');"
+	/>
+	<menuseparator/>
+	<menuitem id="deletemail" label="&mailboxalert.alert_prefs.onclick.deletemail;"
+	          onclick="MailboxAlertNewMail.performAction('deletemail');"
 	/>
   </menupopup>
   </popupset>
