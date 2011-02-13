@@ -11,7 +11,7 @@ Features:
 - 'alert on all new messages' option
 - Mailbox-specific alerts
 - color picker for alert window
-- right-click on alert window
+* right-click on alert window
 * delete messages from popup window
 
 - Automated tests
