@@ -4,13 +4,14 @@
 Features:
 - indefinite popups
 - attachments to file
-- date-sent,
-- open-in-new-window and select-message
+* date-sent and time-sent
+* open-in-new-window and select-message
 - allow for quoting in settings
 - Run-after-tb-filters
 - 'alert on all new messages' option
 - Mailbox-specific alerts
 - color picker for alert window
+- right-click on alert window
 
 - Automated tests
 - consistent debugging data
