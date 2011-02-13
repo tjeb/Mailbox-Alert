@@ -2,6 +2,8 @@
 
 <?xml-stylesheet href="chrome://mailboxalert/content/newmailalert.css" type="text/css"?>
 
+<!DOCTYPE dialog SYSTEM "chrome://mailboxalert/locale/mailboxalert.dtd">
+
 <window id="alertWindow"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
         windowtype="alert:alert"
@@ -15,7 +17,21 @@
   <script type="application/x-javascript" src="chrome://mailboxalert/content/newmailalert_vars.js"/>
   <script type="application/x-javascript" src="chrome://mailboxalert/content/newmailalert.js"/>
 
-  <stack id="alertContainer" mousethrough="never" onclick="MailboxAlertNewMail.handleClick();">
+  <popupset>
+  <menupopup id="newMailHandle" onpopuphidden="MailboxAlertNewMail.restartTimer();">
+	<menuitem id="close" label="&mailboxalert.alert_prefs.onclick.close;"
+	          onclick="MailboxAlertNewMail.performAction('close');"
+	/>
+	<menuitem id="openmail" label="&mailboxalert.alert_prefs.onclick.openmail;"
+	          onclick="MailboxAlertNewMail.performAction('openmail');"
+	/>
+	<menuitem id="selectmail" label="&mailboxalert.alert_prefs.onclick.selectmail;"
+	          onclick="MailboxAlertNewMail.performAction('selectmail');"
+	/>
+  </menupopup>
+  </popupset>
+
+  <stack id="alertContainer" mousethrough="never" onclick="MailboxAlertNewMail.handleClick(event);" context="newMailHandle">
     <hbox id="alertBox">
       <hbox id ="alertImageBox" align="center" valign="center" flex="1">
         <image id="alertImage" valign="center"/>

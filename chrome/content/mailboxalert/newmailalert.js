@@ -458,6 +458,7 @@ MailboxAlertNewMail.closeAlert = function ()
 {
     // make sure there won't be anything else firing
     this.timer.cancel();
+    dump("[XX] starting closing of alert\n");
     
     if (MailboxAlertNewMail.effect == "fade") {
         this.timer_state = MailboxAlertNewMail.FADING_OUT;
@@ -478,14 +479,54 @@ MailboxAlertNewMail.closeAlert = function ()
     }
 }
 
-MailboxAlertNewMail.handleClick = function ()
+MailboxAlertNewMail.handleClick = function (event)
+{
+	// MailboxAlertNewMail.showMethods(event);
+	// Only do default action on left click (button value 0)
+	// On middle click (1), do nothing
+	// On right click (2), the menu items have their own action
+	// associations, but we should stop the running timer
+	// (TODO: restart it if we close the popup again?)
+	if (event.button == 0) {
+		this.performAction(MailboxAlertNewMail.onclick);
+	} else if (event.button == 2) {
+		if (!this.stored_timer_delay) {
+			// store the timer before we cancel it so we can 
+			// restart it
+			dump("[XX] storing and canceling timer\n");
+			this.stored_timer_delay = this.timer.delay;
+			this.stored_timer_type = this.timer.type;
+		}
+		this.timer.cancel();
+	}
+}
+
+// This function is called if the context popup is closed
+MailboxAlertNewMail.restartTimer = function ()
+{
+	// Context menu closed, restart the timer
+	if (this.stored_timer_delay) {
+		dump("[XX] restarting timer\n");
+		this.timer.initWithCallback(this, this.stored_timer_delay,
+		                            this.stored_timer_type);
+		this.stored_timer_delay = null;
+		this.stored_timer_type = null;
+	}
+}
+
+MailboxAlertNewMail.handleRightClick = function ()
+{
+	dump("right-click\n");
+}
+
+MailboxAlertNewMail.performAction = function (action)
 {
     dump("Alert window clicked\n");
-    if (MailboxAlertNewMail.onclick == "close") {
+    if (action == "close") {
         dump("Close alert window\n");
         // Do nothing, the window will be closed at the end of this
         // function.
-    } else if (MailboxAlertNewMail.onclick == "selectmail") {
+    } else if (action == "selectmail") {
         dump("Select mail\n");
         const Cc = Components.classes;
         const Ci = Components.interfaces;
@@ -517,7 +558,7 @@ MailboxAlertNewMail.handleClick = function ()
             dump("did not get mailWindow\n");
             window.open(uri, "_blank", "chrome,extrachrome,menubar,resizable,scrollbars,status,toolbar");
         }
-    } else if (MailboxAlertNewMail.onclick == "openmail") {
+    } else if (action == "openmail") {
         // get the messenger window open service and ask it to open a new window for us
         var mailWindowService = Components.classes["@mozilla.org/messenger/windowservice;1"].getService(Components.interfaces.nsIMessengerWindowService);
         if (mailWindowService) {
