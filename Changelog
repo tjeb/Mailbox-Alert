@@ -1,7 +1,11 @@
 [???]
+  o You can now right-click the alert message to get a menu with
+    all the available actions mailbox alert can do on the message
+    (this list is similar to the default click action you can
+    configure)
   o If duration for popups is set to 0, it is never automatically closed
   o Added a %date and a %time macro
-  o sliding alert should be smoother now
+  o Sliding and fading alerts should be smoother now
 
 [0.14.3-0.14.4]
   o Fixed a problem where the check if a command is executable failed
