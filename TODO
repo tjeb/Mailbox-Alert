@@ -10,6 +10,7 @@ Features:
 - Run-after-tb-filters
 - 'alert on all new messages' option
 - Mailbox-specific alerts
+- color picker for alert window
 
 - Automated tests
 - consistent debugging data
