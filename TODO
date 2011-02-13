@@ -2,7 +2,7 @@
 *: done
 
 Features:
-- indefinite popups
+* indefinite popups
 - attachments to file
 * date-sent and time-sent
 * open-in-new-window and select-message
@@ -12,12 +12,14 @@ Features:
 - Mailbox-specific alerts
 - color picker for alert window
 - right-click on alert window
+* delete messages from popup window
 
 - Automated tests
 - consistent debugging data
 - Options for alert popups
     (several 'themes'? fully configurable?)
 -- replace setTimeout
+  (almost done, two or three instances left)
 - move catch/disable from alert2 to alert3?
   (or remove alltogether? or ask?)
 -- check windows sound issue
