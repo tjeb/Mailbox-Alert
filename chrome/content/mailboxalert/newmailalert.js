@@ -225,7 +225,9 @@ MailboxAlertNewMail.onAlertLoad = function ()
     MailboxAlertNewMail.resizeAlert(false);
     MailboxAlertNewMail.placeAlert();
     this.timer_state = MailboxAlertNewMail.WAITING;
-    this.timer.initWithCallback(this, this.duration * 1000, this.timer.TYPE_ONE_SHOT);
+    if (this.duration > 0) {
+		this.timer.initWithCallback(this, this.duration * 1000, this.timer.TYPE_ONE_SHOT);
+	}
   }
 }
 
@@ -289,7 +291,9 @@ MailboxAlertNewMail.slideInTop = function ()
         MailboxAlertNewMail.window_to_y = -MailboxAlertNewMail.getWindowHeight();
         // we only need to wait the duration once (the handler should init the slideout
         // timer on a repeated basis again
-        this.timer.initWithCallback(this, MailboxAlertNewMail.duration * 1000, this.timer.TYPE_ONE_SHOT);
+        if (MailboxAlertNewMail.duration > 0) {
+			this.timer.initWithCallback(this, MailboxAlertNewMail.duration * 1000, this.timer.TYPE_ONE_SHOT);
+		}
     }
 }
 
@@ -319,7 +323,9 @@ MailboxAlertNewMail.slideInBottom = function ()
         
         // we only need to wait the duration once (the handler should init the slideout
         // timer on a repeated basis again
-        this.timer.initWithCallback(this, MailboxAlertNewMail.duration * 1000, this.timer.TYPE_ONE_SHOT);
+        if (MailboxAlertNewMail.duration > 0) {
+			this.timer.initWithCallback(this, MailboxAlertNewMail.duration * 1000, this.timer.TYPE_ONE_SHOT);
+		}
     }
 }
 
@@ -429,7 +435,9 @@ MailboxAlertNewMail.fadeOpen = function ()
         // switch gears and start closing the alert
         this.timer.cancel();
         this.timer_state = MailboxAlertNewMail.WAITING;
-        this.timer.initWithCallback(this, 1000 * this.duration, this.timer.TYPE_ONE_SHOT);
+		if (this.duration > 0) {
+			this.timer.initWithCallback(this, 1000 * this.duration, this.timer.TYPE_ONE_SHOT);
+		}
     }
 }
 
