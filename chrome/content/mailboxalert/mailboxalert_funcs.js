@@ -45,6 +45,7 @@ MailboxAlert.createAlertData = function (mailbox, last_unread) {
         this.orig_mailbox = this.mailbox;
         this.server = MailboxAlert.getServerName(this.mailbox);
         this.message_count = this.mailbox.getNumUnread(false);
+        this.msg_uri = this.mailbox.getUriForMsg(this.last_unread);
 
         this.subject = this.last_unread.mime2DecodedSubject;
         // add Re: if necessary
@@ -580,10 +581,10 @@ MailboxAlert.showMessage = function (alert_data, show_icon, icon_file, subject_p
         alert_data.messageBytes = "0";
     }
     var messageSize = MailboxAlert.getHRMsgSize(alert_data.messageBytes);
-    var body = alert_data.getPreview();
-    dump("[XX] body:\n");
-    dump(body);
-    dump("\n[XX] end of body\n");
+    var preview = alert_data.getPreview();
+    dump("[XX] preview:\n");
+    dump(preview);
+    dump("\n[XX] end of preview\n");
     var date_obj = new Date();
     date_obj.setTime(alert_data.date);
     var date_str = date_obj.toLocaleDateString();
@@ -604,7 +605,8 @@ MailboxAlert.showMessage = function (alert_data, show_icon, icon_file, subject_p
     subject_pref = MailboxAlert.replace(subject_pref, "%date", date_str);
     subject_pref = MailboxAlert.replace(subject_pref, "%time", time_str);
     //subject_pref = MailboxAlert.replace(subject_pref, "%enter", "\n");
-    subject_pref = MailboxAlert.replace(subject_pref, "%body", body);
+    subject_pref = MailboxAlert.replace(subject_pref, "%msg_preview", preview);
+    subject_pref = MailboxAlert.replace(subject_pref, "%msg_uri", alert_data.msg_uri);
 
     var message_text = message;
     dump("[XX] Original Message text: " + message_text + "\n");
@@ -623,7 +625,8 @@ MailboxAlert.showMessage = function (alert_data, show_icon, icon_file, subject_p
     message_text = MailboxAlert.replace(message_text, "%date", date_str);
     message_text = MailboxAlert.replace(message_text, "%time", time_str);
     message_text = MailboxAlert.replace(message_text, "%enter", "\n");
-    message_text = MailboxAlert.replace(message_text, "%body", body);
+    message_text = MailboxAlert.replace(message_text, "%msg_preview", preview);
+    message_text = MailboxAlert.replace(message_text, "%msg_uri", alert_data.msg_uri);
 
     dump("[XX] Message text: " + message_text + "\n");
 
@@ -681,6 +684,8 @@ MailboxAlert.executeCommand = function (alert_data, folder_prefs) {
     command = MailboxAlert.replace(command, "%messagesize", alert_data.messageSize);
     command = MailboxAlert.replace(command, "%date", MailboxAlert.escapeHTML(date_str));
     command = MailboxAlert.replace(command, "%time", MailboxAlert.escapeHTML(time_str));
+    command = MailboxAlert.replace(command, "%msg_preview", MailboxAlert.escapeHTML(alert_data.getPreview()));
+    command = MailboxAlert.replace(command, "%msg_uri", MailboxAlert.escapeHTML(alert_data.msg_uri));
 
     var args = new Array();
     var prev_i = 0;

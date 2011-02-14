@@ -3,7 +3,13 @@
 
 Features:
 * indefinite popups
+- msg preview
+- msg body
+- msg raw
+- msg url?
+    (what about storing it in a file, and pointing to that)
 - attachments to file
+    (same idea, do we have mktemp?)
 * date-sent and time-sent
 * open-in-new-window and select-message
 - allow for quoting in settings

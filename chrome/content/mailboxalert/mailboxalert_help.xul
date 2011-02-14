@@ -39,6 +39,11 @@
 	<label value="%messagesize: &mailboxalert.prefs.expl.messagesize;"/>
 	<label value="%date: &mailboxalert.prefs.expl.date;"/>
 	<label value="%time: &mailboxalert.prefs.expl.time;"/>
+    <label value="%msg_preview: &mailboxalert.prefs.expl.msg_preview;"/>
+    <label value="%msg_body: &mailboxalert.prefs.expl.msg_body;"/>
+    <label value="%msg_full: &mailboxalert.prefs.expl.msg_full;"/>
+    <label value="%msg_uri: &mailboxalert.prefs.expl.msg_uri;"/>
+    <label value="%msg_attachment_uris: &mailboxalert.prefs.expl.msg_attachment_uris;"/>
 	<label value="%enter: &mailboxalert.prefs.expl.enter;"/>
 	<label value=""/>
 	<text value="&mailboxalert.prefs.expl.see; http://jelte.nlnetlabs.nl/Projects/Mailbox_Alert &mailboxalert.prefs.expl.information;" />

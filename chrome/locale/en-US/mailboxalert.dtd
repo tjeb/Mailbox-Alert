@@ -38,6 +38,11 @@
 <!ENTITY mailboxalert.prefs.expl.messagesize "The size of the message in human readable form (for instance 2.1M)">
 <!ENTITY mailboxalert.prefs.expl.date "The date the message was sent">
 <!ENTITY mailboxalert.prefs.expl.time "The time the message was sent">
+<!ENTITY mailboxalert.prefs.expl.msg_preview "A short preview of the message content">
+<!ENTITY mailboxalert.prefs.expl.msg_body "A text view of the message body">
+<!ENTITY mailboxalert.prefs.expl.msg_full "The raw full message body">
+<!ENTITY mailboxalert.prefs.expl.msg_uri "The full URI of the message">
+<!ENTITY mailboxalert.prefs.expl.msg_attachment_uris "A comma-separated list of the message attachments">
 <!ENTITY mailboxalert.prefs.expl.enter "Line break (does not work in the first field of &apos;show a message&apos;)">
 <!ENTITY mailboxalert.prefs.browse "Browse">
 <!ENTITY mailboxalert.prefs.default "Use default">
