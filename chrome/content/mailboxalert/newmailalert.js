@@ -143,8 +143,8 @@ MailboxAlertNewMail.prefillAlertInfo = function ()
 	var message = window.arguments[1];
 	var show_icon = window.arguments[2];
 	var image_url = window.arguments[3];
-    MailboxAlertNewMail.folder = window.arguments[4];
-    MailboxAlertNewMail.message_hdr = window.arguments[5];
+    this.folder = window.arguments[4];
+    this.message_hdr = window.arguments[5];
 	window.class = "MyClass";
 
 	var label = document.getElementById('subject');
@@ -163,11 +163,11 @@ MailboxAlertNewMail.prefillAlertInfo = function ()
     dump("[XX] full message text:\n")
     dump(message);
     dump("\n[XX] end of full message text\n");
-    var tokens = MailboxAlertNewMail.tokenizeString(message);
+    var tokens = this.tokenizeString(message);
     dump("[XX] Tokens: ");
     dump(tokens);
     dump("\n");
-    var full_field = MailboxAlertNewMail.wrapTokens(tokens, 50, 10);
+    var full_field = this.wrapTokens(tokens, 50, 10);
     
     // let's do some playing with the message field
     // we'll 'wrap' to 50 characters
@@ -197,35 +197,36 @@ MailboxAlertNewMail.onAlertLoad = function ()
   } catch (ex) { }
   try 
   {
-    MailboxAlertNewMail.position = prefBranch.getCharPref("extensions.mailboxalert.alert_position");
+    this.position = prefBranch.getCharPref("extensions.mailboxalert.alert_position");
   } catch (ex) { }
   try 
   {
-    MailboxAlertNewMail.duration = prefBranch.getIntPref("extensions.mailboxalert.alert_duration");
+    this.duration = prefBranch.getIntPref("extensions.mailboxalert.alert_duration");
   } catch (ex) { }
   try 
   {
-    MailboxAlertNewMail.effect = prefBranch.getCharPref("extensions.mailboxalert.alert_effect");
+    this.effect = prefBranch.getCharPref("extensions.mailboxalert.alert_effect");
   } catch (ex) { }
   try 
   {
-    MailboxAlertNewMail.onclick = prefBranch.getCharPref("extensions.mailboxalert.alert_onclick");
+    this.onclick = prefBranch.getCharPref("extensions.mailboxalert.alert_onclick");
   } catch (ex) { }
   
   // bogus call to make sure the window is moved offscreen until we are ready for it.
-  MailboxAlertNewMail.resizeAlert(true);
+  this.resizeAlert(true);
 
   // if we aren't waiting to fetch preview text, then go ahead and 
   // start showing the alert.
-  if (MailboxAlertNewMail.effect == "fade") {
+  if (this.effect == "fade") {
     this.showAlertFade();
-  } else if (MailboxAlertNewMail.effect == "slide") {
+  } else if (this.effect == "slide") {
     this.showAlertSlide();
   } else {
-    MailboxAlertNewMail.resizeAlert(false);
-    MailboxAlertNewMail.placeAlert();
-    this.timer_state = MailboxAlertNewMail.WAITING;
+    this.resizeAlert(false);
+    this.placeAlert();
+    this.timer_state = this.WAITING;
     if (this.duration > 0) {
+        this.timer.cancel();
 		this.timer.initWithCallback(this, this.duration * 1000, this.timer.TYPE_ONE_SHOT);
 	}
   }
@@ -237,44 +238,44 @@ MailboxAlertNewMail.showAlertSlide = function ()
     
     var alertContainer = document.getElementById('alertContainer');
     alertContainer.style.opacity = 0;
-    MailboxAlertNewMail.resizeAlert(false);
-    MailboxAlertNewMail.placeAlert();
+    this.resizeAlert(false);
+    this.placeAlert();
     
-    MailboxAlertNewMail.window_y = -MailboxAlertNewMail.getWindowHeight();
+    MailboxAlertNewMail.window_y = -this.getWindowHeight();
     
-    if (MailboxAlertNewMail.position == "tr") {
-    MailboxAlertNewMail.window_x = MailboxAlertNewMail.gOrigin & MailboxAlertNewMail.LEFT ? screen.availLeft :
-        (screen.availLeft + screen.availWidth - MailboxAlertNewMail.getWindowWidth());
-    } else if (MailboxAlertNewMail.position == "br") {
+    if (this.position == "tr") {
+    MailboxAlertNewMail.window_x = MailboxAlertNewMail.gOrigin & this.LEFT ? screen.availLeft :
+        (screen.availLeft + screen.availWidth - this.getWindowWidth());
+    } else if (this.position == "br") {
     top = false;
-    MailboxAlertNewMail.window_x = MailboxAlertNewMail.gOrigin & MailboxAlertNewMail.LEFT ? screen.availLeft :
-        (screen.availLeft + screen.availWidth - MailboxAlertNewMail.getWindowWidth());
-    MailboxAlertNewMail.window_y = screen.height + MailboxAlertNewMail.getWindowHeight();
-    MailboxAlertNewMail.window_to_y = MailboxAlertNewMail.gOrigin & MailboxAlertNewMail.TOP ? screen.availTop :
-        (screen.availTop + screen.availHeight - MailboxAlertNewMail.getWindowHeight());
-    } else if (MailboxAlertNewMail.position == "bl") {
+    MailboxAlertNewMail.window_x = MailboxAlertNewMail.gOrigin & this.LEFT ? screen.availLeft :
+        (screen.availLeft + screen.availWidth - this.getWindowWidth());
+    MailboxAlertNewMail.window_y = screen.height + this.getWindowHeight();
+    MailboxAlertNewMail.window_to_y = MailboxAlertNewMail.gOrigin & this.TOP ? screen.availTop :
+        (screen.availTop + screen.availHeight - this.getWindowHeight());
+    } else if (this.position == "bl") {
     top = false;
-    MailboxAlertNewMail.window_y = screen.height + MailboxAlertNewMail.getWindowHeight();
-    MailboxAlertNewMail.window_to_y = MailboxAlertNewMail.gOrigin & MailboxAlertNewMail.TOP ? screen.availTop :
-        (screen.availTop + screen.availHeight - MailboxAlertNewMail.getWindowHeight());
-    } else if (MailboxAlertNewMail.position == "c") {
-    MailboxAlertNewMail.window_x = MailboxAlertNewMail.gOrigin & MailboxAlertNewMail.LEFT ? screen.availLeft :
-        ((screen.availLeft + screen.availWidth) / 2 - (MailboxAlertNewMail.getWindowWidth() / 2));
-    MailboxAlertNewMail.window_y = -MailboxAlertNewMail.getWindowHeight();
-    MailboxAlertNewMail.window_to_y = MailboxAlertNewMail.gOrigin & MailboxAlertNewMail.TOP ? screen.availTop :
-        ((screen.availTop + screen.availHeight) / 2 - (MailboxAlertNewMail.getWindowHeight() / 2));
+    MailboxAlertNewMail.window_y = screen.height + this.getWindowHeight();
+    MailboxAlertNewMail.window_to_y = MailboxAlertNewMail.gOrigin & this.TOP ? screen.availTop :
+        (screen.availTop + screen.availHeight - this.getWindowHeight());
+    } else if (this.position == "c") {
+    MailboxAlertNewMail.window_x = MailboxAlertNewMail.gOrigin & this.LEFT ? screen.availLeft :
+        ((screen.availLeft + screen.availWidth) / 2 - (this.getWindowWidth() / 2));
+    MailboxAlertNewMail.window_y = -this.getWindowHeight();
+    MailboxAlertNewMail.window_to_y = MailboxAlertNewMail.gOrigin & this.TOP ? screen.availTop :
+        ((screen.availTop + screen.availHeight) / 2 - (this.getWindowHeight() / 2));
     }
     //window.sizeToContent();
-    //window.resizeTo(MailboxAlertNewMail.getWindowWidth(), MailboxAlertNewMail.getWindowHeight());
-    window.moveTo(MailboxAlertNewMail.window_x, MailboxAlertNewMail.window_y);
-    MailboxAlertNewMail.resizeAlert(false);
-    MailboxAlertNewMail.placeAlertOutside();
+    //window.resizeTo(MailboxAlertNewMail.getWindowWidth(), this.getWindowHeight());
+    window.moveTo(MailboxAlertNewMail.window_x, this.window_y);
+    this.resizeAlert(false);
+    this.placeAlertOutside();
     alertContainer.style.opacity = 1;
     
     if (top) {
-        this.timer_state = MailboxAlertNewMail.SLIDING_IN_TOP;
+        this.timer_state = this.SLIDING_IN_TOP;
     } else {
-        this.timer_state = MailboxAlertNewMail.SLIDING_IN_BOTTOM;
+        this.timer_state = this.SLIDING_IN_BOTTOM;
     }
     this.timer.initWithCallback(this, this.gSlideTime, this.timer.TYPE_REPEATING_PRECISE);
 }
@@ -283,60 +284,60 @@ MailboxAlertNewMail.slideInTop = function ()
 {
     // called by a repeated timer now, if we need to move we move,
     // if we are done we need to reset the timer
-    if (window.screenY < MailboxAlertNewMail.window_to_y) {
-        window.moveBy(0, MailboxAlertNewMail.gSlideDistance);
+    if (window.screenY < this.window_to_y) {
+        window.moveBy(0, this.gSlideDistance);
     } else {
-        this.timer.cancel();
-        this.timer_state = MailboxAlertNewMail.WAITING;
-        MailboxAlertNewMail.window_to_y = -MailboxAlertNewMail.getWindowHeight();
+        this.timer_state = this.WAITING;
+        MailboxAlertNewMail.window_to_y = -this.getWindowHeight();
         // we only need to wait the duration once (the handler should init the slideout
         // timer on a repeated basis again
-        if (MailboxAlertNewMail.duration > 0) {
-			this.timer.initWithCallback(this, MailboxAlertNewMail.duration * 1000, this.timer.TYPE_ONE_SHOT);
+        if (this.duration > 0) {
+            this.timer.cancel();
+			this.timer.initWithCallback(this, this.duration * 1000, this.timer.TYPE_ONE_SHOT);
 		}
     }
 }
 
 MailboxAlertNewMail.slideOutTop = function ()
 {
-    if (window.screenY > MailboxAlertNewMail.window_to_y) {
-        window.moveBy(0, -MailboxAlertNewMail.gSlideDistance);
+    if (window.screenY > this.window_to_y) {
+        window.moveBy(0, -this.gSlideDistance);
     } else {
         this.timer.cancel();
-        this.timer_state = MailboxAlertNewMail.DONE;
+        this.timer_state = this.DONE;
         window.close();
     }
 }
 
 MailboxAlertNewMail.slideInBottom = function ()
 {
-    MailboxAlertNewMail.window_y = MailboxAlertNewMail.window_y - MailboxAlertNewMail.gSlideDistance;
-    if (MailboxAlertNewMail.window_y > MailboxAlertNewMail.window_to_y) {
-        window.moveTo(MailboxAlertNewMail.window_x, MailboxAlertNewMail.window_y);
+    MailboxAlertNewMail.window_y = MailboxAlertNewMail.window_y - this.gSlideDistance;
+    if (MailboxAlertNewMail.window_y > this.window_to_y) {
+        window.moveTo(MailboxAlertNewMail.window_x, this.window_y);
     } else {
-        this.timer.cancel();
-        this.timer_state = MailboxAlertNewMail.WAITING;
+        this.timer_state = this.WAITING;
         
-        window.moveTo(MailboxAlertNewMail.window_x, MailboxAlertNewMail.window_to_y);
-        MailboxAlertNewMail.window_y = MailboxAlertNewMail.window_to_y;
-        MailboxAlertNewMail.window_to_y = screen.height + MailboxAlertNewMail.getWindowHeight();
+        window.moveTo(MailboxAlertNewMail.window_x, this.window_to_y);
+        MailboxAlertNewMail.window_y = this.window_to_y;
+        MailboxAlertNewMail.window_to_y = screen.height + this.getWindowHeight();
         
         // we only need to wait the duration once (the handler should init the slideout
         // timer on a repeated basis again
-        if (MailboxAlertNewMail.duration > 0) {
-			this.timer.initWithCallback(this, MailboxAlertNewMail.duration * 1000, this.timer.TYPE_ONE_SHOT);
+        if (this.duration > 0) {
+            this.timer.cancel();
+			this.timer.initWithCallback(this, this.duration * 1000, this.timer.TYPE_ONE_SHOT);
 		}
     }
 }
 
 MailboxAlertNewMail.slideOutBottom = function ()
 {
-    MailboxAlertNewMail.window_y = MailboxAlertNewMail.window_y + MailboxAlertNewMail.gSlideDistance;
-    if (MailboxAlertNewMail.window_y < MailboxAlertNewMail.window_to_y) {
-        window.moveTo(MailboxAlertNewMail.window_x, MailboxAlertNewMail.window_y);
+    MailboxAlertNewMail.window_y = MailboxAlertNewMail.window_y + this.gSlideDistance;
+    if (MailboxAlertNewMail.window_y < this.window_to_y) {
+        window.moveTo(MailboxAlertNewMail.window_x, this.window_y);
     } else {
         this.timer.cancel();
-        this.timer_state = MailboxAlertNewMail.DONE;
+        this.timer_state = this.DONE;
         window.close();
     }
 }
@@ -345,9 +346,10 @@ MailboxAlertNewMail.showAlertFade = function ()
 {
 	var alertContainer = document.getElementById('alertContainer');
 	alertContainer.style.opacity = 0;
-	MailboxAlertNewMail.resizeAlert(false);
-    MailboxAlertNewMail.placeAlert();
+	this.resizeAlert(false);
+    this.placeAlert();
     this.timer_state = this.FADING_IN;
+    this.timer.cancel();
     this.timer.initWithCallback(this, this.gFadeTime, this.timer.TYPE_REPEATING_PRECISE);
 }
 
@@ -367,7 +369,7 @@ MailboxAlertNewMail.getWindowWidth = function ()
 
 MailboxAlertNewMail.resizeAlert = function (aMoveOffScreen)
 {
-  resizeTo(MailboxAlertNewMail.getWindowWidth(), MailboxAlertNewMail.getWindowHeight());
+  resizeTo(MailboxAlertNewMail.getWindowWidth(), this.getWindowHeight());
 
   // leftover hack to get the window properly hidden when we first open it
   if (aMoveOffScreen) {
@@ -379,47 +381,47 @@ MailboxAlertNewMail.placeAlert = function () {
   var x = 0;
   var y = 0;
 
-  if (MailboxAlertNewMail.position == "tr") {
-    x = MailboxAlertNewMail.gOrigin & MailboxAlertNewMail.LEFT ? screen.availLeft :
-        (screen.availLeft + screen.availWidth - MailboxAlertNewMail.getWindowWidth());
-  } else if (MailboxAlertNewMail.position == "br") {
-    x = MailboxAlertNewMail.gOrigin & MailboxAlertNewMail.LEFT ? screen.availLeft :
-        (screen.availLeft + screen.availWidth - MailboxAlertNewMail.getWindowWidth());
-    y = MailboxAlertNewMail.gOrigin & MailboxAlertNewMail.TOP ? screen.availTop :
-        (screen.availTop + screen.availHeight - MailboxAlertNewMail.getWindowHeight());
-  } else if (MailboxAlertNewMail.position == "bl") {
-    y = MailboxAlertNewMail.gOrigin & MailboxAlertNewMail.TOP ? screen.availTop :
-        (screen.availTop + screen.availHeight - MailboxAlertNewMail.getWindowHeight());
-  } else if (MailboxAlertNewMail.position == "c") {
-    x = MailboxAlertNewMail.gOrigin & MailboxAlertNewMail.LEFT ? screen.availLeft :
-        ((screen.availLeft + screen.availWidth) / 2 - (MailboxAlertNewMail.getWindowWidth() / 2));
-    y = MailboxAlertNewMail.gOrigin & MailboxAlertNewMail.TOP ? screen.availTop :
-        ((screen.availTop + screen.availHeight) / 2 - (MailboxAlertNewMail.getWindowHeight() / 2));
+  if (this.position == "tr") {
+    x = MailboxAlertNewMail.gOrigin & this.LEFT ? screen.availLeft :
+        (screen.availLeft + screen.availWidth - this.getWindowWidth());
+  } else if (this.position == "br") {
+    x = MailboxAlertNewMail.gOrigin & this.LEFT ? screen.availLeft :
+        (screen.availLeft + screen.availWidth - this.getWindowWidth());
+    y = MailboxAlertNewMail.gOrigin & this.TOP ? screen.availTop :
+        (screen.availTop + screen.availHeight - this.getWindowHeight());
+  } else if (this.position == "bl") {
+    y = MailboxAlertNewMail.gOrigin & this.TOP ? screen.availTop :
+        (screen.availTop + screen.availHeight - this.getWindowHeight());
+  } else if (this.position == "c") {
+    x = MailboxAlertNewMail.gOrigin & this.LEFT ? screen.availLeft :
+        ((screen.availLeft + screen.availWidth) / 2 - (this.getWindowWidth() / 2));
+    y = MailboxAlertNewMail.gOrigin & this.TOP ? screen.availTop :
+        ((screen.availTop + screen.availHeight) / 2 - (this.getWindowHeight() / 2));
   }
   window.moveTo(x, y);
 }
 
 MailboxAlertNewMail.placeAlertOutside = function () {
   var x = 0;
-  var y = -MailboxAlertNewMail.getWindowHeight();
+  var y = -this.getWindowHeight();
 
-  if (MailboxAlertNewMail.position == "tr") {
-    x = MailboxAlertNewMail.gOrigin & MailboxAlertNewMail.LEFT ? screen.availLeft :
-        (screen.availLeft + screen.availWidth - MailboxAlertNewMail.getWindowWidth());
-  } else if (MailboxAlertNewMail.position == "br") {
-    x = MailboxAlertNewMail.gOrigin & MailboxAlertNewMail.LEFT ? screen.availLeft :
-        (screen.availLeft + screen.availWidth - MailboxAlertNewMail.getWindowWidth());
-    y = MailboxAlertNewMail.gOrigin & MailboxAlertNewMail.TOP ? screen.availTop :
+  if (this.position == "tr") {
+    x = MailboxAlertNewMail.gOrigin & this.LEFT ? screen.availLeft :
+        (screen.availLeft + screen.availWidth - this.getWindowWidth());
+  } else if (this.position == "br") {
+    x = MailboxAlertNewMail.gOrigin & this.LEFT ? screen.availLeft :
+        (screen.availLeft + screen.availWidth - this.getWindowWidth());
+    y = MailboxAlertNewMail.gOrigin & this.TOP ? screen.availTop :
         (screen.availTop + screen.availHeight);
-  } else if (MailboxAlertNewMail.position == "bl") {
-    y = MailboxAlertNewMail.gOrigin & MailboxAlertNewMail.TOP ? screen.availTop :
+  } else if (this.position == "bl") {
+    y = MailboxAlertNewMail.gOrigin & this.TOP ? screen.availTop :
         (screen.availTop + screen.availHeight);
-  } else if (MailboxAlertNewMail.position == "c") {
-    x = MailboxAlertNewMail.gOrigin & MailboxAlertNewMail.LEFT ? screen.availLeft :
-        ((screen.availLeft + screen.availWidth) / 2 - (MailboxAlertNewMail.getWindowWidth() / 2));
+  } else if (this.position == "c") {
+    x = MailboxAlertNewMail.gOrigin & this.LEFT ? screen.availLeft :
+        ((screen.availLeft + screen.availWidth) / 2 - (this.getWindowWidth() / 2));
 /*
-    y = MailboxAlertNewMail.gOrigin & MailboxAlertNewMail.TOP ? screen.availTop :
-        ((screen.availTop + screen.availHeight) / 2 - (MailboxAlertNewMail.getWindowHeight() / 2));
+    y = MailboxAlertNewMail.gOrigin & this.TOP ? screen.availTop :
+        ((screen.availTop + screen.availHeight) / 2 - (this.getWindowHeight() / 2));
 */
   }
   window.moveTo(x, y);
@@ -428,14 +430,14 @@ MailboxAlertNewMail.placeAlertOutside = function () {
 MailboxAlertNewMail.fadeOpen = function ()
 {
     var alertContainer = document.getElementById('alertContainer');
-    var newOpacity = parseFloat(window.getComputedStyle(alertContainer, "").opacity) + MailboxAlertNewMail.gFadeIncrement;
+    var newOpacity = parseFloat(window.getComputedStyle(alertContainer, "").opacity) + this.gFadeIncrement;
     alertContainer.style.opacity = newOpacity;
 
     if (newOpacity >= 1.0) {
         // switch gears and start closing the alert
-        this.timer.cancel();
-        this.timer_state = MailboxAlertNewMail.WAITING;
+        this.timer_state = this.WAITING;
 		if (this.duration > 0) {
+            this.timer.cancel();
 			this.timer.initWithCallback(this, 1000 * this.duration, this.timer.TYPE_ONE_SHOT);
 		}
     }
@@ -444,12 +446,12 @@ MailboxAlertNewMail.fadeOpen = function ()
 MailboxAlertNewMail.fadeClose = function ()
 {
     var alertContainer = document.getElementById('alertContainer');
-    var newOpacity = parseFloat(window.getComputedStyle(alertContainer, "").opacity) - MailboxAlertNewMail.gFadeIncrement;
+    var newOpacity = parseFloat(window.getComputedStyle(alertContainer, "").opacity) - this.gFadeIncrement;
     alertContainer.style.opacity = newOpacity;
 
     if (newOpacity <= 0) {
         this.timer.cancel();
-        this.timer_state = MailboxAlertNewMail.DONE;
+        this.timer_state = this.DONE;
         window.close();
     }
 }
@@ -457,20 +459,28 @@ MailboxAlertNewMail.fadeClose = function ()
 MailboxAlertNewMail.closeAlert = function ()
 {
     // make sure there won't be anything else firing
-    this.timer.cancel();
     dump("[XX] starting closing of alert\n");
     
-    if (MailboxAlertNewMail.effect == "fade") {
-        this.timer_state = MailboxAlertNewMail.FADING_OUT;
-        this.timer.initWithCallback(this, this.gFadeTime, this.timer.TYPE_REPEATING_PRECISE);
-        MailboxAlertNewMail.fadeClose();
-    } else if (MailboxAlertNewMail.effect == "slide") {
-        if (MailboxAlertNewMail.position == "tr" || MailboxAlertNewMail.position == "tl") {
-            this.timer_state = MailboxAlertNewMail.SLIDING_OUT_TOP;
-            this.timer.initWithCallback(this, this.gSlideTime, this.timer.TYPE_REPEATING_PRECISE);
-        } else if (MailboxAlertNewMail.position == "br" || MailboxAlertNewMail.position == "bl") {
-            this.timer_state = MailboxAlertNewMail.SLIDING_OUT_BOTTOM;
-            this.timer.initWithCallback(this, this.gSlideTime, this.timer.TYPE_REPEATING_PRECISE);
+    // We create a new timer here, sometimes canceling an existing
+    // one and reinitializing it does to produce the expected result
+    // (it would still wait duration*1000 before firing)
+    
+    if (this.effect == "fade") {
+        this.timer_state = this.FADING_OUT;
+        this.timer.cancel();
+        this.close_timer = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
+        this.close_timer.initWithCallback(this, this.gFadeTime, this.timer.TYPE_REPEATING_PRECISE);
+    } else if (this.effect == "slide") {
+        if (MailboxAlertNewMail.position == "tr" || this.position == "tl") {
+            this.timer_state = this.SLIDING_OUT_TOP;
+            this.timer.cancel();
+            this.close_timer = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
+            this.close_timer.initWithCallback(this, this.gSlideTime, this.timer.TYPE_REPEATING_PRECISE);
+        } else if (MailboxAlertNewMail.position == "br" || this.position == "bl") {
+            this.timer_state = this.SLIDING_OUT_BOTTOM;
+            this.timer.cancel();
+            this.close_timer = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
+            this.close_timer.initWithCallback(this, this.gSlideTime, this.timer.TYPE_REPEATING_PRECISE);
         } else {
             window.close();
         }
@@ -481,14 +491,14 @@ MailboxAlertNewMail.closeAlert = function ()
 
 MailboxAlertNewMail.handleClick = function (event)
 {
-	// MailboxAlertNewMail.showMethods(event);
+	// this.showMethods(event);
 	// Only do default action on left click (button value 0)
 	// On middle click (1), do nothing
 	// On right click (2), the menu items have their own action
 	// associations, but we should stop the running timer
 	// (TODO: restart it if we close the popup again?)
 	if (event.button == 0) {
-		this.performAction(MailboxAlertNewMail.onclick);
+		this.performAction(this.onclick);
 	} else if (event.button == 2) {
 		if (!this.stored_timer_delay) {
 			// store the timer before we cancel it so we can 
@@ -538,15 +548,15 @@ MailboxAlertNewMail.performAction = function (action)
         if ( mailWindow ) {
             tabmail = mailWindow.document.getElementById("tabmail");
             tabmail.selectTabByMode('folder');
-            if (MailboxAlertNewMail.message_hdr) {
-                mailWindow.gFolderTreeView.selectFolder(MailboxAlertNewMail.folder);
+            if (this.message_hdr) {
+                mailWindow.gFolderTreeView.selectFolder(this.folder);
                 if (mailWindow.gDBView) {
-                    mailWindow.gDBView.selectMsgByKey(MailboxAlertNewMail.message_hdr.messageKey);
+                    mailWindow.gDBView.selectMsgByKey(this.message_hdr.messageKey);
                 } else if (mailWindow.gFolderDisplay) {
                     mailWindow.gFolderDisplay.selectMessageComingUp();
-                    mailWindow.gFolderDisplay.selectMessage(MailboxAlertNewMail.message_hdr);
+                    mailWindow.gFolderDisplay.selectMessage(this.message_hdr);
                 } else if (mailWindow.msgWindow) {
-                    var mail_uri = MailboxAlertNewMail.message_hdr.folder.getUriForMsg(MailboxAlertNewMail.message_hdr);
+                    var mail_uri = MailboxAlertNewMail.message_hdr.folder.getUriForMsg(this.message_hdr);
                     mailWindow.msgWindow.windowCommands.selectMessage(mail_uri);
                 } else {
                     // Running out of ideas here...
@@ -562,19 +572,19 @@ MailboxAlertNewMail.performAction = function (action)
         // get the messenger window open service and ask it to open a new window for us
         var mailWindowService = Components.classes["@mozilla.org/messenger/windowservice;1"].getService(Components.interfaces.nsIMessengerWindowService);
         if (mailWindowService) {
-            window.openDialog( "chrome://messenger/content/messageWindow.xul", "_blank", "all,chrome,dialog=no,status,toolbar", MailboxAlertNewMail.message_hdr, null );
+            window.openDialog( "chrome://messenger/content/messageWindow.xul", "_blank", "all,chrome,dialog=no,status,toolbar", this.message_hdr, null );
         } else {
             dump("Could not get nsIMsgWindow service\n");
         }
     } else if (action == "deletemail") {
-		if (MailboxAlertNewMail.message_hdr.folder) {
+		if (this.message_hdr.folder) {
 			var messages = Components.classes["@mozilla.org/array;1"]
 				.createInstance(Components.interfaces.nsIMutableArray);
-			messages.appendElement(MailboxAlertNewMail.message_hdr, false);
+			messages.appendElement(this.message_hdr, false);
 	        var windowManager = Cc['@mozilla.org/appshell/window-mediator;1'].getService();
 	        var windowManagerInterface = windowManager.QueryInterface(Ci.nsIWindowMediator);
 			var mailWindow = windowManagerInterface.getMostRecentWindow( "mail:3pane" );
-			MailboxAlertNewMail.message_hdr.folder.deleteMessages(messages, mailWindow.msgWindow, false, false, null, true);
+			this.message_hdr.folder.deleteMessages(messages, mailWindow.msgWindow, false, false, null, true);
 			children.clear();
 		}
 	}
