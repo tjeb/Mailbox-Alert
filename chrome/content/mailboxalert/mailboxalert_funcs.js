@@ -109,9 +109,22 @@ MailboxAlert.createAlertData = function (mailbox, last_unread) {
             // call on last_unread folder, not our own mailbox
             // (we may have the parent by now)
             var url_listener = MailboxAlert.createUrlListener();
-            var urlscalled = this.last_unread.folder.fetchMsgPreviewText(
+            var urlscalled = false;
+            // API changed from TB2 to TB3, first try TB3 API, if
+            // exception, try the other one
+            try {
+                urlscalled = this.last_unread.folder.fetchMsgPreviewText(
                                         [this.last_unread.messageKey],
                                         1, false, url_listener);
+            } catch(e) {
+                var aOutAsync = {};
+                this.last_unread.folder.fetchMsgPreviewText(
+                          [this.last_unread.messageKey],
+                          1, false, url_listener, aOutAsync);
+                if (aOutAsync && aOutAsync.value) {
+                    urlscalled = true;
+                }
+            }
             dump("[XX] urlscalled: " + urlscalled + "\n");
             if (urlscalled) {
                 dump("[XX] waiting for url_listener\n");
