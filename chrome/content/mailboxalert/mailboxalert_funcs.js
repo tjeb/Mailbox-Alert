@@ -117,13 +117,20 @@ MailboxAlert.createAlertData = function (mailbox, last_unread) {
                                         [this.last_unread.messageKey],
                                         1, false, url_listener);
             } catch(e) {
-                var aOutAsync = {};
-                this.last_unread.folder.fetchMsgPreviewText(
-                          [this.last_unread.messageKey],
-                          1, false, url_listener, aOutAsync);
-                if (aOutAsync && aOutAsync.value) {
-                    urlscalled = true;
-                }
+				try {
+	                var aOutAsync = {};
+	                this.last_unread.folder.fetchMsgPreviewText(
+	                          [this.last_unread.messageKey],
+	                          1, false, url_listener, aOutAsync);
+	                if (aOutAsync && aOutAsync.value) {
+	                    urlscalled = true;
+	                }
+				} catch(e2) {
+					// On some folders (news for instance), and in
+					// some other cases, fetch just throws an exception
+					// if so, just set an empty previewtext
+					this.last_unread.setProperty("preview", "<empty>");
+				}
             }
             dump("[XX] urlscalled: " + urlscalled + "\n");
             if (urlscalled) {
