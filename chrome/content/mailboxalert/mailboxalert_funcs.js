@@ -431,10 +431,6 @@ MailboxAlert.alert2 = function (alert_data) {
     dump("[XX] alert data: " + alert_data + "\n");
     dump("[XX] Alert data: " + alert_data.getInfo() + "\n");
     
-    dump("[XX] preview: \n");
-    dump(alert_data.getPreview());
-    dump("\n[XX]done\n");
-    
     if (alert_data.folder_name) {
         dump("[mailboxalert] alert2 called for ");
         dump(alert_data.folder_uri);
@@ -670,10 +666,6 @@ MailboxAlert.showMessage = function (alert_data, show_icon, icon_file, subject_p
         alert_data.messageBytes = "0";
     }
     var messageSize = MailboxAlert.getHRMsgSize(alert_data.messageBytes);
-    var body = alert_data.getPreview();
-    dump("[XX] body:\n");
-    dump(body);
-    dump("\n[XX] end of body\n");
     
     subject_pref = MailboxAlert.replace(subject_pref, "%server", alert_data.server);
     subject_pref = MailboxAlert.replace(subject_pref, "%originalfolder", alert_data.orig_folder_name);
@@ -688,7 +680,9 @@ MailboxAlert.showMessage = function (alert_data, show_icon, icon_file, subject_p
     subject_pref = MailboxAlert.replace(subject_pref, "%messagebytes", alert_data.messageBytes);
     subject_pref = MailboxAlert.replace(subject_pref, "%messagesize", messageSize);
     //subject_pref = MailboxAlert.replace(subject_pref, "%enter", "\n");
-    subject_pref = MailboxAlert.replace(subject_pref, "%body", body);
+    if (subject_pref.indexOf("%body" > 0)) {
+		subject_pref = MailboxAlert.replace(subject_pref, "%body", alert_data.getPreview());
+	}
 
     var message_text = message;
     dump("[XX] Original Message text: " + message_text + "\n");
@@ -705,7 +699,9 @@ MailboxAlert.showMessage = function (alert_data, show_icon, icon_file, subject_p
     message_text = MailboxAlert.replace(message_text, "%messagebytes", alert_data.messageBytes);
     message_text = MailboxAlert.replace(message_text, "%messagesize", messageSize);
     message_text = MailboxAlert.replace(message_text, "%enter", "\n");
-    message_text = MailboxAlert.replace(message_text, "%body", body);
+    if (subject_pref.indexOf("%body" > 0)) {
+		message_text = MailboxAlert.replace(message_text, "%body", alert_data.getPreview());
+	}
 
     dump("[XX] Message text: " + message_text + "\n");
 
