@@ -749,6 +749,9 @@ MailboxAlert.checkOldSettings = function () {
 
 MailboxAlert.onLoad = function ()
 {
+	// remove to avoid duplicate initialization
+	removeEventListener("load", MailboxAlert.onLoad, true);
+
 //	Components.classes[mailSessionContractID]
 	Components.classes["@mozilla.org/messenger/services/session;1"]
 	.getService(Components.interfaces.nsIMsgMailSession)
@@ -819,8 +822,10 @@ MailboxAlert.onLoad = function ()
 	// check if we exited with muted on last time
 	MailboxAlert.setMuteMenuitem(MailboxAlert.muted());
 
-	// remove to avoid duplicate initialization
-	removeEventListener("load", MailboxAlert.onLoad, true);
+    var filterService = Components.classes["@mozilla.org/messenger/services/filters;1"]
+                        .getService(Components.interfaces.nsIMsgFilterService);
+
+    filterService.addCustomAction(MailboxAlert.filter_action);
 }
 
 

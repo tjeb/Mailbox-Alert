@@ -268,3 +268,16 @@ MailboxAlert.getFolderPreferences = function(folder_uri) {
     
     return folder_prefs;
 }
+
+MailboxAlert.filter_action =
+{
+    id: "MAILBOXALERT",
+    name: "Mailbox Alert Filter Action",
+    apply: function(aMsgHdrs, aActionValue, aListener, aType, aMsgWindow)
+    {
+        alert("Mailbox alert called from filter");
+    },
+    isValidForType: function(type, scope) { return true; },
+    validateActionValue: function(value, folder, type) { return null; },
+};
+
