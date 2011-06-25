@@ -400,7 +400,7 @@ MailboxAlert.alert = function (folder, last_unread) {
     dump("\r\n");
     
     // get the prefs for this folder
-    folder_prefs = MailboxAlert.getFolderPreferences(alert_data.folder_uri);
+    folder_prefs = MailboxAlert.getFolderPreferences14(alert_data.folder_uri);
     
     
     //if (folder.flags & MSG_FOLDER_FLAG_VIRTUAL) {
@@ -540,7 +540,7 @@ MailboxAlert.alert3 = function(alert_data, folder_prefs) {
             dump(alert_data.folder_name_with_server);
             dump(", trying parent\r\n");
             alert_data.toParent()
-            parent_prefs = MailboxAlert.getFolderPreferences(alert_data.folder_uri);
+            parent_prefs = MailboxAlert.getFolderPreferences14(alert_data.folder_uri);
             MailboxAlert.alert3(alert_data, parent_prefs);
         } else if (alerted) {
             dump("[mailboxalert] alerted for ");

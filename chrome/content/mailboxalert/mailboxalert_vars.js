@@ -3,6 +3,23 @@
 // BSD licensed, see LICENSE for details
 //
 
+// Note:
+// For automatic conversion from 0.14, this file contains
+// definitions for both 0.14-style prefs:
+// - folderPrefDefs14
+// - getFolderPreferences14
+// and 0.15
+// - alertPrefDefs
+// - getAlertPreferences
+// For the conversion routine, getAlertPreferences takes one argument,
+// if 1 or more, it'll read the prefs from the global preferences
+// database. If 0, it will create an empty preferences object, which
+// can be filled in. This is used when creating a new one, and when
+// converting from 0.14
+//
+// Then there is a conversion function
+// - convertFolderPreferences14toAlertPreferences
+
 //
 // Use a namespace for global variables
 //
@@ -122,6 +139,8 @@ MailboxAlert.prefService = Components.classes["@mozilla.org/preferences-service;
 MailboxAlert.getGlobalPreferences = function() {
 }
 
+// This is the list of preferences for mailboxalert 0.14
+//
 // idea for prefs;
 // big array of arrays
 // [name, prefname, type, default]
@@ -140,7 +159,7 @@ MailboxAlert.getGlobalPreferences = function() {
 //
 // global array makes sense
 // so prefs just needs an array of 'read' values
-MailboxAlert.folderPrefDefs = {
+MailboxAlert.folderPrefDefs14 = {
 "show_message": [ "bool", false],
 "show_message_icon": [ "bool", true ],
 "icon_file": [ "string", "chrome://mailboxalert/skin/mailboxalert.png" ],
@@ -156,7 +175,27 @@ MailboxAlert.folderPrefDefs = {
 "no_alert_to_parent": [ "bool", false ]
 }
 
-MailboxAlert.getFolderPreferences = function(folder_uri) {
+// The preferences list for mailbox alert 0.15
+// In this initial version, it is the same as the folder prefs list for 0.14
+MailboxAlert.alertPrefDefs = {
+"show_message": [ "bool", false],
+"show_message_icon": [ "bool", true ],
+"icon_file": [ "string", "chrome://mailboxalert/skin/mailboxalert.png" ],
+"subject": [ "string", "" ],
+"message": [ "string", "" ],
+"play_sound": [ "bool", false ],
+"sound_wav": [ "bool", false ],
+"sound_wav_file": [ "string", "" ],
+"execute_command": [ "bool", false ],
+"command": [ "string", "" ],
+"escape": [ "bool", false ],
+"alert_for_children": [ "bool", false ],
+"no_alert_to_parent": [ "bool", false ]
+}
+
+// This returns the preferences for the folder in mailboxalert
+// 0.14
+MailboxAlert.getFolderPreferences14 = function(folder_uri) {
     dump("[XX] Getting prefs for: " + folder_uri + "\n");
     var folder_prefs = {};
     folder_prefs.folder_uri = folder_uri;
@@ -169,26 +208,26 @@ MailboxAlert.getFolderPreferences = function(folder_uri) {
             dump("[XX] full name: extensions.mailboxalert." + name + "." + this.folder_uri + "\n");
             // get it from the prefs thingy
             try {
-                if (MailboxAlert.folderPrefDefs[name][0] == "bool") {
+                if (MailboxAlert.folderPrefDefs14[name][0] == "bool") {
                     this.values[name] = MailboxAlert.prefService.getBoolPref("extensions.mailboxalert." + name + "." + this.folder_uri);
-                } else if (MailboxAlert.folderPrefDefs[name][0] == "string") {
+                } else if (MailboxAlert.folderPrefDefs14[name][0] == "string") {
                     this.values[name] = MailboxAlert.prefService.getCharPref("extensions.mailboxalert." + name + "." + this.folder_uri);
-                } else if (MailboxAlert.folderPrefDefs[name][0] == "integer") {
+                } else if (MailboxAlert.folderPrefDefs14[name][0] == "integer") {
                     this.values[name] = MailboxAlert.prefService.getIntPref("extensions.mailboxalert." + name + "." + this.folder_uri);
                 }
                 dump("[XX] found value in prefs store\n");
             } catch(e) {
                 dump("[XX] found no value in prefs store\n");
-				
+                
                 // ok pref doesn't exist yet.
                 // should we not set and just return?
-                pref_data = MailboxAlert.folderPrefDefs[name]
+                pref_data = MailboxAlert.folderPrefDefs14[name]
                 if (pref_data != null) {
-					dump("[XX] default: " + MailboxAlert.folderPrefDefs[name][1]);
-                   this.values[name] = MailboxAlert.folderPrefDefs[name][1];
+                    dump("[XX] default: " + MailboxAlert.folderPrefDefs14[name][1]);
+                   this.values[name] = MailboxAlert.folderPrefDefs14[name][1];
                 } else {
-					alert("[XX] pref " + name + " unknown!");
-				}
+                    alert("[XX] pref " + name + " unknown!");
+                }
             }
         } else {
             dump("[XX] already cached\n");
@@ -201,9 +240,9 @@ MailboxAlert.getFolderPreferences = function(folder_uri) {
         // should we type-check here?)
         dump("[XX] SET VALUE OF " + name + " TO " + value + "\n");
         dump("[XX] (which is a " + typeof(value) + ")\n");
-        if (!(name in MailboxAlert.folderPrefDefs)) {
-			alert("Error, setting unknown pref value " + name + " to " + value);
-		}
+        if (!(name in MailboxAlert.folderPrefDefs14)) {
+            alert("Error, setting unknown pref value " + name + " to " + value);
+        }
         this.values[name] = value;
     }
 
@@ -213,36 +252,36 @@ MailboxAlert.getFolderPreferences = function(folder_uri) {
     // (acutally, initing the prefs screen should have this effect)
     // removeme TODO
     folder_prefs.cacheAll = function() {
-        for (var name in MailboxAlert.folderPrefDefs) {
+        for (var name in MailboxAlert.folderPrefDefs14) {
             var a = this.get(name);
         }
     }
     
     folder_prefs.store = function() {
         dump("[XX] store prefs for " + this.folder_uri + "\n")
-        for (var name in MailboxAlert.folderPrefDefs) {
-            var type = MailboxAlert.folderPrefDefs[name][0];
-            var pref_default = MailboxAlert.folderPrefDefs[name][1];
+        for (var name in MailboxAlert.folderPrefDefs14) {
+            var type = MailboxAlert.folderPrefDefs14[name][0];
+            var pref_default = MailboxAlert.folderPrefDefs14[name][1];
             dump("[XX] name: " + name + "\n");
             dump("[xX] in values: " + (name in this.values) + "\n");
             if (name in this.values) {
-				dump("[XX] value: " + this.values[name] + "\n");
-				dump("[XX] default: " + pref_default + "\n");
-			}
+                dump("[XX] value: " + this.values[name] + "\n");
+                dump("[XX] default: " + pref_default + "\n");
+            }
             if (name in this.values && !(this.values[name] == pref_default)) {
-				dump("[XX] not default, store it to extensions.mailboxalert." + name + "." + this.folder_uri + "\n");
-				dump("[XX] (that is, set it to " + this.values[name] + ")\n");
-				dump("[XX] (which is a " + typeof(this.values[name]) + ")\n");
+                dump("[XX] not default, store it to extensions.mailboxalert." + name + "." + this.folder_uri + "\n");
+                dump("[XX] (that is, set it to " + this.values[name] + ")\n");
+                dump("[XX] (which is a " + typeof(this.values[name]) + ")\n");
                 // non-default, so store it
-                if (MailboxAlert.folderPrefDefs[name][0] == "bool") {
+                if (MailboxAlert.folderPrefDefs14[name][0] == "bool") {
                     MailboxAlert.prefService.setBoolPref("extensions.mailboxalert." + name + "." + this.folder_uri, this.values[name]);
-                } else if (MailboxAlert.folderPrefDefs[name][0] == "string") {
+                } else if (MailboxAlert.folderPrefDefs14[name][0] == "string") {
                     MailboxAlert.prefService.setCharPref("extensions.mailboxalert." + name + "." + this.folder_uri, this.values[name]);
-                } else if (MailboxAlert.folderPrefDefs[name][0] == "integer") {
+                } else if (MailboxAlert.folderPrefDefs14[name][0] == "integer") {
                     MailboxAlert.prefService.setIntPref("extensions.mailboxalert." + name + "." + this.folder_uri, this.values[name]);
                 }
             } else {
-				dump("[XX] not in values, or default, clear extensions.mailboxalert." + name + "." + this.folder_uri + "\n");
+                dump("[XX] not in values, or default, clear extensions.mailboxalert." + name + "." + this.folder_uri + "\n");
                 // it is unset or it is default, remove any pref previously set
                 try {
                     MailboxAlert.prefService.clearUserPref("extensions.mailboxalert." + name + "." + this.folder_uri);
@@ -259,12 +298,39 @@ MailboxAlert.getFolderPreferences = function(folder_uri) {
 
     folder_prefs.dump = function() {
         dump("[XX] All folder prefs for " + this.folder_uri + "\n")
-        for (var name in MailboxAlert.folderPrefDefs) {
-            var type = MailboxAlert.folderPrefDefs[name][0];
+        for (var name in MailboxAlert.folderPrefDefs14) {
+            var type = MailboxAlert.folderPrefDefs14[name][0];
             dump(name + " (" + type + "): " + this.get(name) + "\n");
         }
     }
 
-    
     return folder_prefs;
+}
+
+// Create an AlertPreferences object
+// The argument index is the alert number to get
+// If index is 0, this will create an 'empty' preferences object, with
+// default values, to be filled in later.
+MailboxAlert.getAlertPreferences = function (index) {
+    
+}
+
+// convert folder preferences to alert_preferences object
+MailboxAlert.convertFolderPreferences14toAlertPreferences = function (folder_prefences) {
+    // TODO
+}
+
+MailboxAlert.max_alerts = 100;
+MailboxAlert.findAvailableAlertPrefsId = function () {
+  var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch).QueryInterface(Components.interfaces.nsIPrefService);
+  var pref_branch = prefs.getBranch("extensions.mailboxalert.alerts.");
+  for (i = 1; i <= MailboxAlert.max_alerts; i++) {
+    try {
+      var alert_name = pref_branch.getCharPref(i + ".name");
+    } catch (e) {
+      // ok, this one seems to be free
+      return i;
+    }
+  }
+  return 0;
 }

@@ -474,7 +474,7 @@
         document.title = stringsBundle.getString('mailboxalert.prefs.folder') + " " + folder_name;
 
 		// intentionally global, reffed by nearly all functions
-        folder_prefs = MailboxAlert.getFolderPreferences(folder_uri);
+        folder_prefs = MailboxAlert.getFolderPreferences14(folder_uri);
 
 		prefsToUIAll();
 		checkDisableAll();

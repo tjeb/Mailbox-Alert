@@ -18,21 +18,23 @@
 	</script>
 
 	<!-- Firefox / Thunderbird Tools Menu -->
+					<!--oncommand="window.openDialog('chrome://mailboxalert/content/mailboxalert_pref.xul', 'mailboxalert_prefs', 'chrome', MailboxAlert.getFolder());"/> -->
 	<menupopup id="menu_ToolsPopup">
 		<menuseparator id="mailboxalertSeperator" insertbefore="devToolsSeparator" />
 		<menuitem id="mailboxalert-tools-menu-prefs" label="Mailbox Alert"
 					accesskey="L" class="menuitem-iconic"
 					insertbefore="devToolsSeparator" 
-					oncommand="window.openDialog('chrome://mailboxalert/content/mailboxalert_pref.xul', 'mailboxalert_prefs', 'chrome', MailboxAlert.getFolder());"/> 
+					oncommand="window.openDialog('chrome://mailboxalert/content/alert_list.xul', 'mailboxalert_prefs', 'chrome');"/> 
 	</menupopup>
 	
 	<!-- Mozilla Tools Menu -->
+			<!--oncommand="window.openDialog('chrome://mailboxalert/content/mailboxalert_pref.xul', 'mailboxalert_prefs', 'chrome', MailboxAlert.getFolder());"/> -->
 	<menupopup id="taskPopup">
 		<menuseparator id="mailboxalertSeperator" insertbefore="devToolsSeparator" />
         <menuitem id="mailboxalert-moz-tools-menu-prefs" 
 			label="&mailboxalert.prefs.title;" accesskey="L" 
 			insertbefore="devToolsSeparator" 
-			oncommand="window.openDialog('chrome://mailboxalert/content/mailboxalert_pref.xul', 'mailboxalert_prefs', 'chrome', MailboxAlert.getFolder());"/> 
+			oncommand="window.openDialog('chrome://mailboxalert/content/alert_list.xul', 'mailboxalert_prefs', 'chrome');"/> 
 		<menuitem id="mailboxalert-moz-tools-menu-mute"
 			type="checkbox"
 			label="&mailboxalert.mute;" accesskey="M" insertbefore="devToolsSeparator"
