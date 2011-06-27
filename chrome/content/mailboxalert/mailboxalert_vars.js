@@ -485,7 +485,6 @@ MailboxAlert.getAlertPreferences = function (index) {
 
         for (var name in MailboxAlert.alertPrefDefs) {
             if (name != "name" && this.get(name) != other.get(name)) {
-                alert("[XX] difference between alert " + this.index + " and " + other.index + ": " + name + "\n");
                 dump("[XX] difference between alert " + this.index + " and " + other.index + ": " + name + "\n");
                 return false;
             }
@@ -588,6 +587,29 @@ MailboxAlert.convertAllFolderPreferences14toAlertPreferences = function () {
     // loop over all known folders in all knows servers, and read
     // (and cache) the configs, if any. Then convert them to
     // AlertPrefs. Finally tie the index to the folder
+
+    // also add a default if it does not exist yet
+    var default_alert = MailboxAlert.getAlertPreferences(0);
+    // TODO: int8l
+    default_alert.set("name", "Default Alert");
+    default_alert.set("show_message", true);
+    default_alert.set("subject", "%sendername on %originalfolder");
+    default_alert.set("message", "%subject");
+    var all_alerts = MailboxAlert.getAllAlertPrefs();
+    var exists = false;
+    for (var i = 0; i < all_alerts.length; ++i) {
+        var existing_alert = all_alerts[i];
+        
+        if (existing_alert.equals(default_alert)) {
+            // ok just stop and return
+            exists = true;
+        }
+    }
+    if (!exists) {
+        default_alert.createNewIndex();
+        default_alert.store();
+    }
+    
     var all_servers = accountManager.allServers;
     for (var i = 0; i < all_servers.Count(); ++i) {
         var server = all_servers.GetElementAt(i).QueryInterface(Components.interfaces.nsIMsgIncomingServer);
