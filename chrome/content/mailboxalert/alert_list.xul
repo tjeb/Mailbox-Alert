@@ -101,13 +101,11 @@ MailboxAlertList.fillAlertList = function () {
   var alert_listbox = document.getElementById("alert_listbox");
 
   clearAlertList();
-  for (i = 1; i <= MailboxAlert.max_alerts; i++) {
-    try {
-      var alert_name = prefs.getCharPref("extensions.mailboxalert.alerts."+i+".name");
-      alert_listbox.appendItem(alert_name, i);
-    } catch (e) {
-      // no alert with this id, skip
-    }
+  var alert_list = MailboxAlert.getAllAlertPrefs();
+  i = 1;
+  for (alert in alert_list) {
+    alert.get("name", i);
+    i = i + 1;
   }
   try {
     var first = alert_listbox.getItemAtIndex(0);
