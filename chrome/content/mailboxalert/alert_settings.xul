@@ -16,7 +16,7 @@
   <key id="close_cmd" modifiers="control" key="W" oncommand="window.close();"/>
 </keyset>
 
-<script src="chrome://mailboxalert/content/preferences.js">
+<script src="chrome://mailboxalert/content/mailboxalert_vars.js">
 </script>
 
 <script src="chrome://mailboxalert/content/mailboxalert_common.js">
@@ -227,38 +227,38 @@ function checkUIAll() {
   checkUIOkButton();
 }
 
-function setUIPrefCheckbox(pref_branch, pref_name, element_name, value_default) {
+function setUIPrefCheckbox(alert_prefs, name, element_name) {
   var element = document.getElementById(element_name);
   if (element) {
-    element.checked = ma_getBoolPref(pref_branch, pref_name);
+    element.checked = alert_prefs.get(name);
   } else {
     alert("Code error: element " + element_name + " not found");
   }
 }
 
-function setUIPrefTextbox(pref_branch, pref_name, element_name, value_default) {
+function setUIPrefTextbox(alert_prefs, name, element_name) {
   var element = document.getElementById(element_name);
   if (element) {
-    element.value = ma_getCharPref(pref_branch, pref_name);
+    element.value = alert_prefs.get(name);
     dump("read value: " + element.value + "\n");
   } else {
     alert("Code error: element " + element_name + " not found");
   }
 }
 
-function setUIPrefInt(pref_branch, pref_name, element_name, value_default) {
+function setUIPrefInt(alert_prefs, name, element_name) {
   var element = document.getElementById(element_name);
   if (element) {
-    element.value = ma_getIntPref(pref_branch, pref_name);
+    element.value = alert_prefs.get(name);
   } else {
     alert("Code error: element " + element_name + " not found");
   }
 }
 
-function setUIPrefAttribute(pref_branch, pref_name, element_name, attribute, value_default) {
+function setUIPrefAttribute(alert_prefs, name, element_name, attribute) {
   var element = document.getElementById(element_name);
   if (element) {
-    element.setAttribute(attribute, ma_getCharPref(pref_branch, pref_name));
+    element.setAttribute(attribute, alert_prefs.get(name));
   } else {
     alert("Code error: element " + element_name + " not found");
   }
@@ -271,9 +271,10 @@ function readPrefs(alert_id) {
   }
   dump("read settings for alert " + alert_id + "\n");
   try {
-    prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch).QueryInterface(Components.interfaces.nsIPrefService);
-    dump("read 1\n");
-    alert_prefs = prefs.getBranch("extensions.mailboxalert.alerts." + alert_id + ".");
+    //prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch).QueryInterface(Components.interfaces.nsIPrefService);
+    //dump("read 1\n");
+    //alert_prefs = prefs.getBranch("extensions.mailboxalert.alerts." + alert_id + ".");
+    alert_prefs = MailboxAlert.getAlertPreferences(alert_id);
     dump("read 2; pref branch " + "extensions.mailboxalert.alerts." + alert_id + "." + "\n");
     
     setUIPrefTextbox(alert_prefs, "name", "alert_name_textbox");
@@ -286,20 +287,20 @@ function readPrefs(alert_id) {
     setUIPrefCheckbox(alert_prefs, "execute_command", "execute_command_checkbox");
     dump("read 6\n");
 
-    setUIPrefTextbox(alert_prefs, "show_message_subject", "show_message_subject_textbox");
+    setUIPrefTextbox(alert_prefs, "subject", "show_message_subject_textbox");
     dump("read 7\n");
-    setUIPrefTextbox(alert_prefs, "show_message_content", "show_message_content_textbox");
+    setUIPrefTextbox(alert_prefs, "message", "show_message_content_textbox");
     dump("read 8\n");
 
     setUIPrefCheckbox(alert_prefs, "show_message_icon", "show_message_icon_checkbox");
     dump("read 9\n");
         
-    setUIPrefAttribute(alert_prefs, "show_message_icon_file", "show_message_icon_image", "src");
+    setUIPrefAttribute(alert_prefs, "icon_file", "show_message_icon_image", "src");
     dump("read 10\n");
-    setUIPrefInt(alert_prefs, "show_message_duration", "show_message_duration_textbox");
+    setUIPrefInt(alert_prefs, "duration", "show_message_duration_textbox");
     dump("read 11\n");
     
-    var show_message_position = ma_getCharPref(alert_prefs, "show_message_position");
+    var show_message_position = alert_prefs.get("position");
     if (show_message_position == "top-left") {
       doClick("show_message_position_top-left");
     } else if (show_message_position == "top-right") {
@@ -313,7 +314,7 @@ function readPrefs(alert_id) {
     }
 
     dump("read 13\n");
-    var show_message_effect = ma_getCharPref(alert_prefs, "show_message_effect");
+    var show_message_effect = alert_prefs.get("effect");
     cur_element = document.getElementById("show_message_effect_menulist");
     if (show_message_effect == "slide") {
       doClick("show_message_effect_slide");
@@ -322,7 +323,7 @@ function readPrefs(alert_id) {
     }
     dump("read 14\n");
 
-    var show_message_onclick = ma_getCharPref(alert_prefs, "show_message_onclick");
+    var show_message_onclick = alert_prefs.get("onclick");
     cur_element = document.getElementById("show_message_onclick_menulist");
     if (show_message_onclick == "raisewindow") {
       doClick("show_message_onclick_raisewindow");
@@ -331,9 +332,9 @@ function readPrefs(alert_id) {
     }
     dump("read 15\n");
     
-    var default_sound = ma_getBoolPref(alert_prefs, "play_sound_default");
+    var sound_wav_file = alert_prefs.get("sound_wav_file");
     dump("read 16\n");
-    if (default_sound) {
+    if (sound_wav_file == "") {
       var element = document.getElementById("play_sound_radio_default");
       element.setAttribute("selected", true);
     } else {
@@ -341,14 +342,15 @@ function readPrefs(alert_id) {
       element.setAttribute("selected", true);
     }
     dump("read 17\n");
-    setUIPrefTextbox(alert_prefs, "play_sound_file", "play_sound_file_textbox", "");
+    setUIPrefTextbox(alert_prefs, "sound_wav_file", "play_sound_file_textbox");
     dump("read 18\n");
     
-    setUIPrefTextbox(alert_prefs, "execute_command_command", "execute_command_textbox", "");
+    setUIPrefTextbox(alert_prefs, "command", "execute_command_textbox");
     dump("read 19\n");
-    setUIPrefCheckbox(alert_prefs, "execute_command_escape_html", "execute_command_escape_html_checkbox", false);
+    setUIPrefCheckbox(alert_prefs, "escape", "execute_command_escape_html_checkbox", false);
     dump("read 20\n");
 
+/*
     setPrefColor(alert_prefs, "show_message_subject_font_color", "subject");
     dump("read 21\n");
     setPrefColorPicker(alert_prefs, "show_message_subject_font_color", "subject_font_color_picker");
@@ -365,42 +367,43 @@ function readPrefs(alert_id) {
     dump("read 27\n");
     setPrefColorPicker(alert_prefs, "show_message_content_background_color", "message_background_color_picker");
     dump("read 28\n");
+*/
   } catch (e) {
     alert(e);
   }
 }
 
-function storeUIPrefTextbox(pref_branch, pref_name, element_name) {
+function storeUIPrefTextbox(alert_prefs, name, element_name) {
   var element = document.getElementById(element_name);
   if (element) {
-    ma_setCharPref(pref_branch, pref_name, element.value);
+    alert_prefs.set(name, element.value);
   } else {
     alert("Store error: element not found: " + element_name);
   }
 }
 
-function storeUIPrefCheckbox(pref_branch, pref_name, element_name) {
+function storeUIPrefCheckbox(alert_prefs, name, element_name) {
   var element = document.getElementById(element_name);
   if (element) {
-    ma_setBoolPref(pref_branch, pref_name, element.checked);
+    alert_prefs.set(name, element.value);
  } else {
     alert("Store error: element not found: " + element_name);
   }
 }
 
-function storeUIPrefInt(pref_branch, pref_name, element_name) {
+function storeUIPrefInt(alert_prefs, name, element_name) {
   var element = document.getElementById(element_name);
   if (element) {
-    ma_setIntPref(pref_branch, pref_name, element.value);
+    alert_prefs.set(name, element.value);
   } else {
     alert("Store error: element not found: " + element_name);
   }
 }
 
-function storeUIPrefAttribute(pref_branch, pref_name, element_name, attribute) {
+function storeUIPrefAttribute(alert_prefs, name, element_name, attribute) {
   var element = document.getElementById(element_name);
   if (element) {
-    ma_setCharPref(pref_branch, pref_name, element.getAttribute(attribute));
+    alert_prefs.set(name, element.getAttribute(attribute));
   } else {
     alert("Store error: element not found: " + element_name);
   }
@@ -419,8 +422,7 @@ function storePrefs(alert_id) {
 
     dump("store 0 id " + alert_id + "\n");
   try {
-    prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch).QueryInterface(Components.interfaces.nsIPrefService);
-    alert_prefs = prefs.getBranch("extensions.mailboxalert.alerts." + alert_id + ".");
+    alert_prefs = MailboxAlert.getAlertPreferences(alert_id);
     dump("store 1\n");
     storeUIPrefTextbox(alert_prefs, "name", "alert_name_textbox");
     dump("store 2\n");
@@ -432,37 +434,40 @@ function storePrefs(alert_id) {
     storeUIPrefCheckbox(alert_prefs, "execute_command", "execute_command_checkbox");
     dump("store 5\n");
 
-    storeUIPrefTextbox(alert_prefs, "show_message_subject", "show_message_subject_textbox");
+    storeUIPrefTextbox(alert_prefs, "subject", "show_message_subject_textbox");
     dump("store 6\n");
-    storeUIPrefTextbox(alert_prefs, "show_message_content", "show_message_content_textbox");
+    storeUIPrefTextbox(alert_prefs, "message", "show_message_content_textbox");
     dump("store 7\n");
 
     storeUIPrefCheckbox(alert_prefs, "show_message_icon", "show_message_icon_checkbox");
     dump("store 8\n");
         
-    storeUIPrefAttribute(alert_prefs, "show_message_icon_file", "show_message_icon_image", "src");
+    storeUIPrefAttribute(alert_prefs, "icon_file", "show_message_icon_image", "src");
     dump("store 9\n");
-    storeUIPrefInt(alert_prefs, "show_message_duration", "show_message_duration_textbox");
+    storeUIPrefInt(alert_prefs, "duration", "show_message_duration_textbox");
     dump("store 11\n");
     
-    storeUIPrefTextbox(alert_prefs, "show_message_position", "show_message_position_menulist");
+    storeUIPrefTextbox(alert_prefs, "position", "show_message_position_menulist");
     dump("store 11.5\n");
-    storeUIPrefTextbox(alert_prefs, "show_message_effect", "show_message_effect_menulist");
+    storeUIPrefTextbox(alert_prefs, "effect", "show_message_effect_menulist");
     dump("store 12\n");
-    storeUIPrefTextbox(alert_prefs, "show_message_onclick", "show_message_onclick_menulist");
+    storeUIPrefTextbox(alert_prefs, "onclick", "show_message_onclick_menulist");
     dump("store 13\n");
-    
+
+    /* TODO:
     storeUIPrefAttribute(alert_prefs, "play_sound_default", "play_sound_radio_default", "selected");
     dump("store 14\n");
     //storeUIPrefCheckbox(alert_prefs, "play_sound_wav", "play_sound_radio_file");
-    storeUIPrefTextbox(alert_prefs, "play_sound_file", "play_sound_file_textbox");
+    storeUIPrefTextbox(alert_prefs, "sound_wav_file", "play_sound_file_textbox");
     dump("store 15\n");
+    */
     
-    storeUIPrefTextbox(alert_prefs, "execute_command_command", "execute_command_textbox");
+    storeUIPrefTextbox(alert_prefs, "command", "execute_command_textbox");
     dump("store 16\n");
-    storeUIPrefCheckbox(alert_prefs, "execute_command_escape_html", "execute_command_escape_html_checkbox");
+    storeUIPrefCheckbox(alert_prefs, "escape", "execute_command_escape_html_checkbox");
     dump("store 17\n");
-    
+
+    /*
     storeUIPrefAttribute(alert_prefs, "show_message_subject_font_color", "subject_font_color_picker", "color");
     dump("store 18\n");
     storeUIPrefAttribute(alert_prefs, "show_message_subject_background_color", "subject_background_color_picker", "color");
@@ -470,7 +475,9 @@ function storePrefs(alert_id) {
     storeUIPrefAttribute(alert_prefs, "show_message_content_font_color", "message_font_color_picker", "color");
     dump("store 20\n");
     storeUIPrefAttribute(alert_prefs, "show_message_content_background_color", "message_background_color_picker", "color");
+    */
     dump("store 21\n");
+    alert_prefs.store();
   } catch (e) {
     dump("error\n");
     alert("Error: " + e);

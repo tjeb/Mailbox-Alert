@@ -185,6 +185,9 @@ MailboxAlert.folderPrefDefs14 = {
 // with the added value 'name'.
 // for conversion from 0.14, it is essential that everything before 'name'
 // keeps the current name (see convert function in folderprefs14)
+
+// TODO: rename everything below name (for those above, add conversion?)
+// (don't forget to update alert_settings.xul)
 MailboxAlert.alertPrefDefs = {
 "show_message": [ "bool", false],
 "show_message_icon": [ "bool", true ],
@@ -197,8 +200,14 @@ MailboxAlert.alertPrefDefs = {
 "execute_command": [ "bool", false ],
 "command": [ "string", "" ],
 "escape": [ "bool", false ],
-"name": [ "string", "" ]
+"name": [ "string", "" ],
+"duration": [ "integer", 5 ],
+"position": [ "string", "top-left" ],
+"effect": [ "string", "slide" ],
+"onclick": [ "string", "close" ],
 }
+
+// TODO: current 'global preferences' need to be used in auto-conversion
 
 // This returns the preferences for the folder in mailboxalert
 // 0.14
