@@ -31,6 +31,7 @@ if (typeof(MailboxAlert) == "undefined") {
 /* variables for queue handling
  * TODO: queue 'type' with functions (or perhaps remove
  * queueing altogether)
+ * (perhaps we can now)
  */
 MailboxAlert.queue_length = 0;
 MailboxAlert.max_queue_length = 10;
@@ -141,7 +142,74 @@ MailboxAlert.isDefaultPrefValue = function (pref, value) {
 
 MailboxAlert.prefService = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
 
-MailboxAlert.getGlobalPreferences = function() {
+// These are the 'global' preferences as they were defined
+// in mailbox alert 0.14
+// All of these are now direct alert preferences in 0.15
+// so this object is only used for conversion
+MailboxAlert.getGlobalPreferences14 = function() {
+    var global_prefs = {};
+    global_prefs.position = "top-left";
+    global_prefs.effect = "none";
+    global_prefs.duration = 5;
+    global_prefs.onclick = "close";
+
+    try {
+        var pospref = MailboxAlert.prefService.getCharPref("extensions.mailboxalert.alert_position");
+        if (pospref == "tr") {
+            global_prefs.position = "top-right";
+        } else if (pospref == "bl") {
+            global_prefs.position = "bottom-left";
+        } else if (pospref == "br") {
+            global_prefs.position = "bottom-right";
+        } else if (pospref == "c") {
+            global_prefs.position = "center";
+        }
+    } catch (e) {
+        // wasn't set, n/m
+    }
+    try {
+        global_prefs.effect = MailboxAlert.prefService.getCharPref("extensions.mailboxalert.alert_effect");
+    } catch (e) {
+        // wasn't set, n/m
+    }
+    try {
+        global_prefs.duration = MailboxAlert.prefService.getIntPref("extensions.mailboxalert.alert_duration");
+    } catch (e) {
+        // wasn't set, n/m
+    }
+    try {
+        global_prefs.onclick = MailboxAlert.prefService.getIntPref("extensions.mailboxalert.alert_onclick");
+    } catch (e) {
+        // wasn't set, n/m
+    }
+
+    // TODO: Once we change names in AlertPrefDefs, update them here
+    global_prefs.applyToAlertPrefs = function (alert_prefs) {
+        alert_prefs.set("position", this.position);
+        alert_prefs.set("duration", this.duration);
+        alert_prefs.set("effect", this.effect);
+        alert_prefs.set("onclick", this.onclick);
+    }
+
+    // WARNING: DON'T USE UNTIL CONVERSION IS DONE
+    global_prefs.deleteBranch = function (branchname) {
+        try {
+            MailboxAlert.prefService.deleteBranch(branchname);
+        } catch (e) {
+            // ok leave them then
+        }
+    }
+    // WARNING: DON'T USE UNTIL CONVERSION IS DONE
+    global_prefs.deleteAll = function () {
+        // TODO: can we delete delay now?
+        //this.deleteBranch("extensions.mailboxalert.alert_delay");
+        this.deleteBranch("extensions.mailboxalert.alert_position");
+        this.deleteBranch("extensions.mailboxalert.alert_effect");
+        this.deleteBranch("extensions.mailboxalert.alert_duration");
+        this.deleteBranch("extensions.mailboxalert.alert_onclick");
+    }
+
+    return global_prefs;
 }
 
 // This is the list of preferences for mailboxalert 0.14
@@ -207,8 +275,6 @@ MailboxAlert.alertPrefDefs = {
 "onclick": [ "string", "close" ],
 }
 
-// TODO: current 'global preferences' need to be used in auto-conversion
-
 // This returns the preferences for the folder in mailboxalert
 // 0.14
 MailboxAlert.getFolderPreferences14 = function(folder_uri) {
@@ -262,17 +328,6 @@ MailboxAlert.getFolderPreferences14 = function(folder_uri) {
         this.values[name] = value;
     }
 
-    // in normal usage we only want to get and cache what we need
-    // but in some cases (for instance the prefs screen), we might
-    // want to get everything at once
-    // (acutally, initing the prefs screen should have this effect)
-    // removeme TODO
-    folder_prefs.cacheAll = function() {
-        for (var name in MailboxAlert.folderPrefDefs14) {
-            var a = this.get(name);
-        }
-    }
-    
     folder_prefs.store = function() {
         dump("[XX] store prefs for " + this.folder_uri + "\n")
         for (var name in MailboxAlert.folderPrefDefs14) {
@@ -337,7 +392,9 @@ MailboxAlert.getFolderPreferences14 = function(folder_uri) {
                 new_alert.set(name, this.get(name));
             }
         }
-
+        var global_prefs = MailboxAlert.getGlobalPreferences14();
+        global_prefs.applyToAlertPrefs(new_alert);
+        
         // get all alert prefs, and see if any match this new one
         var all_alerts = MailboxAlert.getAllAlertPrefs();
         for (var i = 0; i < all_alerts.length; ++i) {
@@ -374,10 +431,6 @@ MailboxAlert.getAlertPreferences = function (index) {
     alert_prefs.values = {};
     
     alert_prefs.get = function (name) {
-        /*if (!this.index || this.index == 0) {
-            alert("[XX] TODO: error message, attempting to alert_prefs.get() with index 0");
-            return;
-        }*/
         //dump("[XX] Getting pref for " + this.index + "\n");
         if (!(name in this.values)) {
             //dump("[XX] pref not cached yet\n");
@@ -422,17 +475,6 @@ MailboxAlert.getAlertPreferences = function (index) {
         this.values[name] = value;
     }
 
-    // in normal usage we only want to get and cache what we need
-    // but in some cases (for instance the prefs screen), we might
-    // want to get everything at once
-    // (acutally, initing the prefs screen should have this effect)
-    // removeme TODO
-    alert_prefs.cacheAll = function() {
-        for (var name in MailboxAlert.alertPrefDefs) {
-            var a = this.get(name);
-        }
-    }
-    
     alert_prefs.store = function() {
         if (!this.index || this.index == 0) {
             alert("[XX] TODO: error. Attempting to store alert_prefs with index 0");
@@ -527,6 +569,85 @@ MailboxAlert.getAlertPreferences = function (index) {
     return alert_prefs;
 }
 
+// Returns a folder_prefs object
+// this object contains:
+// alerts: an array of alert id's
+// no_alert_to_parent: true or false
+// alert_for_children: true or false
+MailboxAlert.getFolderPrefs = function (uri) {
+    var folder_prefs = {};
+
+    folder_prefs.uri = uri;
+    folder_prefs.alerts = [];
+    folder_prefs.alert_for_children = false;
+    folder_prefs.no_alert_to_parent = true;
+    
+    try {
+        folder_prefs.alert_for_children = MailboxAlert.prefService.getBoolPref("extensions.mailboxalert." + uri + ".alert_for_children");
+    } catch (e) {
+        // n/m, wasn't set
+    }
+    try {
+        folder_prefs.no_alert_to_parent = MailboxAlert.prefService.getBoolPref("extensions.mailboxalert." + uri + ".no_alert_to_parent");
+    } catch (e) {
+        // n/m, wasn't set
+    }
+    try {
+        var alerts_string = MailboxAlert.prefService.getCharPref("extensions.mailboxalert." + uri + ".alerts");
+        var alerts_parts = alerts_string.split(",");
+        for (var i = 0; i < alerts_parts.length; i++) {
+            folder_prefs.alerts.push(alerts_parts[i]);
+        }
+    } catch (e) {
+        // n/m, wasn't set
+    }
+
+    folder_prefs.addAlert = function (alert_index) {
+        var already_there = false;
+        for (var i = 0; i < this.alerts.length; ++i) {
+            if (this.alerts[i] == alert_index) {
+                already_there = true;
+            }
+        }
+        if (!already_there) {
+            this.alerts.push(alert_index);
+        }
+    }
+
+    folder_prefs.removeAlert = function (alert_index) {
+        var new_alerts = []
+        for (var i = 0; i < this.alerts.length; ++i) {
+            if (this.alerts[i] != alert_index) {
+                new_alerts.push(this.alerts[i]);
+            }
+        }
+        this.alerts = new_alerts;
+    }
+
+    folder_prefs.store = function () {
+        if (this.alert_for_children) {
+            MailboxAlert.prefService.setBoolPref("extensions.mailboxalert." + this.uri + ".alert_for_children", true);
+        } else {
+            // remove if exists
+            MailboxAlert.prefService.deleteBranch("extensions.mailboxalert." + this.uri + ".alert_for_children");
+        }
+        if (this.no_alert_to_parent) {
+            MailboxAlert.prefService.setBoolPref("extensions.mailboxalert." + this.uri + ".no_alert_to_parent", true);
+        } else {
+            // remove if exists
+            MailboxAlert.prefService.deleteBranch("extensions.mailboxalert." + this.uri + ".no_alert_to_parent");
+        }
+        if (this.alerts.length != 0) {
+            MailboxAlert.prefService.setCharPref("extensions.mailboxalert." + this.uri + ".alerts", this.alerts.join(","));
+        } else {
+            // remove if exists
+            MailboxAlert.prefService.deleteBranch("extensions.mailboxalert." + this.uri + ".alerts");
+        }
+    }
+
+    return folder_prefs;
+}
+
 // Returns an array with all the alert prefs in the configuration
 // Needed when presenting the list window, and when converting
 // from 0.14 to 0.15
@@ -548,6 +669,8 @@ MailboxAlert.convertFolderPreferences14toAlertPreferences = function(folder) {
     if (folder) {
         // first do this folder, then check if there are subfolders and repeat
         var has_prefs = false;
+        var alert_for_children = true;
+        var no_alert_to_parent = true;
         try {
             if (MailboxAlert.prefService.getBoolPref("extensions.mailboxalert.show_message." + folder.URI)) {
                 has_prefs = true;
@@ -569,12 +692,37 @@ MailboxAlert.convertFolderPreferences14toAlertPreferences = function(folder) {
         } catch (e) {
             // ok, n/m
         }
+        try {
+            if (MailboxAlert.prefService.getBoolPref("extensions.mailboxalert.alert_for_children." + folder.URI)) {
+                has_prefs = true;
+                alert_for_children = true;
+            }
+        } catch (e) {
+            // ok, n/m
+        }
+        try {
+            if (MailboxAlert.prefService.getBoolPref("extensions.mailboxalert.no_alert_to_parent." + folder.URI)) {
+                has_prefs = true;
+                no_alert_to_parent = true;
+            }
+        } catch (e) {
+            // ok, n/m
+        }
         // skip if there are no prefs for this folder in the first place
         if (has_prefs) {
-            folder_prefs14 = MailboxAlert.getFolderPreferences14(folder.URI);
+            var folder_prefs14 = MailboxAlert.getFolderPreferences14(folder.URI);
             new_index = folder_prefs14.convertToAlertPrefs();
             //alert("[XX] folder " + folder.URI + " becomes alert index " + new_index);
             // TODO: tie folder to index
+            var folder_prefs = MailboxAlert.getFolderPrefs(folder.URI);
+            folder_prefs.addAlert(new_index);
+            if (alert_for_children) {
+                folder_prefs.alert_for_children = true;
+            }
+            if (no_alert_to_parent) {
+                folder_prefs.no_alert_to_parent = true;
+            }
+            folder_prefs.store();
         } else {
             dump("[XX] no alert for " + folder.URI + "\n");
         }
@@ -634,6 +782,8 @@ MailboxAlert.convertAllFolderPreferences14toAlertPreferences = function () {
     for (var i = 0; i < all_new_alerts.length; ++i) {
         all_new_alerts[i].dump();
     }
+    // TODO: set that we are now at version number 15 and delete old
+    // folder prefs and global prefs
 }
 
 MailboxAlert.findAvailableAlertPrefsId = function () {
