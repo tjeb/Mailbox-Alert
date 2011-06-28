@@ -28,6 +28,10 @@
 <script type="application/x-javascript">
 <![CDATA[
 
+if (typeof(MailboxAlertAlertSettings) == "undefined") {
+    var MailboxAlertAlertSettings = {};
+}
+
 function getAlertId() {
   if (!window.arguments) {
     alert("Error: caller did not specify alert id");
@@ -331,17 +335,20 @@ function readPrefs(alert_id) {
       doClick("show_message_onclick_openmail");
     }
     dump("read 15\n");
-    
-    var sound_wav_file = alert_prefs.get("sound_wav_file");
-    dump("read 16\n");
-    if (sound_wav_file == "") {
-      var element = document.getElementById("play_sound_radio_default");
-      element.setAttribute("selected", true);
+
+    // TODO: store default vs file as a separate bool (may require conversion step)
+    var sound_wav = alert_prefs.get("sound_wav");
+    var element_default = document.getElementById("play_sound_radio_default");
+    var element_file = document.getElementById("play_sound_radio_file");
+    if (sound_wav) {
+      element_file.setAttribute("selected", true);
+      element_default.removeAttribute("selected");
     } else {
-      var element = document.getElementById("play_sound_radio_file");
-      element.setAttribute("selected", true);
+      element_default.setAttribute("selected", true);
+      element_file.removeAttribute("selected");
     }
-    dump("read 17\n");
+
+    dump("read 16\n");
     setUIPrefTextbox(alert_prefs, "sound_wav_file", "play_sound_file_textbox");
     dump("read 18\n");
     
@@ -385,7 +392,7 @@ function storeUIPrefTextbox(alert_prefs, name, element_name) {
 function storeUIPrefCheckbox(alert_prefs, name, element_name) {
   var element = document.getElementById(element_name);
   if (element) {
-    alert_prefs.set(name, element.value);
+    alert_prefs.set(name, element.checked);
  } else {
     alert("Store error: element not found: " + element_name);
   }
@@ -454,13 +461,11 @@ function storePrefs(alert_id) {
     storeUIPrefTextbox(alert_prefs, "onclick", "show_message_onclick_menulist");
     dump("store 13\n");
 
-    /* TODO:
-    storeUIPrefAttribute(alert_prefs, "play_sound_default", "play_sound_radio_default", "selected");
+    var element_file = document.getElementById("play_sound_radio_file");
+    alert_prefs.set("sound_wav", element_file.selected);
     dump("store 14\n");
-    //storeUIPrefCheckbox(alert_prefs, "play_sound_wav", "play_sound_radio_file");
     storeUIPrefTextbox(alert_prefs, "sound_wav_file", "play_sound_file_textbox");
     dump("store 15\n");
-    */
     
     storeUIPrefTextbox(alert_prefs, "command", "execute_command_textbox");
     dump("store 16\n");
@@ -551,37 +556,95 @@ function setBackgroundColor(element_name, color) {
 }
 
 
+MailboxAlertAlertSettings.fp = MailboxAlertAlertSettings.filepicker = Components.classes["@mozilla.org/filepicker;1"].getService(Components.interfaces.nsIFilePicker);
+
 function chooseIconFile() {
-  var fp = Components.classes["@mozilla.org/filepicker;1"].getService(Components.interfaces.nsIFilePicker);
+  var icon_image_element = document.getElementById("show_message_icon_image");
   try {
-    pref_icon = "";
+    var pref_icon = icon_image_element.src;
+    var prefix = "file://";
+    if (pref_icon.substring(0, prefix.length) == prefix) {
+        pref_icon = pref_icon.substring(prefix.length);
+    }
+    var file = Components.classes["@mozilla.org/file/local;1"].
+         createInstance(Components.interfaces.nsILocalFile);
+    file.initWithPath(pref_icon);
+    if (file.exists()) {
+    alert(pref_icon + " exists");
+      MailboxAlertAlertSettings.fp.displayDirectory = file.parent;
+    } else {
+    alert(pref_icon + " does not exist");
+    }
+    
+  } catch (e) {
+    // Specified directory does not seem to exist, use default
+    alert(e);
+  }
+
+  // use whatever nsIFilePicker options are suitable
+  MailboxAlertAlertSettings.fp.init(window, "File to Read", MailboxAlertAlertSettings.fp.modeOpen);
+  MailboxAlertAlertSettings.fp.appendFilter("all files", "*");
+
+  if ( MailboxAlertAlertSettings.fp.show() != MailboxAlertAlertSettings.fp.returnCancel ) {
+    /*result = fp.file.persistentDescriptor;*/
+    result = MailboxAlertAlertSettings.fp.file.path;
+    result = "file://" + result;
+    icon_image_element.src = result;
+  }
+}
+
+function chooseWavFile() {
+  var wav_file_element = document.getElementById("play_sound_file_textbox");
+  try {
+    var wav_file = wav_file_element.value;
     var exec = Components.classes["@mozilla.org/file/local;1"].
          createInstance(Components.interfaces.nsILocalFile);
-    exec.initWithPath(pref_icon);
+    exec.initWithPath(wav_file);
     if (exec.exists()) {
-      fp.displayDirectory = exec.parent;
+      MailboxAlertAlertSettings.fp.displayDirectory = exec.parent;
     }
   } catch (e) {
     // Specified directory does not seem to exist, use default
   }
 
   // use whatever nsIFilePicker options are suitable
-  fp.init(window, "File to Read", fp.modeOpen);
-  fp.appendFilter("all files", "*");
+  MailboxAlertAlertSettings.fp.init(window, "File to Read", MailboxAlertAlertSettings.fp.modeOpen);
+  MailboxAlertAlertSettings.fp.appendFilter("all files", "*");
 
-  if ( fp.show() != fp.returnCancel ) {
-    var icon_image = document.getElementById("show_message_icon_image");
-    /*result = fp.file.persistentDescriptor;*/
-    result = fp.file.path;
-    result = "file://" + result;
-    icon_image.src = result;
+  if ( MailboxAlertAlertSettings.fp.show() != MailboxAlertAlertSettings.fp.returnCancel ) {
+    result = MailboxAlertAlertSettings.fp.file.path;
+    wav_file_element.value = result;
   }
-
-  /* loading of image might take a while */
-  setTimeout("window.sizeToContent();", 500);
-  window.sizeToContent();
 }
 
+function chooseExecFile() {
+  var exec_file_element = document.getElementById("execute_command_textbox");
+  try {
+    var exec_file = exec_file_element.value;
+    var index = exec_file.indexOf(" ");
+    if (index > 0) {
+        exec_file = exec_file.substring(0, index);
+    }
+    var exec = Components.classes["@mozilla.org/file/local;1"].
+         createInstance(Components.interfaces.nsILocalFile);
+    exec.initWithPath(exec_file);
+    if (exec.exists()) {
+      MailboxAlertAlertSettings.fp.displayDirectory = exec.parent;
+    }
+  } catch (e) {
+    // Specified directory does not seem to exist, use default
+  }
+
+  // use whatever nsIFilePicker options are suitable
+  MailboxAlertAlertSettings.fp.init(window, "File to Read", MailboxAlertAlertSettings.fp.modeOpen);
+  MailboxAlertAlertSettings.fp.appendFilter("all files", "*");
+
+  if ( MailboxAlertAlertSettings.fp.show() != MailboxAlertAlertSettings.fp.returnCancel ) {
+    result = MailboxAlertAlertSettings.fp.file.path;
+    exec_file_element.value = result;
+  }
+  // TODO, this can be refactored
+}
 
 ]]>
 </script>
@@ -693,6 +756,7 @@ function chooseIconFile() {
             </menulist>
           </hbox>
 
+<!--
           <hbox>
             <vbox>
               <spacer flex="1"/>
@@ -719,7 +783,7 @@ function chooseIconFile() {
             </vbox>
             <colorpicker type="button" id="message_background_color_picker" onchange="setBackgroundColor('alertMessageField', this.color);"/>
           </hbox>
-
+-->
           <hbox>
             <stack id="alertContainer" mousethrough="never" style="border: solid #000000 1px;">
 
@@ -728,6 +792,7 @@ function chooseIconFile() {
                   <image id="alertImage" valign="center"/>
                 </hbox>
 
+<!--
                 <vbox id="alertTextBox">
                   <label id="subject" value="example subject field"/>
                   <vbox id="alertMessageField">
@@ -738,6 +803,7 @@ function chooseIconFile() {
                     <label id="message_field4" value="" hidden="true"/>
                   </vbox>
                 </vbox>
+-->
               </hbox>
             </stack>
             <span flex="1"/>
