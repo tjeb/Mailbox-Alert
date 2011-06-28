@@ -1,9 +1,11 @@
 <?xml version="1.0"?>
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<!DOCTYPE window SYSTEM "chrome://mailboxalert/locale/mailboxalert.dtd">
+
 <dialog xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" id="mailboxalert_alert_prefs_dialog"
         onload="init();"
         buttons="help, cancel, accept, extra1"
-        buttonlabelextra1="Testlabel="
+        buttonlabelextra1="&mailboxalert.prefs.test;"
         ondialogaccept="storePrefs(getAlertId());"
         ondialoghelp="alert('help');"
         ondialogextra1="testAlert();"
@@ -225,9 +227,11 @@ function checkUIOkButton() {
 }
 
 function checkUIAll() {
-  checkUIShowMessage();
-  checkUIPlaySound();
+  // reversed in order so if multiple options are active, we
+  // always open with show message
   checkUIExecuteCommand();
+  checkUIPlaySound();
+  checkUIShowMessage();
   checkUIOkButton();
 }
 
@@ -682,14 +686,14 @@ function chooseExecFile() {
           <hbox>
             <vbox >
               <spacer flex="1"/>
-              <checkbox id="show_message_icon_checkbox" label="mailboxalert.prefs.icon;" oncommand="checkUIShowMessageIcon();"  disabled="true" />
+              <checkbox id="show_message_icon_checkbox" label="&mailboxalert.prefs.icon;" oncommand="checkUIShowMessageIcon();"  disabled="true" />
               <spacer flex="1"/>
             </vbox>
             <image id="show_message_icon_image" maxheight="64" maxwidth="64" disabled="true"/>
             <vbox>
               <hbox>
-                <button id="show_message_icon_browse_button" label="mailboxalert.prefs.browse;" oncommand="chooseIconFile();" onerror="imageError();"  disabled="true" />
-                <button id="show_message_icon_default_button" label="mailboxalert.prefs.default;" oncommand="setDefaultIconFile();"  disabled="true" />
+                <button id="show_message_icon_browse_button" label="&mailboxalert.prefs.browse;" oncommand="chooseIconFile();" onerror="imageError();"  disabled="true" />
+                <button id="show_message_icon_default_button" label="&mailboxalert.prefs.default;" oncommand="setDefaultIconFile();"  disabled="true" />
               </hbox>
               <spacer flex="1"/>
             </vbox>
@@ -697,61 +701,64 @@ function chooseExecFile() {
           <hbox>
             <vbox>
             <spacer flex="1"/>
-            <label id="show_message_duration_label" value="mailboxalert.alert_prefs.duration;" align="start"  disabled="true"/>
+            <label id="show_message_duration_label" value="&mailboxalert.alert_prefs.duration;" align="start"  disabled="true"/>
             <spacer flex="1"/>
             </vbox>
             <spacer flex="1"/>
             <textbox id="show_message_duration_textbox" size="2" align="end" onfocus="select();"  disabled="true" />
             <vbox>
             <spacer flex="1"/>
-            <label id="show_message_duration_time_unit_label" value="mailboxalert.alert_prefs.time_unit;" align="end"  disabled="true" />
+            <label id="show_message_duration_time_unit_label" value="&mailboxalert.alert_prefs.time_unit;" align="end"  disabled="true" />
             <spacer flex="1"/>
             </vbox>
           </hbox>
           <hbox>
             <vbox>
             <spacer flex="1"/>
-            <label id="show_message_position_label" value="mailboxalert.alert_prefs.position;"  disabled="true" />
+            <label id="show_message_position_label" value="&mailboxalert.alert_prefs.position;"  disabled="true" />
             <spacer flex="1"/>
             </vbox>
             <spacer flex="1"/>
-            <menulist id="show_message_position_menulist" label="mailboxalert.alert_prefs.position;"  disabled="true">
+            <menulist id="show_message_position_menulist" label="&mailboxalert.alert_prefs.position;"  disabled="true">
             <menupopup align="end">
-              <menuitem id="show_message_position_top-left" value="top-left" label="mailboxalert.alert_prefs.position.top-left;"/>
-              <menuitem id="show_message_position_top-right" value="top-right" label="mailboxalert.alert_prefs.position.top-right;"/>
-              <menuitem id="show_message_position_bottom-left" value="bottom-left" label="mailboxalert.alert_prefs.position.bottom-left;"/>
-              <menuitem id="show_message_position_bottom-right" value="bottom-right" label="mailboxalert.alert_prefs.position.bottom-right;"/>
-              <menuitem id="show_message_position_center" value="center" label="mailboxalert.alert_prefs.position.center;"/>
+              <menuitem id="show_message_position_top-left" value="top-left" label="&mailboxalert.alert_prefs.position.topleft;"/>
+              <menuitem id="show_message_position_top-right" value="top-right" label="&mailboxalert.alert_prefs.position.topright;"/>
+              <menuitem id="show_message_position_bottom-left" value="bottom-left" label="&mailboxalert.alert_prefs.position.bottomleft;"/>
+              <menuitem id="show_message_position_bottom-right" value="bottom-right" label="&mailboxalert.alert_prefs.position.bottomright;"/>
+              <menuitem id="show_message_position_center" value="center" label="&mailboxalert.alert_prefs.position.center;"/>
             </menupopup>
             </menulist>
           </hbox>
           <hbox>
             <vbox>
             <spacer flex="1"/>
-            <label id="show_message_effect_label" value="mailboxalert.alert_prefs.effect;"  disabled="true" />
+            <label id="show_message_effect_label" value="&mailboxalert.alert_prefs.effect;"  disabled="true" />
             <spacer flex="1"/>
             </vbox>
             <spacer flex="1"/>
-            <menulist id="show_message_effect_menulist" label="mailboxalert.alert_prefs.effect;"  disabled="true">
+            <menulist id="show_message_effect_menulist" label="&mailboxalert.alert_prefs.effect;"  disabled="true">
             <menupopup align="end">
-              <menuitem id="show_message_effect_none" value="none" label="mailboxalert.alert_prefs.effect.none;"/>
-              <menuitem id="show_message_effect_slide" value="slide" label="mailboxalert.alert_prefs.effect.slide;"/>
-              <menuitem id="show_message_effect_fade" value="fade" label="mailboxalert.alert_prefs.effect.fade;"/>
+              <menuitem id="show_message_effect_none" value="none" label="&mailboxalert.alert_prefs.effect.none;"/>
+              <menuitem id="show_message_effect_slide" value="slide" label="&mailboxalert.alert_prefs.effect.slide;"/>
+              <menuitem id="show_message_effect_fade" value="fade" label="&mailboxalert.alert_prefs.effect.fade;"/>
             </menupopup>
             </menulist>
           </hbox>
           <hbox>
             <vbox>
             <spacer flex="1"/>
-            <label id="show_message_onclick_label" value="mailboxalert.alert_prefs.onclick;"  disabled="true" />
+            <label id="show_message_onclick_label" value="&mailboxalert.alert_prefs.onclick;"  disabled="true" />
             <spacer flex="1"/>
             </vbox>
             <spacer flex="1"/>
-            <menulist id="show_message_onclick_menulist" label="mailboxalert.alert_prefs.onclick;"  disabled="true">
+            <menulist id="show_message_onclick_menulist" label="&mailboxalert.alert_prefs.onclick;"  disabled="true">
             <menupopup align="end">
-              <menuitem value="close" label="mailboxalert.alert_prefs.onclick.close;"/>
-              <menuitem id="show_message_onclick_raisewindow" value="raisewindow" label="mailboxalert.alert_prefs.onclick.raisewindow;"/>
-              <menuitem id="show_message_onclick_openmail" value="openmail" label="mailboxalert.alert_prefs.onclick.openmail;"/>
+              <menuitem value="close" label="&mailboxalert.alert_prefs.onclick.close;"/>
+              <menuitem id="show_message_onclick_selectmail" value="selectmail" label="&mailboxalert.alert_prefs.onclick.selectmail;"/>
+              <menuitem id="show_message_onclick_openmail" value="openmail" label="&mailboxalert.alert_prefs.onclick.openmail;"/>
+              <!-- TODO: can we delete? check
+              <menuitem id="show_message_onclick_deletemail" value="deletemail" label="&mailboxalert.alert_prefs.onclick.deletemail;"/>
+              -->
             </menupopup>
             </menulist>
           </hbox>
@@ -815,11 +822,11 @@ function chooseExecFile() {
       <tabpanel id="play_sound_tabpanel">
         <vbox>
           <radiogroup id="play_sound_radio"  disabled="true">
-          <radio id="play_sound_radio_default" label="mailboxalert.prefs.systemdefault;"  disabled="true" />
+          <radio id="play_sound_radio_default" label="&mailboxalert.prefs.systemdefault;"  disabled="true" />
           <hbox>
-          <radio id="play_sound_radio_file" label="mailboxalert.prefs.customwav;"  disabled="true" />
+          <radio id="play_sound_radio_file" label="&mailboxalert.prefs.customwav;"  disabled="true" />
           <textbox id="play_sound_file_textbox" size="30"  disabled="true" />
-          <button id="play_sound_browse_button" label="mailboxalert.prefs.browse;" oncommand="chooseWavFile();"  disabled="true"/>
+          <button id="play_sound_browse_button" label="&mailboxalert.prefs.browse;" oncommand="chooseWavFile();"  disabled="true"/>
           </hbox>
           </radiogroup>
         </vbox>
@@ -829,11 +836,11 @@ function chooseExecFile() {
         <vbox>
           <hbox>
             <textbox id="execute_command_textbox" size="50"  disabled="true" />
-            <button id="execute_command_browse_button" label="mailboxalert.prefs.browse;" oncommand="chooseExecFile();"  disabled="true" />
+            <button id="execute_command_browse_button" label="&mailboxalert.prefs.browse;" oncommand="chooseExecFile();"  disabled="true" />
           </hbox>
           <hbox>
             <box flex="1" pack="start">
-              <checkbox id="execute_command_escape_html_checkbox" label="mailboxalert.prefs.escapehtml;" disabled="true" />
+              <checkbox id="execute_command_escape_html_checkbox" label="&mailboxalert.prefs.escapehtml;" disabled="true" />
             </box>
             <spacer flex="1"/>
           </hbox>
