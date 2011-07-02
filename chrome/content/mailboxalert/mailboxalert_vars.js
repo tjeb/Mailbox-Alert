@@ -580,8 +580,8 @@ MailboxAlert.getFolderPrefs = function (uri) {
     folder_prefs.uri = uri;
     folder_prefs.alerts = [];
     folder_prefs.alert_for_children = false;
-    folder_prefs.no_alert_to_parent = true;
-    
+    folder_prefs.no_alert_to_parent = false;
+
     try {
         folder_prefs.alert_for_children = MailboxAlert.prefService.getBoolPref("extensions.mailboxalert." + uri + ".alert_for_children");
     } catch (e) {
@@ -602,6 +602,18 @@ MailboxAlert.getFolderPrefs = function (uri) {
         // n/m, wasn't set
     }
 
+    // Returns true if the given alert (of type alertPrefs) is
+    // enabled for this folder
+    folder_prefs.alertSelected = function (alert_index) {
+        for (var i = 0; i < this.alerts.length; ++i) {
+            if (this.alerts[i] == alert_index) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // returns true if it got added, false if it was already present
     folder_prefs.addAlert = function (alert_index) {
         var already_there = false;
         for (var i = 0; i < this.alerts.length; ++i) {
@@ -612,16 +624,23 @@ MailboxAlert.getFolderPrefs = function (uri) {
         if (!already_there) {
             this.alerts.push(alert_index);
         }
+        return !already_there;
     }
 
+    // Returns true if it got removed, false if it wasn't there
+    // in the first place
     folder_prefs.removeAlert = function (alert_index) {
         var new_alerts = []
+        var was_there = false;
         for (var i = 0; i < this.alerts.length; ++i) {
             if (this.alerts[i] != alert_index) {
                 new_alerts.push(this.alerts[i]);
+            } else {
+                was_there = true;
             }
         }
         this.alerts = new_alerts;
+        return !was_there;
     }
 
     folder_prefs.store = function () {
@@ -798,4 +817,25 @@ MailboxAlert.findAvailableAlertPrefsId = function () {
     }
   }
   return 0;
+}
+
+// Some static functions called from xul
+MailboxAlert.switchFolderAlert = function (folder_uri, alert_index) {
+    var folder_prefs = MailboxAlert.getFolderPrefs(folder_uri);
+    if (!folder_prefs.addAlert(alert_index)) {
+        folder_prefs.removeAlert(alert_index);
+    }
+    folder_prefs.store();
+}
+
+MailboxAlert.switchAlertForChildren = function (folder_uri) {
+    var folder_prefs = MailboxAlert.getFolderPrefs(folder_uri);
+    folder_prefs.alert_for_children = !folder_prefs.alert_for_children;
+    folder_prefs.store();
+}
+
+MailboxAlert.switchNoAlertToParent = function (folder_uri) {
+    var folder_prefs = MailboxAlert.getFolderPrefs(folder_uri);
+    folder_prefs.no_alert_to_parent = !folder_prefs.no_alert_to_parent;
+    folder_prefs.store();
 }
