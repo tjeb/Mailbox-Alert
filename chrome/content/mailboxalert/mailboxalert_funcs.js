@@ -853,7 +853,9 @@ MailboxAlert.createMenuSeparator = function () {
 MailboxAlert.fillFolderMenu = function(alert_menu, folder) {
     var folder_prefs = MailboxAlert.getFolderPrefs(folder.URI);
     var all_alerts = MailboxAlert.getAllAlertPrefs();
+    var stringsBundle = document.getElementById("string-bundle");
     var alert_menuitem;
+    var alerts_set = false;
 
     // clear it first
     while (alert_menu.firstChild) {
@@ -866,22 +868,31 @@ MailboxAlert.fillFolderMenu = function(alert_menu, folder) {
         alert_menuitem = MailboxAlert.createMenuItem(alert.get("name"), alert_index);
         if (folder_prefs.alertSelected(alert_index)) {
             alert_menuitem.setAttribute("checked", true);
+            alerts_set = true;
         }
         alert_menuitem.setAttribute("oncommand", "MailboxAlert.switchFolderAlert('"+ folder.URI + "', " + alert_index + ");");
         alert_menu.appendChild(alert_menuitem);
     }
-    // TODO: intl
-    alert_menuitem = MailboxAlert.createMenuItem("alert for child folders");
+
+    alert_menuitem = MailboxAlert.createMenuItem(stringsBundle.getString('mailboxalert.menu.alertforchildren'));
     if (folder_prefs.alert_for_children) {
         alert_menuitem.setAttribute("checked", true);
     }
     alert_menuitem.setAttribute("oncommand", "MailboxAlert.switchAlertForChildren('" + folder.URI + "');");
+    // disable it if there are no alerts set
+    if (!alerts_set) {
+        alert_menuitem.setAttribute("disabled", true);
+    }
     alert_menu.appendChild(alert_menuitem);
-    // TODO: intl
-    alert_menuitem = MailboxAlert.createMenuItem("don't let parent folder alert");
+
+    alert_menuitem = MailboxAlert.createMenuItem(stringsBundle.getString('mailboxalert.menu.noalerttoparent'));
     if (folder_prefs.no_alert_to_parent) {
         alert_menuitem.setAttribute("checked", true);
     }
     alert_menuitem.setAttribute("oncommand", "MailboxAlert.switchNoAlertToParent('" + folder.URI + "');");
+    // disable it if there are any alerts set
+    if (alerts_set) {
+        alert_menuitem.setAttribute("disabled", true);
+    }
     alert_menu.appendChild(alert_menuitem);
 }
