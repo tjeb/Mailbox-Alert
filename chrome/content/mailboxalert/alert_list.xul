@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<!DOCTYPE window SYSTEM "chrome://mailboxalert/locale/mailboxalert.dtd">
 <dialog xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" id="mailboxalert_prefs_dialog"
         onload="MailboxAlertList.init();"
         buttons="close"
@@ -138,9 +139,9 @@ MailboxAlertList.init = function () {
   />
 
   <vbox>
-    <button id="add_button" label="Add" onclick="MailboxAlertList.addAlert('1', 'a');"/>
-    <button id="edit_button" label="Edit" onclick="MailboxAlertList.editAlert();" />
-    <button id="delete_button" label="Delete" onclick="MailboxAlertList.deleteAlert();" />
+    <button id="add_button" label="&mailboxalert.alert_list.add;" onclick="MailboxAlertList.addAlert('1', 'a');"/>
+    <button id="edit_button" label="&mailboxalert.alert_list.edit;" onclick="MailboxAlertList.editAlert();" />
+    <button id="delete_button" label="&mailboxalert.alert_list.delete;" onclick="MailboxAlertList.deleteAlert();" />
   </vbox>
   </hbox>
 </vbox>

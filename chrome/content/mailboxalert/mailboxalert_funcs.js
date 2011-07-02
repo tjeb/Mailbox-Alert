@@ -874,6 +874,8 @@ MailboxAlert.fillFolderMenu = function(alert_menu, folder) {
         alert_menu.appendChild(alert_menuitem);
     }
 
+    alert_menu.appendChild(MailboxAlert.createMenuSeparator());
+
     alert_menuitem = MailboxAlert.createMenuItem(stringsBundle.getString('mailboxalert.menu.alertforchildren'));
     if (folder_prefs.alert_for_children) {
         alert_menuitem.setAttribute("checked", true);
@@ -894,5 +896,11 @@ MailboxAlert.fillFolderMenu = function(alert_menu, folder) {
     if (alerts_set) {
         alert_menuitem.setAttribute("disabled", true);
     }
+    alert_menu.appendChild(alert_menuitem);
+
+    alert_menu.appendChild(MailboxAlert.createMenuSeparator());
+
+    alert_menuitem = MailboxAlert.createMenuItem(stringsBundle.getString('mailboxalert.menu.editalerts'));
+    alert_menuitem.setAttribute("oncommand", "window.openDialog('chrome://mailboxalert/content/alert_list.xul', 'mailboxalert_prefs', 'chrome');");
     alert_menu.appendChild(alert_menuitem);
 }

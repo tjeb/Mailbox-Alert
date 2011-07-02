@@ -68,3 +68,7 @@
 <!ENTITY mailboxalert.alert_prefs.onclick.openmail "Open the message in a new window">
 <!ENTITY mailboxalert.alert_prefs.onclick.selectmail "Open the message in the current window">
 <!ENTITY mailboxalert.alert_prefs.onclick.deletemail "Delete the message">
+<!ENTITY mailboxalert.alert_list.add "Add">
+<!ENTITY mailboxalert.alert_list.edit "Edit">
+<!ENTITY mailboxalert.alert_list.delete "Delete">
+<!ENTITY mailboxalert.menu.editalerts "Edit Mailbox Alert alerts">
