@@ -21,7 +21,7 @@
                     <!--oncommand="window.openDialog('chrome://mailboxalert/content/mailboxalert_pref.xul', 'mailboxalert_prefs', 'chrome', MailboxAlert.getFolder());"/> -->
     <menupopup id="menu_ToolsPopup">
         <menuseparator id="mailboxalertSeperator" insertbefore="devToolsSeparator" />
-        <menuitem id="mailboxalert-tools-menu-prefs" label="Mailbox Alert"
+        <menuitem id="mailboxalert-tools-menu-prefs" label="&mailboxalert.menu.editalerts;"
                     accesskey="L" class="menuitem-iconic"
                     insertbefore="devToolsSeparator" 
                     oncommand="window.openDialog('chrome://mailboxalert/content/alert_list.xul', 'mailboxalert_prefs', 'chrome');"/> 
@@ -32,7 +32,7 @@
     <menupopup id="taskPopup">
         <menuseparator id="mailboxalertSeperator" insertbefore="devToolsSeparator" />
         <menuitem id="mailboxalert-moz-tools-menu-prefs" 
-            label="&mailboxalert.prefs.title;" accesskey="L" 
+            label="&mailboxalert.menu.editalerts;" accesskey="L" 
             insertbefore="devToolsSeparator" 
             oncommand="window.openDialog('chrome://mailboxalert/content/alert_list.xul', 'mailboxalert_prefs', 'chrome');"/> 
         <menuitem id="mailboxalert-moz-tools-menu-mute"
