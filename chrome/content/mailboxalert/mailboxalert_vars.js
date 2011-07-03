@@ -563,9 +563,25 @@ MailboxAlert.getAlertPreferences = function (index) {
         }
     }
 
+    alert_prefs.run = function (alert_data) {
+        if (this.get("show_message")) {
+            // TODO
+            alert("show message");
+        }
+        if (this.get("play_sound")) {
+            // TODO
+            alert("play sound");
+        }
+        if (this.get("execute_command")) {
+            // TODO
+            alert("execute command");
+        }
+    }
+
     if (index != 0 && alert_prefs.get("name") == "") {
         throw "Alert with index " + index + " not found";
     }
+
     return alert_prefs;
 }
 
@@ -662,6 +678,10 @@ MailboxAlert.getFolderPrefs = function (uri) {
             // remove if exists
             MailboxAlert.prefService.deleteBranch("extensions.mailboxalert." + this.uri + ".alerts");
         }
+    }
+
+    folder_prefs.hasAlerts = function () {
+        return (alerts.length > 0);
     }
 
     return folder_prefs;

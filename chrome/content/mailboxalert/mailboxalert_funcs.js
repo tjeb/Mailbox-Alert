@@ -389,6 +389,23 @@ MailboxAlert.replaceEscape = function (string, oldstr, newstr) {
     }
 }
 
+MailboxAlert.new_alert = function (folder, last_unread) {
+    var folder_prefs = MailboxAlert.getFolderPrefs(folder.URI);
+    var alert_data = MailboxAlert.createAlertData(folder, last_unread);
+    if (folder_prefs.hasAlerts()) {
+        for (var i = 0; i < folder_prefs.alerts.length; ++i) {
+            var alert = MailboxAlert.getAlertPrefs(folder_prefs.alerts[i]);
+            if (alert) {
+                alert.run(alert_data);
+            }
+        }
+    } else {
+        if (!folder_prefs.no_alert_to_parent) {
+            // TODO
+        }
+    }
+}
+
 /* MailboxAlert.alert() checks whether the folder exists and can be used
  * MailboxAlert.alert2() checks whether the folder is not in use and has new mail
  * MailboxAlert.alert3() checks the settings and calls the actual alerts
