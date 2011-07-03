@@ -264,7 +264,8 @@ MailboxAlert.queueHandler = function () {
                 var last_unread = MailboxAlert.queue_message[i];
 
                 if (!folder.gettingNewMessages) {
-                    MailboxAlert.alert(folder, last_unread);
+                    //MailboxAlert.alert(folder, last_unread);
+                    MailboxAlert.new_alert(folder, last_unread);
 
                     MailboxAlert.removeFromQueue(folder);
 
@@ -390,18 +391,35 @@ MailboxAlert.replaceEscape = function (string, oldstr, newstr) {
 }
 
 MailboxAlert.new_alert = function (folder, last_unread) {
-    var folder_prefs = MailboxAlert.getFolderPrefs(folder.URI);
     var alert_data = MailboxAlert.createAlertData(folder, last_unread);
-    if (folder_prefs.hasAlerts()) {
-        for (var i = 0; i < folder_prefs.alerts.length; ++i) {
-            var alert = MailboxAlert.getAlertPrefs(folder_prefs.alerts[i]);
-            if (alert) {
-                alert.run(alert_data);
+    MailboxAlert.new_alert2(alert_data);
+}
+
+MailboxAlert.new_alert2 = function (alert_data) {
+    while (true) {
+        var folder_prefs = MailboxAlert.getFolderPrefs(alert_data.folder_uri);
+    
+        if (folder_prefs.hasAlerts()) {
+            for (var i = 0; i < folder_prefs.alerts.length; ++i) {
+                dump("[Mailboxalert] running alert " + folder_prefs.alerts[i] + "\n");
+                var alert = MailboxAlert.getAlertPreferences(folder_prefs.alerts[i]);
+                if (alert) {
+                    alert.run(alert_data);
+                }
             }
-        }
-    } else {
-        if (!folder_prefs.no_alert_to_parent) {
-            // TODO
+            return;
+        } else {
+            if (!folder_prefs.no_alert_to_parent &&
+                !alert_data.mailbox.isServer &&
+                !(!alert_data.is_parent &&
+                  folder_prefs.get("no_alert_to_parent"))) {
+                dump("[Mailboxalert] No alerts were set for ");
+                dump(alert_data.folder_name_with_server);
+                dump(", trying parent\r\n");
+                alert_data.toParent()
+            } else {
+                return;
+            }
         }
     }
 }
@@ -679,9 +697,7 @@ MailboxAlert.playSound = function (soundURL) {
     }
 }
 
-MailboxAlert.executeCommand = function (alert_data, folder_prefs) {
-    var command = folder_prefs.get("command");
-    var escape_html = folder_prefs.get("escape");
+MailboxAlert.executeCommand = function (alert_data, command, escape_html) {
     var date_obj = new Date();
     date_obj.setTime(alert_data.date);
     var date_str = date_obj.toLocaleDateString()

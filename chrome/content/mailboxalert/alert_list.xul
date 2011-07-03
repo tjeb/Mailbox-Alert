@@ -62,6 +62,7 @@ MailboxAlertList.deleteAlert = function () {
   var alert_listbox = document.getElementById("alert_listbox");
   var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch).QueryInterface(Components.interfaces.nsIPrefService);
   var pref_branch = prefs.getBranch("extensions.mailboxalert.alerts.");
+  // TODO this should be done differently
   var folders = MailboxAlertList.getFoldersForAlertId(alert_listbox.selectedItem.value);
   if (folders.length > 0) {
     alert("This alert is used, so we cannot delete it");

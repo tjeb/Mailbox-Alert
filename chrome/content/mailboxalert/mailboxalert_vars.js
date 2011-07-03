@@ -565,16 +565,23 @@ MailboxAlert.getAlertPreferences = function (index) {
 
     alert_prefs.run = function (alert_data) {
         if (this.get("show_message")) {
-            // TODO
-            alert("show message");
+            MailboxAlert.showMessage(alert_data,
+                                    this.get("show_message_icon"),
+                                    this.get("icon_file"),
+                                    this.get("subject"),
+                                    this.get("message"));
         }
         if (this.get("play_sound")) {
-            // TODO
-            alert("play sound");
+            if (this.get("sound_wav")) {
+                MailboxAlert.playSound(this.get("sound_wav_file"));
+            } else {
+                MailboxAlert.playSound();
+            }
         }
         if (this.get("execute_command")) {
-            // TODO
-            alert("execute command");
+            MailboxAlert.execute_command(alert_data,
+                                         this.get("command"),
+                                         this.get("escape"));
         }
     }
 
@@ -681,7 +688,7 @@ MailboxAlert.getFolderPrefs = function (uri) {
     }
 
     folder_prefs.hasAlerts = function () {
-        return (alerts.length > 0);
+        return (this.alerts.length > 0);
     }
 
     return folder_prefs;
@@ -823,6 +830,9 @@ MailboxAlert.convertAllFolderPreferences14toAlertPreferences = function () {
     }
     // TODO: set that we are now at version number 15 and delete old
     // folder prefs and global prefs
+    // recheck conversion first :)
+    MailboxAlert.prefService.setIntPref("extensions.mailboxalert.prefsversion", 15);
+    dump("[XX] conversion done, prefsversion updated");
 }
 
 MailboxAlert.findAvailableAlertPrefsId = function () {
