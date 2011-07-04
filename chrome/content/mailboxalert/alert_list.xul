@@ -5,24 +5,13 @@
         onload="MailboxAlertList.init();"
         buttons="close"
 >
-        <!--
-        buttons="help, cancel, accept"
-        ondialogaccept="savePrefs();"
-        ondialoghelp="showHelp();"
-        title="&mailboxalert.prefs.title;"-->
 
 <keyset>
   <key id="cut_cmd" modifiers="accel" key="X"/>
   <key id="copy_cmd" modifiers="accel" key="C"/>
   <key id="paste_cmd" modifiers="accel" key="V"/>
   <key id="close_cmd" modifiers="control" key="W" oncommand="window.close();"/>
-  <key key="VK_ENTER" oncommand="alert('yo');"/>
 </keyset>
-
-<!--
-<script src="chrome://mailboxalert/content/preferences.js">
-</script>
--->
 
 <script src="chrome://mailboxalert/content/mailboxalert_vars.js">
 </script>
@@ -31,47 +20,51 @@
 <![CDATA[
 MailboxAlertList = {}
 
-MailboxAlertList.getFoldersForAlertId = function (alert_id) {
-  return [];
-}
-
 MailboxAlertList.enableButton = function (name, enabled) {
-  var element = document.getElementById(name);
-  if (element) {
-    if (enabled) {
-      element.removeAttribute("disabled");
-    } else {
-      element.setAttribute("disabled", true);
+    var element = document.getElementById(name);
+    if (element) {
+        if (enabled) {
+            element.removeAttribute("disabled");
+        } else {
+            element.setAttribute("disabled", true);
+        }
     }
-  }
 }
 
 MailboxAlertList.addAlert = function (id, name) {
-  new_id = MailboxAlert.findAvailableAlertPrefsId();
-  window.openDialog('chrome://mailboxalert/content/alert_settings.xul', 'alertPrefsWindow', 'modal', new_id);
-  MailboxAlertList.fillAlertList();
+    //new_id = MailboxAlert.findAvailableAlertPrefsId();
+    //window.openDialog('chrome://mailboxalert/content/alert_settings.xul', 'alertPrefsWindow', 'modal', new_id);
+    window.openDialog('chrome://mailboxalert/content/alert_settings.xul', 'alertPrefsWindow', 'modal', 0);
+    MailboxAlertList.fillAlertList();
 }
 
 MailboxAlertList.editAlert = function() {
-  var alert_listbox = document.getElementById("alert_listbox");
-  window.openDialog('chrome://mailboxalert/content/alert_settings.xul', 'alertPrefsWindow', 'modal,dependent=no', alert_listbox.selectedItem.value);
-  MailboxAlertList.fillAlertList();
+    var alert_listbox = document.getElementById("alert_listbox");
+    window.openDialog('chrome://mailboxalert/content/alert_settings.xul', 'alertPrefsWindow', 'modal,dependent=no', alert_listbox.selectedItem.value);
+    MailboxAlertList.fillAlertList();
 }
 
 MailboxAlertList.deleteAlert = function () {
-  var alert_listbox = document.getElementById("alert_listbox");
-  var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch).QueryInterface(Components.interfaces.nsIPrefService);
-  var pref_branch = prefs.getBranch("extensions.mailboxalert.alerts.");
-  // TODO this should be done differently
-  var folders = MailboxAlertList.getFoldersForAlertId(alert_listbox.selectedItem.value);
-  if (folders.length > 0) {
-    alert("This alert is used, so we cannot delete it");
-  } else {
-    pref_branch.deleteBranch(alert_listbox.selectedItem.value);
-  }
-  MailboxAlertList.enableButton('edit_button', false);
-  MailboxAlertList.enableButton('delete_button', false);
-  MailboxAlertList.fillAlertList();
+    var alert_listbox = document.getElementById("alert_listbox");
+    var alert_index = alert_listbox.selectedItem.value;
+
+    var folders = MailboxAlert.getAllFoldersForAlertIndex(alert_index);
+    if (folders.length > 0) {
+        // TODO: int8l
+        if (confirm("This alert is set to one or more folders. Are you sure you want to delete it?")) {
+            for (var i = 0; i < folders.length; ++i) {
+                folders[i].removeAlert(alert_index);
+            }
+            var alert_prefs = MailboxAlert.getAlertPreferences(alert_index);
+            alert_prefs.remove();
+        }
+    } else {
+        var alert_prefs = MailboxAlert.getAlertPreferences(alert_index);
+        alert_prefs.remove();
+    }
+    MailboxAlertList.enableButton('edit_button', false);
+    MailboxAlertList.enableButton('delete_button', false);
+    MailboxAlertList.fillAlertList();
 }
 
 MailboxAlertList.alertListCount = function () {

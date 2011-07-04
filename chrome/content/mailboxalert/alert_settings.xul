@@ -486,6 +486,9 @@ function storePrefs(alert_id) {
     storeUIPrefAttribute(alert_prefs, "show_message_content_background_color", "message_background_color_picker", "color");
     */
     dump("store 21\n");
+    if (alert_prefs.index == 0) {
+        alert_prefs.createNewIndex();
+    }
     alert_prefs.store();
   } catch (e) {
     dump("error\n");

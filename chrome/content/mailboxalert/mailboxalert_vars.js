@@ -413,6 +413,15 @@ MailboxAlert.getFolderPreferences14 = function(folder_uri) {
         new_alert.store();
         return new_index;
     }
+    
+    // Deletes the folder prefs. They are gone forever.
+    folder_prefs.remove = function () {
+        // set all to default, then store the folderprefs
+        for (var name in MailboxAlert.folderPrefDefs14) {
+            this.set(name, MailboxAlert.folderPrefDefs14[name][1]);
+        }
+        this.store();
+    }
 
     return folder_prefs;
 }
@@ -518,14 +527,6 @@ MailboxAlert.getAlertPreferences = function (index) {
         }
     }
 
-    alert_prefs.dump = function() {
-        dump("[XX] All folder prefs for " + this.folder_uri + "\n")
-        for (var name in MailboxAlert.alertPrefDefs) {
-            var type = MailboxAlert.alertPrefDefs[name][0];
-            dump(name + " (" + type + "): " + this.get(name) + "\n");
-        }
-    }
-
     // Returns true if the given 'other' alert_prefs has all the same
     // values (i.e. all the same values for the items in AlertPrefDefs,
     // except the 'name' value)
@@ -561,6 +562,13 @@ MailboxAlert.getAlertPreferences = function (index) {
                 dump("alert_pref[" + this.index + "] " + name + " = " + this.get(name) + "\n");
             }
         }
+    }
+    
+    // removes all preferences for this alert. ONLY call this if there
+    // are no folders set!
+    alert_prefs.remove = function () {
+        MailboxAlert.prefService.deleteBranch("extensions.mailboxalert.alerts." + this.index);
+        this.index = 0;
     }
 
     alert_prefs.run = function (alert_data) {
@@ -606,17 +614,17 @@ MailboxAlert.getFolderPrefs = function (uri) {
     folder_prefs.no_alert_to_parent = false;
 
     try {
-        folder_prefs.alert_for_children = MailboxAlert.prefService.getBoolPref("extensions.mailboxalert." + uri + ".alert_for_children");
+        folder_prefs.alert_for_children = MailboxAlert.prefService.getBoolPref("extensions.mailboxalert.folders." + uri + ".alert_for_children");
     } catch (e) {
         // n/m, wasn't set
     }
     try {
-        folder_prefs.no_alert_to_parent = MailboxAlert.prefService.getBoolPref("extensions.mailboxalert." + uri + ".no_alert_to_parent");
+        folder_prefs.no_alert_to_parent = MailboxAlert.prefService.getBoolPref("extensions.mailboxalert.folders." + uri + ".no_alert_to_parent");
     } catch (e) {
         // n/m, wasn't set
     }
     try {
-        var alerts_string = MailboxAlert.prefService.getCharPref("extensions.mailboxalert." + uri + ".alerts");
+        var alerts_string = MailboxAlert.prefService.getCharPref("extensions.mailboxalert.folders." + uri + ".alerts");
         var alerts_parts = alerts_string.split(",");
         for (var i = 0; i < alerts_parts.length; i++) {
             folder_prefs.alerts.push(alerts_parts[i]);
@@ -668,22 +676,22 @@ MailboxAlert.getFolderPrefs = function (uri) {
 
     folder_prefs.store = function () {
         if (this.alert_for_children) {
-            MailboxAlert.prefService.setBoolPref("extensions.mailboxalert." + this.uri + ".alert_for_children", true);
+            MailboxAlert.prefService.setBoolPref("extensions.mailboxalert.folders." + this.uri + ".alert_for_children", true);
         } else {
             // remove if exists
-            MailboxAlert.prefService.deleteBranch("extensions.mailboxalert." + this.uri + ".alert_for_children");
+            MailboxAlert.prefService.deleteBranch("extensions.mailboxalert.folders." + this.uri + ".alert_for_children");
         }
         if (this.no_alert_to_parent) {
-            MailboxAlert.prefService.setBoolPref("extensions.mailboxalert." + this.uri + ".no_alert_to_parent", true);
+            MailboxAlert.prefService.setBoolPref("extensions.mailboxalert.folders." + this.uri + ".no_alert_to_parent", true);
         } else {
             // remove if exists
-            MailboxAlert.prefService.deleteBranch("extensions.mailboxalert." + this.uri + ".no_alert_to_parent");
+            MailboxAlert.prefService.deleteBranch("extensions.mailboxalert.folders." + this.uri + ".no_alert_to_parent");
         }
         if (this.alerts.length != 0) {
-            MailboxAlert.prefService.setCharPref("extensions.mailboxalert." + this.uri + ".alerts", this.alerts.join(","));
+            MailboxAlert.prefService.setCharPref("extensions.mailboxalert.folders." + this.uri + ".alerts", this.alerts.join(","));
         } else {
             // remove if exists
-            MailboxAlert.prefService.deleteBranch("extensions.mailboxalert." + this.uri + ".alerts");
+            MailboxAlert.prefService.deleteBranch("extensions.mailboxalert.folders." + this.uri + ".alerts");
         }
     }
 
@@ -710,7 +718,51 @@ MailboxAlert.getAllAlertPrefs = function () {
     return alert_list;
 }
 
-// TODO: alert_for_parent...
+// adds the uri's for this folder and for all child folders to ar
+MailboxAlert.getChildFolders = function (folder, ar) {
+    ar.push(folder.URI);
+    var sub_folders = folder.subFolders;
+    while (sub_folders && sub_folders.hasMoreElements()) {
+        var next_folder = sub_folders.getNext().QueryInterface(Components.interfaces.nsIMsgFolder);
+        if (next_folder) {
+            MailboxAlert.getChildFolders(folder, ar);
+        }
+    }
+}
+
+MailboxAlert.getAllFolderURIs = function () {
+    var all_servers = accountManager.allServers;
+    var all_folder_uris = [];
+
+    for (var i = 0; i < all_servers.Count(); ++i) {
+        var server = all_servers.GetElementAt(i).QueryInterface(Components.interfaces.nsIMsgIncomingServer);
+        var root_folder = server.rootFolder;
+        if (root_folder) {
+            MailboxAlert.getChildFolders(root_folder, all_folder_uris);
+        }
+    }
+    
+    return all_folder_uris;
+}
+
+// Returns an array with all the folder_prefs objects that have
+// the given alert_id set
+MailboxAlert.getAllFoldersForAlertIndex = function (alert_index) {
+    var folder_list = [];
+    var all_folders = MailboxAlert.getAllFolderURIs();
+
+    for (var i = 0; i < all_folders.length; ++i) {
+        var folder_uri = all_folders[i];
+        var folder_prefs = MailboxAlert.getFolderPrefs(folder_uri);
+        if (folder_prefs.alertSelected(alert_index)) {
+            folder_list.push(folder_prefs);
+        }
+    }
+
+    return folder_list;
+}
+
+// TODO: use getAllFolders?
 MailboxAlert.convertFolderPreferences14toAlertPreferences = function(folder) {
     if (folder) {
         // first do this folder, then check if there are subfolders and repeat
