@@ -91,14 +91,19 @@ MailboxAlertAlertSettings.setUIShowMessage = function (show_message) {
   ], show_message);
 }
 
-MailboxAlertAlertSettings.checkUIShowMessage = function () {
+// returns true if doclick was called
+// if arg is true, perform the click
+MailboxAlertAlertSettings.checkUIShowMessage = function (do_click) {
   var show_message_checkbox = document.getElementById("show_message_checkbox");
   var show_message = show_message_checkbox.checked;
   MailboxAlertAlertSettings.setUIShowMessage(show_message);
-  if (show_message) {
+  var result = false;
+  if (do_click && show_message) {
     MailboxAlertAlertSettings.doClick("show_message_tab");
+    result = true;
   }
   MailboxAlertAlertSettings.checkUIShowMessageIcon();
+  return !do_click || result;
 }
 
 MailboxAlertAlertSettings.setUIShowMessageIcon = function (show_message_icon) {
@@ -127,13 +132,15 @@ MailboxAlertAlertSettings.setUIPlaySound = function (play_sound) {
   ], play_sound);
 }
 
-MailboxAlertAlertSettings.checkUIPlaySound = function () {
+MailboxAlertAlertSettings.checkUIPlaySound = function (do_click) {
   var play_sound_checkbox = document.getElementById("play_sound_checkbox");
   var play_sound = play_sound_checkbox.checked;
   MailboxAlertAlertSettings.setUIPlaySound(play_sound);
-  if (play_sound) {
+  if (do_click && play_sound) {
     MailboxAlertAlertSettings.doClick("play_sound_tab");
+    return true;
   }
+  return !do_click;
 }
 
 MailboxAlertAlertSettings.setUIExecuteCommand = function (execute_command) {
@@ -145,13 +152,15 @@ MailboxAlertAlertSettings.setUIExecuteCommand = function (execute_command) {
   ], execute_command);
 }
 
-MailboxAlertAlertSettings.checkUIExecuteCommand = function() {
+MailboxAlertAlertSettings.checkUIExecuteCommand = function(do_click) {
   var execute_command_checkbox = document.getElementById("execute_command_checkbox");
   var execute_command = execute_command_checkbox.checked;
   MailboxAlertAlertSettings.setUIExecuteCommand(execute_command);
-  if (execute_command) {
+  if (do_click && execute_command) {
     MailboxAlertAlertSettings.doClick("execute_command_tab");
+    return true;
   }
+  return !do_click;
 }
 
 MailboxAlertAlertSettings.setUIOkButton = function (enabled) {
@@ -166,11 +175,9 @@ MailboxAlertAlertSettings.checkUIOkButton = function () {
 }
 
 MailboxAlertAlertSettings.checkUIAll = function () {
-  // reversed in order so if multiple options are active, we
-  // always open with show message
-  MailboxAlertAlertSettings.checkUIExecuteCommand();
-  MailboxAlertAlertSettings.checkUIPlaySound();
-  MailboxAlertAlertSettings.checkUIShowMessage();
+  clicked = MailboxAlertAlertSettings.checkUIShowMessage(true);
+  clicked = MailboxAlertAlertSettings.checkUIPlaySound(!clicked);
+  clicked = MailboxAlertAlertSettings.checkUIExecuteCommand(!clicked);
   MailboxAlertAlertSettings.checkUIOkButton();
 }
 
@@ -212,10 +219,6 @@ MailboxAlertAlertSettings.setUIPrefAttribute = function (alert_prefs, name, elem
 }
 
 MailboxAlertAlertSettings.readPrefs = function (alert_id) {
-  if (!alert_id) {
-    alert("no alert id!");
-    return;
-  }
   dump("read settings for alert " + alert_id + "\n");
   try {
     //prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch).QueryInterface(Components.interfaces.nsIPrefService);
@@ -359,12 +362,7 @@ MailboxAlertAlertSettings.storeUIPrefAttribute = function (alert_prefs, name, el
 }
 
 MailboxAlertAlertSettings.storePrefs = function (alert_id) {
-  if (!alert_id) {
-    alert("no alert id!");
-    return;
-  }
 
-    dump("store 0 id " + alert_id + "\n");
   try {
     alert_prefs = MailboxAlert.getAlertPreferences(alert_id);
     dump("store 1\n");
@@ -544,9 +542,9 @@ MailboxAlertAlertSettings.chooseExecFile = function () {
     <spacer flex="1"/>
   </hbox>
   <hbox>
-    <checkbox id="show_message_checkbox" label="Show a message" oncommand="MailboxAlertAlertSettings.checkUIShowMessage();"/>
-    <checkbox id="play_sound_checkbox" label="Play a sound" oncommand="MailboxAlertAlertSettings.checkUIPlaySound();"/>
-    <checkbox id="execute_command_checkbox" label="Execute a command" oncommand="MailboxAlertAlertSettings.checkUIExecuteCommand();" />
+    <checkbox id="show_message_checkbox" label="Show a message" oncommand="MailboxAlertAlertSettings.checkUIShowMessage(true);"/>
+    <checkbox id="play_sound_checkbox" label="Play a sound" oncommand="MailboxAlertAlertSettings.checkUIPlaySound(true);"/>
+    <checkbox id="execute_command_checkbox" label="Execute a command" oncommand="MailboxAlertAlertSettings.checkUIExecuteCommand(true);" />
   </hbox>
 
   <tabbox id="tab_list" selectedIndex="-1">

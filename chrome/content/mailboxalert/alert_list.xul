@@ -13,6 +13,8 @@
   <key id="close_cmd" modifiers="control" key="W" oncommand="window.close();"/>
 </keyset>
 
+<stringbundle id="string-bundle" src="chrome://mailboxalert/locale/mailboxalert.properties"/>
+
 <script src="chrome://mailboxalert/content/mailboxalert_vars.js">
 </script>
 
@@ -50,10 +52,11 @@ MailboxAlertList.deleteAlert = function () {
 
     var folders = MailboxAlert.getAllFoldersForAlertIndex(alert_index);
     if (folders.length > 0) {
-        // TODO: int8l
-        if (confirm("This alert is set to one or more folders. Are you sure you want to delete it?")) {
+        var stringsBundle = document.getElementById("string-bundle");
+        if (confirm(stringsBundle.getString("mailboxalert.alert_settings.alertset"))) {
             for (var i = 0; i < folders.length; ++i) {
                 folders[i].removeAlert(alert_index);
+                folders[i].store();
             }
             var alert_prefs = MailboxAlert.getAlertPreferences(alert_index);
             alert_prefs.remove();

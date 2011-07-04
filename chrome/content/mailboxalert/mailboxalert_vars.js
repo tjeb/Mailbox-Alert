@@ -725,12 +725,14 @@ MailboxAlert.getChildFolders = function (folder, ar) {
     while (sub_folders && sub_folders.hasMoreElements()) {
         var next_folder = sub_folders.getNext().QueryInterface(Components.interfaces.nsIMsgFolder);
         if (next_folder) {
-            MailboxAlert.getChildFolders(folder, ar);
+            MailboxAlert.getChildFolders(next_folder, ar);
         }
     }
 }
 
 MailboxAlert.getAllFolderURIs = function () {
+    var accountManager = Components.classes["@mozilla.org/messenger/account-manager;1"]
+                         .getService(Components.interfaces.nsIMsgAccountManager);
     var all_servers = accountManager.allServers;
     var all_folder_uris = [];
 
@@ -864,7 +866,9 @@ MailboxAlert.convertAllFolderPreferences14toAlertPreferences = function () {
         default_alert.createNewIndex();
         default_alert.store();
     }
-    
+
+    var accountManager = Components.classes["@mozilla.org/messenger/account-manager;1"]
+                         .getService(Components.interfaces.nsIMsgAccountManager);
     var all_servers = accountManager.allServers;
     for (var i = 0; i < all_servers.Count(); ++i) {
         var server = all_servers.GetElementAt(i).QueryInterface(Components.interfaces.nsIMsgIncomingServer);
