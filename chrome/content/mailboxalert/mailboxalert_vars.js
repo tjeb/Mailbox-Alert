@@ -63,68 +63,6 @@ MailboxAlert.renamed_folder = null;
  */
 MailboxAlert.max_alerts = 100;
 
-MailboxAlert.getDefaultPrefValue = function (prefname) {
-    if (prefname) {
-      switch (prefname) {
-        case "alert_for_children":
-          return false;
-          break;
-        case "command":
-          return "";
-          break;
-        case "escape":
-          return false;
-          break;
-        case "execute_command":
-          return false;
-          break;
-        case "command":
-          return "";
-          break;
-        case "icon_file":
-          return "chrome://mailboxalert/skin/mailboxalert.png";
-          break;
-        case "message":
-          return "";
-          break;
-        case "no_alert_to_parent":
-          return false;
-          break;
-        case "play_sound":
-          return false;
-          break;
-        case "show_message":
-          return false;
-          break;
-        case "show_message_icon":
-          return true;
-          break;
-        case "sound_wav":
-          return true;
-          break;
-        case "sound_wav_file":
-          return "";
-          break;
-        case "subject":
-          return "";
-          break;
-/*
-        case "":
-          return ;
-          break;
-*/
-        default:
-          alert("unknown default pref: " + prefname);
-          break;
-      }
-    }
-}
-
-
-MailboxAlert.isDefaultPrefValue = function (pref, value) {
-    return value == this.getDefaultPrefValue(pref);
-}
-
 //
 // We have 2 structures that represent configuration values
 // 
@@ -185,10 +123,10 @@ MailboxAlert.getGlobalPreferences14 = function() {
 
     // TODO: Once we change names in AlertPrefDefs, update them here
     global_prefs.applyToAlertPrefs = function (alert_prefs) {
-        alert_prefs.set("position", this.position);
-        alert_prefs.set("duration", this.duration);
-        alert_prefs.set("effect", this.effect);
-        alert_prefs.set("onclick", this.onclick);
+        alert_prefs.set("show_message_position", this.position);
+        alert_prefs.set("show_message_duration", this.duration);
+        alert_prefs.set("show_message_effect", this.effect);
+        alert_prefs.set("show_message_onclick", this.onclick);
     }
 
     // WARNING: DON'T USE UNTIL CONVERSION IS DONE
@@ -259,20 +197,20 @@ MailboxAlert.folderPrefDefs14 = {
 MailboxAlert.alertPrefDefs = {
 "show_message": [ "bool", false],
 "show_message_icon": [ "bool", true ],
-"icon_file": [ "string", "chrome://mailboxalert/skin/mailboxalert.png" ],
-"subject": [ "string", "" ],
-"message": [ "string", "" ],
+"show_message_icon_file": [ "string", "chrome://mailboxalert/skin/mailboxalert.png" ],
+"show_message_subject": [ "string", "" ],
+"show_message_message": [ "string", "" ],
 "play_sound": [ "bool", false ],
-"sound_wav": [ "bool", false ],
-"sound_wav_file": [ "string", "" ],
+"play_sound_wav": [ "bool", false ],
+"play_sound_wav_file": [ "string", "" ],
 "execute_command": [ "bool", false ],
 "command": [ "string", "" ],
-"escape": [ "bool", false ],
+"command_escape": [ "bool", false ],
 "name": [ "string", "" ],
-"duration": [ "integer", 5 ],
-"position": [ "string", "top-left" ],
-"effect": [ "string", "slide" ],
-"onclick": [ "string", "close" ],
+"show_message_duration": [ "integer", 5 ],
+"show_message_position": [ "string", "top-left" ],
+"show_message_effect": [ "string", "slide" ],
+"show_message_onclick": [ "string", "close" ],
 }
 
 // This returns the preferences for the folder in mailboxalert
@@ -389,7 +327,23 @@ MailboxAlert.getFolderPreferences14 = function(folder_uri) {
             // settings)
             if (name != "no_alert_to_parent" &&
                 name != "alert_for_children") {
-                new_alert.set(name, this.get(name));
+                // special cases for changed names
+                if (name == "subject") {
+                    new_alert.set("show_message_subject", this.get(name));
+                } else if (name == "icon_file") {
+                    new_alert.set("show_message_icon_file", this.get(name));
+                } else if (name == "message") {
+                    new_alert.set("show_message_message", this.get(name));
+                } else if (name == "sound_wav") {
+                    new_alert.set("play_sound_wav", this.get(name));
+                } else if (name == "sound_wav_file") {
+                    new_alert.set("play_sound_wav_file", this.get(name));
+                } else if (name == "command_escape") {
+                    new_alert.set("command_escape", this.get(name));
+                    xxxxxxxxxxxxxxx
+                } else {
+                    new_alert.set(name, this.get(name));
+                }
             }
         }
         var global_prefs = MailboxAlert.getGlobalPreferences14();
@@ -575,13 +529,13 @@ MailboxAlert.getAlertPreferences = function (index) {
         if (this.get("show_message")) {
             MailboxAlert.showMessage(alert_data,
                                     this.get("show_message_icon"),
-                                    this.get("icon_file"),
-                                    this.get("subject"),
-                                    this.get("message"));
+                                    this.get("show_message_icon_file"),
+                                    this.get("show_message_subject"),
+                                    this.get("show_message_message"));
         }
         if (this.get("play_sound")) {
-            if (this.get("sound_wav")) {
-                MailboxAlert.playSound(this.get("sound_wav_file"));
+            if (this.get("play_sound_wav")) {
+                MailboxAlert.playSound(this.get("play_sound_wav_file"));
             } else {
                 MailboxAlert.playSound();
             }
@@ -589,7 +543,7 @@ MailboxAlert.getAlertPreferences = function (index) {
         if (this.get("execute_command")) {
             MailboxAlert.execute_command(alert_data,
                                          this.get("command"),
-                                         this.get("escape"));
+                                         this.get("command_escape"));
         }
     }
 
@@ -836,8 +790,8 @@ MailboxAlert.convertAllFolderPreferences14toAlertPreferences = function () {
     // TODO: int8l
     default_alert.set("name", "Default Alert");
     default_alert.set("show_message", true);
-    default_alert.set("subject", "%sendername on %originalfolder");
-    default_alert.set("message", "%subject");
+    default_alert.set("show_message_subject", "%sendername on %originalfolder");
+    default_alert.set("show_message_message", "%subject");
     var all_alerts = MailboxAlert.getAllAlertPrefs();
     var exists = false;
     for (var i = 0; i < all_alerts.length; ++i) {
