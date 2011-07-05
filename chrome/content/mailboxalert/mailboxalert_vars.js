@@ -338,9 +338,8 @@ MailboxAlert.getFolderPreferences14 = function(folder_uri) {
                     new_alert.set("play_sound_wav", this.get(name));
                 } else if (name == "sound_wav_file") {
                     new_alert.set("play_sound_wav_file", this.get(name));
-                } else if (name == "command_escape") {
+                } else if (name == "escape") {
                     new_alert.set("command_escape", this.get(name));
-                    xxxxxxxxxxxxxxx
                 } else {
                     new_alert.set(name, this.get(name));
                 }
