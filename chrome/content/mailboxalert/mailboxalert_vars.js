@@ -530,7 +530,12 @@ MailboxAlert.getAlertPreferences = function (index) {
                                     this.get("show_message_icon"),
                                     this.get("show_message_icon_file"),
                                     this.get("show_message_subject"),
-                                    this.get("show_message_message"));
+                                    this.get("show_message_message"),
+                                    this.get("show_message_position"),
+                                    this.get("show_message_duration"),
+                                    this.get("show_message_effect"),
+                                    this.get("show_message_onclick")
+                                    );
         }
         if (this.get("play_sound")) {
             if (this.get("play_sound_wav")) {

@@ -42,19 +42,14 @@ MailboxAlertAlertSettings.getAlertId = function() {
 }
 
 MailboxAlertAlertSettings.testAlert = function () {
-  // store it temporarily under a different id.
-  alert("[XX] test alert");
-  var temp_index = MailboxAlert.max_alerts + 1;
-  alert("[XX] test alert2");
-  MailboxAlertSettings.storePrefs(temp_index);
-  alert("[XX] test alert3");
-  var alert_prefs = MailboxAlert.getAlertPrefs(temp_index);
-  alert("[XX] test alert4");
-  var fake_data = MailboxAlert.createAlertData();
-  alert("[XX] about to test fake alert " + temp_index);
-  alert_prefs.run(fake_data);
-  alert("[XX] done. removing now");
-  alert_prefs.remove();
+  try {
+    var alert_id = MailboxAlertAlertSettings.getAlertId();
+    var alert_prefs = MailboxAlertAlertSettings.getPrefsFromWindow(alert_id);
+    var alert_data = MailboxAlert.createAlertData();
+    alert_prefs.run(alert_data);
+  } catch (e) {
+    alert("[XX] error at " + e.fileName + ":" + e.lineNumber + ": " + e);
+  }
 }
 
 /* if enabled is true, get all elements with the
@@ -334,12 +329,11 @@ MailboxAlertAlertSettings.storeUIPrefAttribute = function (alert_prefs, name, el
   }
 }
 
-MailboxAlertAlertSettings.storePrefs = function (alert_id) {
-
+MailboxAlertAlertSettings.getPrefsFromWindow = function (alert_id) {
   try {
     alert_prefs = MailboxAlert.getAlertPreferences(alert_id);
     MailboxAlertAlertSettings.storeUIPrefTextbox(alert_prefs, "name", "alert_name_textbox");
-    
+
     MailboxAlertAlertSettings.storeUIPrefCheckbox(alert_prefs, "show_message", "show_message_checkbox");
     MailboxAlertAlertSettings.storeUIPrefCheckbox(alert_prefs, "play_sound", "play_sound_checkbox");
     MailboxAlertAlertSettings.storeUIPrefCheckbox(alert_prefs, "execute_command", "execute_command_checkbox");
@@ -363,14 +357,19 @@ MailboxAlertAlertSettings.storePrefs = function (alert_id) {
     MailboxAlertAlertSettings.storeUIPrefTextbox(alert_prefs, "command", "execute_command_textbox");
     MailboxAlertAlertSettings.storeUIPrefCheckbox(alert_prefs, "command_escape", "execute_command_escape_html_checkbox");
 
-    if (alert_prefs.index == 0) {
-        alert_prefs.createNewIndex();
-    }
-    alert_prefs.store();
+    return alert_prefs;
   } catch (e) {
     dump("error\n");
     alert("Error: " + e);
   }
+}
+
+MailboxAlertAlertSettings.storePrefs = function (alert_id) {
+    var alert_prefs = MailboxAlertAlertSettings.getPrefsFromWindow(alert_id);
+    if (alert_prefs.index == 0) {
+        alert_prefs.createNewIndex();
+    }
+    alert_prefs.store();
 }
 
 MailboxAlertAlertSettings.init = function () {

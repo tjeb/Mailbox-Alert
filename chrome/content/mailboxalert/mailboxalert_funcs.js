@@ -38,6 +38,14 @@ MailboxAlert.createAlertData = function (mailbox, last_unread) {
         this.folder_name_with_server = MailboxAlert.getFullFolderName(this.mailbox, true);
         this.folder_uri = this.mailbox.URI;
         this.all_message_count = this.mailbox.getNumUnread(true);
+        this.folder_is_server = this.mailbox.isServer;
+    }
+    this.deriveFakeData = function() {
+        // derived data that changes
+        this.folder_name = "SomeFolder";
+        this.folder_name_with_server = "SomeServer/SomeFolder";
+        this.folder_uri = "IMAP://SomeServer/SomeFolder";
+        this.all_message_count = 42;
     }
     
     this.deriveDataFixed = function() {
@@ -97,9 +105,13 @@ MailboxAlert.createAlertData = function (mailbox, last_unread) {
         this.preview_fetched = false;
     }
     
-    this.deriveData();
-    this.deriveDataFixed();
-
+    if (this.mailbox) {
+        this.deriveData();
+        this.deriveDataFixed();
+    } else {
+        this.deriveFakeData();
+    }
+    
     // internal state variables
     this.orig_folder_name = this.folder_name;
     this.is_parent = false;
@@ -208,10 +220,14 @@ MailboxAlert.addToQueue = function (folder, message) {
             var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
             try {
                 var delay = prefs.getIntPref("extensions.mailboxalert.alert_delay");
+                dump("[XX] setting timeout to handle queue\n");
                 setTimeout('MailboxAlert.queueHandler()', delay * 1000);
             } catch (e) {
+                dump("[XX] setting timeout to handle queue default\n");
                 setTimeout('MailboxAlert.queueHandler()', MailboxAlert.initial_wait_time);
             }
+        } else {
+            dump("[XX] already running\n");
         }
     }
 }
@@ -409,7 +425,7 @@ MailboxAlert.new_alert2 = function (alert_data) {
             return;
         } else {
             if (!folder_prefs.no_alert_to_parent &&
-                !alert_data.mailbox.isServer &&
+                !alert_data.folder_is_server &&
                 !(!alert_data.is_parent &&
                   folder_prefs.get("no_alert_to_parent"))) {
                 dump("[Mailboxalert] No alerts were set for ");
@@ -423,7 +439,7 @@ MailboxAlert.new_alert2 = function (alert_data) {
     }
 }
 
-MailboxAlert.showMessage = function (alert_data, show_icon, icon_file, subject_pref, message) {
+MailboxAlert.showMessage = function (alert_data, show_icon, icon_file, subject_pref, message, position, duration, effect, onclick) {
     dump("[XX]\n");
     dump("[XX]\n");
     MailboxAlert.showMethods(alert_data.getInfo());
@@ -432,7 +448,7 @@ MailboxAlert.showMessage = function (alert_data, show_icon, icon_file, subject_p
     
     var message_key = alert_data.last_unread.messageKey;
     
-    var folder_url = alert_data.mailbox.URI;
+    var folder_url = alert_data.folder_uri;
 
     if (!alert_data.messageBytes) {
         alert_data.messageBytes = "0";
@@ -488,7 +504,7 @@ MailboxAlert.showMessage = function (alert_data, show_icon, icon_file, subject_p
     dump("[XX] Message text: " + message_text + "\n");
 
     try {
-        window.openDialog('chrome://mailboxalert/content/newmailalert.xul', "new mail", "chrome,titlebar=no,popup=yes", subject_pref, message_text, show_icon, icon_file, alert_data.orig_mailbox, alert_data.last_unread);
+        window.openDialog('chrome://mailboxalert/content/newmailalert.xul', "new mail", "chrome,titlebar=no,popup=yes", subject_pref, message_text, show_icon, icon_file, alert_data.orig_mailbox, alert_data.last_unread, position, duration, effect, onclick);
     } catch (e) {
         alert(e);
     }

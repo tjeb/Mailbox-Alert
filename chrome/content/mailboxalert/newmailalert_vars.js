@@ -35,10 +35,10 @@ MailboxAlertNewMail.timer = Components.classes["@mozilla.org/timer;1"].createIns
 
 // timer states
 MailboxAlertNewMail.SLIDING_IN_TOP = 0
-MailboxAlertNewMail.SLIDING_IN_BOTTOM = 0
-MailboxAlertNewMail.SLIDING_OUT_TOP = 1
-MailboxAlertNewMail.SLIDING_OUT_BOTTOM = 1
-MailboxAlertNewMail.WAITING = 2
-MailboxAlertNewMail.FADING_IN = 3
-MailboxAlertNewMail.FADING_OUT = 4
-MailboxAlertNewMail.DONE = 5
+MailboxAlertNewMail.SLIDING_IN_BOTTOM = 1
+MailboxAlertNewMail.SLIDING_OUT_TOP = 2
+MailboxAlertNewMail.SLIDING_OUT_BOTTOM = 3
+MailboxAlertNewMail.WAITING = 4
+MailboxAlertNewMail.FADING_IN = 5
+MailboxAlertNewMail.FADING_OUT = 6
+MailboxAlertNewMail.DONE = 7
