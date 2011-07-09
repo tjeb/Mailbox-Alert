@@ -42,7 +42,19 @@ MailboxAlertAlertSettings.getAlertId = function() {
 }
 
 MailboxAlertAlertSettings.testAlert = function () {
-  /* */
+  // store it temporarily under a different id.
+  alert("[XX] test alert");
+  var temp_index = MailboxAlert.max_alerts + 1;
+  alert("[XX] test alert2");
+  MailboxAlertSettings.storePrefs(temp_index);
+  alert("[XX] test alert3");
+  var alert_prefs = MailboxAlert.getAlertPrefs(temp_index);
+  alert("[XX] test alert4");
+  var fake_data = MailboxAlert.createAlertData();
+  alert("[XX] about to test fake alert " + temp_index);
+  alert_prefs.run(fake_data);
+  alert("[XX] done. removing now");
+  alert_prefs.remove();
 }
 
 /* if enabled is true, get all elements with the
