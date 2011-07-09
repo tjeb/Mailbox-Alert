@@ -731,8 +731,6 @@ MailboxAlert.checkOldSettings_folder = function (folder) {
 	}
 }
 
-gMessengerBundle = document.getElementById("bundle_messenger");
-
 MailboxAlert.checkOldSettings = function () {
 
         var allServers = accountManager.allServers;
