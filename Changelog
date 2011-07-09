@@ -1,3 +1,12 @@
+[0.14.5-0.14.6]
+  o Minor update to make it work with Seamonkey 2.1
+
+[0.14.4-0.14.5]
+  o Fixed an issue on Thunderbird 2 caused by a changed internal API,
+    where alerts would not fire at all in some circumstances.
+  o Fixed another issue with Thunderbird 2 where 'execute a command'
+    did not work for some executables.
+
 [0.14.3-0.14.4]
   o Fixed a problem where the check if a command is executable failed
     on Windows, even though the command would run fine

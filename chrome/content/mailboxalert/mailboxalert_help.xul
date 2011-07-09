@@ -39,7 +39,7 @@
 	<label value="%messagesize: &mailboxalert.prefs.expl.messagesize;"/>
 	<label value="%enter: &mailboxalert.prefs.expl.enter;"/>
 	<label value=""/>
-	<text value="&mailboxalert.prefs.expl.see; http://jelte.nlnetlabs.nl/Projects/Mailbox_Alert &mailboxalert.prefs.expl.information;" />
+	<text value="&mailboxalert.prefs.expl.see; http://tjeb.nl/Projects/Mailbox_Alert &mailboxalert.prefs.expl.information;" />
 </groupbox>
 <hbox align="right">
 	<button id="help_close" label="&mailboxalert.prefs.close;" oncommand="window.close();"/>
