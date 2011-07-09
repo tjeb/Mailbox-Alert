@@ -125,9 +125,29 @@ MailboxAlert.createAlertData = function (mailbox, last_unread) {
             // call on last_unread folder, not our own mailbox
             // (we may have the parent by now)
             var url_listener = MailboxAlert.createUrlListener();
-            var urlscalled = this.last_unread.folder.fetchMsgPreviewText(
+            var urlscalled = false;
+            // API changed from TB2 to TB3, first try TB3 API, if
+            // exception, try the other one
+            try {
+                urlscalled = this.last_unread.folder.fetchMsgPreviewText(
                                         [this.last_unread.messageKey],
                                         1, false, url_listener);
+            } catch(e) {
+				try {
+	                var aOutAsync = {};
+	                this.last_unread.folder.fetchMsgPreviewText(
+	                          [this.last_unread.messageKey],
+	                          1, false, url_listener, aOutAsync);
+	                if (aOutAsync && aOutAsync.value) {
+	                    urlscalled = true;
+	                }
+				} catch(e2) {
+					// On some folders (news for instance), and in
+					// some other cases, fetch just throws an exception
+					// if so, just set an empty previewtext
+					this.last_unread.setProperty("preview", "<empty>");
+				}
+            }
             dump("[XX] urlscalled: " + urlscalled + "\n");
             if (urlscalled) {
                 dump("[XX] waiting for url_listener\n");
@@ -480,6 +500,9 @@ MailboxAlert.showMessage = function (alert_data, show_icon, icon_file, subject_p
     //subject_pref = MailboxAlert.replace(subject_pref, "%enter", "\n");
     subject_pref = MailboxAlert.replace(subject_pref, "%msg_preview", preview);
     subject_pref = MailboxAlert.replace(subject_pref, "%msg_uri", alert_data.msg_uri);
+    if (subject_pref.indexOf("%body" > 0)) {
+		subject_pref = MailboxAlert.replace(subject_pref, "%body", alert_data.getPreview());
+	}
 
     var message_text = message;
     dump("[XX] Original Message text: " + message_text + "\n");
@@ -500,6 +523,9 @@ MailboxAlert.showMessage = function (alert_data, show_icon, icon_file, subject_p
     message_text = MailboxAlert.replace(message_text, "%enter", "\n");
     message_text = MailboxAlert.replace(message_text, "%msg_preview", preview);
     message_text = MailboxAlert.replace(message_text, "%msg_uri", alert_data.msg_uri);
+    if (subject_pref.indexOf("%body" > 0)) {
+		message_text = MailboxAlert.replace(message_text, "%body", alert_data.getPreview());
+	}
 
     dump("[XX] Message text: " + message_text + "\n");
 
@@ -629,18 +655,7 @@ dump("2\n");
 dump("3\n");
         // removing the check, we shall have to try and run it
         // then catch NS_UNEXPECTED
-        var run = true;
         if (!exec.exists()) {
-dump("4\n");
-            //alert("[XX] file not found");
-            run = false;
-        } else if (!exec.isFile()) {
-            //alert("[XX] file is not a file");
-dump("5\n");
-            run = false;
-        }
-        if (!exec.exists()) {
-dump("6\n");
             var stringsBundle = document.getElementById("string-bundle");
             alert(stringsBundle.getString('mailboxalert.error')+"\n" + exec.leafName + " " + stringsBundle.getString('mailboxalert.error.notfound') + "\n\nFull path: "+executable_name+"\n\n" + stringsBundle.getString('mailboxalert.error.disableexecutefor') + " " + alert_data.folder_name_with_server);
             dump("Failed command:  " +executable_name + "\r\n");
@@ -667,7 +682,6 @@ dump("11\n");
         }
     } catch (e) {
         // TODO: better error, refactor double code
-dump("12\n");
         if (e.name == "NS_ERROR_FAILURE" ||
             e.name == "NS_ERROR_UNEXPECTED"
            ) {
