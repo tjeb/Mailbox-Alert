@@ -528,6 +528,7 @@ MailboxAlert.playSound = function (soundURL) {
           } catch(e) {
               // some error, just 'beep' (which is system-dependent
               // these days)
+              dump("[XX] exception playing sound: " + e);
               gSound.beep();
           }
     } else {
