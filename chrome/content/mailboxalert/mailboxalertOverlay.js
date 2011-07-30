@@ -710,12 +710,8 @@ MailboxAlert.checkOldSettings = function () {
         prefsversion = 14;
     }
     if (prefsversion < 15) {
-        // TODO finish
-        //alert("[XX] removeme, doing conversion");
         MailboxAlert.convertAllFolderPreferences14toAlertPreferences();
-        //alert("[XX] conversion done");
-        // TODO: uncomment when it works
-        //prefs.setIntPref("extensions.mailboxalert.prefsversion", 15);
+        prefs.setIntPref("extensions.mailboxalert.prefsversion", 15);
     }
 }
 

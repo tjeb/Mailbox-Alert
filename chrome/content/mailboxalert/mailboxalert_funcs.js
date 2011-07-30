@@ -67,10 +67,10 @@ MailboxAlert.createAlertData = function (mailbox, last_unread) {
             this.sender_name = this.sender.substring(0, this.sender.indexOf('<'));
             this.sender_address = this.sender.substring(this.sender.indexOf('<') + 1, this.sender.indexOf('>'));
         }
-        // is there a more default default? TODO (also, might it change?)
+        // is there a more default default?
         this.charset = "ISO-8859-1";
-        // not all folders have charset?
-        // some messages have charset?
+        // not all folders have charset
+        // some messages have charset
         try {
             this.charset = this.last_unread.Charset;
         } catch (e) {
@@ -86,7 +86,7 @@ MailboxAlert.createAlertData = function (mailbox, last_unread) {
         this.messageBytes = this.last_unread.messageSize;
         this.date = this.last_unread.date;
     }
-    
+
     if (!this.last_unread) {
         // this is a fake message, create some test data 
         this.last_unread = {};
@@ -198,7 +198,7 @@ MailboxAlert.createAlertData = function (mailbox, last_unread) {
 }
 
 MailboxAlert.muted = function () {
-    // TODO: make a GlobalPrefs like Prefs
+    // If we ever need more than 1 global setting, make a GlobalPrefs like Prefs
     var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
     var muted = prefs.getBoolPref("extensions.mailboxalert.mute");
     dump("[XX] muted: " + muted + "\n");
@@ -309,14 +309,12 @@ MailboxAlert.queueHandler = function () {
                     dump("[mailboxalert] folder still getting: ");
                     dump(MailboxAlert.getFullFolderName(folder, true));
                     dump("\r\n");
-                    // TODO: doesn't this break stuff?
                     folder.updateFolder(msgWindow);
                 }
-                
             }
         }
     }
-    
+
     if (MailboxAlert.queue_length > 0) {
         setTimeout('MailboxAlert.queueHandler()', MailboxAlert.wait_time);
     } else {
@@ -646,42 +644,33 @@ MailboxAlert.executeCommand = function (alert_data, command, escape_html) {
         var pr = Components.classes["@mozilla.org/process/util;1"].
         createInstance(Components.interfaces.nsIProcess);
 
-dump("1 " + executable_name+ "\n");
         exec.initWithPath(executable_name);
-dump("2\n");
         // isExecutable is horribly broken in OSX, see
         // https://bugzilla.mozilla.org/show_bug.cgi?id=322865
         // It turns out to be broken in windows too...
-dump("3\n");
         // removing the check, we shall have to try and run it
         // then catch NS_UNEXPECTED
         if (!exec.exists()) {
             var stringsBundle = document.getElementById("string-bundle");
             alert(stringsBundle.getString('mailboxalert.error')+"\n" + exec.leafName + " " + stringsBundle.getString('mailboxalert.error.notfound') + "\n\nFull path: "+executable_name+"\n\n" + stringsBundle.getString('mailboxalert.error.disableexecutefor') + " " + alert_data.folder_name_with_server);
             dump("Failed command:  " +executable_name + "\r\n");
-dump("7\n");
             dump("Arguments: " + args + "\r\n");
             var caller = window.arguments[0];
             if (caller) {
-dump("8\n");
                 var executecommandcheckbox = document.getElementById('mailboxalert_execute_command');
                 executecommandcheckbox.checked = false;
                 setUIExecuteCommandPrefs(false);
             } else {
-dump("9\n");
                 var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
                 prefs.setBoolPref("extensions.mailboxalert.execute_command." + alert_data.folder_name_with_server, false);
             }
         } else {
-dump("10\n");
             dump("Command:  " +executable_name + "\r\n");
             dump("Arguments: " + args + "\r\n");
             var res1 = pr.init(exec);
-dump("11\n");
             var result = pr.run(false, args, args.length);
         }
     } catch (e) {
-        // TODO: better error, refactor double code
         if (e.name == "NS_ERROR_FAILURE" ||
             e.name == "NS_ERROR_UNEXPECTED"
            ) {

@@ -18,7 +18,6 @@
     </script>
 
     <!-- Firefox / Thunderbird Tools Menu -->
-                    <!--oncommand="window.openDialog('chrome://mailboxalert/content/mailboxalert_pref.xul', 'mailboxalert_prefs', 'chrome', MailboxAlert.getFolder());"/> -->
     <menupopup id="menu_ToolsPopup">
         <menuseparator id="mailboxalertSeperator" insertbefore="devToolsSeparator" />
         <menuitem id="mailboxalert-tools-menu-prefs" label="&mailboxalert.menu.editalerts;"
@@ -28,7 +27,6 @@
     </menupopup>
     
     <!-- Mozilla Tools Menu -->
-            <!--oncommand="window.openDialog('chrome://mailboxalert/content/mailboxalert_pref.xul', 'mailboxalert_prefs', 'chrome', MailboxAlert.getFolder());"/> -->
     <menupopup id="taskPopup">
         <menuseparator id="mailboxalertSeperator" insertbefore="devToolsSeparator" />
         <menuitem id="mailboxalert-moz-tools-menu-prefs" 

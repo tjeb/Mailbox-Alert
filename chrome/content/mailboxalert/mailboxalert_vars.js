@@ -121,7 +121,6 @@ MailboxAlert.getGlobalPreferences14 = function() {
         // wasn't set, n/m
     }
 
-    // TODO: Once we change names in AlertPrefDefs, update them here
     global_prefs.applyToAlertPrefs = function (alert_prefs) {
         alert_prefs.set("show_message_position", this.position);
         alert_prefs.set("show_message_duration", this.duration);
@@ -129,7 +128,6 @@ MailboxAlert.getGlobalPreferences14 = function() {
         alert_prefs.set("show_message_onclick", this.onclick);
     }
 
-    // WARNING: DON'T USE UNTIL CONVERSION IS DONE
     global_prefs.deleteBranch = function (branchname) {
         try {
             MailboxAlert.prefService.deleteBranch(branchname);
@@ -137,7 +135,7 @@ MailboxAlert.getGlobalPreferences14 = function() {
             // ok leave them then
         }
     }
-    // WARNING: DON'T USE UNTIL CONVERSION IS DONE
+
     global_prefs.deleteAll = function () {
         // TODO: can we delete delay now?
         //this.deleteBranch("extensions.mailboxalert.alert_delay");
@@ -192,8 +190,6 @@ MailboxAlert.folderPrefDefs14 = {
 // for conversion from 0.14, it is essential that everything before 'name'
 // keeps the current name (see convert function in folderprefs14)
 
-// TODO: rename everything below name (for those above, add conversion?)
-// (don't forget to update alert_settings.xul)
 MailboxAlert.alertPrefDefs = {
 "show_message": [ "bool", false],
 "show_message_icon": [ "bool", true ],
@@ -779,7 +775,9 @@ MailboxAlert.convertFolderPreferences14toAlertPreferences = function(folder_uri)
         }
         folder_prefs.store();
 
-        // TODO: delete folder_prefs14
+        // We should really delete the old folderprefs values from the preferences
+        // database. However, since some people may want to convert back we'll leave
+        // them in for now. Until the 0.14 users have all converted (if ever)
     }
 }
 
@@ -789,10 +787,11 @@ MailboxAlert.convertAllFolderPreferences14toAlertPreferences = function () {
     // (and cache) the configs, if any. Then convert them to
     // AlertPrefs. Finally tie the index to the folder
 
-    // also add a default if it does not exist yet
+    var stringsBundle = document.getElementById("string-bundle");
+
+    // also add two defaults if it does not exist yet
     var default_alert = MailboxAlert.getAlertPreferences(0);
-    // TODO: int8l
-    default_alert.set("name", "Default Alert");
+    default_alert.set("name", stringsBundle.getString('mailboxalert.default_message'));
     default_alert.set("show_message", true);
     default_alert.set("show_message_subject", "%sendername on %originalfolder");
     default_alert.set("show_message_message", "%subject");
@@ -800,7 +799,24 @@ MailboxAlert.convertAllFolderPreferences14toAlertPreferences = function () {
     var exists = false;
     for (var i = 0; i < all_alerts.length; ++i) {
         var existing_alert = all_alerts[i];
-        
+        if (existing_alert.equals(default_alert)) {
+            // ok just stop and return
+            exists = true;
+        }
+    }
+    if (!exists) {
+        default_alert.createNewIndex();
+        default_alert.store();
+    }
+
+    var default_alert = MailboxAlert.getAlertPreferences(0);
+    default_alert.set("name", stringsBundle.getString('mailboxalert.default_sound'));
+    default_alert.set("play_sound", true);
+    // TODO: find a nice built-in wav
+    var all_alerts = MailboxAlert.getAllAlertPrefs();
+    var exists = false;
+    for (var i = 0; i < all_alerts.length; ++i) {
+        var existing_alert = all_alerts[i];
         if (existing_alert.equals(default_alert)) {
             // ok just stop and return
             exists = true;
@@ -817,11 +833,9 @@ MailboxAlert.convertAllFolderPreferences14toAlertPreferences = function () {
         MailboxAlert.convertFolderPreferences14toAlertPreferences(folder_uri);
     }
 
-    // TODO: set that we are now at version number 15 and delete rest
-    // folder prefs and global prefs
-    // recheck conversion first :)
     MailboxAlert.prefService.setIntPref("extensions.mailboxalert.prefsversion", 15);
     dump("[XX] conversion done, prefsversion updated");
+    // Once nobody uses 0.14 we can delete old prefs, but we leave them in for now
 }
 
 MailboxAlert.findAvailableAlertPrefsId = function () {
