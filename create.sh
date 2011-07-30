@@ -8,6 +8,7 @@ cp -r src_$1 $1
 
 cd $1
 find . -name .svn -exec rm -rf {} \;
+find . -name .git -exec rm -rf {} \;
 find . -name \*~ -exec rm -rf {} \;
 find . -name DEADJOE -exec rm -rf {} \;
 find . -name TODO -exec rm -rf {} \;

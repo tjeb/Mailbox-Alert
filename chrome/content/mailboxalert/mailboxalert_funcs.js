@@ -38,6 +38,14 @@ MailboxAlert.createAlertData = function (mailbox, last_unread) {
         this.folder_name_with_server = MailboxAlert.getFullFolderName(this.mailbox, true);
         this.folder_uri = this.mailbox.URI;
         this.all_message_count = this.mailbox.getNumUnread(true);
+        this.folder_is_server = this.mailbox.isServer;
+    }
+    this.deriveFakeData = function() {
+        // derived data that changes
+        this.folder_name = "SomeFolder";
+        this.folder_name_with_server = "SomeServer/SomeFolder";
+        this.folder_uri = "IMAP://SomeServer/SomeFolder";
+        this.all_message_count = 42;
     }
     
     this.deriveDataFixed = function() {
@@ -59,10 +67,10 @@ MailboxAlert.createAlertData = function (mailbox, last_unread) {
             this.sender_name = this.sender.substring(0, this.sender.indexOf('<'));
             this.sender_address = this.sender.substring(this.sender.indexOf('<') + 1, this.sender.indexOf('>'));
         }
-        // is there a more default default? TODO (also, might it change?)
+        // is there a more default default?
         this.charset = "ISO-8859-1";
-        // not all folders have charset?
-        // some messages have charset?
+        // not all folders have charset
+        // some messages have charset
         try {
             this.charset = this.last_unread.Charset;
         } catch (e) {
@@ -78,7 +86,7 @@ MailboxAlert.createAlertData = function (mailbox, last_unread) {
         this.messageBytes = this.last_unread.messageSize;
         this.date = this.last_unread.date;
     }
-    
+
     if (!this.last_unread) {
         // this is a fake message, create some test data 
         this.last_unread = {};
@@ -97,9 +105,13 @@ MailboxAlert.createAlertData = function (mailbox, last_unread) {
         this.preview_fetched = false;
     }
     
-    this.deriveData();
-    this.deriveDataFixed();
-
+    if (this.mailbox) {
+        this.deriveData();
+        this.deriveDataFixed();
+    } else {
+        this.deriveFakeData();
+    }
+    
     // internal state variables
     this.orig_folder_name = this.folder_name;
     this.is_parent = false;
@@ -113,9 +125,29 @@ MailboxAlert.createAlertData = function (mailbox, last_unread) {
             // call on last_unread folder, not our own mailbox
             // (we may have the parent by now)
             var url_listener = MailboxAlert.createUrlListener();
-            var urlscalled = this.last_unread.folder.fetchMsgPreviewText(
+            var urlscalled = false;
+            // API changed from TB2 to TB3, first try TB3 API, if
+            // exception, try the other one
+            try {
+                urlscalled = this.last_unread.folder.fetchMsgPreviewText(
                                         [this.last_unread.messageKey],
                                         1, false, url_listener);
+            } catch(e) {
+				try {
+	                var aOutAsync = {};
+	                this.last_unread.folder.fetchMsgPreviewText(
+	                          [this.last_unread.messageKey],
+	                          1, false, url_listener, aOutAsync);
+	                if (aOutAsync && aOutAsync.value) {
+	                    urlscalled = true;
+	                }
+				} catch(e2) {
+					// On some folders (news for instance), and in
+					// some other cases, fetch just throws an exception
+					// if so, just set an empty previewtext
+					this.last_unread.setProperty("preview", "<empty>");
+				}
+            }
             dump("[XX] urlscalled: " + urlscalled + "\n");
             if (urlscalled) {
                 dump("[XX] waiting for url_listener\n");
@@ -166,7 +198,7 @@ MailboxAlert.createAlertData = function (mailbox, last_unread) {
 }
 
 MailboxAlert.muted = function () {
-	// TODO: make a GlobalPrefs like Prefs
+    // If we ever need more than 1 global setting, make a GlobalPrefs like Prefs
     var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
     var muted = prefs.getBoolPref("extensions.mailboxalert.mute");
     dump("[XX] muted: " + muted + "\n");
@@ -208,10 +240,14 @@ MailboxAlert.addToQueue = function (folder, message) {
             var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
             try {
                 var delay = prefs.getIntPref("extensions.mailboxalert.alert_delay");
+                dump("[XX] setting timeout to handle queue\n");
                 setTimeout('MailboxAlert.queueHandler()', delay * 1000);
             } catch (e) {
+                dump("[XX] setting timeout to handle queue default\n");
                 setTimeout('MailboxAlert.queueHandler()', MailboxAlert.initial_wait_time);
             }
+        } else {
+            dump("[XX] already running\n");
         }
     }
 }
@@ -264,7 +300,7 @@ MailboxAlert.queueHandler = function () {
                 var last_unread = MailboxAlert.queue_message[i];
 
                 if (!folder.gettingNewMessages) {
-                    MailboxAlert.alert(folder, last_unread);
+                    MailboxAlert.new_alert(folder, last_unread);
 
                     MailboxAlert.removeFromQueue(folder);
 
@@ -273,14 +309,12 @@ MailboxAlert.queueHandler = function () {
                     dump("[mailboxalert] folder still getting: ");
                     dump(MailboxAlert.getFullFolderName(folder, true));
                     dump("\r\n");
-                    // TODO: doesn't this break stuff?
                     folder.updateFolder(msgWindow);
                 }
-                
             }
         }
     }
-    
+
     if (MailboxAlert.queue_length > 0) {
         setTimeout('MailboxAlert.queueHandler()', MailboxAlert.wait_time);
     } else {
@@ -389,184 +423,41 @@ MailboxAlert.replaceEscape = function (string, oldstr, newstr) {
     }
 }
 
-/* MailboxAlert.alert() checks whether the folder exists and can be used
- * MailboxAlert.alert2() checks whether the folder is not in use and has new mail
- * MailboxAlert.alert3() checks the settings and calls the actual alerts
- */
-MailboxAlert.alert = function (folder, last_unread) {
+MailboxAlert.new_alert = function (folder, last_unread) {
     var alert_data = MailboxAlert.createAlertData(folder, last_unread);
-    dump("[mailboxalert] alert called for ");
-    dump(alert_data.folder_name_with_server);
-    dump("\r\n");
-    
-    // get the prefs for this folder
-    folder_prefs = MailboxAlert.getFolderPreferences(alert_data.folder_uri);
-    
-    
-    //if (folder.flags & MSG_FOLDER_FLAG_VIRTUAL) {
-    if (folder.flags & 0x0020) {
-        var stringsBundle = document.getElementById("string-bundle");
-        /* disable all alerts */
-        // TODO: use folder_prefs interface
-        var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
-        alert(stringsBundle.getString('mailboxalert.error.virtualfolder') + " " + stringsBundle.getString('mailboxalert.error.disableallfor') + " " + alert_data.folder_name_with_server);
-        prefs.setBoolPref("extensions.mailboxalert.show_message." + alert_data.folder_uri, false);
-        prefs.setBoolPref("extensions.mailboxalert.play_sound." + alert_data.folder_uri, false);
-        prefs.setBoolPref("extensions.mailboxalert.execute_command." + alert_data.folder_uri, false);
-
-        return; // do nothing for saved searches
-    }
-    if (folder.flags) {
-        MailboxAlert.alert2(alert_data, folder_prefs);
-    } else {
-        // skip new folders with no flag data
-    }
+    MailboxAlert.new_alert2(alert_data);
 }
 
-
-
-/* MailboxAlert.alert() checks whether the folder exists and can be used
- * MailboxAlert.alert2() checks whether the folder is not in use and has new mail
- * MailboxAlert.alert3() checks the settings and calls the actual alerts
- */
-MailboxAlert.alert2 = function (alert_data, folder_prefs) {
-    dump("[XX] alert data: " + alert_data + "\n");
-    dump("[XX] Alert data: " + alert_data.getInfo() + "\n");
+MailboxAlert.new_alert2 = function (alert_data) {
+    while (true) {
+        var folder_prefs = MailboxAlert.getFolderPrefs(alert_data.folder_uri);
     
-    dump("[XX] preview: \n");
-    dump(alert_data.getPreview());
-    dump("\n[XX]done\n");
-    
-    if (alert_data.folder_name) {
-        dump("[mailboxalert] alert2 called for ");
-        dump(alert_data.folder_uri);
-        dump("\r\n");
-
-        try {
-            /* message may have been filtered out already */
-            if (alert_data.mailbox == alert_data.last_unread.folder) {
-                if (alert_data.last_unread.mime2DecodedAuthor) {
-                    //MailboxAlert.alert3(alert_data.mailbox, null, alert_data.folder_name, alert_data.last_unread, false, 0);
-                    MailboxAlert.alert3(alert_data, folder_prefs);
-                } else {
-                    dump("mimedecode did not work, message probably moved");
+        if (folder_prefs.hasAlerts()) {
+            for (var i = 0; i < folder_prefs.alerts.length; ++i) {
+                dump("[Mailboxalert] running alert " + folder_prefs.alerts[i] + "\n");
+                var alert = MailboxAlert.getAlertPreferences(folder_prefs.alerts[i]);
+                if (alert) {
+                    alert.run(alert_data);
                 }
-            } else {
-            alert("message moved!");
             }
-        } catch (e) {
-            dump(e);
-            dump("Stack trace:\n");
-            dump(e.stack);
-            dump("\n\n");
-            var stringsBundle = document.getElementById("string-bundle");
-            alert(stringsBundle.getString('mailboxalert.error')+"\r\n\r\n"+stringsBundle.getString('mailboxalert.error.exception')+":\r\n\r\n" + e + "\r\r\n\r\r\n" + stringsBundle.getString('mailboxalert.error.disableallfor') + " " + alert_data.folder_name + "\n\n" + e.stack);
-            // TODO: use folder_prefs interface
-            var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
-            prefs.setBoolPref("extensions.mailboxalert.show_message." + alert_data.folder_uri, false);
-            prefs.setBoolPref("extensions.mailboxalert.play_sound." + alert_data.folder_uri, false);
-            prefs.setBoolPref("extensions.mailboxalert.execute_command." + alert_data.folder_uri, false);
-        }
-    } else {
-        // ignore folders with no name
-        dump("[mailboxalert] Folder has no name? skipping\r\n");
-    }
-}
-
-/* MailboxAlert.alert() checks whether the folder exists and can be used
- * MailboxAlert.alert2() checks whether the folder is not in use and has new mail
- * MailboxAlert.alert3() checks the settings and calls the actual alerts
- */
-MailboxAlert.alert3 = function(alert_data, folder_prefs) {
-    if (alert_data.folder_name_with_server) {
-        dump("[mailboxalert] alert3 called for ");
-        dump(alert_data.folder_name_with_server);
-        dump("\r\n");
-        dump(alert_data.folder_uri);
-        dump("\r\n");
-
-        // If no alert settings are set, we'll try the parent folder
-        // so remember if we have alerted for this folder
-        var alerted = false;
-
-        var messageKey = alert_data.last_unread.messageKey;
-
-        dump("No alert to parent set to: " + folder_prefs.get("no_alert_to_parent") + "\n");
-
-        dump("Is parent: " + alert_data.is_parent + "\n");
-        dump("Alert for children: " + folder_prefs.get("alert_for_children") + "\n");
-        if (!alert_data.is_parent || folder_prefs.get("alert_for_children")) {
-
-			dump("Show message: " + folder_prefs.get("show_message") + "\n");
-            if (folder_prefs.get("show_message")) {
-                MailboxAlert.showMessage(alert_data, folder_prefs.get("show_message_icon"), folder_prefs.get("icon_file"), folder_prefs.get("subject"), folder_prefs.get("message"));
-                alerted = true;
-            }
-
-            dump("Play sound: " + folder_prefs.get("play_sound") + "\n");
-            if (folder_prefs.get("play_sound")) {
-				if (!MailboxAlert.muted()) {
-					if (folder_prefs.get("sound_wav")) {
-						dump("Play wav file: " + folder_prefs.get("sound_wav_file") + "\n");
-						MailboxAlert.playSound(folder_prefs.get("sound_wav_file"));
-					} else {
-						MailboxAlert.playSound();
-					}
-                } else {
-                    dump("Sound alert set, but Mailbox Alert is muted\n");
-                }
-                alerted = true;
-            }
-
-            dump("Execute command: " + folder_prefs.get("execute_command") + "\n");
-            dump("Command: " + folder_prefs.get("command") + "\n");
-            if (folder_prefs.get("execute_command") && folder_prefs.get("command")) {
-                MailboxAlert.executeCommand(alert_data, folder_prefs);
-                alerted = true;
-            }
-
-        }
-
-        dump("alerted: " + alerted);
-        dump("\n");
-        dump("isServer: " + alert_data.mailbox.isServer);
-        dump("\n");
-        dump("is_parent: " + alert_data.is_parent);
-        dump("\n");
-        dump("no_alert_to_parent: "+folder_prefs.get("no_alert_to_parent"));
-        dump("\n");
-        if (!alerted && !alert_data.mailbox.isServer && !(!alert_data.is_parent && folder_prefs.get("no_alert_to_parent"))) {
-            dump("[Mailboxalert] No alerts were set for ");
-            dump(alert_data.folder_name_with_server);
-            dump(", trying parent\r\n");
-            alert_data.toParent()
-            parent_prefs = MailboxAlert.getFolderPreferences(alert_data.folder_uri);
-            MailboxAlert.alert3(alert_data, parent_prefs);
-        } else if (alerted) {
-            dump("[mailboxalert] alerted for ");
-            dump(alert_data.folder_name_with_server);
-            dump(" (original folder: ");
-            dump(alert_data.orig_folder_name);
-            dump(")\r\n");
-        } else if (!alerted) {
-            if (folder_prefs.get("no_alert_to_parent")) {
-                dump("[mailboxalert] no alert to parent set for ");
-                dump(alert_data.orig_folder_name);
-                dump(")\r\n");
-            } else {
-                dump("[mailboxalert] no alert for top folder: ");
+            return;
+        } else {
+            if (!folder_prefs.no_alert_to_parent &&
+                !alert_data.folder_is_server &&
+                !(!alert_data.is_parent &&
+                  folder_prefs.get("no_alert_to_parent"))) {
+                dump("[Mailboxalert] No alerts were set for ");
                 dump(alert_data.folder_name_with_server);
-                dump(" (original folder: ");
-                dump(alert_data.orig_folder_name);
-                dump(")\r\n");
+                dump(", trying parent\r\n");
+                alert_data.toParent()
+            } else {
+                return;
             }
         }
-    } else {
-        dump("[mailboxalert] alert3: This folder has no name... skipping.\r\n");
     }
 }
 
-MailboxAlert.showMessage = function (alert_data, show_icon, icon_file, subject_pref, message) {
+MailboxAlert.showMessage = function (alert_data, show_icon, icon_file, subject_pref, message, position, duration, effect, onclick) {
     dump("[XX]\n");
     dump("[XX]\n");
     MailboxAlert.showMethods(alert_data.getInfo());
@@ -575,7 +466,7 @@ MailboxAlert.showMessage = function (alert_data, show_icon, icon_file, subject_p
     
     var message_key = alert_data.last_unread.messageKey;
     
-    var folder_url = alert_data.mailbox.URI;
+    var folder_url = alert_data.folder_uri;
 
     if (!alert_data.messageBytes) {
         alert_data.messageBytes = "0";
@@ -607,6 +498,9 @@ MailboxAlert.showMessage = function (alert_data, show_icon, icon_file, subject_p
     //subject_pref = MailboxAlert.replace(subject_pref, "%enter", "\n");
     subject_pref = MailboxAlert.replace(subject_pref, "%msg_preview", preview);
     subject_pref = MailboxAlert.replace(subject_pref, "%msg_uri", alert_data.msg_uri);
+    if (subject_pref.indexOf("%body" > 0)) {
+		subject_pref = MailboxAlert.replace(subject_pref, "%body", alert_data.getPreview());
+	}
 
     var message_text = message;
     dump("[XX] Original Message text: " + message_text + "\n");
@@ -627,11 +521,14 @@ MailboxAlert.showMessage = function (alert_data, show_icon, icon_file, subject_p
     message_text = MailboxAlert.replace(message_text, "%enter", "\n");
     message_text = MailboxAlert.replace(message_text, "%msg_preview", preview);
     message_text = MailboxAlert.replace(message_text, "%msg_uri", alert_data.msg_uri);
+    if (subject_pref.indexOf("%body" > 0)) {
+		message_text = MailboxAlert.replace(message_text, "%body", alert_data.getPreview());
+	}
 
     dump("[XX] Message text: " + message_text + "\n");
 
     try {
-        window.openDialog('chrome://mailboxalert/content/newmailalert.xul', "new mail", "chrome,titlebar=no,popup=yes", subject_pref, message_text, show_icon, icon_file, alert_data.orig_mailbox, alert_data.last_unread);
+        window.openDialog('chrome://mailboxalert/content/newmailalert.xul', "new mail", "chrome,titlebar=no,popup=yes", subject_pref, message_text, show_icon, icon_file, alert_data.orig_mailbox, alert_data.last_unread, position, duration, effect, onclick);
     } catch (e) {
         alert(e);
     }
@@ -655,6 +552,7 @@ MailboxAlert.playSound = function (soundURL) {
           } catch(e) {
               // some error, just 'beep' (which is system-dependent
               // these days)
+              dump("[XX] exception playing sound: " + e);
               gSound.beep();
           }
     } else {
@@ -662,9 +560,7 @@ MailboxAlert.playSound = function (soundURL) {
     }
 }
 
-MailboxAlert.executeCommand = function (alert_data, folder_prefs) {
-    var command = folder_prefs.get("command");
-    var escape_html = folder_prefs.get("escape");
+MailboxAlert.executeCommand = function (alert_data, command, escape_html) {
     var date_obj = new Date();
     date_obj.setTime(alert_data.date);
     var date_str = date_obj.toLocaleDateString()
@@ -748,54 +644,33 @@ MailboxAlert.executeCommand = function (alert_data, folder_prefs) {
         var pr = Components.classes["@mozilla.org/process/util;1"].
         createInstance(Components.interfaces.nsIProcess);
 
-dump("1 " + executable_name+ "\n");
         exec.initWithPath(executable_name);
-dump("2\n");
         // isExecutable is horribly broken in OSX, see
         // https://bugzilla.mozilla.org/show_bug.cgi?id=322865
         // It turns out to be broken in windows too...
-dump("3\n");
         // removing the check, we shall have to try and run it
         // then catch NS_UNEXPECTED
-        var run = true;
         if (!exec.exists()) {
-dump("4\n");
-			//alert("[XX] file not found");
-			run = false;
-		} else if (!exec.isFile()) {
-			//alert("[XX] file is not a file");
-dump("5\n");
-			run = false;
-		}
-		if (!exec.exists()) {
-dump("6\n");
             var stringsBundle = document.getElementById("string-bundle");
             alert(stringsBundle.getString('mailboxalert.error')+"\n" + exec.leafName + " " + stringsBundle.getString('mailboxalert.error.notfound') + "\n\nFull path: "+executable_name+"\n\n" + stringsBundle.getString('mailboxalert.error.disableexecutefor') + " " + alert_data.folder_name_with_server);
             dump("Failed command:  " +executable_name + "\r\n");
-dump("7\n");
             dump("Arguments: " + args + "\r\n");
             var caller = window.arguments[0];
             if (caller) {
-dump("8\n");
                 var executecommandcheckbox = document.getElementById('mailboxalert_execute_command');
                 executecommandcheckbox.checked = false;
                 setUIExecuteCommandPrefs(false);
             } else {
-dump("9\n");
                 var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
                 prefs.setBoolPref("extensions.mailboxalert.execute_command." + alert_data.folder_name_with_server, false);
             }
         } else {
-dump("10\n");
             dump("Command:  " +executable_name + "\r\n");
             dump("Arguments: " + args + "\r\n");
             var res1 = pr.init(exec);
-dump("11\n");
             var result = pr.run(false, args, args.length);
         }
     } catch (e) {
-		// TODO: better error, refactor double code
-dump("12\n");
         if (e.name == "NS_ERROR_FAILURE" ||
             e.name == "NS_ERROR_UNEXPECTED"
            ) {
@@ -809,8 +684,8 @@ dump("12\n");
                 var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
                 prefs.setBoolPref("extensions.mailboxalert.execute_command." + folder, false);
             }
-		} else if (e.name == "NS_ERROR_FILE_UNRECOGNIZED_PATH") {
-			dump("NS_ERROR_FILE_UNRECOGNIZED_PATH\n");
+        } else if (e.name == "NS_ERROR_FILE_UNRECOGNIZED_PATH") {
+            dump("NS_ERROR_FILE_UNRECOGNIZED_PATH\n");
             var stringsBundle = document.getElementById("string-bundle");
             alert(stringsBundle.getString('mailboxalert.error') + "\r\n\r\n" +
                   stringsBundle.getString('mailboxalert.error.badcommandpath1') + 
@@ -831,4 +706,76 @@ dump("12\n");
             throw e;
         }
     }
+}
+
+// Function to create one menu item as used in fillFolderMenu
+MailboxAlert.createMenuItem = function (label, value) {
+    const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
+    var item = document.createElementNS(XUL_NS, "menuitem"); // create a new XUL menuitem
+    item.setAttribute("label", label);
+    if (value) {
+        item.setAttribute("value", value);
+    }
+    return item;
+}
+
+MailboxAlert.createMenuSeparator = function () {
+    const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
+    var item = document.createElementNS(XUL_NS, "menuseparator"); // create a new XUL menuitem
+    return item;
+}
+
+MailboxAlert.fillFolderMenu = function(alert_menu, folder) {
+    var folder_prefs = MailboxAlert.getFolderPrefs(folder.URI);
+    var all_alerts = MailboxAlert.getAllAlertPrefs();
+    var stringsBundle = document.getElementById("string-bundle");
+    var alert_menuitem;
+    var alerts_set = false;
+
+    // clear it first
+    while (alert_menu.firstChild) {
+        alert_menu.removeChild(alert_menu.firstChild);
+    }
+
+    for (var alert_i = 0; alert_i < all_alerts.length; ++alert_i) {
+        var alert = all_alerts[alert_i];
+        var alert_index = alert.index;
+        alert_menuitem = MailboxAlert.createMenuItem(alert.get("name"), alert_index);
+        if (folder_prefs.alertSelected(alert_index)) {
+            alert_menuitem.setAttribute("checked", true);
+            alerts_set = true;
+        }
+        alert_menuitem.setAttribute("oncommand", "MailboxAlert.switchFolderAlert('"+ folder.URI + "', " + alert_index + ");");
+        alert_menu.appendChild(alert_menuitem);
+    }
+
+    alert_menu.appendChild(MailboxAlert.createMenuSeparator());
+
+    alert_menuitem = MailboxAlert.createMenuItem(stringsBundle.getString('mailboxalert.menu.alertforchildren'));
+    if (folder_prefs.alert_for_children) {
+        alert_menuitem.setAttribute("checked", true);
+    }
+    alert_menuitem.setAttribute("oncommand", "MailboxAlert.switchAlertForChildren('" + folder.URI + "');");
+    // disable it if there are no alerts set
+    if (!alerts_set) {
+        alert_menuitem.setAttribute("disabled", true);
+    }
+    alert_menu.appendChild(alert_menuitem);
+
+    alert_menuitem = MailboxAlert.createMenuItem(stringsBundle.getString('mailboxalert.menu.noalerttoparent'));
+    if (folder_prefs.no_alert_to_parent) {
+        alert_menuitem.setAttribute("checked", true);
+    }
+    alert_menuitem.setAttribute("oncommand", "MailboxAlert.switchNoAlertToParent('" + folder.URI + "');");
+    // disable it if there are any alerts set
+    if (alerts_set) {
+        alert_menuitem.setAttribute("disabled", true);
+    }
+    alert_menu.appendChild(alert_menuitem);
+
+    alert_menu.appendChild(MailboxAlert.createMenuSeparator());
+
+    alert_menuitem = MailboxAlert.createMenuItem(stringsBundle.getString('mailboxalert.menu.editalerts'));
+    alert_menuitem.setAttribute("oncommand", "window.openDialog('chrome://mailboxalert/content/alert_list.xul', 'mailboxalert_prefs', 'chrome');");
+    alert_menu.appendChild(alert_menuitem);
 }

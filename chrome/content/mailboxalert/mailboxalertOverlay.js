@@ -698,59 +698,30 @@ MailboxAlert.FolderHChanged.prototype =
 	}
 }
 
-MailboxAlert.checkOldSettings_folder = function (folder) {
-	// check folder
-	//dump("Check folder: "+MailboxAlert.getFullFolderName(folder)+"\n");
-	if (folder) {
-		//var subFolders = folder.GetSubFolders();
-		var subFolders = folder.subFolders;
-		MailboxAlert.copyFolderPrefs(MailboxAlert.getFullFolderName(folder, true), folder.URI, true);
-		MailboxAlert.checkDefaultFolderPrefs(folder.URI);
-		if (subFolders) {
-			try {
-				//subFolders.first();
-				while (!subFolders.isDone()) {
-					var nextFolder = subFolders.currentItem().QueryInterface(Components.interfaces.nsIMsgFolder);
-					if (nextFolder) {
-						MailboxAlert.checkOldSettings_folder(nextFolder);
-					}
-					subFolders.next();
-				}
-			} catch(exception) {
-				/*
-				dump("exception iterating through subfolders\n");
-				dump("of folder: "+MailboxAlert.getFullFolderName(folder)+"\n");
-				dump("uri: "+folder.URI+"\n");
-				dump(exception);
-				dump("subf: "+subFolders);
-				dump("\n");
-				dump("isdone: "+subFolders.isDone()+"\n");
-				*/
-			}
-		}
-	}
-}
-
-gMessengerBundle = document.getElementById("bundle_messenger");
-
 MailboxAlert.checkOldSettings = function () {
-
-        var allServers = accountManager.allServers;
-        var i;
-
-        for (i = 0; i < allServers.Count(); ++i) {
-        	var currentServer = allServers.GetElementAt(i).QueryInterface(Components.interfaces.nsIMsgIncomingServer);
-		var rootFolder = currentServer.rootFolder;
-		if (rootFolder) {
-			MailboxAlert.checkOldSettings_folder(rootFolder);
-		}
-	}
+    // get the value for 'prefsversion'. If it doesn't exist, assume
+    // (0.)14. If it is 14, call conversion routines.
+    var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
+    var prefsversion;
+    try {
+        prefsversion = prefs.getIntPref("extensions.mailboxalert.prefsversion");
+    } catch (e) {
+        // ok, it doesn't exist yet, assume 14
+        prefsversion = 14;
+    }
+    if (prefsversion < 15) {
+        MailboxAlert.convertAllFolderPreferences14toAlertPreferences();
+        prefs.setIntPref("extensions.mailboxalert.prefsversion", 15);
+    }
 }
 
 MailboxAlert.onLoad = function ()
 {
 	// remove to avoid duplicate initialization
 	removeEventListener("load", MailboxAlert.onLoad, true);
+
+        // check for old settings.
+	MailboxAlert.checkOldSettings();
 
 //	Components.classes[mailSessionContractID]
 	Components.classes["@mozilla.org/messenger/services/session;1"]
@@ -816,7 +787,7 @@ MailboxAlert.onLoad = function ()
 	Components.interfaces.nsIFolderListener.unicharPropertyChanged);
 */
 
-	// check if there are old settings (pre 0.11) to copy
+	// check if there are old settings (pre 0.14) to copy
 	MailboxAlert.checkOldSettings();
 
 	// check if we exited with muted on last time
