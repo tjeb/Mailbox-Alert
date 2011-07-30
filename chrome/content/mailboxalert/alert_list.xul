@@ -3,7 +3,7 @@
 <!DOCTYPE window SYSTEM "chrome://mailboxalert/locale/mailboxalert.dtd">
 <dialog xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" id="mailboxalert_prefs_dialog"
         onload="MailboxAlertList.init();"
-        buttons="close"
+        buttons="accept"
 >
 
 <keyset>
