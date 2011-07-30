@@ -23,18 +23,13 @@ xmlns:em="http://www.mozilla.org/2004/em-rdf#">
 		
 		<em:id>{9c21158b-2c76-4d0a-980a-c51fc9cefaa7}</em:id>
 		<em:name>Mailbox Alert</em:name>
+                <em:type>2</em:type>
 		<em:version>0.15</em:version>
 		<em:description>Mailbox Alert - Extension for Thunderbird.</em:description>
 		<em:creator>Jelte Jansen</em:creator>
 		<em:homepageURL>http://tjeb.nl</em:homepageURL>
 		<em:iconURL>chrome://mailboxalert/skin/mailboxalert.png</em:iconURL>
 		<em:aboutURL>chrome://mailboxalert/content/about.xul</em:aboutURL>
-		<em:file>
-			<Description about="urn:mozilla:extension:file:mailboxalert.jar">
-				<em:package>content/mailboxalert/</em:package>
-				<em:skin>skin/classic/</em:skin>
-			</Description>
-		</em:file>
 
 	</Description>
 
