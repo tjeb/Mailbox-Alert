@@ -1,0 +1,3 @@
+.ruleactiontarget[type="mailboxalert@tjeb.nl#mailboxalertfilter"] {
+  -moz-binding: url("chrome://mailboxalert/content/filter_bindings.xml#ruleactiontarget-filteralert");
+}

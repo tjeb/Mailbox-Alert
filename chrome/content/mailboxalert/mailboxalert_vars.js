@@ -658,11 +658,18 @@ MailboxAlert.getFolderPrefs = function (uri) {
 
 MailboxAlert.filter_action =
 {
-    id: "MAILBOXALERT",
-    name: "Mailbox Alert Filter Action",
+    id: "mailboxalert@tjeb.nl#mailboxalertfilter",
+    name: "Mailbox Alert",
     apply: function(aMsgHdrs, aActionValue, aListener, aType, aMsgWindow)
     {
-        alert("Mailbox alert called from filter");
+        var alert = MailboxAlert.getAlertPreferences(aActionValue);
+        if (alert) {
+            for (var i = 0; i < aMsgHdrs.length; ++i) {
+                var cur_msg_hdr = aMsgHdrs.queryElementAt(i, Components.interfaces.nsIMsgDBHdr);
+                var alert_data = MailboxAlert.createAlertData(cur_msg_hdr.folder, cur_msg_hdr);
+                alert.run(alert_data);
+            }
+        }
     },
     isValidForType: function(type, scope) { return true; },
     validateActionValue: function(value, folder, type) { return null; },
