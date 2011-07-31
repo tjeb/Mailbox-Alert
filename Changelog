@@ -1,5 +1,10 @@
 [???]
-  o You can now right-click the alert message to get a menu with
+  o configuration has changed; you can now define a set of alerts,
+    and specify one or more alerts per folder directly from the
+    folder context menu. Existing configuration is automatically
+    converted to the new one.
+  o Mailbox alert can now also be used as a filter action
+  o You can now right-click the alert message popup to get a menu with
     all the available actions mailbox alert can do on the message
     (this list is similar to the default click action you can
     configure)
