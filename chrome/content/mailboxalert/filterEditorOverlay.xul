@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?xml-stylesheet href='chrome://mailboxalert/content/mailboxalert_filter.css' type='text/css'?>
+<overlay id='MailboxAlertFilterEditorOverlay'
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    <stringbundleset id="stringbundleset">
+        <stringbundle id="mailboxalert_strings" src="chrome://mailboxalert/locale/mailboxalert.properties"/>
+    </stringbundleset>
+    <script src="chrome://mailboxalert/content/mailboxalert_vars.js">
+    </script>
+    <script src="chrome://mailboxalert/content/mailboxalert_funcs.js">
+    </script>
+    <script src="chrome://mailboxalert/content/filterEditorOverlay.js">
+    </script>
+</overlay>

@@ -1,0 +1,27 @@
+<!DOCTYPE bindings SYSTEM "chrome://mailboxalert/locale/mailboxalert.dtd">
+<bindings   id="mailboxalertbindings"
+            xmlns="http://www.mozilla.org/xbl"
+            xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+            xmlns:xbl="http://www.mozilla.org/xbl">
+    <binding id="ruleactiontarget-filteralert" extends="chrome://messenger/content/searchWidgets.xml#ruleactiontarget-base">
+        <content>
+            <xul:menulist>
+                <xul:menupopup />
+            </xul:menulist>
+        </content>
+        <implementation>
+            <constructor>
+                <![CDATA[
+                var alert_menu = document.getAnonymousNodes(this)[0].menupopup;
+                var all_alerts = MailboxAlert.getAllAlertPrefs();
+                for (var alert_i = 0; alert_i < all_alerts.length; ++alert_i) {
+                    var alert = all_alerts[alert_i];
+                    var alert_index = alert.index;
+                    alert_menuitem = MailboxAlert.createMenuItem(alert.get("name"), alert_index);
+                    alert_menu.appendChild(alert_menuitem);
+                }
+                ]]>
+            </constructor>
+        </implementation>
+    </binding>
+</bindings>
