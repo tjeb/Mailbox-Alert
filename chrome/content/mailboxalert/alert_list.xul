@@ -70,7 +70,6 @@ MailboxAlertList.deleteAlert = function () {
         var stringsBundle = document.getElementById("string-bundle");
         if (confirm(stringsBundle.getString("mailboxalert.alert_settings.alertsetforfilter"))) {
             MailboxAlert.removeAlertFilters(alert_index);
-            delete_ok = false;
         } else {
             delete_ok = false;
         }
