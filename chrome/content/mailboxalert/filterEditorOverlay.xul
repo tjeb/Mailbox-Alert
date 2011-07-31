@@ -9,6 +9,4 @@
     </script>
     <script src="chrome://mailboxalert/content/mailboxalert_funcs.js">
     </script>
-    <script src="chrome://mailboxalert/content/filterEditorOverlay.js">
-    </script>
 </overlay>
