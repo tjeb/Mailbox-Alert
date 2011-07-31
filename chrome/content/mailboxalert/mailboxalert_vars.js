@@ -682,6 +682,7 @@ MailboxAlert.filter_action =
             return document.getElementById('mailboxalert_strings').getString('mailboxalert.alert_deleted');
         }
     },
+    allowDuplicates: true,
     needsBody: true
 };
 
