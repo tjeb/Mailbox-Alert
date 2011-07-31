@@ -431,7 +431,6 @@ MailboxAlert.new_alert = function (folder, last_unread) {
 MailboxAlert.new_alert2 = function (alert_data) {
     while (true) {
         var folder_prefs = MailboxAlert.getFolderPrefs(alert_data.folder_uri);
-    
         if (folder_prefs.hasAlerts()) {
             for (var i = 0; i < folder_prefs.alerts.length; ++i) {
                 dump("[Mailboxalert] running alert " + folder_prefs.alerts[i] + "\n");
@@ -445,7 +444,7 @@ MailboxAlert.new_alert2 = function (alert_data) {
             if (!folder_prefs.no_alert_to_parent &&
                 !alert_data.folder_is_server &&
                 !(!alert_data.is_parent &&
-                  folder_prefs.get("no_alert_to_parent"))) {
+                  folder_prefs.no_alert_to_parent)) {
                 dump("[Mailboxalert] No alerts were set for ");
                 dump(alert_data.folder_name_with_server);
                 dump(", trying parent\r\n");

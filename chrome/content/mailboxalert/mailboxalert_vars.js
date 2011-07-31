@@ -216,7 +216,7 @@ MailboxAlert.getFolderPreferences14 = function(folder_uri) {
     var folder_prefs = {};
     folder_prefs.folder_uri = folder_uri;
     folder_prefs.values = {};
-    
+
     folder_prefs.get = function (name) {
         dump("[XX] Getting pref for " + name + "\n");
         if (!(name in this.values)) {
@@ -672,7 +672,17 @@ MailboxAlert.filter_action =
         }
     },
     isValidForType: function(type, scope) { return true; },
-    validateActionValue: function(value, folder, type) { return null; },
+    // return null if value is OK, error string otherwise
+    validateActionValue: function(value, folder, type) {
+        // just try to see if we can get the settings
+        try {
+            var alert_prefs = MailboxAlert.getAlertPreferences(value);
+            return null;
+        } catch (e) {
+            return document.getElementById('mailboxalert_strings').getString('mailboxalert.alert_deleted');
+        }
+    },
+    needsBody: true
 };
 
 // Returns an array with all the alert prefs in the configuration
