@@ -268,73 +268,96 @@ MailboxAlertNewMail.slideInTop = function ()
 {
     // called by a repeated timer now, if we need to move we move,
     // if we are done we need to reset the timer
-    if (window.screenY < this.window_to_y) {
-        window.moveBy(0, this.gSlideDistance);
-    } else {
-        this.timer_state = this.WAITING;
-        MailboxAlertNewMail.window_to_y = -this.getWindowHeight();
-        // we only need to wait the duration once (the handler should init the slideout
-        // timer on a repeated basis again
-        if (this.duration > 0) {
-            this.timer.cancel();
-			this.timer.initWithCallback(this, this.duration * 1000, this.timer.TYPE_ONE_SHOT);
-		}
+    // if something goes wrong, we simply give up and close the window
+    try {
+        if (window.screenY < this.window_to_y) {
+            window.moveBy(0, this.gSlideDistance);
+        } else {
+            this.timer_state = this.WAITING;
+            MailboxAlertNewMail.window_to_y = -this.getWindowHeight();
+            // we only need to wait the duration once (the handler should init the slideout
+            // timer on a repeated basis again
+            if (this.duration > 0) {
+                this.timer.cancel();
+                            this.timer.initWithCallback(this, this.duration * 1000, this.timer.TYPE_ONE_SHOT);
+                    }
+        }
+    } catch (e) {
+        dump("Error moving window, closing window\n");
+        window.close();
     }
 }
 
 MailboxAlertNewMail.slideOutTop = function ()
 {
-    var y_pos = window.screenY;
-    if (y_pos > this.window_to_y) {
-        window.moveBy(0, -this.gSlideDistance);
-        // if we don't appear to be moving anymore, close
-        if (window.screenY == y_pos) {
+    // if something goes wrong, we simply give up and close the window
+    try {
+        var y_pos = window.screenY;
+        if (y_pos > this.window_to_y) {
+            window.moveBy(0, -this.gSlideDistance);
+            // if we don't appear to be moving anymore, close
+            if (window.screenY == y_pos) {
+                this.timer.cancel();
+                this.timer_state = this.DONE;
+                window.close();
+            }
+        } else {
             this.timer.cancel();
             this.timer_state = this.DONE;
             window.close();
         }
-    } else {
-        this.timer.cancel();
-        this.timer_state = this.DONE;
+    } catch (e) {
+        dump("Error moving window, closing window\n");
         window.close();
     }
 }
 
 MailboxAlertNewMail.slideInBottom = function ()
 {
-    var y_pos = window.screenY;
-    if (y_pos > this.window_to_y) {
-        window.moveBy(0, -this.gSlideDistance);
-    } else {
-        this.timer_state = this.WAITING;
-        
-        window.moveTo(MailboxAlertNewMail.window_x, this.window_to_y);
-        MailboxAlertNewMail.window_y = this.window_to_y;
-        MailboxAlertNewMail.window_to_y = screen.height + this.getWindowHeight();
-        
-        // we only need to wait the duration once (the handler should init the slideout
-        // timer on a repeated basis again
-        if (this.duration > 0) {
-            this.timer.cancel();
-			this.timer.initWithCallback(this, this.duration * 1000, this.timer.TYPE_ONE_SHOT);
-		}
+    // if something goes wrong, we simply give up and close the window
+    try {
+        var y_pos = window.screenY;
+        if (y_pos > this.window_to_y) {
+            window.moveBy(0, -this.gSlideDistance);
+        } else {
+            this.timer_state = this.WAITING;
+            
+            window.moveTo(MailboxAlertNewMail.window_x, this.window_to_y);
+            MailboxAlertNewMail.window_y = this.window_to_y;
+            MailboxAlertNewMail.window_to_y = screen.height + this.getWindowHeight();
+            
+            // we only need to wait the duration once (the handler should init the slideout
+            // timer on a repeated basis again
+            if (this.duration > 0) {
+                this.timer.cancel();
+                            this.timer.initWithCallback(this, this.duration * 1000, this.timer.TYPE_ONE_SHOT);
+                    }
+        }
+    } catch (e) {
+        dump("Error moving window, closing window\n");
+        window.close();
     }
 }
 
 MailboxAlertNewMail.slideOutBottom = function ()
 {
-    var y_pos = window.screenY;
-    if (y_pos < this.window_to_y) {
-        window.moveBy(0, this.gSlideDistance);
-        // if we don't appear to be moving anymore, close
-        if (window.screenY == y_pos) {
+    try {
+        var y_pos = window.screenY;
+        if (y_pos < this.window_to_y) {
+            window.moveBy(0, this.gSlideDistance);
+            // if we don't appear to be moving anymore, close
+            if (window.screenY == y_pos) {
+                this.timer.cancel();
+                this.timer_state = this.DONE;
+                window.close();
+            }
+        } else {
             this.timer.cancel();
             this.timer_state = this.DONE;
             window.close();
         }
-    } else {
-        this.timer.cancel();
-        this.timer_state = this.DONE;
+    } catch (e) {
+        dump("Error moving window, closing window\n");
         window.close();
     }
 }
