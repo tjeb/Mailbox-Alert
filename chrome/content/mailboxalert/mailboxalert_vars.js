@@ -701,14 +701,42 @@ MailboxAlert.getAllAlertPrefs = function () {
     return alert_list;
 }
 
-// adds the uri's for this folder and for all child folders to ar
+// add the nsIMsgFolder objects for this folder and all child folders to ar
 MailboxAlert.getChildFolders = function (folder, ar) {
-    ar.push(folder.URI);
+    ar.push(folder);
     var sub_folders = folder.subFolders;
     while (sub_folders && sub_folders.hasMoreElements()) {
         var next_folder = sub_folders.getNext().QueryInterface(Components.interfaces.nsIMsgFolder);
         if (next_folder) {
             MailboxAlert.getChildFolders(next_folder, ar);
+        }
+    }
+}
+
+MailboxAlert.getAllFolders = function () {
+    var accountManager = Components.classes["@mozilla.org/messenger/account-manager;1"]
+                         .getService(Components.interfaces.nsIMsgAccountManager);
+    var all_servers = accountManager.allServers;
+    var all_folders = [];
+
+    for (var i = 0; i < all_servers.Count(); ++i) {
+        var server = all_servers.GetElementAt(i).QueryInterface(Components.interfaces.nsIMsgIncomingServer);
+        var root_folder = server.rootFolder;
+        if (root_folder) {
+            MailboxAlert.getChildFolders(root_folder, all_folders);
+        }
+    }
+    return all_folders;
+}
+
+// adds the uri's for this folder and for all child folders to ar
+MailboxAlert.getChildFolderURIs = function (folder, ar) {
+    ar.push(folder.URI);
+    var sub_folders = folder.subFolders;
+    while (sub_folders && sub_folders.hasMoreElements()) {
+        var next_folder = sub_folders.getNext().QueryInterface(Components.interfaces.nsIMsgFolder);
+        if (next_folder) {
+            MailboxAlert.getChildFolderURIs(next_folder, ar);
         }
     }
 }
@@ -723,10 +751,9 @@ MailboxAlert.getAllFolderURIs = function () {
         var server = all_servers.GetElementAt(i).QueryInterface(Components.interfaces.nsIMsgIncomingServer);
         var root_folder = server.rootFolder;
         if (root_folder) {
-            MailboxAlert.getChildFolders(root_folder, all_folder_uris);
+            MailboxAlert.getChildFolderURIs(root_folder, all_folder_uris);
         }
     }
-    
     return all_folder_uris;
 }
 
@@ -745,6 +772,72 @@ MailboxAlert.getAllFoldersForAlertIndex = function (alert_index) {
     }
 
     return folder_list;
+}
+
+// Returns true if the given alert is the action target of a filter
+MailboxAlert.alertIsFilterTarget = function (alert_index) {
+    var all_folders = MailboxAlert.getAllFolders();
+
+    for (var i = 0; i < all_folders.length; ++i) {
+        var folder = all_folders[i];
+        var filters = folder.getFilterList(null);
+        for (var j = 0; j < filters.filterCount; ++j) {
+            var filter = filters.getFilterAt(j);
+            var actions = filter.actionList;
+            var action_collection = actions.QueryInterface(Components.interfaces.nsICollection);
+            for (var k = 0; k < action_collection.Count(); ++k) {
+                var action = filter.getActionAt(k);
+                if (action.strValue == alert_index) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+// Removes the action for alert_index from all filters. Removes the filter if
+// this was the only action.
+MailboxAlert.removeAlertFilters = function (alert_index) {
+    var all_folders = MailboxAlert.getAllFolders();
+
+    for (var i = 0; i < all_folders.length; ++i) {
+        var folder = all_folders[i];
+        var filters = folder.getFilterList(null);
+        // Meh, interface is intended for GUI manipulation, so we need to
+        // remember what to remove manually
+        var indices_to_remove = [];
+        for (var j = 0; j < filters.filterCount; ++j) {
+            var filter = filters.getFilterAt(j);
+            var actions = filter.actionList;
+            var action_collection = actions.QueryInterface(Components.interfaces.nsICollection);
+            // Same here, but the other way around; copy all actions we
+            // do not want to remove, clear the complete list, and re-add
+            // them
+            var new_actions = [];
+            for (var k = 0; k < action_collection.Count(); ++k) {
+                var action = filter.getActionAt(k);
+                if (action.strValue != alert_index) {
+                    new_actions.push(action);
+                }
+            }
+            filter.clearActionList();
+            if (new_actions.length == 0) {
+                indices_to_remove.push(j);
+            } else {
+                for (var k = 0; k < new_actions.length; ++k) {
+                    filter.appendAction(new_actions[k]);
+                }
+            }
+        }
+        if (indices_to_remove.length > 0) {
+            indices_to_remove = indices_to_remove.reverse();
+            for (var j = 0; j < indices_to_remove.length; ++j) {
+                filters.removeFilterAt(indices_to_remove[j]);
+            }
+            folder.setFilterList(filters);
+        }
+    }
 }
 
 MailboxAlert.convertFolderPreferences14toAlertPreferences = function(folder_uri) {

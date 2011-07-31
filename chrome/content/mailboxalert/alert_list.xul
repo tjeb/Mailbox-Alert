@@ -50,7 +50,10 @@ MailboxAlertList.deleteAlert = function () {
     var alert_listbox = document.getElementById("alert_listbox");
     var alert_index = alert_listbox.selectedItem.value;
 
+    var alert_prefs = MailboxAlert.getAlertPreferences(alert_index);
     var folders = MailboxAlert.getAllFoldersForAlertIndex(alert_index);
+    var delete_ok = true;
+
     if (folders.length > 0) {
         var stringsBundle = document.getElementById("string-bundle");
         if (confirm(stringsBundle.getString("mailboxalert.alert_settings.alertset"))) {
@@ -58,13 +61,25 @@ MailboxAlertList.deleteAlert = function () {
                 folders[i].removeAlert(alert_index);
                 folders[i].store();
             }
-            var alert_prefs = MailboxAlert.getAlertPreferences(alert_index);
-            alert_prefs.remove();
+        } else {
+            delete_ok = false;
         }
-    } else {
-        var alert_prefs = MailboxAlert.getAlertPreferences(alert_index);
+    }
+
+    if (delete_ok && MailboxAlert.alertIsFilterTarget(alert_index)) {
+        var stringsBundle = document.getElementById("string-bundle");
+        if (confirm(stringsBundle.getString("mailboxalert.alert_settings.alertsetforfilter"))) {
+            MailboxAlert.removeAlertFilters(alert_index);
+            delete_ok = false;
+        } else {
+            delete_ok = false;
+        }
+    }
+
+    if (delete_ok) {
         alert_prefs.remove();
     }
+
     MailboxAlertList.enableButton('edit_button', false);
     MailboxAlertList.enableButton('delete_button', false);
     MailboxAlertList.fillAlertList();
