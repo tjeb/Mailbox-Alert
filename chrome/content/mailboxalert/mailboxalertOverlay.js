@@ -84,11 +84,13 @@ MailboxAlert.newMailListener_tb3 = {
                               aTraitProcessed) {
         // Only alert for the last one. If people want an alert fired for every message,
         // they can use a filter action
+        // directly addressing the element with length-1 does not appear to work,
+        // so just loop through the messages
         dump("[XX] msgsClassified event called\n");
-        var enum = aMsgs.enumerate();
-        var last = enum.getNext();
-        while (enum.hasMoreElements()) {
-            last = enum.getNext();
+        var msg_enum = aMsgs.enumerate();
+        var last = msg_enum.getNext();
+        while (msg_enum.hasMoreElements()) {
+            last = msg_enum.getNext();
         }
         var message = last.QueryInterface(Components.interfaces.nsIMsgDBHdr);
         dump("[XX] folder URI: " + message.folder.URI + "\n")

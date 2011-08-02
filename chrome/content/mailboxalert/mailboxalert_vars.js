@@ -78,7 +78,7 @@ MailboxAlert.getGlobalPreferences14 = function() {
     global_prefs.position = "top-left";
     global_prefs.effect = "none";
     global_prefs.duration = 5;
-    global_prefs.onclick = "close";
+    global_prefs.whenclicked = "close";
 
     try {
         var pospref = MailboxAlert.prefService.getCharPref("extensions.mailboxalert.alert_position");
@@ -105,7 +105,7 @@ MailboxAlert.getGlobalPreferences14 = function() {
         // wasn't set, n/m
     }
     try {
-        global_prefs.onclick = MailboxAlert.prefService.getIntPref("extensions.mailboxalert.alert_onclick");
+        global_prefs.whenclicked = MailboxAlert.prefService.getIntPref("extensions.mailboxalert.alert_onclick");
     } catch (e) {
         // wasn't set, n/m
     }
@@ -114,7 +114,7 @@ MailboxAlert.getGlobalPreferences14 = function() {
         alert_prefs.set("show_message_position", this.position);
         alert_prefs.set("show_message_duration", this.duration);
         alert_prefs.set("show_message_effect", this.effect);
-        alert_prefs.set("show_message_onclick", this.onclick);
+        alert_prefs.set("show_message_onclick", this.whenclicked);
     }
 
     global_prefs.deleteBranch = function (branchname) {

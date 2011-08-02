@@ -306,17 +306,6 @@ MailboxAlert.replaceEscape = function (string, oldstr, newstr) {
     }
 }
 
-MailboxAlert.runAlertFromFolder = function (messages) {
-    enum = messages.enumerate();
-    var last = enum.getNext();
-    while (enum.hasMoreElements()) {
-        last = enum.getNext();
-    }
-    //var message;
-    var message = last.QueryInterface(Components.interfaces.nsIMsgDBHdr);
-    MailboxAlert.new_alert(message.folder, message);
-}
-
 MailboxAlert.new_alert = function (folder, last_unread) {
     var alert_data = MailboxAlert.createAlertData(folder, last_unread);
     MailboxAlert.new_alert2(alert_data);

@@ -139,20 +139,20 @@ MailboxAlertNewMail.wrapTokens = function(tokens, wrap_size, line_max) {
 
 MailboxAlertNewMail.prefillAlertInfo = function ()
 {
-	var subject = window.arguments[0];
-	var message = window.arguments[1];
-	var show_icon = window.arguments[2];
-	var image_url = window.arguments[3];
+    var subject = window.arguments[0];
+    var message = window.arguments[1];
+    var show_icon = window.arguments[2];
+    var image_url = window.arguments[3];
     this.folder = window.arguments[4];
     this.message_hdr = window.arguments[5];
     this.position = window.arguments[6];
     this.duration = window.arguments[7];
     this.effect = window.arguments[8];
     this.onclick = window.arguments[9];
-	window.class = "MyClass";
+    //window.class = "MyClass";
 
-	var label = document.getElementById('subject');
-	label.value = subject;
+    var label = document.getElementById('subject');
+    label.value = subject;
     dump("[XX] Subject: " + subject + "\n");
     dump("[XX] Message: " + message + "\n");
     dump("[XX] end of message\n");
@@ -396,9 +396,9 @@ MailboxAlertNewMail.resizeAlert = function (aMoveOffScreen)
   resizeTo(MailboxAlertNewMail.getWindowWidth(), this.getWindowHeight());
 
   // leftover hack to get the window properly hidden when we first open it
-  if (aMoveOffScreen) {
-    window.outerHeight = 1;
-  }
+  //if (aMoveOffScreen) {
+  //  window.outerHeight = 1;
+  //}
 }
 
 MailboxAlertNewMail.placeAlert = function () {
