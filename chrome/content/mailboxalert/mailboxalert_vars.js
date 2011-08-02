@@ -541,9 +541,9 @@ MailboxAlert.getAlertPreferences = function (index) {
             }
         }
         if (this.get("execute_command")) {
-            MailboxAlert.execute_command(alert_data,
-                                         this.get("command"),
-                                         this.get("command_escape"));
+            MailboxAlert.executeCommand(alert_data,
+                                        this.get("command"),
+                                        this.get("command_escape"));
         }
     }
 
