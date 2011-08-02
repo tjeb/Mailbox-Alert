@@ -501,7 +501,7 @@ MailboxAlert.getAlertPreferences = function (index) {
             }
         }
     }
-    
+
     // removes all preferences for this alert. ONLY call this if there
     // are no folders set!
     alert_prefs.remove = function () {

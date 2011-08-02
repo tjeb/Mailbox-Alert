@@ -68,6 +68,7 @@ MailboxAlert.checkOldSettings = function () {
     }
 }
 
+// This object is used as a Listener callback for thunderbird 2
 MailboxAlert.newMailListener_tb2 = {
     // TODO: check if 2 had msgsClassified as well
     itemAdded: function(item) {
@@ -76,47 +77,7 @@ MailboxAlert.newMailListener_tb2 = {
     }
 }
 
-MailboxAlert.newMailListener_tb3_pre = {
-    msgAdded: function(aMsg) {
-        dump("[XX] msgAdded called\n");
-        dump("[XX] folder URI: " + aMsg.folder.URI + "\n")
-        dump("[XX] subject: " + aMsg.mime2DecodedSubject + "\n")
-    }
-}
-
-MailboxAlert.FolderDChanged = function () {
-        // empty constructor
-}
-
-MailboxAlert.FolderDChanged.prototype =
-{
-    OnItemIntPropertyChanged: function(item, property, oldValue, newValue)
-    {
-        if (property == "TotalUnreadMessages" && newValue > oldValue) {
-            // need folder update to trigger other internal notifications
-            var folder = item.QueryInterface(Components.interfaces.nsIMsgFolder);
-            dump("Number of unread folders increased for " + folder.URI + "\n");
-            //if (!folder.gettingNewMessages) {
-                dump("not getting new messages, try updateFolder\n");
-                try {
-                    ///*
-                    var windowManager = Components.classes['@mozilla.org/appshell/window-mediator;1'].getService();
-                    var windowManagerInterface = windowManager.QueryInterface(Components.interfaces.nsIWindowMediator);
-                    var mailWindow = windowManagerInterface.getMostRecentWindow( "mail:3pane" );
-                    folder.updateFolder(mailWindow.msgWindow);
-                    //*/
-                } catch (e) {
-                    // OK, this does not always work, but as this is only a hint to get the
-                    // folder to update, we don't really care.
-                    dump("updateFolder failed: " + e + "\n")
-                }
-            //} else {
-            //    dump("already getting new messages, ignore\n");
-            //}
-        }
-    }
-}
-
+// This object is used as a Listener callback for thunderbird 3
 MailboxAlert.newMailListener_tb3 = {
     msgsClassified: function (aMsgs,
                               aJunkProcessed,
@@ -136,6 +97,34 @@ MailboxAlert.newMailListener_tb3 = {
     }
 }
 
+// This object is called as a listener callback to force folders to be updated
+// whenever mail appears to arrive
+// A possible improvement here is to check whether it really needs to (i.e.
+// whether this folder has any alerts)
+MailboxAlert.folderUpdater = {
+    OnItemIntPropertyChanged: function(item, property, oldValue, newValue)
+    {
+        if (property == "TotalUnreadMessages" && newValue > oldValue) {
+            // need folder update to trigger other internal notifications
+            var folder = item.QueryInterface(Components.interfaces.nsIMsgFolder);
+            dump("Number of unread folders increased for " + folder.URI + "\n");
+            dump("try updateFolder\n");
+            try {
+                ///*
+                var windowManager = Components.classes['@mozilla.org/appshell/window-mediator;1'].getService();
+                var windowManagerInterface = windowManager.QueryInterface(Components.interfaces.nsIWindowMediator);
+                var mailWindow = windowManagerInterface.getMostRecentWindow( "mail:3pane" );
+                folder.updateFolder(mailWindow.msgWindow);
+                //*/
+            } catch (e) {
+                // OK, this does not always work, but as this is only a hint to get the
+                // folder to update, we don't really care.
+                dump("updateFolder failed: " + e + "\n")
+            }
+        }
+    }
+}
+
 MailboxAlert.onLoad = function ()
 {
     // remove to avoid duplicate initialization
@@ -147,8 +136,6 @@ MailboxAlert.onLoad = function ()
 
     // try TB3 interface first, then tb2 interface
     try {
-        //notificationService.addListener(MailboxAlert.newMailListener_tb3_pre,
-        //                                notificationService.msgAdded);
         notificationService.addListener(MailboxAlert.newMailListener_tb3,
                                         notificationService.msgsClassified);
     } catch (e) {
@@ -164,7 +151,7 @@ MailboxAlert.onLoad = function ()
     // a subfolder)
     Components.classes["@mozilla.org/messenger/services/session;1"]
     .getService(Components.interfaces.nsIMsgMailSession)
-    .AddFolderListener(new MailboxAlert.FolderDChanged(),
+    .AddFolderListener(MailboxAlert.folderUpdater,
     Components.interfaces.nsIFolderListener.intPropertyChanged);
 
     // check if there are old settings (pre 0.14) to copy
@@ -179,6 +166,5 @@ MailboxAlert.onLoad = function ()
 
     filterService.addCustomAction(MailboxAlert.filter_action);
 }
-
 
 addEventListener("load", MailboxAlert.onLoad, true);
