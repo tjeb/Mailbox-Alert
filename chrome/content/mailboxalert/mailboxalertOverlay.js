@@ -96,23 +96,23 @@ MailboxAlert.FolderDChanged.prototype =
             // need folder update to trigger other internal notifications
             var folder = item.QueryInterface(Components.interfaces.nsIMsgFolder);
             dump("Number of unread folders increased for " + folder.URI + "\n");
-            if (!folder.gettingNewMessages) {
+            //if (!folder.gettingNewMessages) {
                 dump("not getting new messages, try updateFolder\n");
                 try {
-                    /*
+                    ///*
                     var windowManager = Components.classes['@mozilla.org/appshell/window-mediator;1'].getService();
                     var windowManagerInterface = windowManager.QueryInterface(Components.interfaces.nsIWindowMediator);
                     var mailWindow = windowManagerInterface.getMostRecentWindow( "mail:3pane" );
-                    folder.updateFolder(mailWindow);
-                    */
+                    folder.updateFolder(mailWindow.msgWindow);
+                    //*/
                 } catch (e) {
                     // OK, this does not always work, but as this is only a hint to get the
                     // folder to update, we don't really care.
                     dump("updateFolder failed: " + e + "\n")
                 }
-            } else {
-                dump("already getting new messages, ignore\n");
-            }
+            //} else {
+            //    dump("already getting new messages, ignore\n");
+            //}
         }
     }
 }
@@ -162,12 +162,10 @@ MailboxAlert.onLoad = function ()
     // needs the folder to be really updated, as if the user has selected
     // the folder (this happens for instance when procmail drops mail into
     // a subfolder)
-    /*
     Components.classes["@mozilla.org/messenger/services/session;1"]
     .getService(Components.interfaces.nsIMsgMailSession)
     .AddFolderListener(new MailboxAlert.FolderDChanged(),
     Components.interfaces.nsIFolderListener.intPropertyChanged);
-    */
 
     // check if there are old settings (pre 0.14) to copy
     MailboxAlert.checkOldSettings();
