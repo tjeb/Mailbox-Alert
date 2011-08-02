@@ -28,17 +28,6 @@ if (typeof(MailboxAlert) == "undefined") {
     var MailboxAlert = {};
 }
 
-/* variables for queue handling
- * TODO: queue 'type' with functions (or perhaps remove
- * queueing altogether)
- * (perhaps we can now)
- */
-MailboxAlert.queue_length = 0;
-MailboxAlert.max_queue_length = 10;
-MailboxAlert.queue = new Array(MailboxAlert.max_queue_length);
-MailboxAlert.queue_s = new Array(MailboxAlert.max_queue_length);
-MailboxAlert.queue_message = new Array(MailboxAlert.max_queue_length);
-
 /* simple lock */
 MailboxAlert.running = false;
 

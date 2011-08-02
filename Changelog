@@ -1,5 +1,5 @@
 [???]
-  o configuration has changed; you can now define a set of alerts,
+  o Configuration has changed; you can now define a set of alerts,
     and specify one or more alerts per folder directly from the
     folder context menu. Existing configuration is automatically
     converted to the new one.
@@ -13,6 +13,10 @@
   o Sliding and fading alerts should be smoother now
   o Added an option to delete the message from the alert popup (moves
     it to trash)
+  o Changed the way Mailbox Alert listens to the arrival of new messages.
+    There should no longer be a delay between the arrival and the alert,
+    and some problems that people have been experiencing should now be
+    solved.
 
 [0.14.5-0.14.6]
   o Minor update to make it work with Seamonkey 2.1

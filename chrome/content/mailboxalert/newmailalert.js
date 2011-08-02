@@ -284,6 +284,7 @@ MailboxAlertNewMail.slideInTop = function ()
         }
     } catch (e) {
         dump("Error moving window, closing window\n");
+        this.timer.cancel();
         window.close();
     }
 }
@@ -308,6 +309,7 @@ MailboxAlertNewMail.slideOutTop = function ()
         }
     } catch (e) {
         dump("Error moving window, closing window\n");
+        this.timer.cancel();
         window.close();
     }
 }
@@ -335,6 +337,7 @@ MailboxAlertNewMail.slideInBottom = function ()
         }
     } catch (e) {
         dump("Error moving window, closing window\n");
+        this.timer.cancel();
         window.close();
     }
 }
@@ -358,6 +361,7 @@ MailboxAlertNewMail.slideOutBottom = function ()
         }
     } catch (e) {
         dump("Error moving window, closing window\n");
+        this.timer.cancel();
         window.close();
     }
 }
