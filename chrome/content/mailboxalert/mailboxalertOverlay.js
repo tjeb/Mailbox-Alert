@@ -147,8 +147,8 @@ MailboxAlert.onLoad = function ()
 
     // try TB3 interface first, then tb2 interface
     try {
-        notificationService.addListener(MailboxAlert.newMailListener_tb3_pre,
-                                        notificationService.msgAdded);
+        //notificationService.addListener(MailboxAlert.newMailListener_tb3_pre,
+        //                                notificationService.msgAdded);
         notificationService.addListener(MailboxAlert.newMailListener_tb3,
                                         notificationService.msgsClassified);
     } catch (e) {
