@@ -36,13 +36,13 @@ MailboxAlertList.enableButton = function (name, enabled) {
 MailboxAlertList.addAlert = function (id, name) {
     //new_id = MailboxAlert.findAvailableAlertPrefsId();
     //window.openDialog('chrome://mailboxalert/content/alert_settings.xul', 'alertPrefsWindow', 'modal', new_id);
-    window.openDialog('chrome://mailboxalert/content/alert_settings.xul', 'alertPrefsWindow', 'modal', 0);
+    window.openDialog('chrome://mailboxalert/content/alert_settings.xul', '_blank', '', 0);
     MailboxAlertList.fillAlertList();
 }
 
 MailboxAlertList.editAlert = function() {
     var alert_listbox = document.getElementById("alert_listbox");
-    window.openDialog('chrome://mailboxalert/content/alert_settings.xul', 'alertPrefsWindow', 'modal,dependent=no', alert_listbox.selectedItem.value);
+    window.openDialog('chrome://mailboxalert/content/alert_settings.xul', '_blank', 'dependent=no', alert_listbox.selectedItem.value);
     MailboxAlertList.fillAlertList();
 }
 
