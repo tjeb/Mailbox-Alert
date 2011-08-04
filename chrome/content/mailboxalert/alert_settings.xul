@@ -513,7 +513,17 @@ MailboxAlertAlertSettings.chooseExecFile = function () {
 }
 
 MailboxAlertAlertSettings.selectPosition = function () {
-  alert("[XX] todo");
+  var dialog_positions = {};
+  var x_pos_textbox = document.getElementById("show_message_custom_position_x_textbox");
+  var y_pos_textbox = document.getElementById("show_message_custom_position_y_textbox");
+  dialog_positions.x = x_pos_textbox.value;
+  dialog_positions.y = y_pos_textbox.value;
+  dialog_positions.changed = false;
+  window.openDialog('chrome://mailboxalert/content/alert_settings_position.xul', "aaaaa", "chrome,titlebar=yes,modal=yes", dialog_positions);
+  if (dialog_positions.changed) {
+    x_pos_textbox.value = dialog_positions.x;
+    y_pos_textbox.value = dialog_positions.y;
+  }
 }
 
 ]]>

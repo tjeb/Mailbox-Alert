@@ -196,8 +196,8 @@ MailboxAlert.alertPrefDefs = {
 "show_message_position": [ "string", "top-left" ],
 "show_message_effect": [ "string", "slide" ],
 "show_message_onclick": [ "string", "close" ],
-"show_message_custom_position_x": [ "integer", 0 ],
-"show_message_custom_position_y": [ "integer", 0 ],
+"show_message_custom_position_x": [ "integer", -1 ],
+"show_message_custom_position_y": [ "integer", -1 ],
 }
 
 // This returns the preferences for the folder in mailboxalert

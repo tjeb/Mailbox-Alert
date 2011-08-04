@@ -60,6 +60,8 @@
 <!ENTITY mailboxalert.alert_prefs.position.custom_select "Select a position">
 <!ENTITY mailboxalert.alert_prefs.custom_position_x "X">
 <!ENTITY mailboxalert.alert_prefs.custom_position_y "Y">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_title "Select Mailbox Alert Custom Position">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_text "Drag this window to where you want the alert to appear and click OK">
 <!ENTITY mailboxalert.alert_prefs.effect "Effect">
 <!ENTITY mailboxalert.alert_prefs.effect.none "None">
 <!ENTITY mailboxalert.alert_prefs.effect.slide "Slide">
