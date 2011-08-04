@@ -40,14 +40,7 @@ MailboxAlert.createAlertData = function (mailbox, last_unread) {
         this.all_message_count = this.mailbox.getNumUnread(true);
         this.folder_is_server = this.mailbox.isServer;
     }
-    this.deriveFakeData = function() {
-        // derived data that changes
-        this.folder_name = "SomeFolder";
-        this.folder_name_with_server = "SomeServer/SomeFolder";
-        this.folder_uri = "IMAP://SomeServer/SomeFolder";
-        this.all_message_count = 42;
-    }
-    
+
     this.deriveDataFixed = function() {
         // derived data that stays the same
         this.orig_mailbox = this.mailbox;
@@ -87,8 +80,32 @@ MailboxAlert.createAlertData = function (mailbox, last_unread) {
         this.date = this.last_unread.date;
     }
 
-    if (!this.last_unread) {
-        // this is a fake message, create some test data 
+    this.createFakeFolder = function () {
+        var fake_parent_folder = {};
+        fake_parent_folder.isServer = true;
+        fake_parent_folder.prettiestName = "SomeServer";
+
+        var fake_folder = {};
+        fake_folder.parent = fake_parent_folder;
+        fake_folder.isServer = false;
+        fake_folder.prettiestName = "SomeFolder";
+        fake_folder.getNumUnread = function (all) {
+            if (all) {
+                return 10;
+            } else {
+                return 1;
+            }
+        }
+        fake_folder.getUriForMsg = function(some_msg) {
+            return "imap://some_server/some_folder/some_msg";
+        }
+        fake_folder.URI = "imap://some_server/some_folder";
+
+        this.mailbox = fake_folder;
+    }
+    
+    this.createFakeUnread = function () {
+        // this is a fake message, create some test data
         this.last_unread = {};
         this.last_unread.mime2DecodedSubject = "Test subject";
         this.last_unread.mime2DecodedAuthor = "Theo Est <test@example.com>";
@@ -100,17 +117,21 @@ MailboxAlert.createAlertData = function (mailbox, last_unread) {
         this.last_unread.getProperty = function(propname) {
             return this.preview;
         }
+    }
+
+    if (!this.last_unread) {
+        this.createFakeUnread();
         this.preview_fetched = true;
     } else {
         this.preview_fetched = false;
     }
-    
-    if (this.mailbox) {
-        this.deriveData();
-        this.deriveDataFixed();
-    } else {
-        this.deriveFakeData();
+
+    if (!this.mailbox) {
+        this.createFakeFolder();
     }
+    
+    this.deriveData();
+    this.deriveDataFixed();
     
     // internal state variables
     this.orig_folder_name = this.folder_name;

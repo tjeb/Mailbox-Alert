@@ -45,7 +45,7 @@ MailboxAlertAlertSettings.testAlert = function () {
   try {
     var alert_id = MailboxAlertAlertSettings.getAlertId();
     var alert_prefs = MailboxAlertAlertSettings.getPrefsFromWindow(alert_id);
-    var alert_data = MailboxAlert.createAlertData();
+    var alert_data = MailboxAlert.createAlertData(false, false);
     alert_prefs.run(alert_data);
   } catch (e) {
     alert("[XX] error at " + e.fileName + ":" + e.lineNumber + ": " + e);
