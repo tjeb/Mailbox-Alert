@@ -9,6 +9,8 @@
     (this list is similar to the default click action you can
     configure)
   o If duration for popups is set to 0, it is never automatically closed
+  o You can now choose custom locations on your screen for the 'show
+    message' option.
   o Added a %date and a %time macro
   o Sliding and fading alerts should be smoother now
   o Added an option to delete the message from the alert popup (moves
