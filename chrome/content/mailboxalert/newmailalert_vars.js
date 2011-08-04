@@ -27,7 +27,7 @@ MailboxAlertNewMail.window_to_y = 0;
 
 MailboxAlertNewMail.effect = "none";
 
-MailboxAlertNewMail.onclick = "close";
+MailboxAlertNewMail.whenclicked = "close";
 MailboxAlertNewMail.folder_url = "";
 MailboxAlertNewMail.message_key;
 

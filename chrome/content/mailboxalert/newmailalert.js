@@ -148,7 +148,7 @@ MailboxAlertNewMail.prefillAlertInfo = function ()
     this.position = window.arguments[6];
     this.duration = window.arguments[7];
     this.effect = window.arguments[8];
-    this.onclick = window.arguments[9];
+    this.whenclicked = window.arguments[9];
     //window.class = "MyClass";
 
     var label = document.getElementById('subject');
@@ -223,33 +223,33 @@ MailboxAlertNewMail.showAlertSlide = function ()
     this.resizeAlert(false);
     this.placeAlert();
     
-    MailboxAlertNewMail.window_y = -this.getWindowHeight();
+    this.window_y = -this.getWindowHeight();
     
     if (this.position == "top-right") {
-    MailboxAlertNewMail.window_x = MailboxAlertNewMail.gOrigin & this.LEFT ? screen.availLeft :
+    this.window_x = this.gOrigin & this.LEFT ? screen.availLeft :
         (screen.availLeft + screen.availWidth - this.getWindowWidth());
     } else if (this.position == "bottom-right") {
     top = false;
-    MailboxAlertNewMail.window_x = MailboxAlertNewMail.gOrigin & this.LEFT ? screen.availLeft :
+    this.window_x = this.gOrigin & this.LEFT ? screen.availLeft :
         (screen.availLeft + screen.availWidth - this.getWindowWidth());
-    MailboxAlertNewMail.window_y = screen.height + this.getWindowHeight();
-    MailboxAlertNewMail.window_to_y = MailboxAlertNewMail.gOrigin & this.TOP ? screen.availTop :
+    this.window_y = screen.height + this.getWindowHeight();
+    this.window_to_y = this.gOrigin & this.TOP ? screen.availTop :
         (screen.availTop + screen.availHeight - this.getWindowHeight());
     } else if (this.position == "bottom-left") {
     top = false;
-    MailboxAlertNewMail.window_y = screen.height + this.getWindowHeight();
-    MailboxAlertNewMail.window_to_y = MailboxAlertNewMail.gOrigin & this.TOP ? screen.availTop :
+    this.window_y = screen.height + this.getWindowHeight();
+    this.window_to_y = this.gOrigin & this.TOP ? screen.availTop :
         (screen.availTop + screen.availHeight - this.getWindowHeight());
     } else if (this.position == "center") {
-    MailboxAlertNewMail.window_x = MailboxAlertNewMail.gOrigin & this.LEFT ? screen.availLeft :
+    this.window_x = this.gOrigin & this.LEFT ? screen.availLeft :
         ((screen.availLeft + screen.availWidth) / 2 - (this.getWindowWidth() / 2));
-    MailboxAlertNewMail.window_y = -this.getWindowHeight();
-    MailboxAlertNewMail.window_to_y = MailboxAlertNewMail.gOrigin & this.TOP ? screen.availTop :
+    this.window_y = -this.getWindowHeight();
+    this.window_to_y = this.gOrigin & this.TOP ? screen.availTop :
         ((screen.availTop + screen.availHeight) / 2 - (this.getWindowHeight() / 2));
     }
     //window.sizeToContent();
-    //window.resizeTo(MailboxAlertNewMail.getWindowWidth(), this.getWindowHeight());
-    window.moveTo(MailboxAlertNewMail.window_x, this.window_y);
+    //window.resizeTo(this.getWindowWidth(), this.getWindowHeight());
+    window.moveTo(this.window_x, this.window_y);
     this.resizeAlert(false);
     this.placeAlertOutside();
     alertContainer.style.opacity = 1;
@@ -274,7 +274,7 @@ MailboxAlertNewMail.slideInTop = function ()
             window.moveBy(0, this.gSlideDistance);
         } else {
             this.timer_state = this.WAITING;
-            MailboxAlertNewMail.window_to_y = -this.getWindowHeight();
+            this.window_to_y = -this.getWindowHeight();
             // we only need to wait the duration once (the handler should init the slideout
             // timer on a repeated basis again
             if (this.duration > 0) {
@@ -324,9 +324,9 @@ MailboxAlertNewMail.slideInBottom = function ()
         } else {
             this.timer_state = this.WAITING;
             
-            window.moveTo(MailboxAlertNewMail.window_x, this.window_to_y);
-            MailboxAlertNewMail.window_y = this.window_to_y;
-            MailboxAlertNewMail.window_to_y = screen.height + this.getWindowHeight();
+            window.moveTo(this.window_x, this.window_to_y);
+            this.window_y = this.window_to_y;
+            this.window_to_y = screen.height + this.getWindowHeight();
             
             // we only need to wait the duration once (the handler should init the slideout
             // timer on a repeated basis again
@@ -393,7 +393,7 @@ MailboxAlertNewMail.getWindowWidth = function ()
 
 MailboxAlertNewMail.resizeAlert = function (aMoveOffScreen)
 {
-  resizeTo(MailboxAlertNewMail.getWindowWidth(), this.getWindowHeight());
+  resizeTo(this.getWindowWidth(), this.getWindowHeight());
 
   // leftover hack to get the window properly hidden when we first open it
   //if (aMoveOffScreen) {
@@ -406,20 +406,20 @@ MailboxAlertNewMail.placeAlert = function () {
   var y = 0;
 
   if (this.position == "top-right") {
-    x = MailboxAlertNewMail.gOrigin & this.LEFT ? screen.availLeft :
+    x = this.gOrigin & this.LEFT ? screen.availLeft :
         (screen.availLeft + screen.availWidth - this.getWindowWidth());
   } else if (this.position == "bottom-right") {
-    x = MailboxAlertNewMail.gOrigin & this.LEFT ? screen.availLeft :
+    x = this.gOrigin & this.LEFT ? screen.availLeft :
         (screen.availLeft + screen.availWidth - this.getWindowWidth());
-    y = MailboxAlertNewMail.gOrigin & this.TOP ? screen.availTop :
+    y = this.gOrigin & this.TOP ? screen.availTop :
         (screen.availTop + screen.availHeight - this.getWindowHeight());
   } else if (this.position == "bottom-left") {
-    y = MailboxAlertNewMail.gOrigin & this.TOP ? screen.availTop :
+    y = this.gOrigin & this.TOP ? screen.availTop :
         (screen.availTop + screen.availHeight - this.getWindowHeight());
   } else if (this.position == "center") {
-    x = MailboxAlertNewMail.gOrigin & this.LEFT ? screen.availLeft :
+    x = this.gOrigin & this.LEFT ? screen.availLeft :
         ((screen.availLeft + screen.availWidth) / 2 - (this.getWindowWidth() / 2));
-    y = MailboxAlertNewMail.gOrigin & this.TOP ? screen.availTop :
+    y = this.gOrigin & this.TOP ? screen.availTop :
         ((screen.availTop + screen.availHeight) / 2 - (this.getWindowHeight() / 2));
   }
   window.moveTo(x, y);
@@ -430,21 +430,21 @@ MailboxAlertNewMail.placeAlertOutside = function () {
   var y = -this.getWindowHeight();
 
   if (this.position == "top-right") {
-    x = MailboxAlertNewMail.gOrigin & this.LEFT ? screen.availLeft :
+    x = this.gOrigin & this.LEFT ? screen.availLeft :
         (screen.availLeft + screen.availWidth - this.getWindowWidth());
   } else if (this.position == "bottom-right") {
-    x = MailboxAlertNewMail.gOrigin & this.LEFT ? screen.availLeft :
+    x = this.gOrigin & this.LEFT ? screen.availLeft :
         (screen.availLeft + screen.availWidth - this.getWindowWidth());
-    y = MailboxAlertNewMail.gOrigin & this.TOP ? screen.availTop :
+    y = this.gOrigin & this.TOP ? screen.availTop :
         (screen.availTop + screen.availHeight);
   } else if (this.position == "bottom-left") {
-    y = MailboxAlertNewMail.gOrigin & this.TOP ? screen.availTop :
+    y = this.gOrigin & this.TOP ? screen.availTop :
         (screen.availTop + screen.availHeight);
   } else if (this.position == "center") {
-    x = MailboxAlertNewMail.gOrigin & this.LEFT ? screen.availLeft :
+    x = this.gOrigin & this.LEFT ? screen.availLeft :
         ((screen.availLeft + screen.availWidth) / 2 - (this.getWindowWidth() / 2));
 /*
-    y = MailboxAlertNewMail.gOrigin & this.TOP ? screen.availTop :
+    y = this.gOrigin & this.TOP ? screen.availTop :
         ((screen.availTop + screen.availHeight) / 2 - (this.getWindowHeight() / 2));
 */
   }
@@ -504,7 +504,7 @@ MailboxAlertNewMail.closeAlert = function ()
                 this.timer.cancel();
                 this.close_timer = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
                 this.close_timer.initWithCallback(this, this.gSlideTime, this.timer.TYPE_REPEATING_PRECISE);
-            } else if (MailboxAlertNewMail.position == "bottom-right" || this.position == "bottom-left") {
+            } else if (this.position == "bottom-right" || this.position == "bottom-left") {
                 dump("[XX] starting slide out bottom\n");
                 this.timer_state = this.SLIDING_OUT_BOTTOM;
                 this.timer.cancel();
@@ -532,7 +532,7 @@ MailboxAlertNewMail.handleClick = function (event)
         // associations, but we should stop the running timer
         // (TODO: restart it if we close the popup again?)
         if (event.button == 0) {
-            this.performAction(this.onclick);
+            this.performAction(this.whenclicked);
         } else if (event.button == 2) {
             if (!this.stored_timer_delay) {
                 // store the timer before we cancel it so we can 
@@ -594,7 +594,7 @@ MailboxAlertNewMail.performAction = function (action)
                         mailWindow.gFolderDisplay.selectMessageComingUp();
                         mailWindow.gFolderDisplay.selectMessage(this.message_hdr);
                     } else if (mailWindow.msgWindow) {
-                        var mail_uri = MailboxAlertNewMail.message_hdr.folder.getUriForMsg(this.message_hdr);
+                        var mail_uri = this.message_hdr.folder.getUriForMsg(this.message_hdr);
                         mailWindow.msgWindow.windowCommands.selectMessage(mail_uri);
                     } else {
                         // Running out of ideas here...

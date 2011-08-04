@@ -226,7 +226,7 @@ MailboxAlert.getFolderPreferences14 = function(folder_uri) {
                 
                 // ok pref doesn't exist yet.
                 // should we not set and just return?
-                pref_data = MailboxAlert.folderPrefDefs14[name]
+                var pref_data = MailboxAlert.folderPrefDefs14[name]
                 if (pref_data != null) {
                     dump("[XX] default: " + MailboxAlert.folderPrefDefs14[name][1]);
                    this.values[name] = MailboxAlert.folderPrefDefs14[name][1];
@@ -397,7 +397,7 @@ MailboxAlert.getAlertPreferences = function (index) {
                 
                 // ok pref doesn't exist yet.
                 // should we not set and just return?
-                pref_data = MailboxAlert.alertPrefDefs[name]
+                var pref_data = MailboxAlert.alertPrefDefs[name]
                 if (pref_data != null) {
                     //dump("[XX] default: " + MailboxAlert.alertPrefDefs[name][1]);
                    this.values[name] = MailboxAlert.alertPrefDefs[name][1];
@@ -679,8 +679,8 @@ MailboxAlert.filter_action =
 // Needed when presenting the list window, and when converting
 // from 0.14 to 0.15
 MailboxAlert.getAllAlertPrefs = function () {
-    alert_list = []
-    for (i = 1; i <= MailboxAlert.max_alerts; i++) {
+    var alert_list = []
+    for (var i = 1; i <= MailboxAlert.max_alerts; i++) {
         try {
             var alert_prefs = MailboxAlert.getAlertPreferences(i);
             alert_list.push(alert_prefs);
@@ -875,7 +875,7 @@ MailboxAlert.convertFolderPreferences14toAlertPreferences = function(folder_uri)
     // skip if there are no prefs for this folder in the first place
     if (has_prefs) {
         var folder_prefs14 = MailboxAlert.getFolderPreferences14(folder_uri);
-        new_index = folder_prefs14.convertToAlertPrefs();
+        var new_index = folder_prefs14.convertToAlertPrefs();
 
         var folder_prefs = MailboxAlert.getFolderPrefs(folder_uri);
         folder_prefs.addAlert(new_index);
