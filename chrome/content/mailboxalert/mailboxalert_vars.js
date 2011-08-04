@@ -521,7 +521,9 @@ MailboxAlert.getAlertPreferences = function (index) {
                                     this.get("show_message_position"),
                                     this.get("show_message_duration"),
                                     this.get("show_message_effect"),
-                                    this.get("show_message_onclick")
+                                    this.get("show_message_onclick"),
+                                    this.get("show_message_custom_position_x"),
+                                    this.get("show_message_custom_position_y")
                                     );
         }
         if (this.get("play_sound")) {

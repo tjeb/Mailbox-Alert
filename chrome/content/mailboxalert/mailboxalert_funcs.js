@@ -339,12 +339,12 @@ MailboxAlert.new_alert2 = function (alert_data) {
     }
 }
 
-MailboxAlert.showMessage = function (alert_data, show_icon, icon_file, subject_pref, message, position, duration, effect, onclick) {
-    dump("[XX]\n");
-    dump("[XX]\n");
-    MailboxAlert.showMethods(alert_data.getInfo());
-    dump("[XX]\n");
-    dump("[XX]\n");
+MailboxAlert.showMessage = function (alert_data, show_icon, icon_file, subject_pref, message, position, duration, effect, onclick, custom_position_x, custom_position_y) {
+    //dump("[XX]\n");
+    //dump("[XX]\n");
+    //MailboxAlert.showMethods(alert_data.getInfo());
+    //dump("[XX]\n");
+    //dump("[XX]\n");
     
     var message_key = alert_data.last_unread.messageKey;
     
@@ -410,7 +410,7 @@ MailboxAlert.showMessage = function (alert_data, show_icon, icon_file, subject_p
     dump("[XX] Message text: " + message_text + "\n");
 
     try {
-        window.openDialog('chrome://mailboxalert/content/newmailalert.xul', "new mail", "chrome,titlebar=no,popup=yes", subject_pref, message_text, show_icon, icon_file, alert_data.orig_mailbox, alert_data.last_unread, position, duration, effect, onclick);
+        window.openDialog('chrome://mailboxalert/content/newmailalert.xul', "new mail", "chrome,titlebar=no,popup=yes", subject_pref, message_text, show_icon, icon_file, alert_data.orig_mailbox, alert_data.last_unread, position, duration, effect, onclick, custom_position_x, custom_position_y);
     } catch (e) {
         alert(e);
     }

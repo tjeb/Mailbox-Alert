@@ -149,6 +149,8 @@ MailboxAlertNewMail.prefillAlertInfo = function ()
     this.duration = window.arguments[7];
     this.effect = window.arguments[8];
     this.whenclicked = window.arguments[9];
+    this.custom_position_x = window.arguments[10];
+    this.custom_position_y = window.arguments[11];
     //window.class = "MyClass";
 
     var label = document.getElementById('subject');
@@ -421,6 +423,9 @@ MailboxAlertNewMail.placeAlert = function () {
         ((screen.availLeft + screen.availWidth) / 2 - (this.getWindowWidth() / 2));
     y = this.gOrigin & this.TOP ? screen.availTop :
         ((screen.availTop + screen.availHeight) / 2 - (this.getWindowHeight() / 2));
+  } else if (this.position == "custom") {
+    x = this.custom_position_x;
+    y = this.custom_position_y;
   }
   window.moveTo(x, y);
 }
@@ -447,6 +452,9 @@ MailboxAlertNewMail.placeAlertOutside = function () {
     y = this.gOrigin & this.TOP ? screen.availTop :
         ((screen.availTop + screen.availHeight) / 2 - (this.getWindowHeight() / 2));
 */
+  } else if (this.position == "custom") {
+    x = this.custom_position_x;
+    y = this.custom_position_y;
   }
   window.moveTo(x, y);
 }

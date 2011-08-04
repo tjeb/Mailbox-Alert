@@ -18,7 +18,7 @@ MailboxAlertNewMail.gFadeTime = 50;
 MailboxAlertNewMail.gFadeIncrement = .05;
 MailboxAlertNewMail.gOrigin = 0;
 
-MailboxAlertNewMail.position = "tr";
+MailboxAlertNewMail.position = "top-right";
 MailboxAlertNewMail.duration = 2;
 
 MailboxAlertNewMail.window_x = 0;
