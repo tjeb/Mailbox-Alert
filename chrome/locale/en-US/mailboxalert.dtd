@@ -56,6 +56,10 @@
 <!ENTITY mailboxalert.alert_prefs.position.topright "Top-right">
 <!ENTITY mailboxalert.alert_prefs.position.topleft "Top-left">
 <!ENTITY mailboxalert.alert_prefs.position.center "Center">
+<!ENTITY mailboxalert.alert_prefs.position.custom "Custom">
+<!ENTITY mailboxalert.alert_prefs.position.custom_select "Select a position">
+<!ENTITY mailboxalert.alert_prefs.custom_position_x "X">
+<!ENTITY mailboxalert.alert_prefs.custom_position_y "Y">
 <!ENTITY mailboxalert.alert_prefs.effect "Effect">
 <!ENTITY mailboxalert.alert_prefs.effect.none "None">
 <!ENTITY mailboxalert.alert_prefs.effect.slide "Slide">

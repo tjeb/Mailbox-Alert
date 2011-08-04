@@ -110,6 +110,7 @@ MailboxAlertAlertSettings.checkUIShowMessage = function (do_click) {
     result = true;
   }
   MailboxAlertAlertSettings.checkUIShowMessageIcon();
+  MailboxAlertAlertSettings.checkUIShowMessageCustomPosition();
   return !do_click || result;
 }
 
@@ -168,6 +169,29 @@ MailboxAlertAlertSettings.checkUIExecuteCommand = function(do_click) {
     return true;
   }
   return !do_click;
+}
+
+MailboxAlertAlertSettings.setUIShowMessageCustomPosition = function (show_message_custom_position) {
+  MailboxAlertAlertSettings.setUIElementList([
+    "show_message_custom_position_options",
+    "show_message_custom_position_x_textbox",
+    "show_message_custom_position_x_label",
+    "show_message_custom_position_y_textbox",
+    "show_message_custom_position_y_label",
+    "show_message_custom_position_choose"
+  ], show_message_custom_position);
+}
+
+MailboxAlertAlertSettings.checkUIShowMessageCustomPosition = function() {
+  var show_message_menu = document.getElementById("show_message_position_menulist");
+  var show_message_custom_position = false;
+  if (show_message_menu.value == "custom") {
+    document.getElementById('show_message_custom_position_options').hidden = false;
+    show_message_custom_position = true;
+  } else {
+    document.getElementById('show_message_custom_position_options').hidden = true;
+  }
+  MailboxAlertAlertSettings.setUIShowMessageCustomPosition(show_message_custom_position);
 }
 
 MailboxAlertAlertSettings.setUIOkButton = function (enabled) {
@@ -242,6 +266,9 @@ MailboxAlertAlertSettings.readPrefs = function (alert_id) {
         
     MailboxAlertAlertSettings.setUIPrefAttribute(alert_prefs, "show_message_icon_file", "show_message_icon_image", "src");
     MailboxAlertAlertSettings.setUIPrefInt(alert_prefs, "show_message_duration", "show_message_duration_textbox");
+    MailboxAlertAlertSettings.setUIPrefInt(alert_prefs, "show_message_duration", "show_message_duration_textbox");
+    MailboxAlertAlertSettings.setUIPrefInt(alert_prefs, "show_message_custom_position_x", "show_message_custom_position_x_textbox");
+    MailboxAlertAlertSettings.setUIPrefInt(alert_prefs, "show_message_custom_position_y", "show_message_custom_position_y_textbox");
     
     var show_message_position = alert_prefs.get("show_message_position");
     if (show_message_position == "top-left") {
@@ -254,6 +281,8 @@ MailboxAlertAlertSettings.readPrefs = function (alert_id) {
       MailboxAlertAlertSettings.doClick("show_message_position_bottom-right");
     } else if (show_message_position == "center") {
       MailboxAlertAlertSettings.doClick("show_message_position_center");
+    } else if (show_message_position == "custom") {
+      MailboxAlertAlertSettings.doClick("show_message_position_custom");
     }
 
     var show_message_effect = alert_prefs.get("show_message_effect");
@@ -347,6 +376,8 @@ MailboxAlertAlertSettings.getPrefsFromWindow = function (alert_id) {
     MailboxAlertAlertSettings.storeUIPrefInt(alert_prefs, "show_message_duration", "show_message_duration_textbox");
     
     MailboxAlertAlertSettings.storeUIPrefTextbox(alert_prefs, "show_message_position", "show_message_position_menulist");
+    MailboxAlertAlertSettings.storeUIPrefInt(alert_prefs, "show_message_custom_position_x", "show_message_custom_position_x_textbox");
+    MailboxAlertAlertSettings.storeUIPrefInt(alert_prefs, "show_message_custom_position_y", "show_message_custom_position_y_textbox");
     MailboxAlertAlertSettings.storeUIPrefTextbox(alert_prefs, "show_message_effect", "show_message_effect_menulist");
     MailboxAlertAlertSettings.storeUIPrefTextbox(alert_prefs, "show_message_onclick", "show_message_onclick_menulist");
 
@@ -481,6 +512,10 @@ MailboxAlertAlertSettings.chooseExecFile = function () {
   // TODO, this can be refactored
 }
 
+MailboxAlertAlertSettings.selectPosition = function () {
+  alert("[XX] todo");
+}
+
 ]]>
 </script>
 
@@ -550,15 +585,31 @@ MailboxAlertAlertSettings.chooseExecFile = function () {
             <spacer flex="1"/>
             </vbox>
             <spacer flex="1"/>
-            <menulist id="show_message_position_menulist" label="&mailboxalert.alert_prefs.position;"  disabled="true">
+            <menulist id="show_message_position_menulist" label="&mailboxalert.alert_prefs.position;"  disabled="true" oncommand="MailboxAlertAlertSettings.checkUIShowMessageCustomPosition();">
             <menupopup align="end">
-              <menuitem id="show_message_position_top-left" value="top-left" label="&mailboxalert.alert_prefs.position.topleft;"/>
-              <menuitem id="show_message_position_top-right" value="top-right" label="&mailboxalert.alert_prefs.position.topright;"/>
-              <menuitem id="show_message_position_bottom-left" value="bottom-left" label="&mailboxalert.alert_prefs.position.bottomleft;"/>
-              <menuitem id="show_message_position_bottom-right" value="bottom-right" label="&mailboxalert.alert_prefs.position.bottomright;"/>
-              <menuitem id="show_message_position_center" value="center" label="&mailboxalert.alert_prefs.position.center;"/>
+            <menuitem id="show_message_position_top-left" value="top-left" label="&mailboxalert.alert_prefs.position.topleft;"/>
+            <menuitem id="show_message_position_top-right" value="top-right" label="&mailboxalert.alert_prefs.position.topright;"/>
+            <menuitem id="show_message_position_bottom-left" value="bottom-left" label="&mailboxalert.alert_prefs.position.bottomleft;"/>
+            <menuitem id="show_message_position_bottom-right" value="bottom-right" label="&mailboxalert.alert_prefs.position.bottomright;"/>
+            <menuitem id="show_message_position_center" value="center" label="&mailboxalert.alert_prefs.position.center;"/>
+            <menuitem id="show_message_position_custom" value="custom" label="&mailboxalert.alert_prefs.position.custom;"/>
             </menupopup>
             </menulist>
+            <hbox id="show_message_custom_position_options" disabled="true" hidden="true" >
+                <vbox>
+                <spacer flex="1"/>
+                <label id="show_message_custom_position_x_label" value="&mailboxalert.alert_prefs.custom_position_x;" disabled="true" />
+                <spacer flex="1"/>
+                </vbox>
+                <textbox id="show_message_custom_position_x_textbox" onfocus="select();" size="5" disabled="true" />
+                <vbox>
+                <spacer flex="1"/>
+                <label id="show_message_custom_position_y_label" value="&mailboxalert.alert_prefs.custom_position_y;" disabled="true" />
+                <spacer flex="1"/>
+                </vbox>
+                <textbox id="show_message_custom_position_y_textbox" onfocus="select();" size="5" disabled="true" />
+                <button id="show_message_custom_position_choose" label="&mailboxalert.alert_prefs.position.custom_select;" disabled="true" onclick="MailboxAlertAlertSettings.selectPosition();" />
+            </hbox>
           </hbox>
           <hbox>
             <vbox>
@@ -592,54 +643,12 @@ MailboxAlertAlertSettings.chooseExecFile = function () {
             </menulist>
           </hbox>
 
-<!--
-          <hbox>
-            <vbox>
-              <spacer flex="1"/>
-              <label value="main font" />
-              <spacer flex="1"/>
-            </vbox>
-            <colorpicker type="button" id="subject_font_color_picker" onchange="setColor('subject', this.color);"/>
-            <vbox>
-              <spacer flex="1"/>
-              <label value="background" />
-              <spacer flex="1"/>
-            </vbox>
-            <colorpicker type="button" id="subject_background_color_picker" onchange="setBackgroundColor('alertContainer', this.color);"/>
-            <vbox>
-              <spacer flex="1"/>
-              <label value="main font" />
-              <spacer flex="1"/>
-            </vbox>
-            <colorpicker type="button" id="message_font_color_picker" onchange="setColor('alertMessageField', this.color);"/>
-            <vbox>
-              <spacer flex="1"/>
-              <label value="background" />
-              <spacer flex="1"/>
-            </vbox>
-            <colorpicker type="button" id="message_background_color_picker" onchange="setBackgroundColor('alertMessageField', this.color);"/>
-          </hbox>
--->
           <hbox>
             <stack id="alertContainer" mousethrough="never" style="border: solid #000000 1px;">
-
               <hbox id="alertBox">
                 <hbox id ="alertImageBox" align="center" valign="center">
                   <image id="alertImage" valign="center"/>
                 </hbox>
-
-<!--
-                <vbox id="alertTextBox">
-                  <label id="subject" value="example subject field"/>
-                  <vbox id="alertMessageField">
-                    <label id="message_field" value="example text field"/>
-                    <label id="message_field1" value="" hidden="true"/>
-                    <label id="message_field2" value="" hidden="true"/>
-                    <label id="message_field3" value="" hidden="true"/>
-                    <label id="message_field4" value="" hidden="true"/>
-                  </vbox>
-                </vbox>
--->
               </hbox>
             </stack>
             <span flex="1"/>
