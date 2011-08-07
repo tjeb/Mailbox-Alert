@@ -311,10 +311,10 @@ MailboxAlert.replace = function (string, oldstr, newstr) {
 
 /* split-join method for replaceAll() */
 /* also escape spaces */
-MailboxAlert.replaceEscape = function (string, oldstr, newstr) {
+MailboxAlert.replaceEscape = function (already_quoted, string, oldstr, newstr) {
     var escaped_new = "";
     if (newstr) {
-        escaped_new = newstr.split(" ").join("\\ ");
+        escaped_new = newstr;
     }
     if (string) {
         if (oldstr) {
@@ -463,28 +463,55 @@ MailboxAlert.playSound = function (soundURL) {
     }
 }
 
+MailboxAlert.replaceCommandPart = function (alert_data, command, escape_html, already_quoted, date_str, time_str) {
+    //alert("do replaces in '" + command + "' alert_data.subject: " + alert_data.subject);
+    command = MailboxAlert.replaceEscape(already_quoted, command, "%server", MailboxAlert.escapeHTML(escape_html, alert_data.server));
+    command = MailboxAlert.replaceEscape(already_quoted, command, "%folder", MailboxAlert.escapeHTML(escape_html, alert_data.folder_name));
+    command = MailboxAlert.replaceEscape(already_quoted, command, "%originalfolder", MailboxAlert.escapeHTML(escape_html, alert_data.orig_folder_name));
+    command = MailboxAlert.replaceEscape(already_quoted, command, "%folder_name_with_server", MailboxAlert.escapeHTML(escape_html, alert_data.folder_name_with_server));
+    command = MailboxAlert.replaceEscape(already_quoted, command, "%countall", ""+alert_data.all_message_count);
+    command = MailboxAlert.replaceEscape(already_quoted, command, "%count", ""+alert_data.orig_message_count);
+    //alert("3 is now: '" + command + "'");
+    command = MailboxAlert.replaceEscape(already_quoted, command, "%subject", MailboxAlert.escapeHTML(escape_html, alert_data.subject));
+    //alert("4 is now: '" + command + "'");
+    command = MailboxAlert.replaceEscape(already_quoted, command, "%senderaddress", MailboxAlert.escapeHTML(escape_html, alert_data.sender_address));
+    //alert("5 is now: '" + command + "'");
+    command = MailboxAlert.replaceEscape(already_quoted, command, "%sendername", MailboxAlert.escapeHTML(escape_html, alert_data.sender_name));
+    //alert("6 is now: '" + command + "'");
+    command = MailboxAlert.replaceEscape(already_quoted, command, "%sender", MailboxAlert.escapeHTML(escape_html, alert_data.sender));
+    command = MailboxAlert.replaceEscape(already_quoted, command, "%charset", MailboxAlert.escapeHTML(escape_html, alert_data.charset));
+    command = MailboxAlert.replace(command, "%messagebytes", alert_data.message_bytes);
+    command = MailboxAlert.replace(command, "%messagesize", alert_data.messageSize);
+    command = MailboxAlert.replace(command, "%date", MailboxAlert.escapeHTML(escape_html, date_str));
+    command = MailboxAlert.replace(command, "%time", MailboxAlert.escapeHTML(escape_html, time_str));
+    command = MailboxAlert.replace(command, "%msg_preview", MailboxAlert.escapeHTML(escape_html, alert_data.getPreview()));
+    command = MailboxAlert.replace(command, "%msg_uri", MailboxAlert.escapeHTML(escape_html, alert_data.msg_uri));
+    //alert("10 is now: '" + command + "'");
+    return command;
+}
+
+MailboxAlert.finalizeCommandPart = function (command_part, alert_data, escape_html, in_quote, date_str, time_str) {
+    command_part = MailboxAlert.replaceCommandPart(alert_data, command_part, escape_html, in_quote, date_str, time_str);
+    command_part = MailboxAlert.replace(command_part, "<remembered_escaped_quote>", '\"');
+    command_part = MailboxAlert.replace(command_part, "<remembered_escaped_space>", '\ ');
+    if (alert_data.charset && tocharset) {
+        csconv.Init(tocharset, 0, 0);
+        try {
+            command_part = csconv.Convert(command_part);
+        } catch (e) {
+            dump("Error converting " + cur_arg + ", leaving as is\n");
+        }
+    }
+    return command_part;
+}
+
+
 MailboxAlert.executeCommand = function (alert_data, command, escape_html) {
     var date_obj = new Date();
     date_obj.setTime(alert_data.date);
     var date_str = date_obj.toLocaleDateString()
     var time_str = date_obj.toLocaleTimeString()
 
-    command = MailboxAlert.replaceEscape(command, "%alert_data.server", MailboxAlert.escapeHTML(alert_data.server));
-    command = MailboxAlert.replaceEscape(command, "%originalalert_data.folder_name_with_server", MailboxAlert.escapeHTML(alert_data.folder_name_with_server));
-    command = MailboxAlert.replaceEscape(command, "%alert_data.folder_name_with_server", MailboxAlert.escapeHTML(alert_data.folder_name_with_server));
-    command = MailboxAlert.replaceEscape(command, "%countall", ""+alert_data.all_message_count);
-    command = MailboxAlert.replaceEscape(command, "%count", ""+alert_data.orig_message_count);
-    command = MailboxAlert.replaceEscape(command, "%alert_data.subject", MailboxAlert.escapeHTML(alert_data.subject));
-    command = MailboxAlert.replaceEscape(command, "%senderaddress", MailboxAlert.escapeHTML(alert_data.sender_address));
-    command = MailboxAlert.replaceEscape(command, "%sendername", MailboxAlert.escapeHTML(alert_data.sender_name));
-    command = MailboxAlert.replaceEscape(command, "%sender", MailboxAlert.escapeHTML(alert_data.sender));
-    command = MailboxAlert.replaceEscape(command, "%charset", MailboxAlert.escapeHTML(alert_data.charset));
-    command = MailboxAlert.replace(command, "%messagebytes", alert_data.message_bytes);
-    command = MailboxAlert.replace(command, "%messagesize", alert_data.messageSize);
-    command = MailboxAlert.replace(command, "%date", MailboxAlert.escapeHTML(date_str));
-    command = MailboxAlert.replace(command, "%time", MailboxAlert.escapeHTML(time_str));
-    command = MailboxAlert.replace(command, "%msg_preview", MailboxAlert.escapeHTML(alert_data.getPreview()));
-    command = MailboxAlert.replace(command, "%msg_uri", MailboxAlert.escapeHTML(alert_data.msg_uri));
 
     var args = new Array();
     var prev_i = 0;
@@ -498,45 +525,39 @@ MailboxAlert.executeCommand = function (alert_data, command, escape_html) {
     dump("Command to execute: ");
     dump(command);
     dump("\n");
-    var i = 0;
-    for (i; i < command.length; i++) {
-        if (command.substr(i, 1) == " ") {
-            if (i > 0 && command.substr(i-1, 1) != "\\") {
-                var cur_arg = command.substring(prev_i, i);
-                // remove escapes again
-                cur_arg = cur_arg.split("\\ ").join(" ");
+    // We want to escape spaces in macro substitutions, but also allow quoting
+    // so we need to determine which parts are quoted.
+    // Macros in quoted parts are NOT escaped
+    //
+    // first we need to make sure existing escaped quotes and spaces are remembered
+    command = MailboxAlert.replace(command, '\\\"', "<remembered_escaped_quote>");
+    command = MailboxAlert.replace(command, '\\\ ', "<remembered_escaped_space>");
 
-                /* convert every argument (i.e. everything but the
-                 * first) to native charset */
-                if (prev_i > 0) {
-                    if (alert_data.charset && tocharset) {
-                        csconv.Init(tocharset, 0, 0);
-                        try {
-                            cur_arg = csconv.Convert(cur_arg);
-                        } catch (e) {
-                            dump("Error converting " + cur_arg + ", leaving as is\n");
-                        }
+    var command_parts = command.split('"');
+    var in_quote = false;
+    for (var i = 0; i < command_parts.length; i++) {
+        var command_part = command_parts[i];
+        if (command_part.length > 0) {
+            // if in quote, append next part. If not, split by
+            // spaces and add each part to args
+            if (!in_quote) {
+                var command_part_parts = command_part.split(' ');
+                for (var j = 0; j < command_part_parts.length; j++) {
+                    var command_part_part = command_part_parts[j];
+                    if (command_part_part.length > 0) {
+                        command_part_part = MailboxAlert.finalizeCommandPart(command_part_part, alert_data, escape_html, in_quote, date_str, time_str);
+                        // finalize; put back original markers, and to conversion
+                        args.push(command_part_part);
                     }
                 }
-                args.push(cur_arg);
-                prev_i = i + 1;
             } else {
-                //alert("space at pos "+i+" is escaped: "+command.substr(i-1, 1));
+                command_part = MailboxAlert.finalizeCommandPart(command_part, alert_data, escape_html, in_quote, date_str, time_str);
+                args.push(command_part);
             }
         }
+        in_quote = !in_quote;
     }
-    /* also convert this one */
-    if (alert_data.charset && tocharset) {
-        csconv.Init(tocharset, 0, 0);
-        try {
-            args.push(csconv.Convert(command.substr(prev_i, i).split("\\ ").join(" ")));
-        } catch (e) {
-            // conversion failed, just push whatever we had
-            args.push(command.substr(prev_i, i).split("\\ ").join(" "));
-        }
-    } else {
-        args.push(command.substr(prev_i, i).split("\\ ").join(" "));
-    }
+    //alert("args: " + args.join("|"));
     var executable_name = args.shift();
     dump("Executable: ");
     dump(executable_name);
@@ -554,7 +575,7 @@ MailboxAlert.executeCommand = function (alert_data, command, escape_html) {
         // removing the check, we shall have to try and run it
         // then catch NS_UNEXPECTED
         if (!exec.exists()) {
-            var stringsBundle = document.getElementById("string-bundle");
+            var stringsBundle = document.getElementById("mailboxalert_strings");
             alert(stringsBundle.getString('mailboxalert.error')+"\n" + exec.leafName + " " + stringsBundle.getString('mailboxalert.error.notfound') + "\n\nFull path: "+executable_name+"\n\n" + stringsBundle.getString('mailboxalert.error.disableexecutefor') + " " + alert_data.folder_name_with_server);
             dump("Failed command:  " +executable_name + "\r\n");
             dump("Arguments: " + args + "\r\n");
@@ -577,7 +598,7 @@ MailboxAlert.executeCommand = function (alert_data, command, escape_html) {
         if (e.name == "NS_ERROR_FAILURE" ||
             e.name == "NS_ERROR_UNEXPECTED"
            ) {
-            var stringsBundle = document.getElementById("string-bundle");
+            var stringsBundle = document.getElementById("mailboxalert_strings");
             alert(stringsBundle.getString('mailboxalert.error')+"\n" + exec.leafName + " " + stringsBundle.getString('mailboxalert.error.notfound') + "\n\nFull path: "+executable_name+"\n\n" + stringsBundle.getString('mailboxalert.error.disableexecutefor') + " " + folder);
             if (caller) {
                 var executecommandcheckbox = document.getElementById('mailboxalert_execute_command');
@@ -589,7 +610,7 @@ MailboxAlert.executeCommand = function (alert_data, command, escape_html) {
             }
         } else if (e.name == "NS_ERROR_FILE_UNRECOGNIZED_PATH") {
             dump("NS_ERROR_FILE_UNRECOGNIZED_PATH\n");
-            var stringsBundle = document.getElementById("string-bundle");
+            var stringsBundle = document.getElementById("mailboxalert_strings");
             alert(stringsBundle.getString('mailboxalert.error') + "\r\n\r\n" +
                   stringsBundle.getString('mailboxalert.error.badcommandpath1') + 
                   " " + alert_data.folder_name_with_server + " " +
@@ -631,7 +652,7 @@ MailboxAlert.createMenuSeparator = function () {
 MailboxAlert.fillFolderMenu = function(alert_menu, folder) {
     var folder_prefs = MailboxAlert.getFolderPrefs(folder.URI);
     var all_alerts = MailboxAlert.getAllAlertPrefs();
-    var stringsBundle = document.getElementById("string-bundle");
+    var stringsBundle = document.getElementById("mailboxalert_strings");
     var alert_menuitem;
     var alerts_set = false;
 

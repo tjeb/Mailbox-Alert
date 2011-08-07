@@ -11,6 +11,10 @@
         ondialogextra1="MailboxAlertAlertSettings.testAlert();"
 >
 
+<stringbundleset id="stringbundleset">
+    <stringbundle id="mailboxalert_strings" src="chrome://mailboxalert/locale/mailboxalert.properties"/>
+</stringbundleset>
+
 <keyset>
   <key id="cut_cmd" modifiers="accel" key="X"/>
   <key id="copy_cmd" modifiers="accel" key="C"/>
