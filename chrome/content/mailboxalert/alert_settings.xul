@@ -41,6 +41,10 @@ MailboxAlertAlertSettings.getAlertId = function() {
   return window.arguments[0];
 }
 
+MailboxAlertAlertSettings.getParent = function() {
+  return window.arguments[1];
+}
+
 MailboxAlertAlertSettings.testAlert = function () {
   try {
     var alert_id = MailboxAlertAlertSettings.getAlertId();
@@ -401,6 +405,11 @@ MailboxAlertAlertSettings.storePrefs = function (alert_id) {
         alert_prefs.createNewIndex();
     }
     alert_prefs.store();
+    // if the parent is the alert list, update it
+    var parent_window = this.getParent();
+    if (parent_window) {
+        parent_window.fillAlertList();
+    }
 }
 
 MailboxAlertAlertSettings.init = function () {
