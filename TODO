@@ -20,6 +20,9 @@ Features:
 - use tb's built-in window
 * right-click on alert window
 * delete messages from popup window
+* aboslute positioning
+- slide for custom position
+- no closing of folder popup submenu
 
 - Automated tests
 - consistent debugging data
@@ -29,3 +32,7 @@ Features:
     - new sound code in tb3?
 
 - color picker for alert window
+
+- new icon
+- create default ding sound
+
