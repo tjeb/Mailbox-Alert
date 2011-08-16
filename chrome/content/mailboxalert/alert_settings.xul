@@ -182,10 +182,11 @@ MailboxAlertAlertSettings.checkUIExecuteCommand = function(do_click) {
 MailboxAlertAlertSettings.setUIShowMessageCustomPosition = function (show_message_custom_position) {
   MailboxAlertAlertSettings.setUIElementList([
     "show_message_custom_position_options",
-    "show_message_custom_position_x_textbox",
+    "show_message_custom_position_x_val_label",
     "show_message_custom_position_x_label",
-    "show_message_custom_position_y_textbox",
+    "show_message_custom_position_y_val_label",
     "show_message_custom_position_y_label",
+    "show_message_custom_position_anchor_label",
     "show_message_custom_position_choose"
   ], show_message_custom_position);
 }
@@ -275,8 +276,9 @@ MailboxAlertAlertSettings.readPrefs = function (alert_id) {
     MailboxAlertAlertSettings.setUIPrefAttribute(alert_prefs, "show_message_icon_file", "show_message_icon_image", "src");
     MailboxAlertAlertSettings.setUIPrefInt(alert_prefs, "show_message_duration", "show_message_duration_textbox");
     MailboxAlertAlertSettings.setUIPrefInt(alert_prefs, "show_message_duration", "show_message_duration_textbox");
-    MailboxAlertAlertSettings.setUIPrefInt(alert_prefs, "show_message_custom_position_x", "show_message_custom_position_x_textbox");
-    MailboxAlertAlertSettings.setUIPrefInt(alert_prefs, "show_message_custom_position_y", "show_message_custom_position_y_textbox");
+    MailboxAlertAlertSettings.setUIPrefInt(alert_prefs, "show_message_custom_position_x", "show_message_custom_position_x_val_label");
+    MailboxAlertAlertSettings.setUIPrefInt(alert_prefs, "show_message_custom_position_y", "show_message_custom_position_y_val_label");
+    MailboxAlertAlertSettings.setUIPrefTextbox(alert_prefs, "show_message_custom_position_anchor", "show_message_custom_position_anchor_label");
     
     var show_message_position = alert_prefs.get("show_message_position");
     if (show_message_position == "top-left") {
@@ -384,8 +386,9 @@ MailboxAlertAlertSettings.getPrefsFromWindow = function (alert_id) {
     MailboxAlertAlertSettings.storeUIPrefInt(alert_prefs, "show_message_duration", "show_message_duration_textbox");
     
     MailboxAlertAlertSettings.storeUIPrefTextbox(alert_prefs, "show_message_position", "show_message_position_menulist");
-    MailboxAlertAlertSettings.storeUIPrefInt(alert_prefs, "show_message_custom_position_x", "show_message_custom_position_x_textbox");
-    MailboxAlertAlertSettings.storeUIPrefInt(alert_prefs, "show_message_custom_position_y", "show_message_custom_position_y_textbox");
+    MailboxAlertAlertSettings.storeUIPrefInt(alert_prefs, "show_message_custom_position_x", "show_message_custom_position_x_val_label");
+    MailboxAlertAlertSettings.storeUIPrefInt(alert_prefs, "show_message_custom_position_y", "show_message_custom_position_y_val_label");
+    MailboxAlertAlertSettings.storeUIPrefTextbox(alert_prefs, "show_message_custom_position_y", "show_message_custom_position_anchor_label");
     MailboxAlertAlertSettings.storeUIPrefTextbox(alert_prefs, "show_message_effect", "show_message_effect_menulist");
     MailboxAlertAlertSettings.storeUIPrefTextbox(alert_prefs, "show_message_onclick", "show_message_onclick_menulist");
 
@@ -527,15 +530,17 @@ MailboxAlertAlertSettings.chooseExecFile = function () {
 
 MailboxAlertAlertSettings.selectPosition = function () {
   var dialog_positions = {};
-  var x_pos_textbox = document.getElementById("show_message_custom_position_x_textbox");
-  var y_pos_textbox = document.getElementById("show_message_custom_position_y_textbox");
-  dialog_positions.x = x_pos_textbox.value;
-  dialog_positions.y = y_pos_textbox.value;
+  var x_pos_label = document.getElementById("show_message_custom_position_x_val_label");
+  var y_pos_label = document.getElementById("show_message_custom_position_y_val_label");
+  var anchor_label = document.getElementById("show_message_custom_position_anchor_label");
+  dialog_positions.x = x_pos_label.value;
+  dialog_positions.y = y_pos_label.value;
   dialog_positions.changed = false;
   window.openDialog('chrome://mailboxalert/content/alert_settings_position.xul', "aaaaa", "chrome,titlebar=yes,modal=yes", dialog_positions);
   if (dialog_positions.changed) {
-    x_pos_textbox.value = dialog_positions.x;
-    y_pos_textbox.value = dialog_positions.y;
+    x_pos_label.value = dialog_positions.x;
+    y_pos_label.value = dialog_positions.y;
+    anchor_label.value = dialog_positions.anchor;
   }
 }
 
@@ -620,17 +625,16 @@ MailboxAlertAlertSettings.selectPosition = function () {
             </menulist>
             <hbox id="show_message_custom_position_options" disabled="true" hidden="true" >
                 <vbox>
-                <spacer flex="1"/>
-                <label id="show_message_custom_position_x_label" value="&mailboxalert.alert_prefs.custom_position_x;" disabled="true" />
-                <spacer flex="1"/>
+                  <spacer flex="1"/>
+                  <hbox>
+                    <label id="show_message_custom_position_x_label" value="&mailboxalert.alert_prefs.custom_position_x;" disabled="true" />
+                    <label id="show_message_custom_position_x_val_label" size="5" disabled="true" />
+                    <label id="show_message_custom_position_y_label" value="&mailboxalert.alert_prefs.custom_position_y;" disabled="true" />
+                    <label id="show_message_custom_position_y_val_label" size="5" disabled="true" />
+                    <label id="show_message_custom_position_anchor_label" size="5" disabled="true" />
+                  </hbox>
+                  <spacer flex="1"/>
                 </vbox>
-                <textbox id="show_message_custom_position_x_textbox" onfocus="select();" size="5" disabled="true" />
-                <vbox>
-                <spacer flex="1"/>
-                <label id="show_message_custom_position_y_label" value="&mailboxalert.alert_prefs.custom_position_y;" disabled="true" />
-                <spacer flex="1"/>
-                </vbox>
-                <textbox id="show_message_custom_position_y_textbox" onfocus="select();" size="5" disabled="true" />
                 <button id="show_message_custom_position_choose" label="&mailboxalert.alert_prefs.position.custom_select;" disabled="true" onclick="MailboxAlertAlertSettings.selectPosition();" />
             </hbox>
           </hbox>

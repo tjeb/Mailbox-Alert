@@ -3,9 +3,8 @@
 <!DOCTYPE window SYSTEM "chrome://mailboxalert/locale/mailboxalert.dtd">
 
 <dialog xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" id="mailboxalert_prefs_select_position"
-        buttons="cancel, accept"
         onload="MailboxAlertSettingsPosition.init();"
-        ondialogaccept="MailboxAlertSettingsPosition.accept();"
+        buttons="cancel"
         title="&mailboxalert.alert_prefs.custom_position_selector_title;"
 >
 
@@ -26,22 +25,55 @@ MailboxAlertSettingsPosition.init = function() {
     }
 }
 
-MailboxAlertSettingsPosition.accept = function() {
+MailboxAlertSettingsPosition.accept = function(anchor_pos) {
+    if (anchor_pos != "topleft" &&
+        anchor_pos != "topright" &&
+        anchor_pos != "bottomleft" &&
+        anchor_pos != "bottomright") {
+        alert("Bad position");
+        return;
+    }
     try {
         var positions = window.arguments[0];
         positions.x = window.screenX;
         positions.y = window.screenY;
+        positions.anchor = anchor_pos;
         positions.changed = true;
         window.close();
     } catch (e) {
         alert(e);
     }
+    window.close();
 }
 
 ]]>
 </script>
 
 <vbox>
-  <label value="&mailboxalert.alert_prefs.custom_position_selector_text;"/>
+  <hbox>
+    <button label="&mailboxalert.alert_prefs.custom_position_selector_topleft;" oncommand="MailboxAlertSettingsPosition.accept('topleft');" />
+    <spacer flex="1"/>
+    <button label="&mailboxalert.alert_prefs.custom_position_selector_topright;" oncommand="MailboxAlertSettingsPosition.accept('topright');" />
+  </hbox>
+  <hbox>
+    <spacer/>
+    <vbox>
+      <label value="&mailboxalert.alert_prefs.custom_position_selector_text1;"/>
+      <label value="&mailboxalert.alert_prefs.custom_position_selector_text2;"/>
+      <label value="&mailboxalert.alert_prefs.custom_position_selector_text3;"/>
+    </vbox>
+    <spacer/>
+  </hbox>
+  <hbox>
+    <button label="&mailboxalert.alert_prefs.custom_position_selector_bottomleft;" oncommand="MailboxAlertSettingsPosition.accept('bottomleft');" />
+    <spacer flex="1"/>
+    <button dlgtype="cancel" />
+    <spacer flex="1"/>
+    <button label="&mailboxalert.alert_prefs.custom_position_selector_bottomright;" oncommand="MailboxAlertSettingsPosition.accept('bottomright');" />
+  </hbox>
+  <hbox>
+
+  </hbox>
 </vbox>
+
 </dialog>

@@ -198,6 +198,7 @@ MailboxAlert.alertPrefDefs = {
 "show_message_onclick": [ "string", "close" ],
 "show_message_custom_position_x": [ "integer", -1 ],
 "show_message_custom_position_y": [ "integer", -1 ],
+"show_message_custom_position_anchor": [ "strinng", "topleft" ]
 }
 
 // This returns the preferences for the folder in mailboxalert
@@ -524,7 +525,8 @@ MailboxAlert.getAlertPreferences = function (index) {
                                     this.get("show_message_effect"),
                                     this.get("show_message_onclick"),
                                     this.get("show_message_custom_position_x"),
-                                    this.get("show_message_custom_position_y")
+                                    this.get("show_message_custom_position_y"),
+                                    this.get("show_message_custom_position_anchor")
                                     );
         }
         if (this.get("play_sound")) {
