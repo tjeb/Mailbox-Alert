@@ -349,7 +349,8 @@ MailboxAlert.getFolderPreferences14 = function(folder_uri) {
         // store it.
         var new_index = new_alert.createNewIndex();
         //alert("[XX] removeme. Alert is new, index: " + new_alert.index);
-        new_alert.set("name", "converted_alert_" + new_index);
+        var mailbox = MailboxAlert.getMsgFolderForUri(this.folder_uri);
+        new_alert.set("name", MailboxAlert.getFullFolderName(mailbox, true));
         new_alert.store();
         return new_index;
     }
@@ -788,6 +789,16 @@ MailboxAlert.alertIsFilterTarget = function (alert_index) {
         }
     }
     return false;
+}
+
+// Returns the original nsiMsgFolder object for the given folder URI
+MailboxAlert.getMsgFolderForUri = function (folder_uri) {
+    var all_folders = MailboxAlert.getAllFolders();
+    for (var i = 0; i < all_folders.length; ++i) {
+        if (folder_uri == all_folders[i].URI) {
+            return all_folders[i];
+        }
+    }
 }
 
 // Removes the action for alert_index from all filters. Removes the filter if

@@ -526,7 +526,7 @@ MailboxAlertNewMail.closeAlert = function ()
             window.close();
         }
     } catch (e) {
-        dump("[XX] error: " + e + "\n");
+        dump("[XX] error1: " + e + "\n");
     }
 }
 
@@ -552,7 +552,7 @@ MailboxAlertNewMail.handleClick = function (event)
             this.timer.cancel();
         }
     } catch (e) {
-        dump("[XX] error: " + e + "\n");
+        dump("[XX] error2: " + e + "\n");
     }
 }
 
@@ -636,7 +636,7 @@ MailboxAlertNewMail.performAction = function (action)
         }
         this.closeAlert();
     } catch (e) {
-        dump("[XX] error: " + e + "\n");
+        dump("[XX] error3: " + e + "\n");
         window.close();
     }
 }
@@ -665,7 +665,8 @@ MailboxAlertNewMail.notify = function(timer) {
             this.closeAlert();
         }
     } catch (e) {
-        dump("[XX] error: " + e);
+        this.timer.cacel();
+        dump("[XX] error4: " + e + "\n");
         window.close();
     }
 }
