@@ -7,7 +7,7 @@
         buttons="help, cancel, accept, extra1"
         buttonlabelextra1="&mailboxalert.prefs.test;"
         ondialogaccept="MailboxAlertAlertSettings.storePrefs(MailboxAlertAlertSettings.getAlertId());"
-        ondialoghelp="alert('help');"
+        ondialoghelp="MailboxAlertAlertSettings.showHelp();"
         ondialogextra1="MailboxAlertAlertSettings.testAlert();"
 >
 
@@ -47,6 +47,10 @@ MailboxAlertAlertSettings.getAlertId = function() {
 
 MailboxAlertAlertSettings.getParent = function() {
   return window.arguments[1];
+}
+
+MailboxAlertAlertSettings.showHelp = function () {
+        window.open('chrome://mailboxalert/content/mailboxalert_help.xul', 'helpWindow', 'chrome');
 }
 
 MailboxAlertAlertSettings.testAlert = function () {
@@ -388,7 +392,7 @@ MailboxAlertAlertSettings.getPrefsFromWindow = function (alert_id) {
     MailboxAlertAlertSettings.storeUIPrefTextbox(alert_prefs, "show_message_position", "show_message_position_menulist");
     MailboxAlertAlertSettings.storeUIPrefInt(alert_prefs, "show_message_custom_position_x", "show_message_custom_position_x_val_label");
     MailboxAlertAlertSettings.storeUIPrefInt(alert_prefs, "show_message_custom_position_y", "show_message_custom_position_y_val_label");
-    MailboxAlertAlertSettings.storeUIPrefTextbox(alert_prefs, "show_message_custom_position_y", "show_message_custom_position_anchor_label");
+    MailboxAlertAlertSettings.storeUIPrefTextbox(alert_prefs, "show_message_custom_position_anchor", "show_message_custom_position_anchor_label");
     MailboxAlertAlertSettings.storeUIPrefTextbox(alert_prefs, "show_message_effect", "show_message_effect_menulist");
     MailboxAlertAlertSettings.storeUIPrefTextbox(alert_prefs, "show_message_onclick", "show_message_onclick_menulist");
 
@@ -535,6 +539,7 @@ MailboxAlertAlertSettings.selectPosition = function () {
   var anchor_label = document.getElementById("show_message_custom_position_anchor_label");
   dialog_positions.x = x_pos_label.value;
   dialog_positions.y = y_pos_label.value;
+  dialog_positions.anchor = anchor_label.value;
   dialog_positions.changed = false;
   window.openDialog('chrome://mailboxalert/content/alert_settings_position.xul', "aaaaa", "chrome,titlebar=yes,modal=yes", dialog_positions);
   if (dialog_positions.changed) {

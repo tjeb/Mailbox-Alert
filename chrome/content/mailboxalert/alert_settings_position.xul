@@ -15,15 +15,39 @@ if (typeof(MailboxAlertSettingsPosition) == "undefined") {
 }
 
 MailboxAlertSettingsPosition.init = function() {
+    window.sizeToContent();
     try {
         var positions = window.arguments[0];
         if (positions.x != -1 && positions.y != -1) {
-            window.moveTo(positions.x, positions.y);
+            if (positions.anchor == "topleft") {
+                window.moveTo(positions.x, positions.y);
+            } else if (positions.anchor == "topright") {
+                window.moveTo(positions.x - window.outerWidth, positions.y);
+            } else if (positions.anchor == "bottomleft") {
+                window.moveTo(positions.x, positions.y - window.outerHeight);
+            } else if (positions.anchor == "bottomright") {
+                window.moveTo(positions.x - window.outerWidth,
+                              positions.y - window.outerHeight);
+            }
         }
     } catch (e) {
         alert(e);
     }
 }
+
+/*
+function asdfasdf(e) {
+    alert("asdf");
+}
+
+MailboxAlertSettingsPosition.init = function() {
+    window.addEventListener("load", function() { alert('asdf');} , true);
+    window.addEventListener("popupshown", function() { alert('asdf2');} , true);
+    window.addEventListener("focus", function() { alert('asdf3');} , true);
+    window.addEventListener("DOMContentLoaded", function() { alert('asdf4');} , true);
+    window.addEventListener("activate", function() { alert('asdf5');} , true);
+}
+*/
 
 MailboxAlertSettingsPosition.accept = function(anchor_pos) {
     if (anchor_pos != "topleft" &&
@@ -35,9 +59,22 @@ MailboxAlertSettingsPosition.accept = function(anchor_pos) {
     }
     try {
         var positions = window.arguments[0];
-        positions.x = window.screenX;
-        positions.y = window.screenY;
         positions.anchor = anchor_pos;
+        window.sizeToContent();
+        if (anchor_pos == "topleft") {
+            positions.x = window.screenX;
+            positions.y = window.screenY;
+        } else if (anchor_pos == "topright") {
+            positions.x = window.screenX + window.outerWidth;
+            positions.y = window.screenY;
+        } else if (anchor_pos == "bottomleft") {
+            positions.x = window.screenX;
+            // outerHeight gives wrong value
+            positions.y = window.screenY + window.outerHeight;
+        } else if (anchor_pos == "bottomright") {
+            positions.x = window.screenX + window.outerWidth;
+            positions.y = window.screenY + window.outerHeight;
+        }
         positions.changed = true;
         window.close();
     } catch (e) {

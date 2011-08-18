@@ -6,19 +6,10 @@
 <!ENTITY mailboxalert.about.created "Created by">
 <!ENTITY mailboxalert.mute "Mute Mailbox Alert Sounds">
 <!ENTITY mailboxalert.prefs.title "Mailbox Alert Preferences">
-<!ENTITY mailboxalert.prefs.folder "Mailbox Alert for mailbox">
-<!ENTITY mailboxalert.prefs.showmessage "Show a message">
 <!ENTITY mailboxalert.prefs.icon "Icon">
-<!ENTITY mailboxalert.prefs.noalertsservice "The built-in alerts service is not supported by the current version of Thunderbird for your Operating System">
-<!ENTITY mailboxalert.prefs.playsound "Play a sound">
 <!ENTITY mailboxalert.prefs.customwav "Custom .wav file">
-<!ENTITY mailboxalert.prefs.executecommand "Execute a command">
 <!ENTITY mailboxalert.prefs.escapehtml "Use HTML codes for special characters in macros">
-<!ENTITY mailboxalert.prefs.alertforchildren "Alert for child folders (if they have no alerts themselves)">
-<!ENTITY mailboxalert.prefs.noalerttoparent "Don&apos;t let parent folders alert for this one">
 <!ENTITY mailboxalert.prefs.test "Test these settings">
-<!ENTITY mailboxalert.prefs.copy "Copy last saved preferences">
-<!ENTITY mailboxalert.prefs.help "Help">
 <!ENTITY mailboxalert.prefs.close "Close">
 <!ENTITY mailboxalert.prefs.expl.escape "If any file or argument contains spaces, be sure to escape them with \">
 <!ENTITY mailboxalert.prefs.expl.macros "You can use the following macros">
@@ -42,12 +33,10 @@
 <!ENTITY mailboxalert.prefs.expl.msg_body "A text view of the message body">
 <!ENTITY mailboxalert.prefs.expl.msg_full "The raw full message body">
 <!ENTITY mailboxalert.prefs.expl.msg_uri "The full URI of the message">
-<!ENTITY mailboxalert.prefs.expl.msg_attachment_uris "A comma-separated list of the message attachments">
 <!ENTITY mailboxalert.prefs.expl.enter "Line break (does not work in the first field of &apos;show a message&apos;)">
 <!ENTITY mailboxalert.prefs.browse "Browse">
 <!ENTITY mailboxalert.prefs.default "Use default">
 <!ENTITY mailboxalert.prefs.systemdefault "System default">
-<!ENTITY mailboxalert.prefs.alertsettings "Global Preferences">
 <!ENTITY mailboxalert.alert.prefs.caption_general "General">
 <!ENTITY mailboxalert.alert.prefs.caption_alert "Alert Popup">
 <!ENTITY mailboxalert.alert_prefs.position "Position">

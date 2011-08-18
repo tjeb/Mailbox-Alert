@@ -43,7 +43,6 @@
     <label value="%msg_body: &mailboxalert.prefs.expl.msg_body;"/>
     <label value="%msg_full: &mailboxalert.prefs.expl.msg_full;"/>
     <label value="%msg_uri: &mailboxalert.prefs.expl.msg_uri;"/>
-    <label value="%msg_attachment_uris: &mailboxalert.prefs.expl.msg_attachment_uris;"/>
 	<label value="%enter: &mailboxalert.prefs.expl.enter;"/>
 	<label value=""/>
 	<text value="&mailboxalert.prefs.expl.see; http://tjeb.nl/Projects/Mailbox_Alert &mailboxalert.prefs.expl.information;" />

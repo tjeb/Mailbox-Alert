@@ -151,6 +151,7 @@ MailboxAlertNewMail.prefillAlertInfo = function ()
     this.whenclicked = window.arguments[9];
     this.custom_position_x = window.arguments[10];
     this.custom_position_y = window.arguments[11];
+    this.custom_position_anchor = window.arguments[12];
     //window.class = "MyClass";
 
     var label = document.getElementById('subject');
@@ -228,25 +229,25 @@ MailboxAlertNewMail.showAlertSlide = function ()
     this.window_y = -this.getWindowHeight();
     
     if (this.position == "top-right") {
-    this.window_x = this.gOrigin & this.LEFT ? screen.availLeft :
+        this.window_x = this.gOrigin & this.LEFT ? screen.availLeft :
         (screen.availLeft + screen.availWidth - this.getWindowWidth());
     } else if (this.position == "bottom-right") {
-    top = false;
-    this.window_x = this.gOrigin & this.LEFT ? screen.availLeft :
+        top = false;
+        this.window_x = this.gOrigin & this.LEFT ? screen.availLeft :
         (screen.availLeft + screen.availWidth - this.getWindowWidth());
-    this.window_y = screen.height + this.getWindowHeight();
-    this.window_to_y = this.gOrigin & this.TOP ? screen.availTop :
+        this.window_y = screen.height + this.getWindowHeight();
+        this.window_to_y = this.gOrigin & this.TOP ? screen.availTop :
         (screen.availTop + screen.availHeight - this.getWindowHeight());
     } else if (this.position == "bottom-left") {
-    top = false;
-    this.window_y = screen.height + this.getWindowHeight();
-    this.window_to_y = this.gOrigin & this.TOP ? screen.availTop :
+        top = false;
+        this.window_y = screen.height + this.getWindowHeight();
+        this.window_to_y = this.gOrigin & this.TOP ? screen.availTop :
         (screen.availTop + screen.availHeight - this.getWindowHeight());
     } else if (this.position == "center") {
-    this.window_x = this.gOrigin & this.LEFT ? screen.availLeft :
+        this.window_x = this.gOrigin & this.LEFT ? screen.availLeft :
         ((screen.availLeft + screen.availWidth) / 2 - (this.getWindowWidth() / 2));
-    this.window_y = -this.getWindowHeight();
-    this.window_to_y = this.gOrigin & this.TOP ? screen.availTop :
+        this.window_y = -this.getWindowHeight();
+        this.window_to_y = this.gOrigin & this.TOP ? screen.availTop :
         ((screen.availTop + screen.availHeight) / 2 - (this.getWindowHeight() / 2));
     }
     //window.sizeToContent();
@@ -370,9 +371,9 @@ MailboxAlertNewMail.slideOutBottom = function ()
 
 MailboxAlertNewMail.showAlertFade = function ()
 {
-	var alertContainer = document.getElementById('alertContainer');
-	alertContainer.style.opacity = 0;
-	this.resizeAlert(false);
+    var alertContainer = document.getElementById('alertContainer');
+    alertContainer.style.opacity = 0;
+    this.resizeAlert(false);
     this.placeAlert();
     this.timer_state = this.FADING_IN;
     this.timer.cancel();
@@ -396,11 +397,6 @@ MailboxAlertNewMail.getWindowWidth = function ()
 MailboxAlertNewMail.resizeAlert = function (aMoveOffScreen)
 {
   resizeTo(this.getWindowWidth(), this.getWindowHeight());
-
-  // leftover hack to get the window properly hidden when we first open it
-  //if (aMoveOffScreen) {
-  //  window.outerHeight = 1;
-  //}
 }
 
 MailboxAlertNewMail.placeAlert = function () {
@@ -424,8 +420,19 @@ MailboxAlertNewMail.placeAlert = function () {
     y = this.gOrigin & this.TOP ? screen.availTop :
         ((screen.availTop + screen.availHeight) / 2 - (this.getWindowHeight() / 2));
   } else if (this.position == "custom") {
-    x = this.custom_position_x;
-    y = this.custom_position_y;
+    if (this.custom_position_anchor == "topleft") {
+        x = this.custom_position_x;
+        y = this.custom_position_y;
+    } else if (this.custom_position_anchor == "topright") {
+        x = this.custom_position_x - this.getWindowWidth();
+        y = this.custom_position_y;
+    } else if (this.custom_position_anchor == "bottomleft") {
+        x = this.custom_position_x;
+        y = this.custom_position_y - this.getWindowHeight();
+    } else if (this.custom_position_anchor == "bottomright") {
+        x = this.custom_position_x - this.getWindowWidth();
+        y = this.custom_position_y - this.getWindowHeight();
+    }
   }
   window.moveTo(x, y);
 }
@@ -453,8 +460,19 @@ MailboxAlertNewMail.placeAlertOutside = function () {
         ((screen.availTop + screen.availHeight) / 2 - (this.getWindowHeight() / 2));
 */
   } else if (this.position == "custom") {
-    x = this.custom_position_x;
-    y = this.custom_position_y;
+    if (this.custom_poisition_anchor == "topleft") {
+        x = this.custom_position_x;
+        y = this.custom_position_y;
+    } else if (this.custom_poisition_anchor == "topright") {
+        x = this.custom_position_x - this.getWindowWidth();
+        y = this.custom_position_y;
+    } else if (this.custom_poisition_anchor == "bottomleft") {
+        x = this.custom_position_x;
+        y = this.custom_position_y - this.getWindowHeight();
+    } else if (this.custom_poisition_anchor == "bottomright") {
+        x = this.custom_position_x - this.getWindowWidth();
+        y = this.custom_position_y - this.getWindowHeight();
+    }
   }
   window.moveTo(x, y);
 }
