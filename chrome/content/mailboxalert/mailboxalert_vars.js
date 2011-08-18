@@ -164,7 +164,7 @@ MailboxAlert.folderPrefDefs14 = {
 "subject": [ "string", "" ],
 "message": [ "string", "" ],
 "play_sound": [ "bool", false ],
-"sound_wav": [ "bool", false ],
+"sound_wav": [ "bool", true ],
 "sound_wav_file": [ "string", "" ],
 "execute_command": [ "bool", false ],
 "command": [ "string", "" ],
@@ -849,8 +849,8 @@ MailboxAlert.removeAlertFilters = function (alert_index) {
 
 MailboxAlert.convertFolderPreferences14toAlertPreferences = function(folder_uri) {
     var has_prefs = false;
-    var alert_for_children = true;
-    var no_alert_to_parent = true;
+    var alert_for_children = false;
+    var no_alert_to_parent = false;
     try {
         if (MailboxAlert.prefService.getBoolPref("extensions.mailboxalert.show_message." + folder_uri)) {
             has_prefs = true;
@@ -874,7 +874,6 @@ MailboxAlert.convertFolderPreferences14toAlertPreferences = function(folder_uri)
     }
     try {
         if (MailboxAlert.prefService.getBoolPref("extensions.mailboxalert.alert_for_children." + folder_uri)) {
-            has_prefs = true;
             alert_for_children = true;
         }
     } catch (e) {
@@ -882,7 +881,6 @@ MailboxAlert.convertFolderPreferences14toAlertPreferences = function(folder_uri)
     }
     try {
         if (MailboxAlert.prefService.getBoolPref("extensions.mailboxalert.no_alert_to_parent." + folder_uri)) {
-            has_prefs = true;
             no_alert_to_parent = true;
         }
     } catch (e) {
@@ -890,24 +888,25 @@ MailboxAlert.convertFolderPreferences14toAlertPreferences = function(folder_uri)
     }
 
     // skip if there are no prefs for this folder in the first place
+    var folder_prefs14 = MailboxAlert.getFolderPreferences14(folder_uri);
+    var folder_prefs = MailboxAlert.getFolderPrefs(folder_uri);
+
     if (has_prefs) {
-        var folder_prefs14 = MailboxAlert.getFolderPreferences14(folder_uri);
         var new_index = folder_prefs14.convertToAlertPrefs();
-
-        var folder_prefs = MailboxAlert.getFolderPrefs(folder_uri);
         folder_prefs.addAlert(new_index);
-        if (alert_for_children) {
-            folder_prefs.alert_for_children = true;
-        }
-        if (no_alert_to_parent) {
-            folder_prefs.no_alert_to_parent = true;
-        }
-        folder_prefs.store();
-
-        // We should really delete the old folderprefs values from the preferences
-        // database. However, since some people may want to convert back we'll leave
-        // them in for now. Until the 0.14 users have all converted (if ever)
     }
+
+    if (alert_for_children) {
+        folder_prefs.alert_for_children = true;
+    }
+    if (no_alert_to_parent) {
+        folder_prefs.no_alert_to_parent = true;
+    }
+    folder_prefs.store();
+
+    // We should really delete the old folderprefs values from the preferences
+    // database. However, since some people may want to convert back we'll leave
+    // them in for now. Until the 0.14 users have all converted (if ever)
 }
 
 // convert folder preferences to alert_preferences object

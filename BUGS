@@ -1,5 +1,1 @@
-- conversion for sound default/wav is wrong
-- conversion: also creates one for such settings as 'no alert to parent'
-- conversion: sets alerts for folders with only 'no alert to parent'
-- conversion: alert for child folders also checks 'no alert to parent'
 
