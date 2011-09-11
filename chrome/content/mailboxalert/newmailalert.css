@@ -47,20 +47,9 @@
 window {
   border: solid #000000 1px;
   -moz-border-radius: 4px 4px 4px 4px;
-/* this crashes thunderbird in linux! (1.5.0.12 - 2.0.0.5)
-  background-color: transparent;
-*/
+  /*background-color: transparent;*/
 }
 
-/*
-#alertContainer {
-  border: solid #000000 1px;
-  background-color: transparent;
-  -moz-border-radius: 4px 4px 4px 4px;
-  width: 100%;
-  height: 100%;
-}
-*/
 
 #alertImage {
   list-style-image: url("chrome://branding/content/icon64.png");
