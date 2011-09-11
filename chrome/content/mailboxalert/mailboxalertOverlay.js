@@ -68,17 +68,8 @@ MailboxAlert.checkOldSettings = function () {
     }
 }
 
-// This object is used as a Listener callback for thunderbird 2
-MailboxAlert.newMailListener_tb2 = {
-    // TODO: check if 2 had msgsClassified as well
-    itemAdded: function(item) {
-        var hdr = item.QueryInterface(Components.interfaces.nsIMsgDBHdr);
-        MailboxAlert.new_alert(hdr.folder, hdr);
-    }
-}
-
-// This object is used as a Listener callback for thunderbird 3
-MailboxAlert.newMailListener_tb3 = {
+// This object is used as a Listener callback for thunderbird 3 and up
+MailboxAlert.newMailListener = {
     msgsClassified: function (aMsgs,
                               aJunkProcessed,
                               aTraitProcessed) {
@@ -136,13 +127,8 @@ MailboxAlert.onLoad = function ()
     Components.classes["@mozilla.org/messenger/msgnotificationservice;1"]
     .getService(Components.interfaces.nsIMsgFolderNotificationService);
 
-    // try TB3 interface first, then tb2 interface
-    try {
-        notificationService.addListener(MailboxAlert.newMailListener_tb3,
-                                        notificationService.msgsClassified);
-    } catch (e) {
-        notificationService.addListener(MailboxAlert.newMailListener_tb2);
-    }
+    notificationService.addListener(MailboxAlert.newMailListener,
+                                    notificationService.msgsClassified);
 
     // with IMAP, the 'view' can be updated (i.e. new mail has arrived and
     // this is visible in the treeview), but the folder itself may not have

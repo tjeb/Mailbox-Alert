@@ -19,6 +19,8 @@
     There should no longer be a delay between the arrival and the alert,
     and some problems that people have been experiencing should now be
     solved.
+  o Execute a command now supports quoting with "
+  o Internal sound is no longer the system beep but a built-in bell sound.
 
 [0.14.5-0.14.6]
   o Minor update to make it work with Seamonkey 2.1
@@ -161,4 +163,4 @@
 * Fixed bad backslashes in front of < > and & characters in the messages
 
 # [0.1-0.2] Made the function call non-blocking
-# [0.0-0.1] Initial version 
+# [0.0-0.1] Initial version
