@@ -3,7 +3,8 @@
 <!DOCTYPE window SYSTEM "chrome://mailboxalert/locale/mailboxalert.dtd">
 <dialog xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" id="mailboxalert_prefs_dialog"
         onload="MailboxAlertList.init();"
-        buttons="accept"
+        buttons="help, accept"
+        ondialoghelp="MailboxAlertList.showHelp();"
 >
 
 <keyset>
@@ -15,12 +16,21 @@
 
 <stringbundle id="string-bundle" src="chrome://mailboxalert/locale/mailboxalert.properties"/>
 
-<script src="chrome://mailboxalert/content/mailboxalert_vars.js">
-</script>
+<script src="chrome://mailboxalert/content/mailboxalert_vars.js"></script>
 
 <script type="application/x-javascript">
 <![CDATA[
 MailboxAlertList = {}
+
+MailboxAlertList.showHelp = function () {
+    var url = "http://tjeb.nl/Projects/Mailbox_Alert/Manual/index.html";
+    var uri = Components.classes["@mozilla.org/network/io-service;1"]
+                      .getService(Components.interfaces.nsIIOService).newURI(url, null, null);
+
+    var protocolSvc = Components.classes["@mozilla.org/uriloader/external-protocol-service;1"]
+                              .getService(Components.interfaces.nsIExternalProtocolService);
+    protocolSvc.loadUrl(uri);
+}
 
 MailboxAlertList.enableButton = function (name, enabled) {
     var element = document.getElementById(name);
