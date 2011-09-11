@@ -6,19 +6,10 @@
 <!ENTITY mailboxalert.about.created "Criado Por">
 <!ENTITY mailboxalert.mute "Silenciar Sons de Alerta do Mailbox">
 <!ENTITY mailboxalert.prefs.title "Preferências do Mailbox Alert">
-<!ENTITY mailboxalert.prefs.folder "Mailbox Alert para a caixa de correio">
-<!ENTITY mailboxalert.prefs.showmessage "Mostrar uma mensagem">
 <!ENTITY mailboxalert.prefs.icon "Ícone">
-<!ENTITY mailboxalert.prefs.noalertsservice "O serviço de alertas incluído não é suportado na versão actual do Thunderbird para o seu Sistema Operativo">
-<!ENTITY mailboxalert.prefs.playsound "Tocar um som">
 <!ENTITY mailboxalert.prefs.customwav "Ficheiro .wav personalizado">
-<!ENTITY mailboxalert.prefs.executecommand "Executar um comando">
 <!ENTITY mailboxalert.prefs.escapehtml "Usar códigos HTML para caracteres especiais em macros">
-<!ENTITY mailboxalert.prefs.alertforchildren "Alerta para pastas de crianças (se não tiverem nenhum proprio)">
-<!ENTITY mailboxalert.prefs.noalerttoparent "Não deixar alertas parentais para este">
 <!ENTITY mailboxalert.prefs.test "Testar estas definições">
-<!ENTITY mailboxalert.prefs.copy "Copiar a última preferência guardada">
-<!ENTITY mailboxalert.prefs.help "Ajuda">
 <!ENTITY mailboxalert.prefs.close "Fechar">
 <!ENTITY mailboxalert.prefs.expl.escape "Se algum ficheiro ou argumento tiver espaços, tenha a certeza que lhes faz escape com \">
 <!ENTITY mailboxalert.prefs.expl.macros "Pode utilizar as seguintes macros">
@@ -36,11 +27,16 @@
 <!ENTITY mailboxalert.prefs.expl.information "para mais informação">
 <!ENTITY mailboxalert.prefs.expl.messagebytes "O tamanho das mensagens em bytes">
 <!ENTITY mailboxalert.prefs.expl.messagesize "O tamanho da mensagem em formato lido por humanos (por exemplo 2.1M)">
+<!ENTITY mailboxalert.prefs.expl.date "The date the message was sent">
+<!ENTITY mailboxalert.prefs.expl.time "The time the message was sent">
+<!ENTITY mailboxalert.prefs.expl.msg_preview "A short preview of the message content">
+<!ENTITY mailboxalert.prefs.expl.msg_body "A text view of the message body">
+<!ENTITY mailboxalert.prefs.expl.msg_full "The raw full message body">
+<!ENTITY mailboxalert.prefs.expl.msg_uri "The full URI of the message">
 <!ENTITY mailboxalert.prefs.expl.enter "Quebra de linha (não funciona no primeiro campo de &apos;mostrar uma mensagem&apos;)">
 <!ENTITY mailboxalert.prefs.browse "navegar">
 <!ENTITY mailboxalert.prefs.default "Usar pré-definição">
 <!ENTITY mailboxalert.prefs.systemdefault "Pré-definição do Sistema">
-<!ENTITY mailboxalert.prefs.alertsettings "Preferências Globais">
 <!ENTITY mailboxalert.alert.prefs.caption_general "Geral">
 <!ENTITY mailboxalert.alert.prefs.caption_alert "Popup de Alerta">
 <!ENTITY mailboxalert.alert_prefs.position "Posição">
@@ -49,6 +45,18 @@
 <!ENTITY mailboxalert.alert_prefs.position.topright "Topo à direita">
 <!ENTITY mailboxalert.alert_prefs.position.topleft "Topo à esquerda">
 <!ENTITY mailboxalert.alert_prefs.position.center "Centro">
+<!ENTITY mailboxalert.alert_prefs.position.custom "Custom">
+<!ENTITY mailboxalert.alert_prefs.position.custom_select "Select a position">
+<!ENTITY mailboxalert.alert_prefs.custom_position_x "X">
+<!ENTITY mailboxalert.alert_prefs.custom_position_y "Y">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_title "Select Mailbox Alert Custom Position">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_text1 "Drag this window to where you want the alert to appear">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_text2 "And click the button that corresponds to the corner">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_text3 "where you want the alert to appear">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_topleft "Top left">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_topright "Top right">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_bottomleft "Bottom left">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_bottomright "Bottom right">
 <!ENTITY mailboxalert.alert_prefs.effect "Efeito">
 <!ENTITY mailboxalert.alert_prefs.effect.none "Nenhum">
 <!ENTITY mailboxalert.alert_prefs.effect.slide "Slide">
@@ -60,3 +68,8 @@
 <!ENTITY mailboxalert.alert_prefs.onclick.close "Fechar popup">
 <!ENTITY mailboxalert.alert_prefs.onclick.openmail "Abrir a mensagem">
 <!ENTITY mailboxalert.alert_prefs.onclick.selectmail "Open the message in the current window">
+<!ENTITY mailboxalert.alert_prefs.onclick.deletemail "Delete the message">
+<!ENTITY mailboxalert.alert_list.add "Add">
+<!ENTITY mailboxalert.alert_list.edit "Edit">
+<!ENTITY mailboxalert.alert_list.delete "Delete">
+<!ENTITY mailboxalert.menu.editalerts "Edit Mailbox Alert alerts">

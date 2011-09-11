@@ -6,19 +6,10 @@
 <!ENTITY mailboxalert.about.created "创建者">
 <!ENTITY mailboxalert.mute "禁用邮箱提箱音">
 <!ENTITY mailboxalert.prefs.title "邮箱提醒选项">
-<!ENTITY mailboxalert.prefs.folder "邮箱的邮箱提醒">
-<!ENTITY mailboxalert.prefs.showmessage "显示一条消息">
 <!ENTITY mailboxalert.prefs.icon "图标">
-<!ENTITY mailboxalert.prefs.noalertsservice "在你的操作系统中 Thunderbird 的当前版本不支持内建的提醒服务">
-<!ENTITY mailboxalert.prefs.playsound "播放声音">
 <!ENTITY mailboxalert.prefs.customwav "自定义 .wav 文件">
-<!ENTITY mailboxalert.prefs.executecommand "执行命令">
 <!ENTITY mailboxalert.prefs.escapehtml "在宏中对特殊字符使用 HTML 代码">
-<!ENTITY mailboxalert.prefs.alertforchildren "子目录提醒（如果他们没有自己设置提醒）">
-<!ENTITY mailboxalert.prefs.noalerttoparent "不要让父目录提醒这一个">
 <!ENTITY mailboxalert.prefs.test "测试这些设置">
-<!ENTITY mailboxalert.prefs.copy "复制最后保存的设置">
-<!ENTITY mailboxalert.prefs.help "帮助">
 <!ENTITY mailboxalert.prefs.close "关闭">
 <!ENTITY mailboxalert.prefs.expl.escape "如果任何文件或参数包含空格，请确认使用\转义">
 <!ENTITY mailboxalert.prefs.expl.macros "您可以使用下列宏">
@@ -36,11 +27,16 @@
 <!ENTITY mailboxalert.prefs.expl.information "以获得更多信息">
 <!ENTITY mailboxalert.prefs.expl.messagebytes "消息的字节数">
 <!ENTITY mailboxalert.prefs.expl.messagesize "The size of the message in human readable form (for instance 2.1M)">
+<!ENTITY mailboxalert.prefs.expl.date "The date the message was sent">
+<!ENTITY mailboxalert.prefs.expl.time "The time the message was sent">
+<!ENTITY mailboxalert.prefs.expl.msg_preview "A short preview of the message content">
+<!ENTITY mailboxalert.prefs.expl.msg_body "A text view of the message body">
+<!ENTITY mailboxalert.prefs.expl.msg_full "The raw full message body">
+<!ENTITY mailboxalert.prefs.expl.msg_uri "The full URI of the message">
 <!ENTITY mailboxalert.prefs.expl.enter "Line break (does not work in the first field of &apos;show a message&apos;)">
 <!ENTITY mailboxalert.prefs.browse "浏览">
 <!ENTITY mailboxalert.prefs.default "使用默认值">
 <!ENTITY mailboxalert.prefs.systemdefault "系统默认值">
-<!ENTITY mailboxalert.prefs.alertsettings "全局设置">
 <!ENTITY mailboxalert.alert.prefs.caption_general "常规">
 <!ENTITY mailboxalert.alert.prefs.caption_alert "提醒弹出框">
 <!ENTITY mailboxalert.alert_prefs.position "位置">
@@ -49,6 +45,18 @@
 <!ENTITY mailboxalert.alert_prefs.position.topright "右上">
 <!ENTITY mailboxalert.alert_prefs.position.topleft "左上">
 <!ENTITY mailboxalert.alert_prefs.position.center "正中">
+<!ENTITY mailboxalert.alert_prefs.position.custom "Custom">
+<!ENTITY mailboxalert.alert_prefs.position.custom_select "Select a position">
+<!ENTITY mailboxalert.alert_prefs.custom_position_x "X">
+<!ENTITY mailboxalert.alert_prefs.custom_position_y "Y">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_title "Select Mailbox Alert Custom Position">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_text1 "Drag this window to where you want the alert to appear">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_text2 "And click the button that corresponds to the corner">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_text3 "where you want the alert to appear">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_topleft "Top left">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_topright "Top right">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_bottomleft "Bottom left">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_bottomright "Bottom right">
 <!ENTITY mailboxalert.alert_prefs.effect "效果">
 <!ENTITY mailboxalert.alert_prefs.effect.none "无">
 <!ENTITY mailboxalert.alert_prefs.effect.slide "滑入">
@@ -60,3 +68,8 @@
 <!ENTITY mailboxalert.alert_prefs.onclick.close "关闭弹出框">
 <!ENTITY mailboxalert.alert_prefs.onclick.openmail "打开消息">
 <!ENTITY mailboxalert.alert_prefs.onclick.selectmail "Open the message in the current window">
+<!ENTITY mailboxalert.alert_prefs.onclick.deletemail "Delete the message">
+<!ENTITY mailboxalert.alert_list.add "Add">
+<!ENTITY mailboxalert.alert_list.edit "Edit">
+<!ENTITY mailboxalert.alert_list.delete "Delete">
+<!ENTITY mailboxalert.menu.editalerts "Edit Mailbox Alert alerts">

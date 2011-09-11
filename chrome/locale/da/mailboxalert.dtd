@@ -6,19 +6,10 @@
 <!ENTITY mailboxalert.about.created "Lavet af">
 <!ENTITY mailboxalert.mute "Slå Mailbox Alert lyde fra">
 <!ENTITY mailboxalert.prefs.title "Mailbox Alert indstillinger">
-<!ENTITY mailboxalert.prefs.folder "Mailbox Alert for indbakke">
-<!ENTITY mailboxalert.prefs.showmessage "Vis en besked">
 <!ENTITY mailboxalert.prefs.icon "Ikon">
-<!ENTITY mailboxalert.prefs.noalertsservice "Den indbyggede alarmservice understøttes ikke, af denne version af Thunderbird, til dit operativsystem">
-<!ENTITY mailboxalert.prefs.playsound "Afspil en lyd">
-<!ENTITY mailboxalert.prefs.customwav "Selvvalgt .wav fil">
-<!ENTITY mailboxalert.prefs.executecommand "Kør en kommando">
+<!ENTITY mailboxalert.prefs.customwav "Selvvalgt .wav-fil">
 <!ENTITY mailboxalert.prefs.escapehtml "Brug html-koder til specielle tegn i markroer">
-<!ENTITY mailboxalert.prefs.alertforchildren "Alarm for undermapper (hvis de ikke har alarmer selv)">
-<!ENTITY mailboxalert.prefs.noalerttoparent "Lad ikke den overordnede mappes alarm gælde for denne mappe">
 <!ENTITY mailboxalert.prefs.test "Test disse indstillinger">
-<!ENTITY mailboxalert.prefs.copy "Brug sidst gemte indstillinger">
-<!ENTITY mailboxalert.prefs.help "Hjælp">
 <!ENTITY mailboxalert.prefs.close "Luk">
 <!ENTITY mailboxalert.prefs.expl.escape "Hvis en fil eller parameter indeholder mellemrum, skal du være sikker på at omgive dem med \">
 <!ENTITY mailboxalert.prefs.expl.macros "Du kan bruge følgende markroer">
@@ -36,27 +27,49 @@
 <!ENTITY mailboxalert.prefs.expl.information "for mere indformation">
 <!ENTITY mailboxalert.prefs.expl.messagebytes "Meddelelsens størrelse i bytes">
 <!ENTITY mailboxalert.prefs.expl.messagesize "Meddelelsens størrelse i menneskelig læsbar form (fx. 2,1M)">
+<!ENTITY mailboxalert.prefs.expl.date "Datoen meddelelsen blev sendt">
+<!ENTITY mailboxalert.prefs.expl.time "Tidspunktet meddelelsen blev sendt">
+<!ENTITY mailboxalert.prefs.expl.msg_preview "Et kort uddrag af meddelelsens indhold">
+<!ENTITY mailboxalert.prefs.expl.msg_body "En tekstvisning af meddelelsens indhold">
+<!ENTITY mailboxalert.prefs.expl.msg_full "Hele den rå meddelelsestekst">
+<!ENTITY mailboxalert.prefs.expl.msg_uri "Meddelelsens fulde URL">
 <!ENTITY mailboxalert.prefs.expl.enter "Linjeskift (virker ikke i feltet 'vis en besked')">
-<!ENTITY mailboxalert.prefs.browse "Gennemse">
+<!ENTITY mailboxalert.prefs.browse "Gennemse…">
 <!ENTITY mailboxalert.prefs.default "Brug standard">
 <!ENTITY mailboxalert.prefs.systemdefault "System standard">
-<!ENTITY mailboxalert.prefs.alertsettings "Generelle indstillinger">
 <!ENTITY mailboxalert.alert.prefs.caption_general "Generelt">
-<!ENTITY mailboxalert.alert.prefs.caption_alert "Alarm popop">
+<!ENTITY mailboxalert.alert.prefs.caption_alert "Alarm pop op">
 <!ENTITY mailboxalert.alert_prefs.position "Position:">
-<!ENTITY mailboxalert.alert_prefs.position.bottomright "I bunden til højre">
-<!ENTITY mailboxalert.alert_prefs.position.bottomleft "I bunden til venstre">
-<!ENTITY mailboxalert.alert_prefs.position.topright "I toppen til højre">
-<!ENTITY mailboxalert.alert_prefs.position.topleft "I toppen til venstre">
+<!ENTITY mailboxalert.alert_prefs.position.bottomright "Nederst til højre">
+<!ENTITY mailboxalert.alert_prefs.position.bottomleft "Nederst til venstre">
+<!ENTITY mailboxalert.alert_prefs.position.topright "Øverst til højre">
+<!ENTITY mailboxalert.alert_prefs.position.topleft "Øverst til venstre">
 <!ENTITY mailboxalert.alert_prefs.position.center "I midten">
+<!ENTITY mailboxalert.alert_prefs.position.custom "Tilpas">
+<!ENTITY mailboxalert.alert_prefs.position.custom_select "Vælg en position">
+<!ENTITY mailboxalert.alert_prefs.custom_position_x "X">
+<!ENTITY mailboxalert.alert_prefs.custom_position_y "Y">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_title "Vælg Mailbox Alert tilpassede position">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_text1 "Træk dette vindue til hvor du ønsker alarmen skal vises">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_text2 "Og klik på knappen der svarer til hjørnet">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_text3 "hvor du ønsker alarmen skal vises">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_topleft "Øverst til venstre">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_topright "Øverst til højre">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_bottomleft "Nederst til venstre">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_bottomright "Nederst til højre">
 <!ENTITY mailboxalert.alert_prefs.effect "Effekt:">
 <!ENTITY mailboxalert.alert_prefs.effect.none "Ingen">
 <!ENTITY mailboxalert.alert_prefs.effect.slide "Glidende">
 <!ENTITY mailboxalert.alert_prefs.effect.fade "Udtonende">
 <!ENTITY mailboxalert.alert_prefs.delay "Forsinkelse inden alarm:">
 <!ENTITY mailboxalert.alert_prefs.time_unit "sekunder">
-<!ENTITY mailboxalert.alert_prefs.duration "Varighed af popop:">
+<!ENTITY mailboxalert.alert_prefs.duration "Varighed af pop op:">
 <!ENTITY mailboxalert.alert_prefs.onclick "Ved klik:">
-<!ENTITY mailboxalert.alert_prefs.onclick.close "Luk popop">
+<!ENTITY mailboxalert.alert_prefs.onclick.close "Luk pop op">
 <!ENTITY mailboxalert.alert_prefs.onclick.openmail "Åbn meddelelsen i et nyt vindue">
 <!ENTITY mailboxalert.alert_prefs.onclick.selectmail "Åbn meddelelsen i det nuværende vindue">
+<!ENTITY mailboxalert.alert_prefs.onclick.deletemail "Slet meddelelsen">
+<!ENTITY mailboxalert.alert_list.add "Tilføj">
+<!ENTITY mailboxalert.alert_list.edit "Rediger">
+<!ENTITY mailboxalert.alert_list.delete "Slet">
+<!ENTITY mailboxalert.menu.editalerts "Rediger Mailbox Alerts alarmer">

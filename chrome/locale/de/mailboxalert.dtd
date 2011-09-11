@@ -6,19 +6,10 @@
 <!ENTITY mailboxalert.about.created "Erstellt von">
 <!ENTITY mailboxalert.mute "Akustische Hinweise von Mailbox Alert deaktivieren">
 <!ENTITY mailboxalert.prefs.title "Mailbox Alert - Einstellungen">
-<!ENTITY mailboxalert.prefs.folder "Benachrichtigung für Ordner">
-<!ENTITY mailboxalert.prefs.showmessage "Nachricht anzeigen">
 <!ENTITY mailboxalert.prefs.icon "Symbol">
-<!ENTITY mailboxalert.prefs.noalertsservice "Ihr Betriebssystem unterstützt den Pop-up-Service für Thunderbird nicht.">
-<!ENTITY mailboxalert.prefs.playsound "Klang abspielen">
 <!ENTITY mailboxalert.prefs.customwav "Benutzerdefinierte WAV-Datei">
-<!ENTITY mailboxalert.prefs.executecommand "Externe Anwendung ausführen">
 <!ENTITY mailboxalert.prefs.escapehtml "HTML-Kodierung für Sonderzeichen in Makros benutzen">
-<!ENTITY mailboxalert.prefs.alertforchildren "Benachrichtigung auch für Unterordner ausgeben, falls diesen keine eigene Benachrichtigung zugeordnet wurde">
-<!ENTITY mailboxalert.prefs.noalerttoparent "Übergeordneten Ordnern Benachrichtigung für diesen Ordner verbieten">
 <!ENTITY mailboxalert.prefs.test "Diese Einstellungen testen">
-<!ENTITY mailboxalert.prefs.copy "Auf zuletzt gespeicherte Einstellungen zurücksetzen">
-<!ENTITY mailboxalert.prefs.help "Hilfe">
 <!ENTITY mailboxalert.prefs.close "Schließen">
 <!ENTITY mailboxalert.prefs.expl.escape "Sollte irgendeine Datei oder ein Argument Leerzeichen enthalten, so stellen Sie bitte einen Backslash (\) voran">
 <!ENTITY mailboxalert.prefs.expl.macros "Folgende Makros stehen zur Verfügung">
@@ -36,11 +27,16 @@
 <!ENTITY mailboxalert.prefs.expl.information "für weitere Informationen">
 <!ENTITY mailboxalert.prefs.expl.messagebytes "Größe der Nachricht in Bytes">
 <!ENTITY mailboxalert.prefs.expl.messagesize "Größe der Nachricht in gekürzter Form (zum Beispiel 2.1M)">
+<!ENTITY mailboxalert.prefs.expl.date "Sendedatum der Nachricht">
+<!ENTITY mailboxalert.prefs.expl.time "Sendezeit der Nachricht">
+<!ENTITY mailboxalert.prefs.expl.msg_preview "Anfang des Nachrichteninhalts">
+<!ENTITY mailboxalert.prefs.expl.msg_body "Textdarstellung des Nachrichteninhalts">
+<!ENTITY mailboxalert.prefs.expl.msg_full "Der rohe Nachrichtentext">
+<!ENTITY mailboxalert.prefs.expl.msg_uri "Die vollständige Nachrichtenadresse">
 <!ENTITY mailboxalert.prefs.expl.enter "Zeilenumbruch (Hinweis: wird nur im zweiten Feld von &quot;Nachricht anzeigen&quot; berücksichtigt)">
 <!ENTITY mailboxalert.prefs.browse "Durchsuchen...">
 <!ENTITY mailboxalert.prefs.default "Standardsymbol verwenden">
 <!ENTITY mailboxalert.prefs.systemdefault "Standardklang des Betriebssystems verwenden">
-<!ENTITY mailboxalert.prefs.alertsettings "Allgemeine Einstellungen">
 <!ENTITY mailboxalert.alert.prefs.caption_general "Allgemein">
 <!ENTITY mailboxalert.alert.prefs.caption_alert "Pop-up">
 <!ENTITY mailboxalert.alert_prefs.position "Position:">
@@ -49,6 +45,18 @@
 <!ENTITY mailboxalert.alert_prefs.position.topright "oben rechts">
 <!ENTITY mailboxalert.alert_prefs.position.topleft "oben links">
 <!ENTITY mailboxalert.alert_prefs.position.center "zentriert">
+<!ENTITY mailboxalert.alert_prefs.position.custom "Benutzerdefiniert">
+<!ENTITY mailboxalert.alert_prefs.position.custom_select "Position wählen">
+<!ENTITY mailboxalert.alert_prefs.custom_position_x "Abstand links (Pixel)">
+<!ENTITY mailboxalert.alert_prefs.custom_position_y "Abstand rechts (Pixel)">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_title "Position des Benachrichigungsfenster für neue Nachrichten festlegen">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_text1 "Zuerst Fenster auf die gewünschte Position der Benachrichtigung ziehen.">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_text2 "Anschließend die Schaltfläche klicken,">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_text3 "welche die Ausrichtung der Benachrichtigung an diesem Fenster festlegt.">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_topleft "oben links">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_topright "oben rechts">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_bottomleft "unten links">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_bottomright "unten rechts">
 <!ENTITY mailboxalert.alert_prefs.effect "Effekt:">
 <!ENTITY mailboxalert.alert_prefs.effect.none "Keiner">
 <!ENTITY mailboxalert.alert_prefs.effect.slide "Ein- und ausgleiten">
@@ -60,3 +68,8 @@
 <!ENTITY mailboxalert.alert_prefs.onclick.close "Pop-up schließen">
 <!ENTITY mailboxalert.alert_prefs.onclick.openmail "Nachricht in neuem Fenster öffnen">
 <!ENTITY mailboxalert.alert_prefs.onclick.selectmail "Nachricht in aktuellem Fenster öffnen">
+<!ENTITY mailboxalert.alert_prefs.onclick.deletemail "Nachricht löschen">
+<!ENTITY mailboxalert.alert_list.add "Hinzufügen">
+<!ENTITY mailboxalert.alert_list.edit "Bearbeiten">
+<!ENTITY mailboxalert.alert_list.delete "Entfernen">
+<!ENTITY mailboxalert.menu.editalerts "Benachrichtigungen von Mailbox Alert bearbeiten">
