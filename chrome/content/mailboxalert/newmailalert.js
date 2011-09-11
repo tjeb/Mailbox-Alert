@@ -56,7 +56,7 @@ MailboxAlertNewMail.tokenizeString = function(string) {
     var result = new Array();
     var curtoken = "";
     var index = 0;
-    
+
     for (var pos = 0; pos < string.length; pos++) {
         // in each case we have three options;
         // 1. The last thing we read was a newline
@@ -100,7 +100,7 @@ MailboxAlertNewMail.wrapTokens = function(tokens, wrap_size, line_max) {
     var result = "";
     var cur_line_length = 0;
     var line_count = 0;
-    
+
     for (var i = 0; i < tokens.length && line_count < line_max; i++) {
         var cur_token = tokens[i];
         if (cur_token == "\n") {
@@ -164,7 +164,7 @@ MailboxAlertNewMail.prefillAlertInfo = function ()
     // newlines get their own token
     // then we walk through each token,
     // counting the number of chars
-    // if we reach the limit, or if we encounter said 
+    // if we reach the limit, or if we encounter said
     // whitespace, we add what we read so far
     // to an array of lines
     dump("[XX] full message text:\n")
@@ -175,7 +175,7 @@ MailboxAlertNewMail.prefillAlertInfo = function ()
     dump(tokens);
     dump("\n");
     var full_field = this.wrapTokens(tokens, 50, 10);
-    
+
     // let's do some playing with the message field
     // we'll 'wrap' to 50 characters
     var label = document.getElementById('message_field');
@@ -196,15 +196,17 @@ MailboxAlertNewMail.prefillAlertInfo = function ()
 }
 
 MailboxAlertNewMail.onAlertLoad = function ()
-{  
+{
   // bogus call to make sure the window is moved offscreen until we are ready for it.
   this.resizeAlert(true);
 
-  // if we aren't waiting to fetch preview text, then go ahead and 
+  // if we aren't waiting to fetch preview text, then go ahead and
   // start showing the alert.
   if (this.effect == "fade") {
     this.showAlertFade();
-  } else if (this.effect == "slide") {
+  // Disable slide for custom and center positions
+  } else if (this.effect == "slide" &&
+             this.position != "custom" && this.position != "center") {
     this.showAlertSlide();
   } else {
     this.resizeAlert(false);
@@ -220,14 +222,14 @@ MailboxAlertNewMail.onAlertLoad = function ()
 MailboxAlertNewMail.showAlertSlide = function ()
 {
     var top = true;
-    
+
     var alertContainer = document.getElementById('alertContainer');
     alertContainer.style.opacity = 0;
     this.resizeAlert(false);
     this.placeAlert();
-    
+
     this.window_y = -this.getWindowHeight();
-    
+
     if (this.position == "top-right") {
         this.window_x = this.gOrigin & this.LEFT ? screen.availLeft :
         (screen.availLeft + screen.availWidth - this.getWindowWidth());
@@ -256,7 +258,7 @@ MailboxAlertNewMail.showAlertSlide = function ()
     this.resizeAlert(false);
     this.placeAlertOutside();
     alertContainer.style.opacity = 1;
-    
+
     if (top) {
         dump("[XX] starting slide in top\n");
         this.timer_state = this.SLIDING_IN_TOP;
@@ -326,11 +328,11 @@ MailboxAlertNewMail.slideInBottom = function ()
             window.moveBy(0, -this.gSlideDistance);
         } else {
             this.timer_state = this.WAITING;
-            
+
             window.moveTo(this.window_x, this.window_to_y);
             this.window_y = this.window_to_y;
             this.window_to_y = screen.height + this.getWindowHeight();
-            
+
             // we only need to wait the duration once (the handler should init the slideout
             // timer on a repeated basis again
             if (this.duration > 0) {
@@ -511,18 +513,19 @@ MailboxAlertNewMail.closeAlert = function ()
     try {
         // make sure there won't be anything else firing
         dump("[XX] starting closing of alert\n");
-        
+
         // We create a new timer here, sometimes canceling an existing
         // one and reinitializing it does to produce the expected result
         // (it would still wait duration*1000 before firing)
-        
+
         if (this.effect == "fade") {
             dump("[XX] starting fade\n");
             this.timer_state = this.FADING_OUT;
             this.timer.cancel();
             this.close_timer = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
             this.close_timer.initWithCallback(this, this.gFadeTime, this.timer.TYPE_REPEATING_PRECISE);
-        } else if (this.effect == "slide") {
+        } else if (this.effect == "slide" &&
+                   this.position != "custom" && this.position != "center") {
             dump("[XX] starting slide out\n");
             if (this.position == "top-right" || this.position == "top-left") {
                 dump("[XX] starting slide out top\n");
@@ -561,7 +564,7 @@ MailboxAlertNewMail.handleClick = function (event)
             this.performAction(this.whenclicked);
         } else if (event.button == 2) {
             if (!this.stored_timer_delay) {
-                // store the timer before we cancel it so we can 
+                // store the timer before we cancel it so we can
                 // restart it
                 dump("[XX] storing and canceling timer\n");
                 this.stored_timer_delay = this.timer.delay;
@@ -607,7 +610,7 @@ MailboxAlertNewMail.performAction = function (action)
             var windowManager = Cc['@mozilla.org/appshell/window-mediator;1'].getService();
             var windowManagerInterface = windowManager.QueryInterface(Ci.nsIWindowMediator);
             //var windowManagerInterface = windowManager.QueryInterface(Ci.nsIWindowMediator);
-            
+
             var mailWindow = windowManagerInterface.getMostRecentWindow( "mail:3pane" );
             if ( mailWindow ) {
                 tabmail = mailWindow.document.getElementById("tabmail");
