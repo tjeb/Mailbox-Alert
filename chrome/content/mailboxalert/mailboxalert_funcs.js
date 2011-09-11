@@ -103,7 +103,7 @@ MailboxAlert.createAlertData = function (mailbox, last_unread) {
 
         this.mailbox = fake_folder;
     }
-    
+
     this.createFakeUnread = function () {
         // this is a fake message, create some test data
         this.last_unread = {};
@@ -129,14 +129,14 @@ MailboxAlert.createAlertData = function (mailbox, last_unread) {
     if (!this.mailbox) {
         this.createFakeFolder();
     }
-    
+
     this.deriveData();
     this.deriveDataFixed();
-    
+
     // internal state variables
     this.orig_folder_name = this.folder_name;
     this.is_parent = false;
-        
+
 
     // Returns the preview text
     // Fetches it on the first call to this function
@@ -179,17 +179,17 @@ MailboxAlert.createAlertData = function (mailbox, last_unread) {
         }
         return this.last_unread.getProperty("preview");
     }
-    
+
     // Changes the alert data to call for the parent folder
     this.toParent = function() {
         this.mailbox = this.mailbox.parent;
-        
+
         // reinit derived data
         this.deriveData();
-        
+
         this.is_parent = true;
     }
-    
+
     this.getInfo = function() {
         result = "";
         result += "mailbox: " + this.mailbox + "\n";
@@ -214,7 +214,7 @@ MailboxAlert.createAlertData = function (mailbox, last_unread) {
         result += "date: " + this.date + "\n";
         return result;
     };
-    
+
     return this;
 }
 
@@ -366,9 +366,9 @@ MailboxAlert.showMessage = function (alert_data, show_icon, icon_file, subject_p
     //MailboxAlert.showMethods(alert_data.getInfo());
     //dump("[XX]\n");
     //dump("[XX]\n");
-    
+
     var message_key = alert_data.last_unread.messageKey;
-    
+
     var folder_url = alert_data.folder_uri;
 
     if (!alert_data.messageBytes) {
@@ -383,7 +383,7 @@ MailboxAlert.showMessage = function (alert_data, show_icon, icon_file, subject_p
     date_obj.setTime(alert_data.date);
     var date_str = date_obj.toLocaleDateString();
     var time_str = date_obj.toLocaleTimeString();
-    
+
     subject_pref = MailboxAlert.replace(subject_pref, "%server", alert_data.server);
     subject_pref = MailboxAlert.replace(subject_pref, "%originalfolder", alert_data.orig_folder_name);
     subject_pref = MailboxAlert.replace(subject_pref, "%folder", alert_data.folder_name);
@@ -612,7 +612,7 @@ MailboxAlert.executeCommand = function (alert_data, command, escape_html) {
             dump("NS_ERROR_FILE_UNRECOGNIZED_PATH\n");
             var stringsBundle = document.getElementById("mailboxalert_strings");
             alert(stringsBundle.getString('mailboxalert.error') + "\r\n\r\n" +
-                  stringsBundle.getString('mailboxalert.error.badcommandpath1') + 
+                  stringsBundle.getString('mailboxalert.error.badcommandpath1') +
                   " " + alert_data.folder_name_with_server + " " +
                   stringsBundle.getString('mailboxalert.error.badcommandpath2')  +
                   "\r\n\r\n" +
@@ -633,12 +633,17 @@ MailboxAlert.executeCommand = function (alert_data, command, escape_html) {
 }
 
 // Function to create one menu item as used in fillFolderMenu
-MailboxAlert.createMenuItem = function (label, value) {
+MailboxAlert.createMenuItem = function (label, value, checkbox) {
     const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
     var item = document.createElementNS(XUL_NS, "menuitem"); // create a new XUL menuitem
     item.setAttribute("label", label);
     if (value) {
         item.setAttribute("value", value);
+    }
+    if (checkbox) {
+        item.setAttribute("closemenu", "none");
+        item.setAttribute("type", "checkbox");
+        item.setAttribute("autocheck", "true");
     }
     return item;
 }
@@ -664,7 +669,7 @@ MailboxAlert.fillFolderMenu = function(alert_menu, folder) {
     for (var alert_i = 0; alert_i < all_alerts.length; ++alert_i) {
         var alert = all_alerts[alert_i];
         var alert_index = alert.index;
-        alert_menuitem = MailboxAlert.createMenuItem(alert.get("name"), alert_index);
+        alert_menuitem = MailboxAlert.createMenuItem(alert.get("name"), alert_index, true);
         if (folder_prefs.alertSelected(alert_index)) {
             alert_menuitem.setAttribute("checked", true);
             alerts_set = true;
@@ -675,7 +680,7 @@ MailboxAlert.fillFolderMenu = function(alert_menu, folder) {
 
     alert_menu.appendChild(MailboxAlert.createMenuSeparator());
 
-    alert_menuitem = MailboxAlert.createMenuItem(stringsBundle.getString('mailboxalert.menu.alertforchildren'));
+    alert_menuitem = MailboxAlert.createMenuItem(stringsBundle.getString('mailboxalert.menu.alertforchildren'), null, true);
     if (folder_prefs.alert_for_children) {
         alert_menuitem.setAttribute("checked", true);
     }
@@ -686,7 +691,7 @@ MailboxAlert.fillFolderMenu = function(alert_menu, folder) {
     }
     alert_menu.appendChild(alert_menuitem);
 
-    alert_menuitem = MailboxAlert.createMenuItem(stringsBundle.getString('mailboxalert.menu.noalerttoparent'));
+    alert_menuitem = MailboxAlert.createMenuItem(stringsBundle.getString('mailboxalert.menu.noalerttoparent'), null, true);
     if (folder_prefs.no_alert_to_parent) {
         alert_menuitem.setAttribute("checked", true);
     }
@@ -699,7 +704,7 @@ MailboxAlert.fillFolderMenu = function(alert_menu, folder) {
 
     alert_menu.appendChild(MailboxAlert.createMenuSeparator());
 
-    alert_menuitem = MailboxAlert.createMenuItem(stringsBundle.getString('mailboxalert.menu.editalerts'));
+    alert_menuitem = MailboxAlert.createMenuItem(stringsBundle.getString('mailboxalert.menu.editalerts'), null, false);
     alert_menuitem.setAttribute("oncommand", "window.openDialog('chrome://mailboxalert/content/alert_list.xul', 'mailboxalert_prefs', 'chrome');");
     alert_menu.appendChild(alert_menuitem);
 }
