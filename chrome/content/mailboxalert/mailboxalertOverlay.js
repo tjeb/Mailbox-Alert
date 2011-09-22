@@ -43,7 +43,7 @@ MailboxAlert.muted = function() {
 }
 
 MailboxAlert.setMuteMenuitem = function(muted) {
-    menuitem = document.getElementById("mailboxalert-moz-tools-menu-mute");
+    var menuitem = document.getElementById("mailboxalert-moz-tools-menu-mute");
     if (muted) {
         menuitem.setAttribute("checked", true);
     } else {

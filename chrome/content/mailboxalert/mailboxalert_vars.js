@@ -972,7 +972,7 @@ MailboxAlert.convertAllFolderPreferences14toAlertPreferences = function () {
 MailboxAlert.findAvailableAlertPrefsId = function () {
   var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch).QueryInterface(Components.interfaces.nsIPrefService);
   var pref_branch = prefs.getBranch("extensions.mailboxalert.alerts.");
-  for (i = 1; i <= MailboxAlert.max_alerts; i++) {
+  for (var i = 1; i <= MailboxAlert.max_alerts; i++) {
     try {
       var alert_name = pref_branch.getCharPref(i + ".name");
     } catch (e) {

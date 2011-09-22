@@ -78,7 +78,7 @@ MailboxAlertAlertSettings.setUIElementList = function (list, enabled) {
   if (!list || !list.length) {
     return;
   }
-  for (i = 0; i < list.length; i++) {
+  for (var i = 0; i < list.length; i++) {
     current_element = document.getElementById(list[i]);
     if (current_element) {
       if (enabled) {
