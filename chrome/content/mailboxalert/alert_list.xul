@@ -14,7 +14,7 @@
   <key id="close_cmd" modifiers="control" key="W" oncommand="window.close();"/>
 </keyset>
 
-<stringbundle id="string-bundle" src="chrome://mailboxalert/locale/mailboxalert.properties"/>
+<stringbundle id="mailboxalert-string-bundle" src="chrome://mailboxalert/locale/mailboxalert.properties"/>
 
 <script src="chrome://mailboxalert/content/mailboxalert_vars.js"></script>
 
@@ -65,7 +65,7 @@ MailboxAlertList.deleteAlert = function () {
     var delete_ok = true;
 
     if (folders.length > 0) {
-        var stringsBundle = document.getElementById("string-bundle");
+        var stringsBundle = document.getElementById("mailboxalert-string-bundle");
         if (confirm(stringsBundle.getString("mailboxalert.alert_settings.alertset"))) {
             for (var i = 0; i < folders.length; ++i) {
                 folders[i].removeAlert(alert_index);
@@ -77,7 +77,7 @@ MailboxAlertList.deleteAlert = function () {
     }
 
     if (delete_ok && MailboxAlert.alertIsFilterTarget(alert_index)) {
-        var stringsBundle = document.getElementById("string-bundle");
+        var stringsBundle = document.getElementById("mailboxalert-string-bundle");
         if (confirm(stringsBundle.getString("mailboxalert.alert_settings.alertsetforfilter"))) {
             MailboxAlert.removeAlertFilters(alert_index);
         } else {

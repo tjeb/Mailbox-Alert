@@ -438,7 +438,7 @@ MailboxAlertAlertSettings.init = function () {
   /* enable help button */
   //document.getElementById('mailboxalert_prefs_dialog').getButton('help').hidden = false;
 
-  var stringsBundle = document.getElementById("string-bundle");
+  var stringsBundle = document.getElementById("mailboxalert-string-bundle");
 
   /* Issue when opening multiple of these windows */
   if (!window.arguments) {
