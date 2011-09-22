@@ -67,7 +67,7 @@
 <!ENTITY mailboxalert.alert_prefs.onclick "Gdy kliknięty">
 <!ENTITY mailboxalert.alert_prefs.onclick.close "zamknij okienko">
 <!ENTITY mailboxalert.alert_prefs.onclick.openmail "otwórz wiadomość">
-<!ENTITY mailboxalert.alert_prefs.onclick.selectmail "Open the message in the current window">
+<!ENTITY mailboxalert.alert_prefs.onclick.selectmail "Otwórz wiadomość w bieżącym oknie">
 <!ENTITY mailboxalert.alert_prefs.onclick.deletemail "Usuń wiadomość">
 <!ENTITY mailboxalert.alert_list.add "Dodaj">
 <!ENTITY mailboxalert.alert_list.edit "Edytuj">
