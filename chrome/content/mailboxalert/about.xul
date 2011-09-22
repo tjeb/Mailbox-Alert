@@ -22,14 +22,14 @@
 <groupbox align="center" orient="horizontal">
 <vbox>
   <text value="&mailboxalert.name;" style="font-weight: bold; font-size: x-large;"/>
-  <text value="&mailboxalert.version;: 0.15beta2"/>
+  <text value="&mailboxalert.version;: 0.15.1"/>
   <separator class="thin"/>
   <text value="&mailboxalert.about.created;:" style="font-weight: bold;"/>
   <text value="&mailboxalert.author;" class="url"
         onclick="window.open('http://tjeb.nl'); window.close();"/>
   <separator class="thin"/>
     <text value="&mailboxalert.website;" style="font-weight: bold;"/>
-    <text value="http://tjeb.nl"
+    <text value="http://tjeb.nl/Projects/Mailbox_Alert"
           class="url"
         onclick="window.open('http://tjeb.nl'); window.close();"/>
   <separator class="thin"/>
