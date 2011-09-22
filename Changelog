@@ -1,4 +1,11 @@
-[???]
+[0.15-0.15.1]
+  o Tools->Mute Mailbox Alert now actually stops sounds from playing
+  o Alerts are no longer triggered in messages marked as read
+  o Alert Preferences screen now correctly shows 'onclick' attribute
+  o Updated pt-PT locale
+  o Fixed a few code-level issues identified by reviewer
+
+[0.14.6-0.15]
   o Configuration has changed; you can now define a set of alerts,
     and specify one or more alerts per folder directly from the
     folder context menu. Existing configuration is automatically
