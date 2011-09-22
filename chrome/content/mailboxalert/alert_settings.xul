@@ -316,10 +316,12 @@ MailboxAlertAlertSettings.readPrefs = function (alert_id) {
 
     var show_message_onclick = alert_prefs.get("show_message_onclick");
     cur_element = document.getElementById("show_message_onclick_menulist");
-    if (show_message_onclick == "raisewindow") {
-      MailboxAlertAlertSettings.doClick("show_message_onclick_raisewindow");
+    if (show_message_onclick == "selectmail") {
+      MailboxAlertAlertSettings.doClick("show_message_onclick_selectmail");
     } else if (show_message_onclick == "openmail") {
       MailboxAlertAlertSettings.doClick("show_message_onclick_openmail");
+    } else if (show_message_onclick == "deletemail") {
+      MailboxAlertAlertSettings.doClick("show_message_onclick_deletemail");
     }
 
     var sound_wav = alert_prefs.get("play_sound_wav");
