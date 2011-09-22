@@ -84,9 +84,11 @@ MailboxAlert.newMailListener = {
             last = msg_enum.getNext();
         }
         var message = last.QueryInterface(Components.interfaces.nsIMsgDBHdr);
-        dump("[XX] folder URI: " + message.folder.URI + "\n")
-        dump("[XX] subject: " + message.mime2DecodedSubject + "\n")
-        MailboxAlert.new_alert(message.folder, message);
+        if (!message.isRead) {
+            dump("[XX] folder URI: " + message.folder.URI + "\n")
+            dump("[XX] subject: " + message.mime2DecodedSubject + "\n")
+            MailboxAlert.new_alert(message.folder, message);
+        }
     }
 }
 

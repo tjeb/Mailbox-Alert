@@ -154,20 +154,20 @@ MailboxAlert.createAlertData = function (mailbox, last_unread) {
                                         [this.last_unread.messageKey],
                                         1, false, url_listener);
             } catch(e) {
-				try {
-	                var aOutAsync = {};
-	                this.last_unread.folder.fetchMsgPreviewText(
-	                          [this.last_unread.messageKey],
-	                          1, false, url_listener, aOutAsync);
-	                if (aOutAsync && aOutAsync.value) {
-	                    urlscalled = true;
-	                }
-				} catch(e2) {
-					// On some folders (news for instance), and in
-					// some other cases, fetch just throws an exception
-					// if so, just set an empty previewtext
-					this.last_unread.setProperty("preview", "<empty>");
-				}
+                try {
+                    var aOutAsync = {};
+                    this.last_unread.folder.fetchMsgPreviewText(
+                              [this.last_unread.messageKey],
+                              1, false, url_listener, aOutAsync);
+                    if (aOutAsync && aOutAsync.value) {
+                        urlscalled = true;
+                    }
+                } catch(e2) {
+                    // On some folders (news for instance), and in
+                    // some other cases, fetch just throws an exception
+                    // if so, just set an empty previewtext
+                    this.last_unread.setProperty("preview", "<empty>");
+                }
             }
             dump("[XX] urlscalled: " + urlscalled + "\n");
             if (urlscalled) {
@@ -329,6 +329,7 @@ MailboxAlert.replaceEscape = function (already_quoted, string, oldstr, newstr) {
 
 MailboxAlert.new_alert = function (folder, last_unread) {
     var alert_data = MailboxAlert.createAlertData(folder, last_unread);
+    // Only run if the message is market unread
     MailboxAlert.new_alert2(alert_data);
 }
 
@@ -402,8 +403,8 @@ MailboxAlert.showMessage = function (alert_data, show_icon, icon_file, subject_p
     subject_pref = MailboxAlert.replace(subject_pref, "%msg_preview", preview);
     subject_pref = MailboxAlert.replace(subject_pref, "%msg_uri", alert_data.msg_uri);
     if (subject_pref.indexOf("%body" > 0)) {
-		subject_pref = MailboxAlert.replace(subject_pref, "%body", alert_data.getPreview());
-	}
+        subject_pref = MailboxAlert.replace(subject_pref, "%body", alert_data.getPreview());
+    }
 
     var message_text = message;
     dump("[XX] Original Message text: " + message_text + "\n");
@@ -425,8 +426,8 @@ MailboxAlert.showMessage = function (alert_data, show_icon, icon_file, subject_p
     message_text = MailboxAlert.replace(message_text, "%msg_preview", preview);
     message_text = MailboxAlert.replace(message_text, "%msg_uri", alert_data.msg_uri);
     if (subject_pref.indexOf("%body" > 0)) {
-		message_text = MailboxAlert.replace(message_text, "%body", alert_data.getPreview());
-	}
+        message_text = MailboxAlert.replace(message_text, "%body", alert_data.getPreview());
+    }
 
     dump("[XX] Message text: " + message_text + "\n");
 
@@ -664,45 +665,59 @@ MailboxAlert.fillFolderMenu = function(alert_menu, folder) {
         alert_menu.removeChild(alert_menu.firstChild);
     }
 
+    // need to make these first, as modifying the alerts that are set can
+    // toggle whether these are enabled or not
+    var alertforchildren_menuitem = MailboxAlert.createMenuItem(stringsBundle.getString('mailboxalert.menu.alertforchildren'), null, true);
+    var alertnoparent_menuitem = MailboxAlert.createMenuItem(stringsBundle.getString('mailboxalert.menu.noalerttoparent'), null, true);
+
     for (var alert_i = 0; alert_i < all_alerts.length; ++alert_i) {
-        var alert = all_alerts[alert_i];
-        var alert_index = alert.index;
+        let alert = all_alerts[alert_i];
+        let alert_index = alert.index;
         alert_menuitem = MailboxAlert.createMenuItem(alert.get("name"), alert_index, true);
         if (folder_prefs.alertSelected(alert_index)) {
             alert_menuitem.setAttribute("checked", true);
             alerts_set = true;
         }
-        alert_menuitem.setAttribute("oncommand", "MailboxAlert.switchFolderAlert('"+ folder.URI + "', " + alert_index + ");");
+        alert_menuitem.addEventListener("command",
+            function(){MailboxAlert.switchFolderAlert(folder.URI, alert_index,
+                                                      alertforchildren_menuitem,
+                                                      alertnoparent_menuitem)},
+            false);
         alert_menu.appendChild(alert_menuitem);
     }
 
     alert_menu.appendChild(MailboxAlert.createMenuSeparator());
 
-    alert_menuitem = MailboxAlert.createMenuItem(stringsBundle.getString('mailboxalert.menu.alertforchildren'), null, true);
     if (folder_prefs.alert_for_children) {
-        alert_menuitem.setAttribute("checked", true);
+        alertforchildren_menuitem.setAttribute("checked", true);
     }
-    alert_menuitem.setAttribute("oncommand", "MailboxAlert.switchAlertForChildren('" + folder.URI + "');");
+    alertforchildren_menuitem.addEventListener("command",
+        function(){MailboxAlert.switchAlertForChildren(folder.URI)},
+        false);
     // disable it if there are no alerts set
     if (!alerts_set) {
-        alert_menuitem.setAttribute("disabled", true);
+        alertforchildren_menuitem.setAttribute("disabled", true);
     }
-    alert_menu.appendChild(alert_menuitem);
+    alert_menu.appendChild(alertforchildren_menuitem);
 
-    alert_menuitem = MailboxAlert.createMenuItem(stringsBundle.getString('mailboxalert.menu.noalerttoparent'), null, true);
     if (folder_prefs.no_alert_to_parent) {
-        alert_menuitem.setAttribute("checked", true);
+        alertnoparent_menuitem.setAttribute("checked", true);
     }
-    alert_menuitem.setAttribute("oncommand", "MailboxAlert.switchNoAlertToParent('" + folder.URI + "');");
+    alertnoparent_menuitem.addEventListener("command",
+        function(){MailboxAlert.switchNoAlertToParent(folder.URI)},
+        false);
     // disable it if there are any alerts set
     if (alerts_set) {
-        alert_menuitem.setAttribute("disabled", true);
+        alertnoparent_menuitem.setAttribute("disabled", true);
     }
-    alert_menu.appendChild(alert_menuitem);
+    alert_menu.appendChild(alertnoparent_menuitem);
 
     alert_menu.appendChild(MailboxAlert.createMenuSeparator());
 
     alert_menuitem = MailboxAlert.createMenuItem(stringsBundle.getString('mailboxalert.menu.editalerts'), null, false);
-    alert_menuitem.setAttribute("oncommand", "window.openDialog('chrome://mailboxalert/content/alert_list.xul', 'mailboxalert_prefs', 'chrome');");
+    alert_menuitem.addEventListener("command",
+        function(){window.openDialog('chrome://mailboxalert/content/alert_list.xul',
+                                     'mailboxalert_prefs', 'chrome');},
+        false);
     alert_menu.appendChild(alert_menuitem);
 }

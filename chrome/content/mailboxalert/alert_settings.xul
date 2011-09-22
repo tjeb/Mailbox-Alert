@@ -28,7 +28,8 @@
 <script src="chrome://mailboxalert/content/mailboxalert_common.js">
 </script>
 
-<script src="chrome://mailboxalert/content/mailboxalert_funcs.js">
+<script src="chrome://mailboxalert/content/mailboxalert_funcs.js"
+        type="application/javascript;version=1.7">
 </script>
 
 <script type="application/x-javascript">

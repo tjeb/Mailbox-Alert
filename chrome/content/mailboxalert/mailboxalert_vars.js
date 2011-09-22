@@ -54,11 +54,11 @@ MailboxAlert.max_alerts = 100;
 
 //
 // We have 2 structures that represent configuration values
-// 
+//
 // - 'global preferences'
 //      these are the preferences for where the window goes
 // - 'folder preferences'
-// 
+//
 // A future version will decouple this, and make it three
 // - global
 // - alert preferences
@@ -142,13 +142,13 @@ MailboxAlert.getGlobalPreferences14 = function() {
 // idea for prefs;
 // big array of arrays
 // [name, prefname, type, default]
-// 
+//
 // prefs object defines:
 // - set(name, value)
 // - get(name)
 // - store()
 // - dump()
-// 
+//
 // get checks if we have gotten it before
 // internally this needs an extra bool too (which is what 'read' is for)
 // internal helpers:
@@ -226,7 +226,7 @@ MailboxAlert.getFolderPreferences14 = function(folder_uri) {
                 dump("[XX] found value in prefs store\n");
             } catch(e) {
                 dump("[XX] found no value in prefs store\n");
-                
+
                 // ok pref doesn't exist yet.
                 // should we not set and just return?
                 var pref_data = MailboxAlert.folderPrefDefs14[name]
@@ -243,7 +243,7 @@ MailboxAlert.getFolderPreferences14 = function(folder_uri) {
         dump("[XX] value: " + this.values[name] + "\n");
         return this.values[name];
     }
-    
+
     folder_prefs.set = function(name, value) {
         // should we type-check here?)
         dump("[XX] SET VALUE OF " + name + " TO " + value + "\n");
@@ -335,12 +335,12 @@ MailboxAlert.getFolderPreferences14 = function(folder_uri) {
         }
         var global_prefs = MailboxAlert.getGlobalPreferences14();
         global_prefs.applyToAlertPrefs(new_alert);
-        
+
         // get all alert prefs, and see if any match this new one
         var all_alerts = MailboxAlert.getAllAlertPrefs();
         for (var i = 0; i < all_alerts.length; ++i) {
             var existing_alert = all_alerts[i];
-            
+
             if (existing_alert.equals(new_alert)) {
                 // ok just stop and return
                 return existing_alert.index;
@@ -355,7 +355,7 @@ MailboxAlert.getFolderPreferences14 = function(folder_uri) {
         new_alert.store();
         return new_index;
     }
-    
+
     // Deletes the folder prefs. They are gone forever.
     folder_prefs.remove = function () {
         // set all to default, then store the folderprefs
@@ -380,7 +380,7 @@ MailboxAlert.getAlertPreferences = function (index) {
     alert_prefs.index = index;
 
     alert_prefs.values = {};
-    
+
     alert_prefs.get = function (name) {
         //dump("[XX] Getting pref for " + this.index + "\n");
         if (!(name in this.values)) {
@@ -398,7 +398,7 @@ MailboxAlert.getAlertPreferences = function (index) {
                 //dump("[XX] found value in prefs store\n");
             } catch(e) {
                 //dump("[XX] found no value in prefs store\n");
-                
+
                 // ok pref doesn't exist yet.
                 // should we not set and just return?
                 var pref_data = MailboxAlert.alertPrefDefs[name]
@@ -415,7 +415,7 @@ MailboxAlert.getAlertPreferences = function (index) {
         //dump("[XX] value: " + this.values[name] + "\n");
         return this.values[name];
     }
-    
+
     alert_prefs.set = function(name, value) {
         // should we type-check here?)
         //dump("[XX] SET VALUE OF " + name + " TO " + value + "\n");
@@ -646,6 +646,7 @@ MailboxAlert.getFolderPrefs = function (uri) {
     }
 
     folder_prefs.hasAlerts = function () {
+        //alert("hasAlerts: " + this.alerts.length + " " + this.alerts);
         return (this.alerts.length > 0);
     }
 
@@ -662,8 +663,10 @@ MailboxAlert.filter_action =
         if (alert) {
             for (var i = 0; i < aMsgHdrs.length; ++i) {
                 var cur_msg_hdr = aMsgHdrs.queryElementAt(i, Components.interfaces.nsIMsgDBHdr);
-                var alert_data = MailboxAlert.createAlertData(cur_msg_hdr.folder, cur_msg_hdr);
-                alert.run(alert_data);
+                if (!cur_msg_hdr.isRead) {
+                    var alert_data = MailboxAlert.createAlertData(cur_msg_hdr.folder, cur_msg_hdr);
+                    alert.run(alert_data);
+                }
             }
         }
     },
@@ -981,12 +984,26 @@ MailboxAlert.findAvailableAlertPrefsId = function () {
 }
 
 // Some static functions called from xul
-MailboxAlert.switchFolderAlert = function (folder_uri, alert_index) {
+MailboxAlert.switchFolderAlert = function (folder_uri, alert_index,
+                                           alertforchildren_menuitem,
+                                           alertnoparent_menuitem) {
     var folder_prefs = MailboxAlert.getFolderPrefs(folder_uri);
     if (!folder_prefs.addAlert(alert_index)) {
         folder_prefs.removeAlert(alert_index);
     }
     folder_prefs.store();
+    // If the menu items are given, check if the folder has any alerts now, and
+    // disable or enable the items
+    if (alertforchildren_menuitem || alertnoparent_menuitem) {
+        if (folder_prefs.hasAlerts()) {
+            //alertforchildren_menuitem.removeAttribute("disabled");
+            alertforchildren_menuitem.setAttribute("disabled", false);
+            alertnoparent_menuitem.setAttribute("disabled", true);
+        } else {
+            alertforchildren_menuitem.setAttribute("disabled", true);
+            alertnoparent_menuitem.setAttribute("disabled", false);
+        }
+    }
 }
 
 MailboxAlert.switchAlertForChildren = function (folder_uri) {

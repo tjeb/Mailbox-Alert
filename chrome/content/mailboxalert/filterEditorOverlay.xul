@@ -7,6 +7,7 @@
     </stringbundleset>
     <script src="chrome://mailboxalert/content/mailboxalert_vars.js">
     </script>
-    <script src="chrome://mailboxalert/content/mailboxalert_funcs.js">
+    <script src="chrome://mailboxalert/content/mailboxalert_funcs.js"
+            type="application/javascript;version=1.7">
     </script>
 </overlay>

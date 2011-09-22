@@ -14,7 +14,8 @@
 
     <script src="chrome://mailboxalert/content/mailboxalert_vars.js">
     </script>
-    <script src="chrome://mailboxalert/content/mailboxalert_funcs.js">
+    <script src="chrome://mailboxalert/content/mailboxalert_funcs.js"
+            type="application/javascript;version=1.7">
     </script>
     <script src="chrome://mailboxalert/content/mailboxalertOverlay.js">
     </script>
@@ -24,17 +25,17 @@
         <menuseparator id="mailboxalertSeperator" insertbefore="devToolsSeparator" />
         <menuitem id="mailboxalert-tools-menu-prefs" label="&mailboxalert.menu.editalerts;"
                     accesskey="L" class="menuitem-iconic"
-                    insertbefore="devToolsSeparator" 
-                    oncommand="window.openDialog('chrome://mailboxalert/content/alert_list.xul', 'mailboxalert_prefs', 'chrome');"/> 
+                    insertbefore="devToolsSeparator"
+                    oncommand="window.openDialog('chrome://mailboxalert/content/alert_list.xul', 'mailboxalert_prefs', 'chrome');"/>
     </menupopup>
-    
+
     <!-- Mozilla Tools Menu -->
     <menupopup id="taskPopup">
         <menuseparator id="mailboxalertSeperator" insertbefore="devToolsSeparator" />
-        <menuitem id="mailboxalert-moz-tools-menu-prefs" 
-            label="&mailboxalert.menu.editalerts;" accesskey="L" 
-            insertbefore="devToolsSeparator" 
-            oncommand="window.openDialog('chrome://mailboxalert/content/alert_list.xul', 'mailboxalert_prefs', 'chrome');"/> 
+        <menuitem id="mailboxalert-moz-tools-menu-prefs"
+            label="&mailboxalert.menu.editalerts;" accesskey="L"
+            insertbefore="devToolsSeparator"
+            oncommand="window.openDialog('chrome://mailboxalert/content/alert_list.xul', 'mailboxalert_prefs', 'chrome');"/>
         <menuitem id="mailboxalert-moz-tools-menu-mute"
             type="checkbox"
             label="&mailboxalert.mute;" accesskey="M" insertbefore="devToolsSeparator"
@@ -52,10 +53,10 @@
         >
             <!-- the function call MUST check whether this menupopup is the actual element that is popped; it will also fire on popups of child menus -->
             <menupopup
-                id="folderPaneContext-mailboxalert" 
+                id="folderPaneContext-mailboxalert"
                 onpopupshowing="if (event.target == this) { MailboxAlert.fillFolderMenu(this, MailboxAlert.getFolder()); }"
             />
         </menu>
-    </popup> 
+    </popup>
 </overlay>
 
