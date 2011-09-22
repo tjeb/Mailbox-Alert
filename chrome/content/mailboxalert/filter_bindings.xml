@@ -17,8 +17,8 @@
                 for (var alert_i = 0; alert_i < all_alerts.length; ++alert_i) {
                     var alert = all_alerts[alert_i];
                     var alert_index = alert.index;
-                    var alert_menuitem = MailboxAlert.createMenuItem(alert.get("name"), alert_index);
-                    var alert_menu.appendChild(alert_menuitem);
+                    alert_menuitem = MailboxAlert.createMenuItem(alert.get("name"), alert_index);
+                    alert_menu.appendChild(alert_menuitem);
                 }
                 ]]>
             </constructor>
