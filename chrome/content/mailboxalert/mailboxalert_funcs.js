@@ -440,6 +440,12 @@ MailboxAlert.showMessage = function (alert_data, show_icon, icon_file, subject_p
 
 /* copied from mozilla thunderbird sourcecode */
 MailboxAlert.playSound = function (soundURL) {
+    // Only play if global mute has not been set
+    // even if not played, this still counts as having alerted
+    // (that's why we check here)
+    if (MailboxAlert.muted()) {
+        return;
+    }
     var gSound = Components.classes["@mozilla.org/sound;1"].createInstance(Components.interfaces.nsISound);
     gSound.init();
     if (soundURL) {
