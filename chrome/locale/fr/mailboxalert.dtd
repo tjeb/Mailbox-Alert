@@ -11,7 +11,7 @@
 <!ENTITY mailboxalert.prefs.escapehtml "Utiliser les codes HTML pour les caractères spéciaux de cette commande">
 <!ENTITY mailboxalert.prefs.test "Tester ces paramètres">
 <!ENTITY mailboxalert.prefs.close "Fermer">
-<!ENTITY mailboxalert.prefs.expl.escape "Si un fichier ou un paramètre contiens des espaces, pensez à les échapper avec \">
+<!ENTITY mailboxalert.prefs.expl.escape "Si un fichier ou un paramètre contiens des espaces, pensez à les échapper avec ">
 <!ENTITY mailboxalert.prefs.expl.macros "Vous pouvez utiliser ces variables">
 <!ENTITY mailboxalert.prefs.expl.servername "Le nom du serveur">
 <!ENTITY mailboxalert.prefs.expl.foldername "Le nom du dossier">

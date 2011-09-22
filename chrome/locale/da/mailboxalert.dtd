@@ -11,7 +11,7 @@
 <!ENTITY mailboxalert.prefs.escapehtml "Brug html-koder til specielle tegn i markroer">
 <!ENTITY mailboxalert.prefs.test "Test disse indstillinger">
 <!ENTITY mailboxalert.prefs.close "Luk">
-<!ENTITY mailboxalert.prefs.expl.escape "Hvis en fil eller parameter indeholder mellemrum, skal du være sikker på at omgive dem med \">
+<!ENTITY mailboxalert.prefs.expl.escape "Hvis en fil eller parameter indeholder mellemrum, skal du være sikker på at omgive dem med ">
 <!ENTITY mailboxalert.prefs.expl.macros "Du kan bruge følgende markroer">
 <!ENTITY mailboxalert.prefs.expl.servername "Servernavn">
 <!ENTITY mailboxalert.prefs.expl.foldername "Navnet på mailmappen">

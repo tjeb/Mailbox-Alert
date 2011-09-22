@@ -11,7 +11,7 @@
 <!ENTITY mailboxalert.prefs.escapehtml "Użyj znaczników HTML dla znaków specjalnych w makrach">
 <!ENTITY mailboxalert.prefs.test "Testuj te ustawienia">
 <!ENTITY mailboxalert.prefs.close "Zamknij">
-<!ENTITY mailboxalert.prefs.expl.escape "Jeśli jakiś plik lub argument zawiera spacje, upewnij się, że poprzedzasz je \">
+<!ENTITY mailboxalert.prefs.expl.escape "Jeśli jakiś plik lub argument zawiera spacje, upewnij się, że poprzedzasz je ">
 <!ENTITY mailboxalert.prefs.expl.macros "Możesz używać następujących makr">
 <!ENTITY mailboxalert.prefs.expl.servername "Nazwa serwera">
 <!ENTITY mailboxalert.prefs.expl.foldername "Nazwa folderu poczty">

@@ -11,7 +11,7 @@
 <!ENTITY mailboxalert.prefs.escapehtml "Use HTML codes for special characters in macros">
 <!ENTITY mailboxalert.prefs.test "Test these settings">
 <!ENTITY mailboxalert.prefs.close "Close">
-<!ENTITY mailboxalert.prefs.expl.escape "If any file or argument contains spaces, be sure to escape them with \">
+<!ENTITY mailboxalert.prefs.expl.escape "If any file or argument contains spaces, be sure to escape them with ">
 <!ENTITY mailboxalert.prefs.expl.macros "You can use the following macros">
 <!ENTITY mailboxalert.prefs.expl.servername "The name of the server">
 <!ENTITY mailboxalert.prefs.expl.foldername "The name of the mail folder">

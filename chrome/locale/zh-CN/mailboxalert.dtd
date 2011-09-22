@@ -11,7 +11,7 @@
 <!ENTITY mailboxalert.prefs.escapehtml "在宏中对特殊字符使用 HTML 代码">
 <!ENTITY mailboxalert.prefs.test "测试这些设置">
 <!ENTITY mailboxalert.prefs.close "关闭">
-<!ENTITY mailboxalert.prefs.expl.escape "如果任何文件或参数包含空格，请确认使用\转义">
+<!ENTITY mailboxalert.prefs.expl.escape "如果任何文件或参数包含空格，请确认使用转义">
 <!ENTITY mailboxalert.prefs.expl.macros "您可以使用下列宏">
 <!ENTITY mailboxalert.prefs.expl.servername "服务器名称">
 <!ENTITY mailboxalert.prefs.expl.foldername "邮件文件夹名称">

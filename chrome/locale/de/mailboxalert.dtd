@@ -11,7 +11,7 @@
 <!ENTITY mailboxalert.prefs.escapehtml "HTML-Kodierung für Sonderzeichen in Makros benutzen">
 <!ENTITY mailboxalert.prefs.test "Diese Einstellungen testen">
 <!ENTITY mailboxalert.prefs.close "Schließen">
-<!ENTITY mailboxalert.prefs.expl.escape "Sollte irgendeine Datei oder ein Argument Leerzeichen enthalten, so stellen Sie bitte einen Backslash (\) voran">
+<!ENTITY mailboxalert.prefs.expl.escape "Sollte irgendeine Datei oder ein Argument Leerzeichen enthalten, so stellen Sie bitte einen Backslash () voran">
 <!ENTITY mailboxalert.prefs.expl.macros "Folgende Makros stehen zur Verfügung">
 <!ENTITY mailboxalert.prefs.expl.servername "Servername">
 <!ENTITY mailboxalert.prefs.expl.foldername "Ordnername">
