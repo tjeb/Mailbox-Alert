@@ -1,6 +1,6 @@
 [0.15-0.15.1]
   o Tools->Mute Mailbox Alert now actually stops sounds from playing
-  o Alerts are no longer triggered in messages marked as read
+  o Alerts are no longer triggered for messages marked as read
   o Alert Preferences screen now correctly shows 'onclick' attribute
   o Updated pl and pt-PT locales
   o Fixed a few code-level issues identified by reviewer

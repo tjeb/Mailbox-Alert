@@ -499,13 +499,19 @@ MailboxAlert.finalizeCommandPart = function (command_part, alert_data, escape_ht
     command_part = MailboxAlert.replaceCommandPart(alert_data, command_part, escape_html, in_quote, date_str, time_str);
     command_part = MailboxAlert.replace(command_part, "<remembered_escaped_quote>", '\"');
     command_part = MailboxAlert.replace(command_part, "<remembered_escaped_space>", '\ ');
-    if (alert_data.charset && tocharset) {
-        csconv.Init(tocharset, 0, 0);
-        try {
-            command_part = csconv.Convert(command_part);
-        } catch (e) {
-            dump("Error converting " + cur_arg + ", leaving as is\n");
+    try {
+        var tocharset = env.get("LANG").split(".")[1];
+        if (alert_data.charset && tocharset) {
+            try {
+                csconv.Init(tocharset, 0, 0);
+                    command_part = csconv.Convert(command_part);
+            } catch (ce) {
+                dump("Error converting " + command_part + ", leaving as is\n");
+            }
         }
+    } catch (e) {
+        // ignore completely, looks like there's some trouble even seeing
+        // whether conversion is needed
     }
     return command_part;
 }
@@ -525,7 +531,6 @@ MailboxAlert.executeCommand = function (alert_data, command, escape_html) {
 
     var env = Components.classes["@mozilla.org/process/environment;1"].createInstance(Components.interfaces.nsIEnvironment);
     var csconv = Components.classes["@mozilla.org/intl/saveascharset;1"].createInstance(Components.interfaces.nsISaveAsCharset);
-    var tocharset = env.get("LANG").split(".")[1];
 
     dump("Command to execute: ");
     dump(command);
