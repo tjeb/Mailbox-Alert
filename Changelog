@@ -1,3 +1,6 @@
+[0.15-0.15.2]
+  o Fixed a bug in charset conversion that caused execute a command
+    not to work on some setups
 [0.15-0.15.1]
   o Tools->Mute Mailbox Alert now actually stops sounds from playing
   o Alerts are no longer triggered for messages marked as read
