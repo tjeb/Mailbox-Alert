@@ -686,7 +686,7 @@ MailboxAlertNewMail.notify = function(timer) {
             this.closeAlert();
         }
     } catch (e) {
-        this.timer.cacel();
+        this.timer.cancel();
         dump("[XX] error4: " + e + "\n");
         window.close();
     }
