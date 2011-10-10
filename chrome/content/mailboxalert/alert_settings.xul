@@ -433,8 +433,8 @@ MailboxAlertAlertSettings.storePrefs = function (alert_id) {
 }
 
 MailboxAlertAlertSettings.init = function () {
-  window.setResizable(false);
-  window.sizeToContent();
+  //window.setResizable(false);
+  setTimeout(window.sizeToContent, 0);
   /* enable help button */
   //document.getElementById('mailboxalert_prefs_dialog').getButton('help').hidden = false;
 
@@ -454,38 +454,44 @@ MailboxAlertAlertSettings.init = function () {
 MailboxAlertAlertSettings.fp = MailboxAlertAlertSettings.filepicker = Components.classes["@mozilla.org/filepicker;1"].getService(Components.interfaces.nsIFilePicker);
 
 MailboxAlertAlertSettings.chooseIconFile = function () {
-  var icon_image_element = document.getElementById("show_message_icon_image");
-  try {
-    var pref_icon = icon_image_element.src;
-    var prefix = "file://";
-    if (pref_icon.substring(0, prefix.length) == prefix) {
-        pref_icon = pref_icon.substring(prefix.length);
+    var icon_image_element = document.getElementById("show_message_icon_image");
+    try {
+        var pref_icon = icon_image_element.src;
+        var prefix = "file://";
+        if (pref_icon.substring(0, prefix.length) == prefix) {
+            pref_icon = pref_icon.substring(prefix.length);
+        }
+        var file = Components.classes["@mozilla.org/file/local;1"].
+             createInstance(Components.interfaces.nsILocalFile);
+        file.initWithPath(pref_icon);
+        if (file.exists()) {
+            MailboxAlertAlertSettings.fp.displayDirectory = file.parent;
+        }
+
+    } catch (e) {
+        // Specified directory does not seem to exist, use default
     }
-    var file = Components.classes["@mozilla.org/file/local;1"].
-         createInstance(Components.interfaces.nsILocalFile);
-    file.initWithPath(pref_icon);
-    if (file.exists()) {
-    alert(pref_icon + " exists");
-      MailboxAlertAlertSettings.fp.displayDirectory = file.parent;
-    } else {
-    alert(pref_icon + " does not exist");
+
+    // use whatever nsIFilePicker options are suitable
+    MailboxAlertAlertSettings.fp.init(window, "File to Read", MailboxAlertAlertSettings.fp.modeOpen);
+    MailboxAlertAlertSettings.fp.appendFilter("all files", "*");
+
+    if ( MailboxAlertAlertSettings.fp.show() != MailboxAlertAlertSettings.fp.returnCancel ) {
+        /*result = fp.file.persistentDescriptor;*/
+        result = MailboxAlertAlertSettings.fp.file.path;
+        result = "file://" + result;
+        icon_image_element.src = result;
+        setTimeout(window.sizeToContent, 0);
     }
+}
 
-  } catch (e) {
-    // Specified directory does not seem to exist, use default
-    alert(e);
-  }
-
-  // use whatever nsIFilePicker options are suitable
-  MailboxAlertAlertSettings.fp.init(window, "File to Read", MailboxAlertAlertSettings.fp.modeOpen);
-  MailboxAlertAlertSettings.fp.appendFilter("all files", "*");
-
-  if ( MailboxAlertAlertSettings.fp.show() != MailboxAlertAlertSettings.fp.returnCancel ) {
-    /*result = fp.file.persistentDescriptor;*/
-    result = MailboxAlertAlertSettings.fp.file.path;
-    result = "file://" + result;
-    icon_image_element.src = result;
-  }
+MailboxAlertAlertSettings.setDefaultIconFile = function () {
+    var icon_image_element = document.getElementById("show_message_icon_image");
+    if (icon_image_element.src != "chrome://mailboxalert/skin/mailboxalert.png") {
+        icon_image_element.src = "chrome://mailboxalert/skin/mailboxalert.png";
+        //alert("changed");
+        setTimeout(window.sizeToContent, 0);
+    }
 }
 
 MailboxAlertAlertSettings.chooseWavFile = function () {
@@ -601,7 +607,7 @@ MailboxAlertAlertSettings.selectPosition = function () {
             <vbox>
               <hbox>
                 <button id="show_message_icon_browse_button" label="&mailboxalert.prefs.browse;" oncommand="MailboxAlertAlertSettings.chooseIconFile();" onerror="imageError();"  disabled="true" />
-                <button id="show_message_icon_default_button" label="&mailboxalert.prefs.default;" oncommand="setDefaultIconFile();"  disabled="true" />
+                <button id="show_message_icon_default_button" label="&mailboxalert.prefs.default;" oncommand="MailboxAlertAlertSettings.setDefaultIconFile();"  disabled="true" />
               </hbox>
               <spacer flex="1"/>
             </vbox>
