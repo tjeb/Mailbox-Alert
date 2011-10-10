@@ -1,3 +1,10 @@
+[0.15.2-0.15.3]
+  o Fixed a bug when selecting a new icon and an alert was shown
+  o Fixed a bug when selecting a new icon and the window was not
+    resized properly
+  o Fixed a bug where play a sound resulted in an error if the global
+    mute had never been set
+
 [0.15-0.15.2]
   o Fixed a bug in charset conversion that caused execute a command
     not to work on some setups

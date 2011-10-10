@@ -221,7 +221,12 @@ MailboxAlert.createAlertData = function (mailbox, last_unread) {
 MailboxAlert.muted = function () {
     // If we ever need more than 1 global setting, make a GlobalPrefs like Prefs
     var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
-    var muted = prefs.getBoolPref("extensions.mailboxalert.mute");
+    var muted = false;
+    try {
+        var muted = prefs.getBoolPref("extensions.mailboxalert.mute");
+    } catch (e) {
+        // ignore, simply not set
+    }
     dump("[XX] muted: " + muted + "\n");
     return muted;
 }
