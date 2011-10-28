@@ -52,6 +52,12 @@ MailboxAlert.renamed_folder = null;
  */
 MailboxAlert.max_alerts = 100;
 
+// We initialize the sound interface globally, so the garbage
+// collector won't kill it while it is playing something
+MailboxAlert.sound = Components.classes["@mozilla.org/sound;1"].createInstance(Components.interfaces.nsISound);
+MailboxAlert.sound.init();
+
+
 //
 // We have 2 structures that represent configuration values
 //

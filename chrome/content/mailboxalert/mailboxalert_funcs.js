@@ -451,8 +451,6 @@ MailboxAlert.playSound = function (soundURL) {
     if (MailboxAlert.muted()) {
         return;
     }
-    var gSound = Components.classes["@mozilla.org/sound;1"].createInstance(Components.interfaces.nsISound);
-    gSound.init();
     if (soundURL) {
           if (soundURL.indexOf("file://") == -1) {
               soundURL = "file://" + soundURL;
@@ -464,12 +462,12 @@ MailboxAlert.playSound = function (soundURL) {
         var ioService = Components.classes["@mozilla.org/network/io-service;1"]
                .getService(Components.interfaces.nsIIOService);
         var url = ioService.newURI(soundURL, null, null);
-        gSound.play(url);
+        MailboxAlert.sound.play(url);
     } catch(e) {
         // some error, just 'beep' (which is system-dependent
         // these days)
         dump("[XX] exception playing sound: " + e);
-        gSound.beep();
+        MailboxAlert.sound.beep();
     }
 }
 
@@ -591,7 +589,7 @@ MailboxAlert.executeCommand = function (alert_data, command, escape_html) {
         // then catch NS_UNEXPECTED
         if (!exec.exists()) {
             var stringsBundle = document.getElementById("mailboxalert_strings");
-            alert(stringsBundle.getString('mailboxalert.error')+"\n" + exec.leafName + " " + stringsBundle.getString('mailboxalert.error.notfound') + "\n\nFull path: "+executable_name+"\n\n" + stringsBundle.getString('mailboxalert.error.disableexecutefor') + " " + alert_data.folder_name_with_server);
+            alert(stringsBundle.getString('mailboxalert.error')+"\n" + exec.leafName + " " + stringsBundle.getString('mailboxalert.error.notfound') + "\n\nFull path: "+executable_name+"\n");
             dump("Failed command:  " +executable_name + "\r\n");
             dump("Arguments: " + args + "\r\n");
             var caller = window.arguments[0];
@@ -614,7 +612,7 @@ MailboxAlert.executeCommand = function (alert_data, command, escape_html) {
             e.name == "NS_ERROR_UNEXPECTED"
            ) {
             var stringsBundle = document.getElementById("mailboxalert_strings");
-            alert(stringsBundle.getString('mailboxalert.error')+"\n" + exec.leafName + " " + stringsBundle.getString('mailboxalert.error.notfound') + "\n\nFull path: "+executable_name+"\n\n" + stringsBundle.getString('mailboxalert.error.disableexecutefor') + " " + folder);
+            alert(stringsBundle.getString('mailboxalert.error')+"\n" + exec.leafName + " " + stringsBundle.getString('mailboxalert.error.notfound') + "\n\nFull path: "+executable_name+"\n");
             if (caller) {
                 var executecommandcheckbox = document.getElementById('mailboxalert_execute_command');
                 executecommandcheckbox.checked = false;
@@ -629,18 +627,8 @@ MailboxAlert.executeCommand = function (alert_data, command, escape_html) {
             alert(stringsBundle.getString('mailboxalert.error') + "\r\n\r\n" +
                   stringsBundle.getString('mailboxalert.error.badcommandpath1') +
                   " " + alert_data.folder_name_with_server + " " +
-                  stringsBundle.getString('mailboxalert.error.badcommandpath2')  +
-                  "\r\n\r\n" +
-                  stringsBundle.getString('mailboxalert.error.disableexecutefor') + " " + alert_data.folder_name_with_server);
+                  stringsBundle.getString('mailboxalert.error.badcommandpath2'));
                     var caller = window.arguments[0];
-            if (caller) {
-                var executecommandcheckbox = document.getElementById('mailboxalert_execute_command');
-                executecommandcheckbox.checked = false;
-                setUIExecuteCommandPrefs(false);
-            } else {
-                var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
-                prefs.setBoolPref("extensions.mailboxalert.execute_command." + alert_data.folder_name_with_server, false);
-            }
         } else {
             throw e;
         }

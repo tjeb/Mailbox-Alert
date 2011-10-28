@@ -1,3 +1,8 @@
+[0.15.3-0.15.4]
+  o Sound playback should no longer be interrupted
+  
+  
+
 [0.15.2-0.15.3]
   o Fixed a bug when selecting a new icon and an alert was shown
   o Fixed a bug when selecting a new icon and the window was not
