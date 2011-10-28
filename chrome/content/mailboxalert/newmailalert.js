@@ -284,8 +284,8 @@ MailboxAlertNewMail.slideInTop = function ()
             // timer on a repeated basis again
             if (this.duration > 0) {
                 this.timer.cancel();
-                            this.timer.initWithCallback(this, this.duration * 1000, this.timer.TYPE_ONE_SHOT);
-                    }
+                this.timer.initWithCallback(this, this.duration * 1000, this.timer.TYPE_ONE_SHOT);
+            }
         }
     } catch (e) {
         dump("Error moving window, closing window\n");
