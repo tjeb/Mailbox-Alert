@@ -37,10 +37,10 @@ MailboxAlert.max_folder_depth = 10;
 /* Time to wait before trying for the first time, so that
    the adaptive junk filter can have its way with the folder
    first (in milliseconds) */
-MailboxAlert.initial_wait_time = 2000;
+MailboxAlert.INITIAL_WAIT_TIME = 3000;
 
-/* Time to wait before retrying busy folders (in milliseconds) */
-MailboxAlert.wait_time = 5000;
+/* Time to wait if the alert queue is locked */
+MailboxAlert.WAIT_TIME = 100;
 
 /* Variable to store a renamed folder (we're assuming there's only
  * going to be one renamed folder at a time)

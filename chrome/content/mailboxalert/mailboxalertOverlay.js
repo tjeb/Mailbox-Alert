@@ -144,13 +144,42 @@ MailboxAlert.newMailListener = {
 MailboxAlert.alertQueue = {};
 MailboxAlert.alertQueue.entries = new Array();
 
+// Add a (folder, item) object to the alertQueue.
+// If the alert queue is locked, create an nsITimer callback option
+// to add it as soon as the queue becomes unlocked (or until a number
+// of attempts to get the lock has failed)
+MailboxAlert.alertQueueItemAdder = function(folder, item) {
+    var item_adder = {}
+    item_adder.timer = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
+    item_adder.folder = folder;
+    item_adder.item = item;
+    item_adder.attempts = 0;
+    
+    item_adder.notify = function(timer) {
+        if (this.attempts > 100) {
+            this.timer.cancel();
+            return;
+        }
+        if (MailboxAlert.alertQueue.getLock()) {
+            dump("[XX] got lock, adding item\n");
+            MailboxAlert.alertQueue.addItem(folder, item);
+            dump("[XX] item added, releasing lock\n");
+            MailboxAlert.alertQueue.releaseLock();
+        } else {
+            dump("[XX] queue locked, retry in 100 ms\n");
+            item_adder.timer.initWithCallback(item_adder, MailboxAlert.WAIT_TIME, item_adder.timer.TYPE_ONE_SHOT);
+        }
+    }
+    // Immediately fire it once
+    item_adder.timer.initWithCallback(item_adder, 0, item_adder.timer.TYPE_ONE_SHOT);
+}
+
 MailboxAlert.alertQueue.getLock = function() {
     if (!this.locked) {
         this.locked = true;
+        return true;
     } else {
-        while(true) {
-            dump("[XX] wait for lock\n");
-        };
+        return false;
     }
 }
 
@@ -159,121 +188,116 @@ MailboxAlert.alertQueue.releaseLock = function() {
 }
 
 // This adds an entry to a stack, and removes it from any other queues it is in
+// The queue must have been locked already.
 MailboxAlert.alertQueue.addItem = function (folder, item) {
-    this.getLock();
-        // Since we are locking here, do everything in a try-block
-        //try {
-        dump("[XX] alertQueue.addItem() called for " + folder.URI + "\n");
-        dump("[XX] ITEM: " + item.messageKey + "\n");
-        dump("[XX] ITEM ID: " + item.messageId + "\n");
-        var enum = item.propertyEnumerator;
-        while (enum.hasMore()) {
-            dump("[XX] PROPERTY: " + enum.getNext() + "\n");
-        }
-        var found = false;
-        for (var i = 0; i < this.entries.length; i++) {
-            var cur_entry = this.entries[i];
-            if (cur_entry.folder == folder) {
-                dump("[XX] folder found in currently running timers\n");
-                // Add to queue
-                cur_entry.items.push(item);
-                found = true;
-                // Reset timer
-                cur_entry.timer.cancel();
-                cur_entry.timer.initWithCallback(cur_entry, 4000, cur_entry.timer.TYPE_ONE_SHOT);
+    dump("[XX] alertQueue.addItem() called for " + folder.URI + "\n");
+    dump("[XX] ITEM: " + item.messageKey + "\n");
+    dump("[XX] ITEM ID: " + item.messageId + "\n");
+    var enum = item.propertyEnumerator;
+    while (enum.hasMore()) {
+        dump("[XX] PROPERTY: " + enum.getNext() + "\n");
+    }
+    var found = false;
+    for (var i = 0; i < this.entries.length; i++) {
+        var cur_entry = this.entries[i];
+        if (cur_entry.folder == folder) {
+            dump("[XX] folder found in currently running timers\n");
+            // Add to queue
+            cur_entry.items.push(item);
+            found = true;
+            // Reset timer
+            cur_entry.timer.cancel();
+            cur_entry.timer.initWithCallback(cur_entry, MailboxAlert.INITIAL_WAIT_TIME, cur_entry.timer.TYPE_ONE_SHOT);
+        } else {
+            // Remove from any other queues
+            var idx;
+
+            // TB may have performed some cleanup already, so we might need to do the same
+            var items_to_keep = new Array();
+            for (idx = 0; idx < cur_entry.items.length; idx++) {
+                if (cur_entry.items[idx].messageId != "") {
+                    items_to_keep.push(cur_entry.items[idx]);
+                }
+            }
+            cur_entry.items = items_to_keep;
+
+            // Now see if it is still present
+            for (idx = cur_entry.items.length -1; idx >= -1; idx--) {
+                if (idx == -1) {
+                    break;
+                }
+                
+                dump("[XX] TRY: " + idx + " " + cur_entry.items[idx] + " against " + item + "\n");
+                dump("[XX] TRY: '" + cur_entry.items[idx].messageId + "' against " + item.messageId + "\n");
+                var enum = cur_entry.items[idx].propertyEnumerator;
+                while (enum.hasMore()) {
+                    dump("[XX] property: " + enum.getNext() + "\n");
+                }
+                // If TB has removed it already, messageId is "", in that
+                // case, remove it too
+                if (cur_entry.items[idx].messageId || m_id == item.messageId) {
+                    break;
+                }
+            }
+            if (idx != -1) {
+                dump("[XX] item found in list for different folder\n");
+                cur_entry.items.splice(idx, 1);
             } else {
-                // Remove from any other queues
-                var idx;
-
-                // TB may have performed some cleanup already, so we might need to do the same
-                var items_to_keep = new Array();
-                for (idx = 0; idx < cur_entry.items.length; idx++) {
-                    if (cur_entry.items[idx].messageId != "") {
-                        items_to_keep.push(cur_entry.items[idx]);
-                    }
-                }
-                cur_entry.items = items_to_keep;
-
-                // Now see if it is still present
-                for (idx = cur_entry.items.length -1; idx >= -1; idx--) {
-                    if (idx == -1) {
-                        break;
-                    }
-                    
-                    dump("[XX] TRY: " + idx + " " + cur_entry.items[idx] + " against " + item + "\n");
-                    dump("[XX] TRY: '" + cur_entry.items[idx].messageId + "' against " + item.messageId + "\n");
-                    var enum = cur_entry.items[idx].propertyEnumerator;
-                    while (enum.hasMore()) {
-                        dump("[XX] property: " + enum.getNext() + "\n");
-                    }
-                    // If TB has removed it already, messageId is "", in that
-                    // case, remove it too
-                    if (cur_entry.items[idx].messageId || m_id == item.messageId) {
-                        break;
-                    }
-                }
+                dump("[XX] item " + item.messageKey + " not in entry for " + cur_entry.folder.URI + "\n");
+                dump("[XX] item " + item.messageId + " not in entry for " + cur_entry.folder.URI + "\n");
+            }
+            // If the entry now has no items, remove it from the queue
+            if (cur_entry.items.length == 0) {
+                dump("[XX] queue for " + cur_entry.folder.URI + " emtpy, removing\n");
+                cur_entry.timer.cancel();
+                idx = this.entries.indexOf(cur_entry);
                 if (idx != -1) {
-                    dump("[XX] item found in list for different folder\n");
-                    cur_entry.items.splice(idx, 1);
-                } else {
-                    dump("[XX] item " + item.messageKey + " not in entry for " + cur_entry.folder.URI + "\n");
-                    dump("[XX] item " + item.messageId + " not in entry for " + cur_entry.folder.URI + "\n");
-                }
-                // If the entry now has no items, remove it from the queue
-                if (cur_entry.items.length == 0) {
-                    dump("[XX] queue for " + cur_entry.folder.URI + " emtpy, removing\n");
-                    cur_entry.timer.cancel();
-                    idx = this.entries.indexOf(cur_entry);
-                    if (idx != -1) {
-                        this.entries.splice(idx, 1);
-                    }
+                    this.entries.splice(idx, 1);
                 }
             }
         }
-        if (!found) {
-            // Create and entry and start the timer
-            var new_entry = {};
-            new_entry.folder = folder;
-            new_entry.items = new Array();
-            new_entry.items.push(item);
-            dump("[XX] Pushed " + item.messageId + " to " + new_entry.folder.URI + "\n");
-            dump("[XX] In the array that is: " + new_entry.items[new_entry.items.length - 1].messageId + "\n");
-            new_entry.timer = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
-            new_entry.notify = function(timer) {
-                dump("[XX] timer for " + this.folder.URI + " fired\n");
-                // TODO remove from queue once done
-                MailboxAlert.alertQueue.getLock();
-                var folder;
-                var alert_msg;
-                // lock, so try-catch
-                //try {
-                    dump("[XX] got lock after timer\n");
-                    var idx = MailboxAlert.alertQueue.entries.indexOf(this);
-                    dump("[XX] entry removed\n");
-                    dump("[XX] after fire alertqueue contains " + MailboxAlert.alertQueue.entries.length + " items\n");
-                    folder = this.folder;
-                    // popping it is no problem; we'll destroy this whole array anyway
-                    alert_msg = this.items.pop();
-                    MailboxAlert.alertQueue.entries.splice(idx, 1);
-                //} catch (e) {
-                    //dump("Error handling item from queue\n");
-                //}
+    }
+    if (!found) {
+        // Create and entry and start the timer
+        var new_entry = {};
+        new_entry.folder = folder;
+        new_entry.items = new Array();
+        new_entry.items.push(item);
+        dump("[XX] Pushed " + item.messageId + " to " + new_entry.folder.URI + "\n");
+        dump("[XX] In the array that is: " + new_entry.items[new_entry.items.length - 1].messageId + "\n");
+        new_entry.timer = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
+        new_entry.notify = function(timer) {
+            dump("[XX] timer for " + this.folder.URI + " fired\n");
+            // TODO remove from queue once done
+            var folder = null;
+            var alert_msg = null;
+            if (MailboxAlert.alertQueue.getLock()) {
+                dump("[XX] got lock after timer\n");
+                var idx = MailboxAlert.alertQueue.entries.indexOf(this);
+                dump("[XX] entry removed\n");
+                dump("[XX] after fire alertqueue contains " + MailboxAlert.alertQueue.entries.length + " items\n");
+                folder = this.folder;
+                // popping it is no problem; we'll destroy this whole array anyway
+                alert_msg = this.items.pop();
+                MailboxAlert.alertQueue.entries.splice(idx, 1);
                 MailboxAlert.alertQueue.releaseLock();
-                dump("[XX] calling alert for " + folder.URI + " item " + alert_msg.messageKey + "\n");
-                MailboxAlert.new_alert(folder, alert_msg);
-                var menum = alert_msg.propertyEnumerator;
-                while (menum.hasMore()) {
-                    dump("[XX] ALERTMSG PROPERTY: " + menum.getNext() + "\n");
-                }
+            } else {
+                // try again in 100 ms
+                dump("[XX] queue locked when timer for alert fired, trying again in 100 ms\n");
+                this.timer.initWithCallback(new_entry, MailboxAlert.WAIT_TIME, new_entry.timer.TYPE_ONE_SHOT);
             }
-            new_entry.timer.initWithCallback(new_entry, 4000, new_entry.timer.TYPE_ONE_SHOT);
-            this.entries.push(new_entry);
+            dump("[XX] calling alert for " + folder.URI + " item " + alert_msg.messageKey + "\n");
+            if (folder != null && alert_msg != null) {
+                MailboxAlert.new_alert(folder, alert_msg);
+            }
         }
+        new_entry.timer.initWithCallback(new_entry, MailboxAlert.INITIAL_WAIT_TIME, new_entry.timer.TYPE_ONE_SHOT);
+        this.entries.push(new_entry);
+    }
     //} catch (e) {
         //dump("Error during addition to queue: " + e + "\n");
     //}
     dump("[XX] alertqueue contains " + this.entries.length + " items\n");
-    this.releaseLock();
 }
 
 // A queue of timers
@@ -422,7 +446,8 @@ MailboxAlert.folderUpdater = {
             // Now start a timer, if there is still new mail in the folder
             // when it fires, do the alert.
             //MailboxAlert.alertTimers.addFolder(folder);
-            MailboxAlert.alertQueue.addItem(folder, item);
+            //MailboxAlert.alertQueue.addItem(folder, item);
+            MailboxAlert.alertQueueItemAdder(folder, item);
             dump("folder added\n");
         }
     }
