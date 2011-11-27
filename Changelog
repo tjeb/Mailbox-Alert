@@ -1,6 +1,10 @@
 [0.15.3-0.15.4]
   o Sound playback should no longer be interrupted
-  
+  o Reworked the internal triggering system; reintroduced delays
+    to prevent multiple messages in one folder causing multiple
+    alerts, and fixed the 'double alert' issue for filters. This
+    should also fix the problem where sometimes alerts weren't
+    fired at all.
   
 
 [0.15.2-0.15.3]
