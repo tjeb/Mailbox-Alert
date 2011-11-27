@@ -68,38 +68,6 @@ MailboxAlert.checkOldSettings = function () {
     }
 }
 
-// This object is used as a Listener callback for thunderbird 3 and up
-/*
-MailboxAlert.newMailListener = {
-    msgsClassified: function (aMsgs,
-                              aJunkProcessed,
-                              aTraitProcessed) {
-        // Only alert for the last one. If people want an alert fired for every message,
-        // they can use a filter action
-        // directly addressing the element with length-1 does not appear to work,
-        // so just loop through the messages
-        
-        // Unfortunately, this event seems to be fired too soon; the
-        // user-set filters have not been run yet. As a result, we will
-        // still have to wait for a bit, then recheck if the mail has not
-        // been moved to another folder.
-        // (a slight advantage is that we then
-        dump("[XX] msgsClassified event called\n");
-        var msg_enum = aMsgs.enumerate();
-        var last = msg_enum.getNext();
-        while (msg_enum.hasMoreElements()) {
-            last = msg_enum.getNext();
-        }
-        var message = last.QueryInterface(Components.interfaces.nsIMsgDBHdr);
-        if (!message.isRead) {
-            dump("[XX] folder URI: " + message.folder.URI + "\n")
-            dump("[XX] subject: " + message.mime2DecodedSubject + "\n")
-            MailboxAlert.new_alert(message.folder, message);
-        }
-    }
-}
-*/
-
 // Alert Queue
 //
 // Since items may be moved by custom filters shortly after they were
@@ -161,9 +129,13 @@ MailboxAlert.alertQueueItemAdder = function(folder, item) {
             return;
         }
         if (MailboxAlert.alertQueue.getLock()) {
-            dump("[XX] got lock, adding item\n");
-            MailboxAlert.alertQueue.addItem(folder, item);
-            dump("[XX] item added, releasing lock\n");
+            try {
+                dump("[XX] got lock, adding item\n");
+                MailboxAlert.alertQueue.addItem(folder, item);
+                dump("[XX] item added, releasing lock\n");
+            } catch (e) {
+                dump("Error while adding item to alert queue: " + e + "\n");
+            }
             MailboxAlert.alertQueue.releaseLock();
         } else {
             dump("[XX] queue locked, retry in 100 ms\n");
@@ -191,12 +163,6 @@ MailboxAlert.alertQueue.releaseLock = function() {
 // The queue must have been locked already.
 MailboxAlert.alertQueue.addItem = function (folder, item) {
     dump("[XX] alertQueue.addItem() called for " + folder.URI + "\n");
-    dump("[XX] ITEM: " + item.messageKey + "\n");
-    dump("[XX] ITEM ID: " + item.messageId + "\n");
-    var enum = item.propertyEnumerator;
-    while (enum.hasMore()) {
-        dump("[XX] PROPERTY: " + enum.getNext() + "\n");
-    }
     var found = false;
     for (var i = 0; i < this.entries.length; i++) {
         var cur_entry = this.entries[i];
@@ -207,12 +173,15 @@ MailboxAlert.alertQueue.addItem = function (folder, item) {
             found = true;
             // Reset timer
             cur_entry.timer.cancel();
-            cur_entry.timer.initWithCallback(cur_entry, MailboxAlert.INITIAL_WAIT_TIME, cur_entry.timer.TYPE_ONE_SHOT);
+            cur_entry.timer.initWithCallback(cur_entry,
+                                             MailboxAlert.INITIAL_WAIT_TIME,
+                                             cur_entry.timer.TYPE_ONE_SHOT);
         } else {
             // Remove from any other queues
             var idx;
 
-            // TB may have performed some cleanup already, so we might need to do the same
+            // TB may have performed some cleanup already, so we might need to
+            // do the same
             var items_to_keep = new Array();
             for (idx = 0; idx < cur_entry.items.length; idx++) {
                 if (cur_entry.items[idx].messageId != "") {
@@ -226,29 +195,16 @@ MailboxAlert.alertQueue.addItem = function (folder, item) {
                 if (idx == -1) {
                     break;
                 }
-                
-                dump("[XX] TRY: " + idx + " " + cur_entry.items[idx] + " against " + item + "\n");
-                dump("[XX] TRY: '" + cur_entry.items[idx].messageId + "' against " + item.messageId + "\n");
-                var enum = cur_entry.items[idx].propertyEnumerator;
-                while (enum.hasMore()) {
-                    dump("[XX] property: " + enum.getNext() + "\n");
-                }
-                // If TB has removed it already, messageId is "", in that
-                // case, remove it too
-                if (cur_entry.items[idx].messageId || m_id == item.messageId) {
+
+                if (m_id == item.messageId) {
                     break;
                 }
             }
             if (idx != -1) {
-                dump("[XX] item found in list for different folder\n");
                 cur_entry.items.splice(idx, 1);
-            } else {
-                dump("[XX] item " + item.messageKey + " not in entry for " + cur_entry.folder.URI + "\n");
-                dump("[XX] item " + item.messageId + " not in entry for " + cur_entry.folder.URI + "\n");
             }
             // If the entry now has no items, remove it from the queue
             if (cur_entry.items.length == 0) {
-                dump("[XX] queue for " + cur_entry.folder.URI + " emtpy, removing\n");
                 cur_entry.timer.cancel();
                 idx = this.entries.indexOf(cur_entry);
                 if (idx != -1) {
@@ -264,22 +220,23 @@ MailboxAlert.alertQueue.addItem = function (folder, item) {
         new_entry.items = new Array();
         new_entry.items.push(item);
         dump("[XX] Pushed " + item.messageId + " to " + new_entry.folder.URI + "\n");
-        dump("[XX] In the array that is: " + new_entry.items[new_entry.items.length - 1].messageId + "\n");
         new_entry.timer = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
         new_entry.notify = function(timer) {
             dump("[XX] timer for " + this.folder.URI + " fired\n");
-            // TODO remove from queue once done
             var folder = null;
             var alert_msg = null;
             if (MailboxAlert.alertQueue.getLock()) {
-                dump("[XX] got lock after timer\n");
-                var idx = MailboxAlert.alertQueue.entries.indexOf(this);
-                dump("[XX] entry removed\n");
-                dump("[XX] after fire alertqueue contains " + MailboxAlert.alertQueue.entries.length + " items\n");
-                folder = this.folder;
-                // popping it is no problem; we'll destroy this whole array anyway
-                alert_msg = this.items.pop();
-                MailboxAlert.alertQueue.entries.splice(idx, 1);
+                dump("[XX] got lock when timer for alert fired\n");
+                try {
+                    var idx = MailboxAlert.alertQueue.entries.indexOf(this);
+                    folder = this.folder;
+                    // popping it is no problem; we'll destroy this whole array anyway
+                    alert_msg = this.items.pop();
+                    MailboxAlert.alertQueue.entries.splice(idx, 1);
+                    dump("[XX] after fire alertqueue contains " + MailboxAlert.alertQueue.entries.length + " items\n");
+                } catch (e) {
+                    dump("Error while adding item to alert queue: " + e + "\n");
+                }
                 MailboxAlert.alertQueue.releaseLock();
             } else {
                 // try again in 100 ms
@@ -287,143 +244,22 @@ MailboxAlert.alertQueue.addItem = function (folder, item) {
                 this.timer.initWithCallback(new_entry, MailboxAlert.WAIT_TIME, new_entry.timer.TYPE_ONE_SHOT);
             }
             dump("[XX] calling alert for " + folder.URI + " item " + alert_msg.messageKey + "\n");
-            if (folder != null && alert_msg != null) {
+            // Only alert if it hasn't already been read
+            if (folder != null && alert_msg != null && !alert_msg.isRead) {
                 MailboxAlert.new_alert(folder, alert_msg);
             }
         }
         new_entry.timer.initWithCallback(new_entry, MailboxAlert.INITIAL_WAIT_TIME, new_entry.timer.TYPE_ONE_SHOT);
         this.entries.push(new_entry);
     }
-    //} catch (e) {
-        //dump("Error during addition to queue: " + e + "\n");
-    //}
     dump("[XX] alertqueue contains " + this.entries.length + " items\n");
 }
-
-// A queue of timers
-// Folders that are added get a timer, if the folder is already present,
-// the call will noop. If not, the timer is started.
-// When the timer fires, the folder will be removed from the queue. For its
-// last new message an alert will be fired.
-
-/*
-MailboxAlert.alertTimers = {}
-*/
-// Very basic locking. Do we have real mutexes available from scripts?
-/*
-MailboxAlert.alertTimers.locked = false;
-MailboxAlert.alertTimers.folders = Array();
-MailboxAlert.alertTimers.getLock = function() {
-    dump("getting lock\n");
-    while (this.locked) {
-        // sleep?
-    }
-    dump("got lock\n");
-    this.locked = true;
-}
-MailboxAlert.alertTimers.unlock = function () {
-    dump("unlock\n");
-    this.locked = false;
-}
-MailboxAlert.alertTimers.addFolder = function (folder, item) {
-    this.getLock();
-    // as soon as we have a lock, we put everything in a try-catch,
-    // so that we are sure we unlock
-    try {
-        var found = false;
-        for (var i = 0; i < this.folders.length; i++) {
-            if (this.folders[i] == folder) {
-                found = true;
-            }
-        }
-        dump("found folder? " + found + "\n");
-        if (!found) {
-            this.folders.push(folder);
-            MailboxAlert.createAlertTimer(folder);
-            dump("timer started\n")
-            // TODO: are timers getting lost?
-            // TODO2: if there are unreads left in the original folder,
-            // it will fire by accident
-        }
-    } catch (e) {
-        dump("Error during alert timer handling: " + e + "\n");
-    }
-    this.unlock();
-}
-
-// Create a one-shot timer object that when fires, runs the checks and alerts
-MailboxAlert.createAlertTimer = function(folder) {
-    var timer_obj = {}
-    timer_obj.folder = folder;
-    timer_obj.notify = function(timer) {
-        dump("timer fired\n");
-        MailboxAlert.alertTimers.getLock();
-        // we keep track of whether we need to fire, and do so *after* we
-        // are completely done and have unlocked (in case the alert itself
-        // causes any problems
-        var last_unread = null;
-        // as soon as we have a lock, we put everything in a try-catch,
-        // so that we are sure we unlock
-        try {
-            var new_array = Array()
-            if (MailboxAlert.alertTimers.folders.length == 0) {
-                MailboxAlert.alertTimers.unlock();
-                dump("no folders in queue\n");
-                return;
-            }
-            var alert_folder = null;
-            while (MailboxAlert.alertTimers.folders.length > 0) {
-                var cur_folder = MailboxAlert.alertTimers.folders.shift();
-                if (cur_folder == this.folder) {
-                    alert_folder = cur_folder;
-                } else {
-                    new_array.push(cur_folder);
-                }
-            }
-            if (alert_folder != null) {
-                dump("pulled relevant folder from queue\n");
-
-                // Find the last unread message and alert
-                if (alert_folder.getNumUnread(false) > 0) {
-                    var info = {};
-                    var msgdb = alert_folder.getDBFolderInfoAndDB(info);
-                    var enumerator = msgdb.EnumerateMessages();
-                    while (enumerator.hasMoreElements()) {
-                        var cur_hdr = enumerator.getNext();
-                        if (!cur_hdr.isRead) {
-                            last_unread = cur_hdr;
-                        }
-                    }
-                } else {
-                    dump("no unread messages in folder\n");
-                }
-            } else {
-                dump("relevant folder not found in queue\n");
-            }
-            MailboxAlert.alertTimers.folders = new_array;
-        } catch (e) {
-            dump("Error during alert timer handling: " + e + "\n");
-        }
-        MailboxAlert.alertTimers.unlock();
-        if (last_unread != null) {
-            dump("fire new alert\n");
-            dump("alert folder: " + folder.URI);
-            MailboxAlert.new_alert(folder, last_unread);
-        } else {
-            dump("no unread message found\n");
-        }
-    }
-
-    var timer = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
-
-    timer.initWithCallback(timer_obj, 1000, timer.TYPE_ONE_SHOT);
-}
-*/
 
 // This object is called as a listener callback to force folders to be updated
 // whenever mail appears to arrive
 // A possible improvement here is to check whether it really needs to (i.e.
 // whether this folder has any alerts)
+/* This is currently not used, but may turn out to be necessary
 MailboxAlert.folderUpdater = {
     OnItemIntPropertyChanged: function(item, property, oldValue, newValue)
     {
@@ -434,10 +270,10 @@ MailboxAlert.folderUpdater = {
             dump("try updateFolder\n");
             try {
                 ///*
-                var windowManager = Components.classes['@mozilla.org/appshell/window-mediator;1'].getService();
-                var windowManagerInterface = windowManager.QueryInterface(Components.interfaces.nsIWindowMediator);
-                var mailWindow = windowManagerInterface.getMostRecentWindow( "mail:3pane" );
-                folder.updateFolder(mailWindow.msgWindow);
+                //var windowManager = Components.classes['@mozilla.org/appshell/window-mediator;1'].getService();
+                //var windowManagerInterface = windowManager.QueryInterface(Components.interfaces.nsIWindowMediator);
+                //var mailWindow = windowManagerInterface.getMostRecentWindow( "mail:3pane" );
+                //folder.updateFolder(mailWindow.msgWindow);
             } catch (e) {
                 // OK, this does not always work, but as this is only a hint to get the
                 // folder to update, we don't really care.
@@ -445,13 +281,12 @@ MailboxAlert.folderUpdater = {
             }
             // Now start a timer, if there is still new mail in the folder
             // when it fires, do the alert.
-            //MailboxAlert.alertTimers.addFolder(folder);
-            //MailboxAlert.alertQueue.addItem(folder, item);
             MailboxAlert.alertQueueItemAdder(folder, item);
             dump("folder added\n");
         }
     }
 }
+*/
 
 MailboxAlert.FolderListener = function ()
 {
