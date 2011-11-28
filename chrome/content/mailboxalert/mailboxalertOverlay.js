@@ -124,7 +124,8 @@ MailboxAlert.alertQueueItemAdder = function(folder, item) {
     item_adder.attempts = 0;
     
     item_adder.notify = function(timer) {
-        if (this.attempts > 100) {
+        if (this.attempts > MailboxAlert.ATTEMPTS) {
+            dump("[XX] queue still locked after 100 attempts\n");
             this.timer.cancel();
             return;
         }
@@ -138,7 +139,7 @@ MailboxAlert.alertQueueItemAdder = function(folder, item) {
             }
             MailboxAlert.alertQueue.releaseLock();
         } else {
-            dump("[XX] queue locked, retry in 100 ms\n");
+            dump("[XX] queue locked, retry in " + MailboxAlert.WAIT_TIME + " ms\n");
             item_adder.timer.initWithCallback(item_adder, MailboxAlert.WAIT_TIME, item_adder.timer.TYPE_ONE_SHOT);
         }
     }
@@ -196,7 +197,7 @@ MailboxAlert.alertQueue.addItem = function (folder, item) {
                     break;
                 }
 
-                if (m_id == item.messageId) {
+                if (cur_entry.items[idx].messageId == item.messageId) {
                     break;
                 }
             }
@@ -240,7 +241,7 @@ MailboxAlert.alertQueue.addItem = function (folder, item) {
                 MailboxAlert.alertQueue.releaseLock();
             } else {
                 // try again in 100 ms
-                dump("[XX] queue locked when timer for alert fired, trying again in 100 ms\n");
+                dump("[XX] queue locked when timer for alert fired, trying again in " + MailboxAlert.WAIT_TIME + " ms\n");
                 this.timer.initWithCallback(new_entry, MailboxAlert.WAIT_TIME, new_entry.timer.TYPE_ONE_SHOT);
             }
             dump("[XX] calling alert for " + folder.URI + " item " + alert_msg.messageKey + "\n");

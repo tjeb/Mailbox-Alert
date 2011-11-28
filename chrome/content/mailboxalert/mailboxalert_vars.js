@@ -40,7 +40,9 @@ MailboxAlert.max_folder_depth = 10;
 MailboxAlert.INITIAL_WAIT_TIME = 3000;
 
 /* Time to wait if the alert queue is locked */
-MailboxAlert.WAIT_TIME = 100;
+MailboxAlert.WAIT_TIME = 500;
+/* Stop after 10 attempts */
+MailboxAlert.ATTEMPTS = 10;
 
 /* Variable to store a renamed folder (we're assuming there's only
  * going to be one renamed folder at a time)
