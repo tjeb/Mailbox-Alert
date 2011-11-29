@@ -214,8 +214,8 @@ MailboxAlertNewMail.onAlertLoad = function ()
     this.timer_state = this.WAITING;
     if (this.duration > 0) {
         this.timer.cancel();
-		this.timer.initWithCallback(this, this.duration * 1000, this.timer.TYPE_ONE_SHOT);
-	}
+        this.timer.initWithCallback(this, this.duration * 1000, this.timer.TYPE_ONE_SHOT);
+    }
   }
 }
 
@@ -337,8 +337,8 @@ MailboxAlertNewMail.slideInBottom = function ()
             // timer on a repeated basis again
             if (this.duration > 0) {
                 this.timer.cancel();
-                            this.timer.initWithCallback(this, this.duration * 1000, this.timer.TYPE_ONE_SHOT);
-                    }
+                this.timer.initWithCallback(this, this.duration * 1000, this.timer.TYPE_ONE_SHOT);
+            }
         }
     } catch (e) {
         dump("Error moving window, closing window\n");
@@ -488,20 +488,26 @@ MailboxAlertNewMail.fadeOpen = function ()
     if (newOpacity >= 1.0) {
         // switch gears and start closing the alert
         this.timer_state = this.WAITING;
-		if (this.duration > 0) {
+        if (this.duration > 0) {
             this.timer.cancel();
-			this.timer.initWithCallback(this, 1000 * this.duration, this.timer.TYPE_ONE_SHOT);
-		}
+            this.timer.initWithCallback(this, 1000 * this.duration, this.timer.TYPE_ONE_SHOT);
+        }
     }
 }
 
 MailboxAlertNewMail.fadeClose = function ()
 {
-    var alertContainer = document.getElementById('alertContainer');
-    var newOpacity = parseFloat(window.getComputedStyle(alertContainer, "").opacity) - this.gFadeIncrement;
-    alertContainer.style.opacity = newOpacity;
-
-    if (newOpacity <= 0) {
+    if (document) {
+        var alertContainer = document.getElementById('alertContainer');
+        var newOpacity = parseFloat(window.getComputedStyle(alertContainer, "").opacity) - this.gFadeIncrement;
+        alertContainer.style.opacity = newOpacity;
+        dump("[XX] newOpacity: " + newOpacity + "\n");
+        if (newOpacity <= 0) {
+            this.timer.cancel();
+            this.timer_state = this.DONE;
+            window.close();
+        }
+    } else {
         this.timer.cancel();
         this.timer_state = this.DONE;
         window.close();
@@ -669,6 +675,7 @@ MailboxAlertNewMail.notify = function(timer) {
     // close automatically, after which this function is called until
     // we have faded or slided out again.
     // note: every time we close the window, we should cancel the timer
+    dump("[XX] State: " + this.timer_state + "\n");
     try {
         if (this.timer_state == this.SLIDING_IN_TOP) {
             this.slideInTop();
@@ -684,9 +691,12 @@ MailboxAlertNewMail.notify = function(timer) {
             this.fadeClose();
         } else if (this.timer_state == this.WAITING) {
             this.closeAlert();
+        } else {
+            timer.cancel();
+            window.close();
         }
     } catch (e) {
-        this.timer.cancel();
+        timer.cancel();
         dump("[XX] error4: " + e + "\n");
         window.close();
     }

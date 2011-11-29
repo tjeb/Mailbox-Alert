@@ -246,7 +246,8 @@ MailboxAlert.alertQueue.addItem = function (folder, item) {
             }
             dump("[XX] calling alert for " + folder.URI + " item " + alert_msg.messageKey + "\n");
             // Only alert if it hasn't already been read
-            if (folder != null && alert_msg != null && !alert_msg.isRead) {
+            if (folder != null && alert_msg != null &&
+                !alert_msg.isRead && alert_msg.messageId != "") {
                 MailboxAlert.new_alert(folder, alert_msg);
             }
         }
