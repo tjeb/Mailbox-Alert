@@ -5,6 +5,9 @@
     alerts, and fixed the 'double alert' issue for filters. This
     should also fix the problem where sometimes alerts weren't
     fired at all.
+  o Removed the call to updateFolder() which may be the cause
+    of seemingly unrelated caching problems in Thunderbird
+  o Fixed a looping issue in the closing of fading alerts
 
 [0.15.2-0.15.3]
   o Fixed a bug when selecting a new icon and an alert was shown
