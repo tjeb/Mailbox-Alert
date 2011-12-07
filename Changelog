@@ -1,4 +1,10 @@
-[0.15.3-0.15.4]
+[0.16-0.16.1]
+  o The final file that got uploaded as 0.16 had missed a few final
+    cleanup updates and fixes, one of which can cause some messages
+    not to appear, and one where the fade option causes a loop.
+    These issues should be fixed in this version.
+
+[0.15.3-0.16]
   o Sound playback should no longer be interrupted
   o Reworked the internal triggering system; reintroduced delays
     to prevent multiple messages in one folder causing multiple
