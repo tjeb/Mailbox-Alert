@@ -1,5 +1,10 @@
 #!/bin/sh
 
+#
+# Copyright 2010, Jelte Jansen
+# BSD licensed, see LICENSE for details
+#
+
 # This script creates the an xpi file (without version, rename later)
 # It takes one command; the name of the source directory (and xpi file)
 #

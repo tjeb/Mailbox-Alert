@@ -1,3 +1,12 @@
+//
+// Copyright 2012, Jelte Jansen
+// BSD licensed, see LICENSE for details
+//
+
+//
+// This file contains general setup code, and code to hook into
+// Thunderbird's messaging system.
+//
 
 MailboxAlert.getFolder = function () {
         try {

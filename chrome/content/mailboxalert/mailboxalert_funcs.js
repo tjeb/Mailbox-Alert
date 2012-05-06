@@ -1,3 +1,12 @@
+//
+// Copyright 2010, Jelte Jansen
+// BSD licensed, see LICENSE for details
+//
+
+//
+// This file contains most of the supporting functionality of Mailbox Alert
+//
+
 MailboxAlert.showMethods = function (obj) {
     dump("[Object] Type: " + obj + "\n");
     for (var id in obj) {

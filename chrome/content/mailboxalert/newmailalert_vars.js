@@ -1,20 +1,22 @@
+// Copyright 2012, Jelte Jansen
+// This code is licensed under a BSD license, see the
+// LICENSE file in the main directory.
+
+//
+// This file contains various general variables and constants used
+// in the show-alert code
+//
 
 if (typeof(MailboxAlertNewMail) == "undefined") {
     var MailboxAlertNewMail = {};
 }
 
-//MailboxAlertNewMail.HORIZONTAL = 1;
 MailboxAlertNewMail.LEFT = 2;
 MailboxAlertNewMail.TOP = 4;
 
 MailboxAlertNewMail.gSlideDistance = 1;
 MailboxAlertNewMail.gSlideTime = 15;
 MailboxAlertNewMail.gFadeTime = 50;
-//MailboxAlertNewMail.gNumNewMsgsToShowInAlert = 4; // the more messages we show in the alert, the larger it will be
-//MailboxAlertNewMail.gOpenTime = 3000; // total time the alert should stay up once we are done animating.
-//MailboxAlertNewMail.gAlertListener = null;
-//MailboxAlertNewMail.gPendingPreviewFetchRequests = 0;
-//MailboxAlertNewMail.gUserInitiated = false;
 MailboxAlertNewMail.gFadeIncrement = .05;
 MailboxAlertNewMail.gOrigin = 0;
 
