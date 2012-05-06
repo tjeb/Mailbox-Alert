@@ -1,18 +1,22 @@
+
+Short-term
+
+Plans for 0.17:
+- msg body
+- multiple alerts at the same time (per folder? global?)
+- initial configuration
+- selectable popup style
+- text for indefinite duration
+
 -: todo
 *: done
 
 Review issues:
-4) 4. When I press "test these settings" in Mailbox Alert Alert Configuration at first I got:
-
-[XX] error at undefined:600: [Exception... "Component returned failure code: 0x80520001 (NS_ERROR_FILE_UNRECOGNIZED_PATH) [nsILocalFile.leafName]"  nsresult: "0x80520001 (NS_ERROR_FILE_UNRECOGNIZED_PATH)"  location: "JS frame :: chrome://mailboxalert/content/mailboxalert_funcs.js :: <TOP_LEVEL> :: line 600"  data: no]
-
-This went away though.
-
 5) accesskeys should really be localized as well as names.
 
 
-Features:
-* indefinite popups
+Other ideas:
+- close any open window if tb gets focus?
 - msg preview
 - msg body
 - msg raw
@@ -20,19 +24,12 @@ Features:
     (what about storing it in a file, and pointing to that)
 - attachments to file
     (same idea, do we have mktemp?)
-* date-sent and time-sent
-* open-in-new-window and select-message
 - allow for quoting in settings
-* Run-after-tb-filters
 - 'alert on all new messages' option
 - tile options for show message
 - biff
 - use tb's built-in window
-* right-click on alert window
-* delete messages from popup window
-* aboslute positioning
 - slide for custom position
-- no closing of folder popup submenu
 
 - Automated tests
 - consistent debugging data
@@ -41,7 +38,7 @@ Features:
 -- check windows sound issue
     - new sound code in tb3?
 
-- color picker for alert window
+- color picker for alert window?
 
 - new icon
 - create default ding sound
