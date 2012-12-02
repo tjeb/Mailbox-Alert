@@ -148,27 +148,6 @@ MailboxAlert.createAlertData = function (mailbox, last_unread) {
 
     this.body = false;
 
-    this.getBodyCallback = function(hdr, mime_msg) {
-        this.body = "foo";
-        this.callback_needed = false;
-    }
-
-    // Returns the (main) message body through
-    // MsgHdrToMimeMessage
-    this.getBody = function() {
-        if (!this.body) {
-            xxxxxxxxxxxxxxxxx
-            this.needs_callback = true;
-            var options = {}
-            options.saneBodySize = true;
-            options.partsOnDemand = true;
-            MsgHdrToMimeMessage(this.last_unread, this, this.getBodyCallback,
-                                true, options)
-        } else {
-            return this.body;
-        }
-    }
-
 
     // Returns the preview text
     // Fetches it on the first call to this function
@@ -439,10 +418,6 @@ MailboxAlert.showMessage = function (alert_data, show_icon, icon_file, subject_p
     //subject_pref = MailboxAlert.replace(subject_pref, "%enter", "\n");
     subject_pref = MailboxAlert.replace(subject_pref, "%msg_preview", preview);
     subject_pref = MailboxAlert.replace(subject_pref, "%msg_uri", alert_data.msg_uri);
-    if (subject_pref.indexOf("%body" > 0)) {
-        //subject_pref = MailboxAlert.replace(subject_pref, "%body", alert_data.getPreview());
-        subject_pref = MailboxAlert.replace(subject_pref, "%body", alert_data.getBody());
-    }
 
     var message_text = message;
     dump("[XX] Original Message text: " + message_text + "\n");
@@ -463,10 +438,6 @@ MailboxAlert.showMessage = function (alert_data, show_icon, icon_file, subject_p
     message_text = MailboxAlert.replace(message_text, "%enter", "\n");
     message_text = MailboxAlert.replace(message_text, "%msg_preview", preview);
     message_text = MailboxAlert.replace(message_text, "%msg_uri", alert_data.msg_uri);
-    if (subject_pref.indexOf("%body" > 0)) {
-        //message_text = MailboxAlert.replace(message_text, "%body", alert_data.getPreview());
-        message_text = MailboxAlert.replace(message_text, "%body", alert_data.getBody());
-    }
 
     dump("[XX] Message text: " + message_text + "\n");
 
