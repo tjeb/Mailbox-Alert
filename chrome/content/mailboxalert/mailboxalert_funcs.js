@@ -512,7 +512,7 @@ MailboxAlert.replaceCommandPart = function (alert_data, command, escape_html, al
     command = MailboxAlert.replaceEscape(already_quoted, command, "%originalfolder", MailboxAlert.escapeHTML(escape_html, alert_data.orig_folder_name));
     command = MailboxAlert.replaceEscape(already_quoted, command, "%folder_name_with_server", MailboxAlert.escapeHTML(escape_html, alert_data.folder_name_with_server));
     command = MailboxAlert.replaceEscape(already_quoted, command, "%countall", ""+alert_data.all_message_count);
-    command = MailboxAlert.replaceEscape(already_quoted, command, "%count", ""+alert_data.orig_message_count);
+    command = MailboxAlert.replaceEscape(already_quoted, command, "%count", ""+alert_data.message_count);
     //alert("3 is now: '" + command + "'");
     command = MailboxAlert.replaceEscape(already_quoted, command, "%subject", MailboxAlert.escapeHTML(escape_html, alert_data.subject));
     //alert("4 is now: '" + command + "'");
