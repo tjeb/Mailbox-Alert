@@ -727,8 +727,8 @@ MailboxAlert.getAllFolders = function () {
     var all_servers = accountManager.allServers;
     var all_folders = [];
 
-    for (var i = 0; i < all_servers.Count(); ++i) {
-        var server = all_servers.GetElementAt(i).QueryInterface(Components.interfaces.nsIMsgIncomingServer);
+    for (var i = 0; i < all_servers.length; ++i) {
+        var server = all_servers.queryElementAt(i, Components.interfaces.nsIMsgIncomingServer);
         var root_folder = server.rootFolder;
         if (root_folder) {
             MailboxAlert.getChildFolders(root_folder, all_folders);
@@ -755,8 +755,8 @@ MailboxAlert.getAllFolderURIs = function () {
     var all_servers = accountManager.allServers;
     var all_folder_uris = [];
 
-    for (var i = 0; i < all_servers.Count(); ++i) {
-        var server = all_servers.GetElementAt(i).QueryInterface(Components.interfaces.nsIMsgIncomingServer);
+    for (var i = 0; i < all_servers.length; ++i) {
+        var server = all_servers.queryElementAt(i, Components.interfaces.nsIMsgIncomingServer);
         var root_folder = server.rootFolder;
         if (root_folder) {
             MailboxAlert.getChildFolderURIs(root_folder, all_folder_uris);
@@ -791,9 +791,8 @@ MailboxAlert.alertIsFilterTarget = function (alert_index) {
         var filters = folder.getFilterList(null);
         for (var j = 0; j < filters.filterCount; ++j) {
             var filter = filters.getFilterAt(j);
-            var actions = filter.actionList;
-            var action_collection = actions.QueryInterface(Components.interfaces.nsICollection);
-            for (var k = 0; k < action_collection.Count(); ++k) {
+            var actions = filter.sortedActionList;
+            for (var k = 0; k < actions.length; ++k) {
                 var action = filter.getActionAt(k);
                 if (action.strValue == alert_index) {
                     return true;
@@ -827,7 +826,7 @@ MailboxAlert.removeAlertFilters = function (alert_index) {
         var indices_to_remove = [];
         for (var j = 0; j < filters.filterCount; ++j) {
             var filter = filters.getFilterAt(j);
-            var actions = filter.actionList;
+            var actions = filter.sortedActionList;
             var action_collection = actions.QueryInterface(Components.interfaces.nsICollection);
             // Same here, but the other way around; copy all actions we
             // do not want to remove, clear the complete list, and re-add

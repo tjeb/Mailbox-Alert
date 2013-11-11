@@ -57,41 +57,45 @@ MailboxAlertList.editAlert = function() {
 }
 
 MailboxAlertList.deleteAlert = function () {
-    var alert_listbox = document.getElementById("alert_listbox");
-    var alert_index = alert_listbox.selectedItem.value;
+    try {
+        var alert_listbox = document.getElementById("alert_listbox");
+        var alert_index = alert_listbox.selectedItem.value;
 
-    var alert_prefs = MailboxAlert.getAlertPreferences(alert_index);
-    var folders = MailboxAlert.getAllFoldersForAlertIndex(alert_index);
-    var delete_ok = true;
+        var alert_prefs = MailboxAlert.getAlertPreferences(alert_index);
+        var folders = MailboxAlert.getAllFoldersForAlertIndex(alert_index);
+        var delete_ok = true;
 
-    if (folders.length > 0) {
-        var stringsBundle = document.getElementById("mailboxalert-string-bundle");
-        if (confirm(stringsBundle.getString("mailboxalert.alert_settings.alertset"))) {
-            for (var i = 0; i < folders.length; ++i) {
-                folders[i].removeAlert(alert_index);
-                folders[i].store();
+        if (folders.length > 0) {
+            var stringsBundle = document.getElementById("mailboxalert-string-bundle");
+            if (confirm(stringsBundle.getString("mailboxalert.alert_settings.alertset"))) {
+                for (var i = 0; i < folders.length; ++i) {
+                    folders[i].removeAlert(alert_index);
+                    folders[i].store();
+                }
+            } else {
+                delete_ok = false;
             }
-        } else {
-            delete_ok = false;
         }
-    }
 
-    if (delete_ok && MailboxAlert.alertIsFilterTarget(alert_index)) {
-        var stringsBundle = document.getElementById("mailboxalert-string-bundle");
-        if (confirm(stringsBundle.getString("mailboxalert.alert_settings.alertsetforfilter"))) {
-            MailboxAlert.removeAlertFilters(alert_index);
-        } else {
-            delete_ok = false;
+        if (delete_ok && MailboxAlert.alertIsFilterTarget(alert_index)) {
+            var stringsBundle = document.getElementById("mailboxalert-string-bundle");
+            if (confirm(stringsBundle.getString("mailboxalert.alert_settings.alertsetforfilter"))) {
+                MailboxAlert.removeAlertFilters(alert_index);
+            } else {
+                delete_ok = false;
+            }
         }
-    }
 
-    if (delete_ok) {
-        alert_prefs.remove();
-    }
+        if (delete_ok) {
+            alert_prefs.remove();
+        }
 
-    MailboxAlertList.enableButton('edit_button', false);
-    MailboxAlertList.enableButton('delete_button', false);
-    MailboxAlertList.fillAlertList();
+        MailboxAlertList.enableButton('edit_button', false);
+        MailboxAlertList.enableButton('delete_button', false);
+        MailboxAlertList.fillAlertList();
+    } catch (err) {
+        dump("ERROR: " + err + "\n");
+    }
 }
 
 MailboxAlertList.alertListCount = function () {
