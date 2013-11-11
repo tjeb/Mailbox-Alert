@@ -156,9 +156,6 @@ MailboxAlertNewMail.prefillAlertInfo = function ()
 
     var label = document.getElementById('subject');
     label.value = subject;
-    dump("[XX] Subject: " + subject + "\n");
-    dump("[XX] Message: " + message + "\n");
-    dump("[XX] end of message\n");
 
     // tokenize the full string on whitespace
     // newlines get their own token
@@ -167,13 +164,7 @@ MailboxAlertNewMail.prefillAlertInfo = function ()
     // if we reach the limit, or if we encounter said
     // whitespace, we add what we read so far
     // to an array of lines
-    dump("[XX] full message text:\n")
-    dump(message);
-    dump("\n[XX] end of full message text\n");
     var tokens = this.tokenizeString(message);
-    dump("[XX] Tokens: ");
-    dump(tokens);
-    dump("\n");
     var full_field = this.wrapTokens(tokens, 50, 10);
 
     // let's do some playing with the message field
@@ -260,10 +251,8 @@ MailboxAlertNewMail.showAlertSlide = function ()
     alertContainer.style.opacity = 1;
 
     if (top) {
-        dump("[XX] starting slide in top\n");
         this.timer_state = this.SLIDING_IN_TOP;
     } else {
-        dump("[XX] starting slide in bottom\n");
         this.timer_state = this.SLIDING_IN_BOTTOM;
     }
     this.timer.initWithCallback(this, this.gSlideTime, this.timer.TYPE_REPEATING_PRECISE);
@@ -501,7 +490,6 @@ MailboxAlertNewMail.fadeClose = function ()
         var alertContainer = document.getElementById('alertContainer');
         var newOpacity = parseFloat(window.getComputedStyle(alertContainer, "").opacity) - this.gFadeIncrement;
         alertContainer.style.opacity = newOpacity;
-        dump("[XX] newOpacity: " + newOpacity + "\n");
         if (newOpacity <= 0) {
             this.timer.cancel();
             this.timer_state = this.DONE;
@@ -518,29 +506,24 @@ MailboxAlertNewMail.closeAlert = function ()
 {
     try {
         // make sure there won't be anything else firing
-        dump("[XX] starting closing of alert\n");
 
         // We create a new timer here, sometimes canceling an existing
         // one and reinitializing it does to produce the expected result
         // (it would still wait duration*1000 before firing)
 
         if (this.effect == "fade") {
-            dump("[XX] starting fade\n");
             this.timer_state = this.FADING_OUT;
             this.timer.cancel();
             this.close_timer = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
             this.close_timer.initWithCallback(this, this.gFadeTime, this.timer.TYPE_REPEATING_PRECISE);
         } else if (this.effect == "slide" &&
                    this.position != "custom" && this.position != "center") {
-            dump("[XX] starting slide out\n");
             if (this.position == "top-right" || this.position == "top-left") {
-                dump("[XX] starting slide out top\n");
                 this.timer_state = this.SLIDING_OUT_TOP;
                 this.timer.cancel();
                 this.close_timer = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
                 this.close_timer.initWithCallback(this, this.gSlideTime, this.timer.TYPE_REPEATING_PRECISE);
             } else if (this.position == "bottom-right" || this.position == "bottom-left") {
-                dump("[XX] starting slide out bottom\n");
                 this.timer_state = this.SLIDING_OUT_BOTTOM;
                 this.timer.cancel();
                 this.close_timer = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
@@ -549,11 +532,10 @@ MailboxAlertNewMail.closeAlert = function ()
                 window.close();
             }
         } else {
-            dump("[XX] starting direct close\n");
             window.close();
         }
     } catch (e) {
-        dump("[XX] error1: " + e + "\n");
+        dump("[MailboxAlert] error: " + e + "\n");
     }
 }
 
@@ -572,14 +554,13 @@ MailboxAlertNewMail.handleClick = function (event)
             if (!this.stored_timer_delay) {
                 // store the timer before we cancel it so we can
                 // restart it
-                dump("[XX] storing and canceling timer\n");
                 this.stored_timer_delay = this.timer.delay;
                 this.stored_timer_type = this.timer.type;
             }
             this.timer.cancel();
         }
     } catch (e) {
-        dump("[XX] error2: " + e + "\n");
+        dump("[MailboxAlert] error2: " + e + "\n");
     }
 }
 
@@ -588,7 +569,6 @@ MailboxAlertNewMail.restartTimer = function ()
 {
 	// Context menu closed, restart the timer
 	if (this.stored_timer_delay) {
-		dump("[XX] restarting timer\n");
 		this.timer.initWithCallback(this, this.stored_timer_delay,
 		                            this.stored_timer_type);
 		this.stored_timer_delay = null;
@@ -663,7 +643,7 @@ MailboxAlertNewMail.performAction = function (action)
         }
         this.closeAlert();
     } catch (e) {
-        dump("[XX] error3: " + e + "\n");
+        dump("[MailboxAlert] error3: " + e + "\n");
         window.close();
     }
 }
@@ -675,7 +655,6 @@ MailboxAlertNewMail.notify = function(timer) {
     // close automatically, after which this function is called until
     // we have faded or slided out again.
     // note: every time we close the window, we should cancel the timer
-    dump("[XX] State: " + this.timer_state + "\n");
     try {
         if (this.timer_state == this.SLIDING_IN_TOP) {
             this.slideInTop();
@@ -697,7 +676,6 @@ MailboxAlertNewMail.notify = function(timer) {
         }
     } catch (e) {
         timer.cancel();
-        dump("[XX] error4: " + e + "\n");
         window.close();
     }
 }

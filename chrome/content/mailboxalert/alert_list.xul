@@ -93,8 +93,8 @@ MailboxAlertList.deleteAlert = function () {
         MailboxAlertList.enableButton('edit_button', false);
         MailboxAlertList.enableButton('delete_button', false);
         MailboxAlertList.fillAlertList();
-    } catch (err) {
-        dump("ERROR: " + err + "\n");
+    } catch (e) {
+        dump("[MailboxAlert] error at " + e.fileName + ":" + e.lineNumber + ": " + e);
     }
 }
 

@@ -17,9 +17,9 @@ MailboxAlert.getFolder = function () {
                         return msgFolder;
                 }
         } catch (ex) {
-                dump("ex="+ex+"\n");
+                dump("[MailboxAlert] ex="+ex+"\n");
         }
-        dump("[mailboxalert] error: folder not found\n");
+        dump("[MailboxAlert] error: folder not found\n");
         return null;
 }
 
@@ -134,21 +134,17 @@ MailboxAlert.alertQueueItemAdder = function(folder, item) {
     
     item_adder.notify = function(timer) {
         if (this.attempts > MailboxAlert.ATTEMPTS) {
-            dump("[XX] queue still locked after 100 attempts\n");
             this.timer.cancel();
             return;
         }
         if (MailboxAlert.alertQueue.getLock()) {
             try {
-                dump("[XX] got lock, adding item\n");
                 MailboxAlert.alertQueue.addItem(folder, item);
-                dump("[XX] item added, releasing lock\n");
             } catch (e) {
-                dump("Error while adding item to alert queue: " + e + "\n");
+                dump("[MailboxAlert] Error while adding item to alert queue: " + e + "\n");
             }
             MailboxAlert.alertQueue.releaseLock();
         } else {
-            dump("[XX] queue locked, retry in " + MailboxAlert.WAIT_TIME + " ms\n");
             item_adder.timer.initWithCallback(item_adder, MailboxAlert.WAIT_TIME, item_adder.timer.TYPE_ONE_SHOT);
         }
     }
@@ -172,12 +168,10 @@ MailboxAlert.alertQueue.releaseLock = function() {
 // This adds an entry to a stack, and removes it from any other queues it is in
 // The queue must have been locked already.
 MailboxAlert.alertQueue.addItem = function (folder, item) {
-    dump("[XX] alertQueue.addItem() called for " + folder.URI + "\n");
     var found = false;
     for (var i = 0; i < this.entries.length; i++) {
         var cur_entry = this.entries[i];
         if (cur_entry.folder == folder) {
-            dump("[XX] folder found in currently running timers\n");
             // Add to queue
             cur_entry.items.push(item);
             found = true;
@@ -229,31 +223,25 @@ MailboxAlert.alertQueue.addItem = function (folder, item) {
         new_entry.folder = folder;
         new_entry.items = new Array();
         new_entry.items.push(item);
-        dump("[XX] Pushed " + item.messageId + " to " + new_entry.folder.URI + "\n");
         new_entry.timer = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
         new_entry.notify = function(timer) {
-            dump("[XX] timer for " + this.folder.URI + " fired\n");
             var folder = null;
             var alert_msg = null;
             if (MailboxAlert.alertQueue.getLock()) {
-                dump("[XX] got lock when timer for alert fired\n");
                 try {
                     var idx = MailboxAlert.alertQueue.entries.indexOf(this);
                     folder = this.folder;
                     // popping it is no problem; we'll destroy this whole array anyway
                     alert_msg = this.items.pop();
                     MailboxAlert.alertQueue.entries.splice(idx, 1);
-                    dump("[XX] after fire alertqueue contains " + MailboxAlert.alertQueue.entries.length + " items\n");
                 } catch (e) {
-                    dump("Error while adding item to alert queue: " + e + "\n");
+                    dump("[MailboxAlert] Error while adding item to alert queue: " + e + "\n");
                 }
                 MailboxAlert.alertQueue.releaseLock();
             } else {
                 // try again in 100 ms
-                dump("[XX] queue locked when timer for alert fired, trying again in " + MailboxAlert.WAIT_TIME + " ms\n");
                 this.timer.initWithCallback(new_entry, MailboxAlert.WAIT_TIME, new_entry.timer.TYPE_ONE_SHOT);
             }
-            dump("[XX] calling alert for " + folder.URI + " item " + alert_msg.messageKey + "\n");
             // Only alert if it hasn't already been read
             if (folder != null && alert_msg != null &&
                 !alert_msg.isRead && alert_msg.messageId != "") {
@@ -263,41 +251,7 @@ MailboxAlert.alertQueue.addItem = function (folder, item) {
         new_entry.timer.initWithCallback(new_entry, MailboxAlert.INITIAL_WAIT_TIME, new_entry.timer.TYPE_ONE_SHOT);
         this.entries.push(new_entry);
     }
-    dump("[XX] alertqueue contains " + this.entries.length + " items\n");
 }
-
-// This object is called as a listener callback to force folders to be updated
-// whenever mail appears to arrive
-// A possible improvement here is to check whether it really needs to (i.e.
-// whether this folder has any alerts)
-/* This is currently not used, but may turn out to be necessary
-MailboxAlert.folderUpdater = {
-    OnItemIntPropertyChanged: function(item, property, oldValue, newValue)
-    {
-        if (property == "TotalUnreadMessages" && newValue > oldValue) {
-            // need folder update to trigger other internal notifications
-            var folder = item.QueryInterface(Components.interfaces.nsIMsgFolder);
-            dump("Number of unread messages increased for " + folder.URI + "\n");
-            dump("try updateFolder\n");
-            try {
-                ///*
-                //var windowManager = Components.classes['@mozilla.org/appshell/window-mediator;1'].getService();
-                //var windowManagerInterface = windowManager.QueryInterface(Components.interfaces.nsIWindowMediator);
-                //var mailWindow = windowManagerInterface.getMostRecentWindow( "mail:3pane" );
-                //folder.updateFolder(mailWindow.msgWindow);
-            } catch (e) {
-                // OK, this does not always work, but as this is only a hint to get the
-                // folder to update, we don't really care.
-                dump("updateFolder failed: " + e + "\n")
-            }
-            // Now start a timer, if there is still new mail in the folder
-            // when it fires, do the alert.
-            MailboxAlert.alertQueueItemAdder(folder, item);
-            dump("folder added\n");
-        }
-    }
-}
-*/
 
 MailboxAlert.FolderListener = function ()
 {
@@ -312,17 +266,12 @@ MailboxAlert.FolderListener.prototype =
 
         var folder = parentItem.QueryInterface(Components.interfaces.nsIMsgFolder);
         var message;
-        /*
-        dump("item added\n");
-        dump(folder);
-        dump("\n");
-        */
         try {
             item.QueryInterface(Components.interfaces.nsIMsgDBHdr, message);
             MailboxAlert.alertQueue.addItem(folder, item);
         } catch (exception2) {
-            dump("[mailboxalert] Exception: " + exception2 + "\n");
-            dump("the item was: " + item + "\n");
+            dump("[MailboxAlert] Exception: " + exception2 + "\n");
+            dump("[MailboxAlert] the item was: " + item + "\n");
         }
     }
 }

@@ -22,13 +22,10 @@ MailboxAlert.showMethods = function (obj) {
 
 MailboxAlert.createUrlListener = function () {
     this.running = false;
-    dump("[XX] UrlListener created\n");
     this.OnStartRunningUrl = function (aUrl) {
-        dump("[XX] UrlListener started\n");
         this.running = true;
     }
     this.OnStopRunningUrl = function (aUrl, aExitCode) {
-        dump("[XX] UrlListener stopped\n");
         this.running = false;
     }
     this.wait = function() {
@@ -153,7 +150,6 @@ MailboxAlert.createAlertData = function (mailbox, last_unread) {
     // Fetches it on the first call to this function
     this.getPreview = function() {
         if (!this.preview_fetched) {
-            dump("[XX] fetching preview\n");
             // call on last_unread folder, not our own mailbox
             // (we may have the parent by now)
             var url_listener = MailboxAlert.createUrlListener();
@@ -180,13 +176,10 @@ MailboxAlert.createAlertData = function (mailbox, last_unread) {
                     this.last_unread.setProperty("preview", "<empty>");
                 }
             }
-            dump("[XX] urlscalled: " + urlscalled + "\n");
             if (urlscalled) {
-                dump("[XX] waiting for url_listener\n");
                 url_listener.wait();
             }
             this.preview_fetched = true;
-            dump("[XX] fetched\n");
         }
         return this.last_unread.getProperty("preview");
     }
@@ -238,7 +231,6 @@ MailboxAlert.muted = function () {
     } catch (e) {
         // ignore, simply not set
     }
-    dump("[XX] muted: " + muted + "\n");
     return muted;
 }
 
@@ -379,12 +371,6 @@ MailboxAlert.new_alert2 = function (alert_data) {
 }
 
 MailboxAlert.showMessage = function (alert_data, show_icon, icon_file, subject_pref, message, position, duration, effect, onclick, custom_position_x, custom_position_y, custom_position_anchor) {
-    //dump("[XX]\n");
-    //dump("[XX]\n");
-    //MailboxAlert.showMethods(alert_data.getInfo());
-    //dump("[XX]\n");
-    //dump("[XX]\n");
-
     var message_key = alert_data.last_unread.messageKey;
 
     var folder_url = alert_data.folder_uri;
@@ -394,9 +380,6 @@ MailboxAlert.showMessage = function (alert_data, show_icon, icon_file, subject_p
     }
     var messageSize = MailboxAlert.getHRMsgSize(alert_data.messageBytes);
     var preview = alert_data.getPreview();
-    dump("[XX] preview:\n");
-    dump(preview);
-    dump("\n[XX] end of preview\n");
     var date_obj = new Date();
     date_obj.setTime(alert_data.date);
     var date_str = date_obj.toLocaleDateString();
@@ -421,7 +404,6 @@ MailboxAlert.showMessage = function (alert_data, show_icon, icon_file, subject_p
     subject_pref = MailboxAlert.replace(subject_pref, "%msg_uri", alert_data.msg_uri);
 
     var message_text = message;
-    dump("[XX] Original Message text: " + message_text + "\n");
     message_text = MailboxAlert.replace(message_text, "%server", alert_data.server);
     message_text = MailboxAlert.replace(message_text, "%originalfolder", alert_data.orig_folder_name);
     message_text = MailboxAlert.replace(message_text, "%folder", alert_data.folder_name);
@@ -439,8 +421,6 @@ MailboxAlert.showMessage = function (alert_data, show_icon, icon_file, subject_p
     message_text = MailboxAlert.replace(message_text, "%enter", "\n");
     message_text = MailboxAlert.replace(message_text, "%msg_preview", preview);
     message_text = MailboxAlert.replace(message_text, "%msg_uri", alert_data.msg_uri);
-
-    dump("[XX] Message text: " + message_text + "\n");
 
     try {
         window.openDialog('chrome://mailboxalert/content/newmailalert.xul', "new mail", "chrome,titlebar=no,popup=yes,modal=no", subject_pref, message_text, show_icon, icon_file, alert_data.orig_mailbox, alert_data.last_unread, position, duration, effect, onclick, custom_position_x, custom_position_y, custom_position_anchor);
@@ -472,7 +452,6 @@ MailboxAlert.playSound = function (soundURL) {
     } catch(e) {
         // some error, just 'beep' (which is system-dependent
         // these days)
-        dump("[XX] exception playing sound: " + e);
         MailboxAlert.sound.beep();
     }
 }
