@@ -9,17 +9,25 @@
 # It takes one command; the name of the source directory (and xpi file)
 #
 # e.g, for mailboxalert, the git repository should be in the directory
-# 'mailboxalert'. Go to the directory above, and call
-# create.sh mailboxalert
+# 'Mailbox-Alert'. Go to the directory above, and call
+# create.sh Mailbox-Alert mailboxalert
 # It will create a file called 'mailboxalert.xpi'
+#
+# (if you checked this out from github, just symlink the create.sh
+# script to the upper directory)
 #
 # While building, it will create a mailboxalert_build directory
 # Before starting, it will remove this directory, so make sure
 # that it either does not exist, or does not contain anything else.
 
+if [ -z $1 ] || [ -z $2 ]; then
+    echo "Usage: create.sh <source directory> <target name>";
+    exit 1;
+fi;
+
 # check prerequisites; jar, find, 
 jar --help 2>&1 > /dev/null
-if [ $? != 0 ] ; then
+if [ test -x `which jar` != 0 ] ; then
     echo "Error, jar not found or not executable"
     exit 1;
 fi;
@@ -31,7 +39,7 @@ fi;
 
 ADDON=$1
 BUILDDIR=${ADDON}_build
-OUTPUT=${ADDON}.xpi
+OUTPUT=$2.xpi
 
 if [ ${ADDON} = "-h" ] ; then
     echo "Usage: create.sh <addon-name>"
