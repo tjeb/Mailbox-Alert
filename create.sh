@@ -37,22 +37,18 @@ if [ $? != 0 ] ; then
     exit 1;
 fi;
 
-ADDON=$1
+ADDON_DIR=$1
+ADDON=$2
 BUILDDIR=${ADDON}_build
-OUTPUT=$2.xpi
+OUTPUT=${ADDON}.xpi
 
-if [ ${ADDON} = "-h" ] ; then
-    echo "Usage: create.sh <addon-name>"
-    exit 0;
-fi;
-
-if [ ! -d ${ADDON} ] ; then
-	echo "Error, ${ADDON} does not exist or is not a directory"
+if [ ! -d ${ADDON_DIR} ] ; then
+	echo "Error, ${ADDON_DIR} does not exist or is not a directory"
 	exit 1;
 fi;
 
 rm -rf ${BUILDDIR}
-cp -r ${ADDON} ${BUILDDIR}
+cp -r ${ADDON_DIR} ${BUILDDIR}
 
 cd ${BUILDDIR}
 # Clean out unnecessary files
