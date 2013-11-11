@@ -1,3 +1,9 @@
+[0.16.3-0.16.4]
+  o Fixed a bug where defined alerts could not be deleted anymore.
+    This was caused by what appears to be an internal interface change,
+    so this fix might have also fixed a few other issues hitherto
+    unknown.
+
 [0.16.2-0.16.3]
   o Fixed a bug where alerts were fired for child folders even
     if the 'alert for child folders' option was not set
