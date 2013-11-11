@@ -352,7 +352,8 @@ MailboxAlert.new_alert = function (folder, last_unread) {
 MailboxAlert.new_alert2 = function (alert_data) {
     while (true) {
         var folder_prefs = MailboxAlert.getFolderPrefs(alert_data.folder_uri);
-        if (folder_prefs.hasAlerts()) {
+        // Alerts for the folder itself, or any ancestor folder with alert_for_children set
+        if (folder_prefs.hasAlerts() && (!alert_data.is_parent || folder_prefs.alert_for_children)) {
             for (var i = 0; i < folder_prefs.alerts.length; ++i) {
                 dump("[Mailboxalert] running alert " + folder_prefs.alerts[i] + "\n");
                 var alert = MailboxAlert.getAlertPreferences(folder_prefs.alerts[i]);

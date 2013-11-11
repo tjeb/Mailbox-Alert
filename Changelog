@@ -1,3 +1,8 @@
+[0.16.2-0.16.3]
+  o Fixed a bug where alerts were fired for child folders even
+    if the 'alert for child folders' option was not set
+    (Patch submitted by Jon Siddle, thanks!)
+
 [0.16.1-0.16.2]
   o Fixed a bug where %count was not replaced correctly in the
     'execute a command' option.
