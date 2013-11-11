@@ -1,0 +1,75 @@
+<!ENTITY mailboxalert.name "Mailbox Alert">
+<!ENTITY mailboxalert.author "Jelte Jansen">
+<!ENTITY mailboxalert.website "Website:">
+<!ENTITY mailboxalert.version "Version">
+<!ENTITY mailboxalert.about.title "About Mailbox Alert">
+<!ENTITY mailboxalert.about.created "Created by">
+<!ENTITY mailboxalert.mute "Mute Mailbox Alert Sounds">
+<!ENTITY mailboxalert.prefs.title "Mailbox Alert Preferences">
+<!ENTITY mailboxalert.prefs.icon "Icon">
+<!ENTITY mailboxalert.prefs.customwav "Custom .wav file">
+<!ENTITY mailboxalert.prefs.escapehtml "Use HTML codes for special characters in macros">
+<!ENTITY mailboxalert.prefs.test "Test these settings">
+<!ENTITY mailboxalert.prefs.close "Close">
+<!ENTITY mailboxalert.prefs.expl.escape "If any file or argument contains spaces, be sure to escape them with ">
+<!ENTITY mailboxalert.prefs.expl.macros "You can use the following macros">
+<!ENTITY mailboxalert.prefs.expl.servername "The name of the server">
+<!ENTITY mailboxalert.prefs.expl.foldername "The name of the mail folder">
+<!ENTITY mailboxalert.prefs.expl.originalfolder "The name of the subfolder that received the message">
+<!ENTITY mailboxalert.prefs.expl.numunread "The number of unread messages in this folder">
+<!ENTITY mailboxalert.prefs.expl.totalunread "The number of unread messages in this folder and all of its subfolders">
+<!ENTITY mailboxalert.prefs.expl.sender "The sender of the last unread message">
+<!ENTITY mailboxalert.prefs.expl.sendername "The part of the sender of the last unread message up to the first &apos;&lt;&apos; in it">
+<!ENTITY mailboxalert.prefs.expl.senderaddress "The address part of the sender of the last unread message (between &apos;&lt;&apos; and &apos;&gt;&apos;)">
+<!ENTITY mailboxalert.prefs.expl.subject "The subject of the last unread message">
+<!ENTITY mailboxalert.prefs.expl.charset "The character set of the folder">
+<!ENTITY mailboxalert.prefs.expl.see "See">
+<!ENTITY mailboxalert.prefs.expl.information "for more information">
+<!ENTITY mailboxalert.prefs.expl.messagebytes "The size of the message in bytes">
+<!ENTITY mailboxalert.prefs.expl.messagesize "The size of the message in human readable form (for instance 2.1M)">
+<!ENTITY mailboxalert.prefs.expl.date "The date the message was sent">
+<!ENTITY mailboxalert.prefs.expl.time "The time the message was sent">
+<!ENTITY mailboxalert.prefs.expl.msg_preview "A short preview of the message content">
+<!ENTITY mailboxalert.prefs.expl.msg_body "A text view of the message body">
+<!ENTITY mailboxalert.prefs.expl.msg_full "The raw full message body">
+<!ENTITY mailboxalert.prefs.expl.msg_uri "The full URI of the message">
+<!ENTITY mailboxalert.prefs.expl.enter "Line break (does not work in the first field of &apos;show a message&apos;)">
+<!ENTITY mailboxalert.prefs.browse "Browse">
+<!ENTITY mailboxalert.prefs.default "Use default">
+<!ENTITY mailboxalert.prefs.systemdefault "System default">
+<!ENTITY mailboxalert.alert.prefs.caption_general "General">
+<!ENTITY mailboxalert.alert.prefs.caption_alert "Alert Popup">
+<!ENTITY mailboxalert.alert_prefs.position "Position">
+<!ENTITY mailboxalert.alert_prefs.position.bottomright "Bottom-right">
+<!ENTITY mailboxalert.alert_prefs.position.bottomleft "Bottom-left">
+<!ENTITY mailboxalert.alert_prefs.position.topright "Top-right">
+<!ENTITY mailboxalert.alert_prefs.position.topleft "Top-left">
+<!ENTITY mailboxalert.alert_prefs.position.center "Center">
+<!ENTITY mailboxalert.alert_prefs.position.custom "Custom">
+<!ENTITY mailboxalert.alert_prefs.position.custom_select "Select a position">
+<!ENTITY mailboxalert.alert_prefs.custom_position_x "X">
+<!ENTITY mailboxalert.alert_prefs.custom_position_y "Y">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_title "Select Mailbox Alert Custom Position">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_text1 "Drag this window to where you want the alert to appear">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_text2 "And click the button that corresponds to the corner">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_text3 "where you want the alert to appear">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_topleft "Top left">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_topright "Top right">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_bottomleft "Bottom left">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_bottomright "Bottom right">
+<!ENTITY mailboxalert.alert_prefs.effect "Effect">
+<!ENTITY mailboxalert.alert_prefs.effect.none "None">
+<!ENTITY mailboxalert.alert_prefs.effect.slide "Slide">
+<!ENTITY mailboxalert.alert_prefs.effect.fade "Fade">
+<!ENTITY mailboxalert.alert_prefs.delay "Delay before alert">
+<!ENTITY mailboxalert.alert_prefs.time_unit "seconds">
+<!ENTITY mailboxalert.alert_prefs.duration "Popup duration">
+<!ENTITY mailboxalert.alert_prefs.onclick "On click">
+<!ENTITY mailboxalert.alert_prefs.onclick.close "Close popup">
+<!ENTITY mailboxalert.alert_prefs.onclick.openmail "Open the message in a new window">
+<!ENTITY mailboxalert.alert_prefs.onclick.selectmail "Open the message in the current window">
+<!ENTITY mailboxalert.alert_prefs.onclick.deletemail "Delete the message">
+<!ENTITY mailboxalert.alert_list.add "Add">
+<!ENTITY mailboxalert.alert_list.edit "Edit">
+<!ENTITY mailboxalert.alert_list.delete "Delete">
+<!ENTITY mailboxalert.menu.editalerts "Edit Mailbox Alert alerts">
