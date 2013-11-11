@@ -245,7 +245,6 @@ MailboxAlertAlertSettings.setUIPrefTextbox = function (alert_prefs, name, elemen
   var element = document.getElementById(element_name);
   if (element) {
     element.value = alert_prefs.get(name);
-    dump("read value: " + element.value + "\n");
   } else {
     alert("Code error: element " + element_name + " not found");
   }
@@ -414,7 +413,6 @@ MailboxAlertAlertSettings.getPrefsFromWindow = function (alert_id) {
 
     return alert_prefs;
   } catch (e) {
-    dump("error\n");
     alert("Error: " + e);
   }
 }
