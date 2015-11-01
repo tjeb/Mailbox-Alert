@@ -430,11 +430,17 @@ MailboxAlertAlertSettings.storePrefs = function (alert_id) {
     }
 }
 
+MailboxAlertAlertSettings.resizeWindowCall = function () {
+	window.sizeToContent();
+}
+
+MailboxAlertAlertSettings.resize = function () {
+	setTimeout(MailboxAlertAlertSettings.resizeWindowCall, 50);
+}
+
 MailboxAlertAlertSettings.init = function () {
-  //window.setResizable(false);
-  setTimeout(window.sizeToContent, 0);
+  MailboxAlertAlertSettings.resize();
   /* enable help button */
-  //document.getElementById('mailboxalert_prefs_dialog').getButton('help').hidden = false;
 
   var stringsBundle = document.getElementById("mailboxalert-string-bundle");
 
@@ -447,7 +453,7 @@ MailboxAlertAlertSettings.init = function () {
 
   MailboxAlertAlertSettings.readPrefs(MailboxAlertAlertSettings.getAlertId());
   MailboxAlertAlertSettings.checkUIAll();
-  setTimeout(window.sizeToContent, 0);
+  MailboxAlertAlertSettings.resize();
 }
 
 MailboxAlertAlertSettings.fp = MailboxAlertAlertSettings.filepicker = Components.classes["@mozilla.org/filepicker;1"].getService(Components.interfaces.nsIFilePicker);
@@ -480,7 +486,7 @@ MailboxAlertAlertSettings.chooseIconFile = function () {
         result = MailboxAlertAlertSettings.fp.file.path;
         result = "file://" + result;
         icon_image_element.src = result;
-        setTimeout(window.sizeToContent, 0);
+		MailboxAlertAlertSettings.resize();
     }
 }
 
@@ -489,7 +495,7 @@ MailboxAlertAlertSettings.setDefaultIconFile = function () {
     if (icon_image_element.src != "chrome://mailboxalert/skin/mailboxalert.png") {
         icon_image_element.src = "chrome://mailboxalert/skin/mailboxalert.png";
         //alert("changed");
-        setTimeout(window.sizeToContent, 0);
+        MailboxAlertAlertSettings.resize();
     }
 }
 
