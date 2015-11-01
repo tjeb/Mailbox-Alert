@@ -46,7 +46,6 @@
 
 window {
   border: solid #000000 1px;
-  -moz-border-radius: 4px 4px 4px 4px;
   /*background-color: transparent;*/
 }
 
@@ -63,7 +62,6 @@ window {
   margin: 0px 0px 0px 4px;
   padding: 0px 1px 0px 1px;
   background-color: white;
-  -moz-border-radius: 4px 4px 4px 4px;
   border: solid #000000 1px;
 }
 

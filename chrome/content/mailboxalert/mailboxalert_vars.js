@@ -31,6 +31,12 @@ if (typeof(MailboxAlert) == "undefined") {
 /* simple lock */
 MailboxAlert.running = false;
 
+/* Convenience function for querying XPCOM interfaces */
+MailboxAlert.getInterface = function (item, iff) {
+    var interface = item.QueryInterface(iff);
+	return interface;
+}
+
 /* some other protection consts */
 MailboxAlert.max_folder_depth = 10;
 
@@ -469,6 +475,7 @@ MailboxAlert.getAlertPreferences = function (index) {
     }
 
     alert_prefs.run = function (alert_data) {
+		dump("[MailboxAlert] run() called\r\n");
         if (this.get("show_message")) {
             MailboxAlert.showMessage(alert_data,
                                     this.get("show_message_icon"),
@@ -620,6 +627,7 @@ MailboxAlert.filter_action =
             for (var i = 0; i < aMsgHdrs.length; ++i) {
                 var cur_msg_hdr = aMsgHdrs.queryElementAt(i, Components.interfaces.nsIMsgDBHdr);
                 if (!cur_msg_hdr.isRead) {
+					dump("[MailboxAlert] Alert called from Filter Action\r\n");
                     var alert_data = MailboxAlert.createAlertData(cur_msg_hdr.folder, cur_msg_hdr);
                     alert.run(alert_data);
                 }
@@ -665,7 +673,7 @@ MailboxAlert.getChildFolders = function (folder, ar) {
     ar.push(folder);
     var sub_folders = folder.subFolders;
     while (sub_folders && sub_folders.hasMoreElements()) {
-        var next_folder = sub_folders.getNext().QueryInterface(Components.interfaces.nsIMsgFolder);
+		var next_folder = MailboxAlert.getInterface(sub_folders.getNext(), Components.interfaces.nsIMsgFolder);
         if (next_folder) {
             MailboxAlert.getChildFolders(next_folder, ar);
         }
@@ -693,7 +701,7 @@ MailboxAlert.getChildFolderURIs = function (folder, ar) {
     ar.push(folder.URI);
     var sub_folders = folder.subFolders;
     while (sub_folders && sub_folders.hasMoreElements()) {
-        var next_folder = sub_folders.getNext().QueryInterface(Components.interfaces.nsIMsgFolder);
+        var next_folder = MailboxAlert.getInterface(sub_folders.getNext(), Components.interfaces.nsIMsgFolder);
         if (next_folder) {
             MailboxAlert.getChildFolderURIs(next_folder, ar);
         }
@@ -778,7 +786,7 @@ MailboxAlert.removeAlertFilters = function (alert_index) {
         for (var j = 0; j < filters.filterCount; ++j) {
             var filter = filters.getFilterAt(j);
             var actions = filter.sortedActionList;
-            var action_collection = actions.QueryInterface(Components.interfaces.nsICollection);
+            var action_collection = MailboxAlert.getInterface(actions, Components.interfaces.nsICollection);
             // Same here, but the other way around; copy all actions we
             // do not want to remove, clear the complete list, and re-add
             // them
@@ -928,7 +936,7 @@ MailboxAlert.convertAllFolderPreferences14toAlertPreferences = function () {
 }
 
 MailboxAlert.findAvailableAlertPrefsId = function () {
-  var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch).QueryInterface(Components.interfaces.nsIPrefService);
+  var prefs = MailboxAlert.getInterface(Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch), Components.interfaces.nsIPrefService);
   var pref_branch = prefs.getBranch("extensions.mailboxalert.alerts.");
   for (var i = 1; i <= MailboxAlert.max_alerts; i++) {
     try {

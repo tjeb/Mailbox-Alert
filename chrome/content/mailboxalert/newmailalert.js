@@ -52,6 +52,11 @@ MailboxAlertNewMail.showMethods = function (obj) {
     }
 }
 
+MailboxAlertNewMail.getInterface = function (iff) {
+	var interface = windowManager.QueryInterface(iff);
+	return interface;
+}
+
 MailboxAlertNewMail.tokenizeString = function(string) {
     var result = new Array();
     var curtoken = "";
@@ -598,9 +603,7 @@ MailboxAlertNewMail.performAction = function (action)
         } else if (action == "selectmail") {
             dump("Select mail\n");
             var windowManager = Cc['@mozilla.org/appshell/window-mediator;1'].getService();
-            var windowManagerInterface = windowManager.QueryInterface(Ci.nsIWindowMediator);
-            //var windowManagerInterface = windowManager.QueryInterface(Ci.nsIWindowMediator);
-
+            var windowManagerInterface = MailboxAlertNewMail.getInterface(Ci.nsIWindowMediator);
             var mailWindow = windowManagerInterface.getMostRecentWindow( "mail:3pane" );
             if ( mailWindow ) {
                 tabmail = mailWindow.document.getElementById("tabmail");
@@ -639,7 +642,7 @@ MailboxAlertNewMail.performAction = function (action)
                     .createInstance(Components.interfaces.nsIMutableArray);
                 messages.appendElement(this.message_hdr, false);
                 var windowManager = Cc['@mozilla.org/appshell/window-mediator;1'].getService();
-                var windowManagerInterface = windowManager.QueryInterface(Ci.nsIWindowMediator);
+                var windowManagerInterface = MailboxAlertNewMail.getInterface(Ci.nsIWindowMediator);
                 var mailWindow = windowManagerInterface.getMostRecentWindow( "mail:3pane" );
                 this.message_hdr.folder.deleteMessages(messages, mailWindow.msgWindow, false, false, null, true);
                 children.clear();

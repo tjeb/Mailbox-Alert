@@ -13,7 +13,7 @@ MailboxAlert.getFolder = function () {
                 var folderResource = GetFirstSelectedMsgFolder();
                 if (folderResource)
                 {
-                        var msgFolder = folderResource.QueryInterface(Components.interfaces.nsIMsgFolder);
+                        var msgFolder = MailboxAlert.getInterface(folderResource, Components.interfaces.nsIMsgFolder);
                         return msgFolder;
                 }
         } catch (ex) {
@@ -264,10 +264,10 @@ MailboxAlert.FolderListener.prototype =
     {
         const MSG_FOLDER_FLAG_OFFLINE = 0x8000000;
 
-        var folder = parentItem.QueryInterface(Components.interfaces.nsIMsgFolder);
+        var folder = MailboxAlert.getInterface(parentItem, Components.interfaces.nsIMsgFolder);
         var message;
         try {
-            item.QueryInterface(Components.interfaces.nsIMsgDBHdr, message);
+            //item.QueryInterface(Components.interfaces.nsIMsgDBHdr, message);
             MailboxAlert.alertQueue.addItem(folder, item);
         } catch (exception2) {
             dump("[MailboxAlert] Exception: " + exception2 + "\n");

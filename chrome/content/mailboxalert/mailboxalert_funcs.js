@@ -434,6 +434,7 @@ MailboxAlert.playSound = function (soundURL) {
     // Only play if global mute has not been set
     // even if not played, this still counts as having alerted
     // (that's why we check here)
+    dump("[MailboxAlert] playSound() called\r\n");
     if (MailboxAlert.muted()) {
         return;
     }
