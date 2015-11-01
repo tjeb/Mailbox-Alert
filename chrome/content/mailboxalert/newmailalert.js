@@ -197,10 +197,13 @@ MailboxAlertNewMail.onAlertLoad = function ()
     this.showAlertFade();
   // Disable slide for custom and center positions
   } else if (this.effect == "slide" &&
-             this.position != "custom" && this.position != "center") {
+             this.position != "custom" &&
+             this.position != "center") {
     this.showAlertSlide();
   } else {
     this.resizeAlert(false);
+    var alertContainer = document.getElementById('alertContainer');
+    alertContainer.style.opacity = 1;
     this.placeAlert();
     this.timer_state = this.WAITING;
     if (this.duration > 0) {
@@ -425,6 +428,7 @@ MailboxAlertNewMail.placeAlert = function () {
         y = this.custom_position_y - this.getWindowHeight();
     }
   }
+  window.sizeToContent();
   window.moveTo(x, y);
 }
 

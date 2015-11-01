@@ -44,8 +44,6 @@ MailboxAlertList.enableButton = function (name, enabled) {
 }
 
 MailboxAlertList.addAlert = function (id, name) {
-    //new_id = MailboxAlert.findAvailableAlertPrefsId();
-    //window.openDialog('chrome://mailboxalert/content/alert_settings.xul', 'alertPrefsWindow', 'modal', new_id);
     window.openDialog('chrome://mailboxalert/content/alert_settings.xul', '_blank', '', 0, this);
     MailboxAlertList.fillAlertList();
 }

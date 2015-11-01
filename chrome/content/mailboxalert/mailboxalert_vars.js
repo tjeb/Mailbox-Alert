@@ -360,16 +360,26 @@ MailboxAlert.getAlertPreferences = function (index) {
     alert_prefs.get = function (name) {
         if (!(name in this.values)) {
             // get it from the prefs thingy
-            try {
-                if (MailboxAlert.alertPrefDefs[name][0] == "bool") {
-                    this.values[name] = MailboxAlert.prefService.getBoolPref("extensions.mailboxalert.alerts." + this.index + "." + name);
-                } else if (MailboxAlert.alertPrefDefs[name][0] == "string") {
-                    this.values[name] = MailboxAlert.prefService.getCharPref("extensions.mailboxalert.alerts." + this.index + "." + name);
-                } else if (MailboxAlert.alertPrefDefs[name][0] == "integer") {
-                    this.values[name] = MailboxAlert.prefService.getIntPref("extensions.mailboxalert.alerts." + this.index + "." + name);
+            var pref_name = "extensions.mailboxalert.alerts." + this.index + "." + name;
+            if (MailboxAlert.prefService.prefHasUserValue(pref_name)) {
+                // keep it in a try-catch, we may have the type wrong
+                try {
+                    if (MailboxAlert.alertPrefDefs[name][0] == "bool") {
+                        this.values[name] = MailboxAlert.prefService.getBoolPref(pref_name);
+                    } else if (MailboxAlert.alertPrefDefs[name][0] == "string") {
+                        this.values[name] = MailboxAlert.prefService.getCharPref(pref_name);
+                    } else if (MailboxAlert.alertPrefDefs[name][0] == "integer") {
+                        this.values[name] = MailboxAlert.prefService.getIntPref(pref_name);
+                    }
+                } catch(e) {
+                    // ok pref is wrong type apparently.
+                    // should we not overwrite and just return?
+                    var pref_data = MailboxAlert.alertPrefDefs[name]
+                    if (pref_data != null) {
+                       this.values[name] = MailboxAlert.alertPrefDefs[name][1];
+                    }
                 }
-            } catch(e) {
-
+            } else {
                 // ok pref doesn't exist yet.
                 // should we not set and just return?
                 var pref_data = MailboxAlert.alertPrefDefs[name]
@@ -489,7 +499,8 @@ MailboxAlert.getAlertPreferences = function (index) {
     }
 
     if (index != 0 && alert_prefs.get("name") == "") {
-        throw "Alert with index " + index + " not found";
+        //throw "Alert with index " + index + " not found";
+        return null;
     }
 
     return alert_prefs;
@@ -636,9 +647,12 @@ MailboxAlert.filter_action =
 MailboxAlert.getAllAlertPrefs = function () {
     var alert_list = []
     for (var i = 1; i <= MailboxAlert.max_alerts; i++) {
+        // TODO: should not throw anymore
         try {
             var alert_prefs = MailboxAlert.getAlertPreferences(i);
-            alert_list.push(alert_prefs);
+            if (alert_prefs) {
+                alert_list.push(alert_prefs);
+            }
         } catch (e) {
             // no alert with this id, skip
         }

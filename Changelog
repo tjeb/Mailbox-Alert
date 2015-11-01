@@ -1,3 +1,6 @@
+[0.16.4-0.16.5]
+  o Resize the settings window if a larger icon is set
+  
 [0.16.3-0.16.4]
   o Fixed a bug where defined alerts could not be deleted anymore.
     This was caused by what appears to be an internal interface change,
