@@ -22,15 +22,12 @@
   <key id="close_cmd" modifiers="control" key="W" oncommand="window.close();"/>
 </keyset>
 
-<script src="chrome://mailboxalert/content/mailboxalert_vars.js">
-</script>
-
-<script src="chrome://mailboxalert/content/mailboxalert_common.js">
-</script>
+<script src="chrome://mailboxalert/content/mailboxalert_util.js" />
+<script src="chrome://mailboxalert/content/mailboxalert_vars.js" />
+<script src="chrome://mailboxalert/content/mailboxalert_common.js" />
 
 <script src="chrome://mailboxalert/content/mailboxalert_funcs.js"
-        type="application/javascript;version=1.7">
-</script>
+        type="application/javascript;version=1.7" />
 
 <script type="application/x-javascript">
 <![CDATA[

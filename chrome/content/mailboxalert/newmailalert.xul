@@ -14,8 +14,9 @@
         onload="MailboxAlertNewMail.onAlertLoad()">
   
   <stringbundle id="bundle_messenger" src="chrome://messenger/locale/messenger.properties"/>
-  <script type="application/x-javascript" src="chrome://mailboxalert/content/newmailalert_vars.js"/>
-  <script type="application/x-javascript" src="chrome://mailboxalert/content/newmailalert.js"/>
+  <script type="application/x-javascript" src="chrome://mailboxalert/content/mailboxalert_util.js" />
+  <script type="application/x-javascript" src="chrome://mailboxalert/content/newmailalert_vars.js" />
+  <script type="application/x-javascript" src="chrome://mailboxalert/content/newmailalert.js" />
 
   <popupset>
   <menupopup id="newMailHandle" onpopuphidden="MailboxAlertNewMail.restartTimer();">

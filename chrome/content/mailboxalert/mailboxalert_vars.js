@@ -161,7 +161,7 @@ MailboxAlert.getGlobalPreferences14 = function() {
 // - set(name, value)
 // - get(name)
 // - store()
-// - dump()
+// - MailboxAlertUtil.logMessage(1, )
 //
 // get checks if we have gotten it before
 // internally this needs an extra bool too (which is what 'read' is for)
@@ -280,7 +280,7 @@ MailboxAlert.getFolderPreferences14 = function(folder_uri) {
     folder_prefs.dump = function() {
         for (var name in MailboxAlert.folderPrefDefs14) {
             var type = MailboxAlert.folderPrefDefs14[name][0];
-            dump(name + " (" + type + "): " + this.get(name) + "\n");
+            MailboxAlertUtil.logMessage(1, name + " (" + type + "): " + this.get(name) + "\n");
         }
     }
 
@@ -462,7 +462,7 @@ MailboxAlert.getAlertPreferences = function (index) {
         for (var name in MailboxAlert.alertPrefDefs) {
             var pref_default = MailboxAlert.alertPrefDefs[name][1];
             if (name in this.values && !(this.values[name] == pref_default)) {
-                dump("alert_pref[" + this.index + "] " + name + " = " + this.get(name) + "\n");
+                MailboxAlertUtil.logMessage(1, "alert_pref[" + this.index + "] " + name + " = " + this.get(name) + "\n");
             }
         }
     }
@@ -475,7 +475,7 @@ MailboxAlert.getAlertPreferences = function (index) {
     }
 
     alert_prefs.run = function (alert_data) {
-		dump("[MailboxAlert] run() called\r\n");
+		MailboxAlertUtil.logMessage(1, "run() called\r\n");
         if (this.get("show_message")) {
             MailboxAlert.showMessage(alert_data,
                                     this.get("show_message_icon"),
@@ -627,7 +627,7 @@ MailboxAlert.filter_action =
             for (var i = 0; i < aMsgHdrs.length; ++i) {
                 var cur_msg_hdr = aMsgHdrs.queryElementAt(i, Components.interfaces.nsIMsgDBHdr);
                 if (!cur_msg_hdr.isRead) {
-					dump("[MailboxAlert] Alert called from Filter Action\r\n");
+					MailboxAlertUtil.logMessage(1, "Alert called from Filter Action\r\n");
                     var alert_data = MailboxAlert.createAlertData(cur_msg_hdr.folder, cur_msg_hdr);
                     alert.run(alert_data);
                 }
@@ -931,7 +931,7 @@ MailboxAlert.convertAllFolderPreferences14toAlertPreferences = function () {
     }
 
     MailboxAlert.prefService.setIntPref("extensions.mailboxalert.prefsversion", 15);
-    dump("[Mailboxalert] Conversion done, prefsversion updated");
+    MailboxAlertUtil.logMessage(1, "[Mailboxalert] Conversion done, prefsversion updated");
     // Once nobody uses 0.14 we can delete old prefs, but we leave them in for now
 }
 

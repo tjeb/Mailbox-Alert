@@ -17,9 +17,9 @@ MailboxAlert.getFolder = function () {
                         return msgFolder;
                 }
         } catch (ex) {
-                dump("[MailboxAlert] ex="+ex+"\n");
+                MailboxAlertUtil.logMessage(1, "ex="+ex+"\n");
         }
-        dump("[MailboxAlert] error: folder not found\n");
+        MailboxAlertUtil.logMessage(1, "error: folder not found\n");
         return null;
 }
 
@@ -141,7 +141,7 @@ MailboxAlert.alertQueueItemAdder = function(folder, item) {
             try {
                 MailboxAlert.alertQueue.addItem(folder, item);
             } catch (e) {
-                dump("[MailboxAlert] Error while adding item to alert queue: " + e + "\n");
+                MailboxAlertUtil.logMessage(1, "Error while adding item to alert queue: " + e + "\n");
             }
             MailboxAlert.alertQueue.releaseLock();
         } else {
@@ -235,7 +235,7 @@ MailboxAlert.alertQueue.addItem = function (folder, item) {
                     alert_msg = this.items.pop();
                     MailboxAlert.alertQueue.entries.splice(idx, 1);
                 } catch (e) {
-                    dump("[MailboxAlert] Error while adding item to alert queue: " + e + "\n");
+                    MailboxAlertUtil.logMessage(1, "Error while adding item to alert queue: " + e + "\n");
                 }
                 MailboxAlert.alertQueue.releaseLock();
             } else {
@@ -270,8 +270,8 @@ MailboxAlert.FolderListener.prototype =
             //item.QueryInterface(Components.interfaces.nsIMsgDBHdr, message);
             MailboxAlert.alertQueue.addItem(folder, item);
         } catch (exception2) {
-            dump("[MailboxAlert] Exception: " + exception2 + "\n");
-            dump("[MailboxAlert] the item was: " + item + "\n");
+            MailboxAlertUtil.logMessage(1, "Exception: " + exception2 + "\n");
+            MailboxAlertUtil.logMessage(1, "the item was: " + item + "\n");
         }
     }
 }

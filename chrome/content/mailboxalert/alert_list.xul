@@ -16,6 +16,7 @@
 
 <stringbundle id="mailboxalert-string-bundle" src="chrome://mailboxalert/locale/mailboxalert.properties"/>
 
+<script src="chrome://mailboxalert/content/mailboxalert_util.js" />
 <script src="chrome://mailboxalert/content/mailboxalert_vars.js"></script>
 
 <script type="application/x-javascript">

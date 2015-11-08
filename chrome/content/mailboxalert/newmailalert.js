@@ -40,11 +40,11 @@
  * ***** END LICENSE BLOCK ***** */
 
 MailboxAlertNewMail.showMethods = function (obj) {
-    dump("[Object] Type: " + obj + "\n");
+    MailboxAlertUtil.logMessage(1, "[Object] Type: " + obj + "\n");
     for (var id in obj) {
         try {
             if (typeof(obj[id]) == "function") {
-                dump("[Object] " + id + ": " + obj[id].toString() + "\n");
+                MailboxAlertUtil.logMessage(1, "[Object] " + id + ": " + obj[id].toString() + "\n");
             }
         } catch (err) {
             result.push("[Object] " + id + ": inaccessible\n");
@@ -52,12 +52,8 @@ MailboxAlertNewMail.showMethods = function (obj) {
     }
 }
 
-MailboxAlertNewMail.getInterface = function (iff) {
-	var interface = windowManager.QueryInterface(iff);
-	return interface;
-}
-
 MailboxAlertNewMail.tokenizeString = function(string) {
+    MailboxAlertUtil.logStart("MailboxAlertNewMail.tokenizeString");
     var result = new Array();
     var curtoken = "";
     var index = 0;
@@ -96,12 +92,14 @@ MailboxAlertNewMail.tokenizeString = function(string) {
         index++;
     }
 
+    MailboxAlertUtil.logEnd("MailboxAlertNewMail.tokenizeString");
     return result;
 }
 
 // returns one string again, with '\n' added according to wrapsize
 // and linemax
 MailboxAlertNewMail.wrapTokens = function(tokens, wrap_size, line_max) {
+    MailboxAlertUtil.logStart("MailboxAlertNewMail.wrapTokens");
     var result = "";
     var cur_line_length = 0;
     var line_count = 0;
@@ -139,11 +137,13 @@ MailboxAlertNewMail.wrapTokens = function(tokens, wrap_size, line_max) {
             }
         }
     }
+    MailboxAlertUtil.logEnd("MailboxAlertNewMail.wrapTokens");
     return result;
 }
 
 MailboxAlertNewMail.prefillAlertInfo = function ()
 {
+    MailboxAlertUtil.logStart("MailboxAlertNewMail.prefillAlertInfo");
     var subject = window.arguments[0];
     var message = window.arguments[1];
     var show_icon = window.arguments[2];
@@ -189,10 +189,12 @@ MailboxAlertNewMail.prefillAlertInfo = function ()
 	} else {
 		image.hidden = true;
 	}
+    MailboxAlertUtil.logEnd("MailboxAlertNewMail.prefillAlertInfo");
 }
 
 MailboxAlertNewMail.onAlertLoad = function ()
 {
+  MailboxAlertUtil.logStart("MailboxAlertNewMail.onAlertLoad");
   // bogus call to make sure the window is moved offscreen until we are ready for it.
   this.resizeAlert(true);
 
@@ -216,10 +218,12 @@ MailboxAlertNewMail.onAlertLoad = function ()
         this.timer.initWithCallback(this, this.duration * 1000, this.timer.TYPE_ONE_SHOT);
     }
   }
+  MailboxAlertUtil.logEnd("MailboxAlertNewMail.onAlertLoad");
 }
 
 MailboxAlertNewMail.showAlertSlide = function ()
 {
+    MailboxAlertUtil.logStart("MailboxAlertNewMail.showAlertSlide");
     var top = true;
 
     var alertContainer = document.getElementById('alertContainer');
@@ -264,10 +268,12 @@ MailboxAlertNewMail.showAlertSlide = function ()
         this.timer_state = this.SLIDING_IN_BOTTOM;
     }
     this.timer.initWithCallback(this, this.gSlideTime, this.timer.TYPE_REPEATING_PRECISE);
+    MailboxAlertUtil.logEnd("MailboxAlertNewMail.showAlertSlide");
 }
 
 MailboxAlertNewMail.slideInTop = function ()
 {
+    MailboxAlertUtil.logStart("MailboxAlertNewMail.slideInTop");
     // called by a repeated timer now, if we need to move we move,
     // if we are done we need to reset the timer
     // if something goes wrong, we simply give up and close the window
@@ -285,14 +291,18 @@ MailboxAlertNewMail.slideInTop = function ()
             }
         }
     } catch (e) {
-        dump("Error moving window, closing window\n");
+        MailboxAlertUtil.logMessage(0, "Error moving window, closing window\n");
         this.timer.cancel();
+        MailboxAlertUtil.logEnd("MailboxAlertNewMail.slideInTop", "close window on error");
         window.close();
+        return;
     }
+    MailboxAlertUtil.logEnd("MailboxAlertNewMail.slideInTop");
 }
 
 MailboxAlertNewMail.slideOutTop = function ()
 {
+    MailboxAlertUtil.logStart("MailboxAlertNewMail.slideOutTop");
     // if something goes wrong, we simply give up and close the window
     try {
         var y_pos = window.screenY;
@@ -302,22 +312,30 @@ MailboxAlertNewMail.slideOutTop = function ()
             if (window.screenY == y_pos) {
                 this.timer.cancel();
                 this.timer_state = this.DONE;
+                MailboxAlertUtil.logEnd("MailboxAlertNewMail.slideOutTop", "close window on movement stop");
                 window.close();
+                return;
             }
         } else {
             this.timer.cancel();
             this.timer_state = this.DONE;
+            MailboxAlertUtil.logEnd("MailboxAlertNewMail.slideOutTop", "close window on done");
             window.close();
+            return;
         }
     } catch (e) {
-        dump("Error moving window, closing window\n");
+        MailboxAlertUtil.logMessage(0, "Error moving window, closing window\n");
         this.timer.cancel();
+        MailboxAlertUtil.logEnd("MailboxAlertNewMail.slideOutTop", "close window on error");
         window.close();
+        return;
     }
+    MailboxAlertUtil.logEnd("MailboxAlertNewMail.slideOutTop");
 }
 
 MailboxAlertNewMail.slideInBottom = function ()
 {
+    MailboxAlertUtil.logStart("MailboxAlertNewMail.slideInBottom");
     // if something goes wrong, we simply give up and close the window
     try {
         var y_pos = window.screenY;
@@ -338,14 +356,18 @@ MailboxAlertNewMail.slideInBottom = function ()
             }
         }
     } catch (e) {
-        dump("Error moving window, closing window\n");
+        MailboxAlertUtil.logMessage(0, "Error moving window, closing window\n");
         this.timer.cancel();
+        MailboxAlertUtil.logEnd("MailboxAlertNewMail.slideInBottom", "close window on error");
         window.close();
+        return;
     }
+    MailboxAlertUtil.logEnd("MailboxAlertNewMail.slideInBottom");
 }
 
 MailboxAlertNewMail.slideOutBottom = function ()
 {
+    MailboxAlertUtil.logStart("MailboxAlertNewMail.slideOutBottom");
     try {
         var y_pos = window.screenY;
         if (y_pos < this.window_to_y) {
@@ -354,22 +376,30 @@ MailboxAlertNewMail.slideOutBottom = function ()
             if (window.screenY == y_pos) {
                 this.timer.cancel();
                 this.timer_state = this.DONE;
+                MailboxAlertUtil.logEnd("MailboxAlertNewMail.slideOutBottom", "close window on movement stop");
                 window.close();
+                return;
             }
         } else {
             this.timer.cancel();
             this.timer_state = this.DONE;
+            MailboxAlertUtil.logEnd("MailboxAlertNewMail.slideOutBottom", "close window on done");
             window.close();
+            return;
         }
     } catch (e) {
-        dump("Error moving window, closing window\n");
+        MailboxAlertUtil.logMessage(0, "Error moving window, closing window\n");
         this.timer.cancel();
+        MailboxAlertUtil.logEnd("MailboxAlertNewMail.slideOutBottom", "close window on error");
         window.close();
+        return;
     }
+    MailboxAlertUtil.logEnd("MailboxAlertNewMail.slideOutBottom");
 }
 
 MailboxAlertNewMail.showAlertFade = function ()
 {
+    MailboxAlertUtil.logStart("MailboxAlertNewMail.showAlertFade");
     var alertContainer = document.getElementById('alertContainer');
     alertContainer.style.opacity = 0;
     this.resizeAlert(false);
@@ -377,28 +407,38 @@ MailboxAlertNewMail.showAlertFade = function ()
     this.timer_state = this.FADING_IN;
     this.timer.cancel();
     this.timer.initWithCallback(this, this.gFadeTime, this.timer.TYPE_REPEATING_PRECISE);
+    MailboxAlertUtil.logEnd("MailboxAlertNewMail.showAlertFade");
 }
 
 MailboxAlertNewMail.getWindowHeight = function ()
 {
-  return 10 + Math.max (document.getBoxObjectFor(document.getElementById('alertTextBox')).height
-                  ,document.getBoxObjectFor(document.getElementById('alertImage')).height);
+    MailboxAlertUtil.logStart("MailboxAlertNewMail.getWindowHeight");
+    var result = 10 + Math.max (document.getBoxObjectFor(document.getElementById('alertTextBox')).height,
+                              document.getBoxObjectFor(document.getElementById('alertImage')).height);
+    MailboxAlertUtil.logEnd("MailboxAlertNewMail.getWindowHeight");
+    return result;
 }
 
 MailboxAlertNewMail.getWindowWidth = function ()
 {
-  return 30
-         + document.getBoxObjectFor(document.getElementById('alertImage')).width
-         + Math.max (document.getBoxObjectFor(document.getElementById('subject')).width,
-                     document.getBoxObjectFor(document.getElementById('message_field')).width);
+    MailboxAlertUtil.logStart("MailboxAlertNewMail.getWindowWidth");
+    result =  30
+            + document.getBoxObjectFor(document.getElementById('alertImage')).width
+            + Math.max (document.getBoxObjectFor(document.getElementById('subject')).width,
+                        document.getBoxObjectFor(document.getElementById('message_field')).width);
+    MailboxAlertUtil.logEnd("MailboxAlertNewMail.getWindowWidth");
+    return result;
 }
 
 MailboxAlertNewMail.resizeAlert = function (aMoveOffScreen)
 {
+  MailboxAlertUtil.logStart("MailboxAlertNewMail.resizeAlert");
   resizeTo(this.getWindowWidth(), this.getWindowHeight());
+  MailboxAlertUtil.logEnd("MailboxAlertNewMail.resizeAlert");
 }
 
 MailboxAlertNewMail.placeAlert = function () {
+  MailboxAlertUtil.logStart("MailboxAlertNewMail.placeAlert");
   var x = 0;
   var y = 0;
 
@@ -435,9 +475,11 @@ MailboxAlertNewMail.placeAlert = function () {
   }
   window.sizeToContent();
   window.moveTo(x, y);
+  MailboxAlertUtil.logEnd("MailboxAlertNewMail.placeAlert");
 }
 
 MailboxAlertNewMail.placeAlertOutside = function () {
+  MailboxAlertUtil.logStart("MailboxAlertNewMail.placeAlertOutside");
   var x = 0;
   var y = -this.getWindowHeight();
 
@@ -475,10 +517,12 @@ MailboxAlertNewMail.placeAlertOutside = function () {
     }
   }
   window.moveTo(x, y);
+  MailboxAlertUtil.logEnd("MailboxAlertNewMail.placeAlertOutside");
 }
 
 MailboxAlertNewMail.fadeOpen = function ()
 {
+    MailboxAlertUtil.logStart("MailboxAlertNewMail.fadeOpen");
     var alertContainer = document.getElementById('alertContainer');
     var newOpacity = parseFloat(window.getComputedStyle(alertContainer, "").opacity) + this.gFadeIncrement;
     alertContainer.style.opacity = newOpacity;
@@ -491,10 +535,12 @@ MailboxAlertNewMail.fadeOpen = function ()
             this.timer.initWithCallback(this, 1000 * this.duration, this.timer.TYPE_ONE_SHOT);
         }
     }
+    MailboxAlertUtil.logEnd("MailboxAlertNewMail.fadeOpen");
 }
 
 MailboxAlertNewMail.fadeClose = function ()
 {
+    MailboxAlertUtil.logStart("MailboxAlertNewMail.fadeClose");
     if (document) {
         var alertContainer = document.getElementById('alertContainer');
         var newOpacity = parseFloat(window.getComputedStyle(alertContainer, "").opacity) - this.gFadeIncrement;
@@ -502,17 +548,23 @@ MailboxAlertNewMail.fadeClose = function ()
         if (newOpacity <= 0) {
             this.timer.cancel();
             this.timer_state = this.DONE;
+            MailboxAlertUtil.logEnd("MailboxAlertNewMail.fadeClose", "close window on done");
             window.close();
+            return;
         }
     } else {
         this.timer.cancel();
         this.timer_state = this.DONE;
+        MailboxAlertUtil.logEnd("MailboxAlertNewMail.fadeClose", "close window no document");
         window.close();
+        return;
     }
+    MailboxAlertUtil.logEnd("MailboxAlertNewMail.fadeClose");
 }
 
 MailboxAlertNewMail.closeAlert = function ()
 {
+    MailboxAlertUtil.logStart("MailboxAlertNewMail.closeAlert");
     try {
         // make sure there won't be anything else firing
 
@@ -525,6 +577,7 @@ MailboxAlertNewMail.closeAlert = function ()
             this.timer.cancel();
             this.close_timer = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
             this.close_timer.initWithCallback(this, this.gFadeTime, this.timer.TYPE_REPEATING_PRECISE);
+            MailboxAlertUtil.logEnd("MailboxAlertNewMail.closeAlert", "close window fade");
         } else if (this.effect == "slide" &&
                    this.position != "custom" && this.position != "center") {
             if (this.position == "top-right" || this.position == "top-left") {
@@ -538,18 +591,24 @@ MailboxAlertNewMail.closeAlert = function ()
                 this.close_timer = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
                 this.close_timer.initWithCallback(this, this.gSlideTime, this.timer.TYPE_REPEATING_PRECISE);
             } else {
+                MailboxAlertUtil.logEnd("MailboxAlertNewMail.closeAlert", "close window slide");
                 window.close();
+                return;
             }
         } else {
+            MailboxAlertUtil.logEnd("MailboxAlertNewMail.closeAlert", "close window no effect");
             window.close();
+            return;
         }
     } catch (e) {
-        dump("[MailboxAlert] error: " + e + "\n");
+        MailboxAlertUtil.logMessage(0, "error: " + e + "\n");
     }
+    MailboxAlertUtil.logEnd("MailboxAlertNewMail.closeAlert");
 }
 
 MailboxAlertNewMail.handleClick = function (event)
 {
+    MailboxAlertUtil.logStart("MailboxAlertNewMail.handleClick");
     try {
         // this.showMethods(event);
         // Only do default action on left click (button value 0)
@@ -569,13 +628,15 @@ MailboxAlertNewMail.handleClick = function (event)
             this.timer.cancel();
         }
     } catch (e) {
-        dump("[MailboxAlert] error2: " + e + "\n");
+        MailboxAlertUtil.logMessage(0, "[MailboxAlert] error2: " + e + "\n");
     }
+    MailboxAlertUtil.logEnd("MailboxAlertNewMail.handleClick");
 }
 
 // This function is called if the context popup is closed
 MailboxAlertNewMail.restartTimer = function ()
 {
+    MailboxAlertUtil.logStart("MailboxAlertNewMail.restartTimer");
 	// Context menu closed, restart the timer
 	if (this.stored_timer_delay) {
 		this.timer.initWithCallback(this, this.stored_timer_delay,
@@ -583,27 +644,30 @@ MailboxAlertNewMail.restartTimer = function ()
 		this.stored_timer_delay = null;
 		this.stored_timer_type = null;
 	}
+    MailboxAlertUtil.logEnd("MailboxAlertNewMail.restartTimer");
 }
 
 MailboxAlertNewMail.handleRightClick = function ()
 {
-	dump("right-click\n");
+    MailboxAlertUtil.logStart("MailboxAlertNewMail.handleRightClick");
+    MailboxAlertUtil.logEnd("MailboxAlertNewMail.handleRightClick");
 }
 
 MailboxAlertNewMail.performAction = function (action)
 {
+    MailboxAlertUtil.logStart("MailboxAlertNewMail.performAction");
     try {
-        dump("Alert window clicked\n");
+        MailboxAlertUtil.logMessage(1, "Alert window clicked\n");
         const Cc = Components.classes;
         const Ci = Components.interfaces;
         if (action == "close") {
-            dump("Close alert window\n");
+            MailboxAlertUtil.logMessage(1, "Close alert window\n");
             // Do nothing, the window will be closed at the end of this
             // function.
         } else if (action == "selectmail") {
-            dump("Select mail\n");
+            MailboxAlertUtil.logMessage(1, "Select mail\n");
             var windowManager = Cc['@mozilla.org/appshell/window-mediator;1'].getService();
-            var windowManagerInterface = MailboxAlertNewMail.getInterface(Ci.nsIWindowMediator);
+            var windowManagerInterface = MailboxAlertUtil.getInterface(Ci.nsIWindowMediator);
             var mailWindow = windowManagerInterface.getMostRecentWindow( "mail:3pane" );
             if ( mailWindow ) {
                 tabmail = mailWindow.document.getElementById("tabmail");
@@ -625,7 +689,7 @@ MailboxAlertNewMail.performAction = function (action)
                 mailWindow.restore();
                 mailWindow.focus();
             } else {
-                dump("did not get mailWindow\n");
+                MailboxAlertUtil.logMessage(1, "did not get mailWindow\n");
                 window.open(uri, "_blank", "chrome,extrachrome,menubar,resizable,scrollbars,status,toolbar");
             }
         } else if (action == "openmail") {
@@ -634,7 +698,7 @@ MailboxAlertNewMail.performAction = function (action)
             if (mailWindowService) {
                 window.openDialog( "chrome://messenger/content/messageWindow.xul", "_blank", "all,chrome,dialog=no,status,toolbar", this.message_hdr, null );
             } else {
-                dump("Could not get nsIMsgWindow service\n");
+                MailboxAlertUtil.logMessage(1, "Could not get nsIMsgWindow service\n");
             }
         } else if (action == "deletemail") {
             if (this.message_hdr.folder) {
@@ -642,7 +706,7 @@ MailboxAlertNewMail.performAction = function (action)
                     .createInstance(Components.interfaces.nsIMutableArray);
                 messages.appendElement(this.message_hdr, false);
                 var windowManager = Cc['@mozilla.org/appshell/window-mediator;1'].getService();
-                var windowManagerInterface = MailboxAlertNewMail.getInterface(Ci.nsIWindowMediator);
+                var windowManagerInterface = MailboxAlertUtil.getInterface(Ci.nsIWindowMediator);
                 var mailWindow = windowManagerInterface.getMostRecentWindow( "mail:3pane" );
                 this.message_hdr.folder.deleteMessages(messages, mailWindow.msgWindow, false, false, null, true);
                 children.clear();
@@ -650,12 +714,16 @@ MailboxAlertNewMail.performAction = function (action)
         }
         this.closeAlert();
     } catch (e) {
-        dump("[MailboxAlert] error3: " + e + "\n");
+        MailboxAlertUtil.logMessage(0, "[MailboxAlert] error3: " + e + "\n");
+        MailboxAlertUtil.logEnd("MailboxAlertNewMail.performAction", "close window on error");
         window.close();
+        return;
     }
+    MailboxAlertUtil.logEnd("MailboxAlertNewMail.performAction");
 }
 
 MailboxAlertNewMail.notify = function(timer) {
+    MailboxAlertUtil.logStart("MailboxAlertNewMail.notify");
     // this function is called every time a fade or slide timer fires
     // we need to move the window or change the opacity until we're done
     // then we need to set a new timer to wait until the window needs to
@@ -679,10 +747,15 @@ MailboxAlertNewMail.notify = function(timer) {
             this.closeAlert();
         } else {
             timer.cancel();
+            MailboxAlertUtil.logEnd("MailboxAlertNewMail.notify", "close window on unknown state");
             window.close();
+            return;
         }
     } catch (e) {
         timer.cancel();
+        MailboxAlertUtil.logEnd("MailboxAlertNewMail.notify", "close window on error");
         window.close();
+        return;
     }
+    MailboxAlertUtil.logEnd("MailboxAlertNewMail.notify");
 }

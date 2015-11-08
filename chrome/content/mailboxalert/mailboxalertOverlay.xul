@@ -12,6 +12,7 @@
         <stringbundle id="mailboxalert_strings" src="chrome://mailboxalert/locale/mailboxalert.properties"/>
     </stringbundleset>
 
+    <script src="chrome://mailboxalert/content/mailboxalert_util.js" />
     <script src="chrome://mailboxalert/content/mailboxalert_vars.js">
     </script>
     <script src="chrome://mailboxalert/content/mailboxalert_funcs.js"

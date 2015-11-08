@@ -8,11 +8,11 @@
 //
 
 MailboxAlert.showMethods = function (obj) {
-    dump("[Object] Type: " + obj + "\n");
+    MailboxAlertUtil.logMessage(1, "[Object] Type: " + obj + "\n");
     for (var id in obj) {
         try {
             if (typeof(obj[id]) == "function") {
-                dump("[Object] " + id + ": " + obj[id].toString() + "\n");
+                MailboxAlertUtil.logMessage(1, "[Object] " + id + ": " + obj[id].toString() + "\n");
             }
         } catch (err) {
             result.push("[Object] " + id + ": inaccessible\n");
@@ -347,7 +347,7 @@ MailboxAlert.new_alert2 = function (alert_data) {
         // Alerts for the folder itself, or any ancestor folder with alert_for_children set
         if (folder_prefs.hasAlerts() && (!alert_data.is_parent || folder_prefs.alert_for_children)) {
             for (var i = 0; i < folder_prefs.alerts.length; ++i) {
-                dump("[Mailboxalert] running alert " + folder_prefs.alerts[i] + "\n");
+                MailboxAlertUtil.logMessage(1, "[Mailboxalert] running alert " + folder_prefs.alerts[i] + "\n");
                 var alert = MailboxAlert.getAlertPreferences(folder_prefs.alerts[i]);
                 if (alert) {
                     alert.run(alert_data);
@@ -359,9 +359,9 @@ MailboxAlert.new_alert2 = function (alert_data) {
                 !alert_data.folder_is_server &&
                 !(!alert_data.is_parent &&
                   folder_prefs.no_alert_to_parent)) {
-                dump("[Mailboxalert] No alerts were set for ");
-                dump(alert_data.folder_name_with_server);
-                dump(", trying parent\r\n");
+                MailboxAlertUtil.logMessage(1, "[Mailboxalert] No alerts were set for ");
+                MailboxAlertUtil.logMessage(1, alert_data.folder_name_with_server);
+                MailboxAlertUtil.logMessage(1, ", trying parent\r\n");
                 alert_data.toParent()
             } else {
                 return;
@@ -434,7 +434,7 @@ MailboxAlert.playSound = function (soundURL) {
     // Only play if global mute has not been set
     // even if not played, this still counts as having alerted
     // (that's why we check here)
-    dump("[MailboxAlert] playSound() called\r\n");
+    MailboxAlertUtil.logMessage(1, "playSound() called\r\n");
     if (MailboxAlert.muted()) {
         return;
     }
@@ -495,7 +495,7 @@ MailboxAlert.finalizeCommandPart = function (command_part, alert_data, escape_ht
                 csconv.Init(tocharset, 0, 0);
                     command_part = csconv.Convert(command_part);
             } catch (ce) {
-                dump("Error converting " + command_part + ", leaving as is\n");
+                MailboxAlertUtil.logMessage(1, "Error converting " + command_part + ", leaving as is\n");
             }
         }
     } catch (e) {
@@ -516,14 +516,14 @@ MailboxAlert.executeCommand = function (alert_data, command, escape_html) {
     var args = new Array();
     var prev_i = 0;
     var i = 0;
-    dump("command now: " + command + "\n");
+    MailboxAlertUtil.logMessage(1, "command now: " + command + "\n");
 
     var env = Components.classes["@mozilla.org/process/environment;1"].createInstance(Components.interfaces.nsIEnvironment);
     var csconv = Components.classes["@mozilla.org/intl/saveascharset;1"].createInstance(Components.interfaces.nsISaveAsCharset);
 
-    dump("Command to execute: ");
-    dump(command);
-    dump("\n");
+    MailboxAlertUtil.logMessage(1, "Command to execute: ");
+    MailboxAlertUtil.logMessage(1, command);
+    MailboxAlertUtil.logMessage(1, "\n");
     // We want to escape spaces in macro substitutions, but also allow quoting
     // so we need to determine which parts are quoted.
     // Macros in quoted parts are NOT escaped
@@ -558,9 +558,9 @@ MailboxAlert.executeCommand = function (alert_data, command, escape_html) {
     }
     //alert("args: " + args.join("|"));
     var executable_name = args.shift();
-    dump("Executable: ");
-    dump(executable_name);
-    dump("\n");
+    MailboxAlertUtil.logMessage(1, "Executable: ");
+    MailboxAlertUtil.logMessage(1, executable_name);
+    MailboxAlertUtil.logMessage(1, "\n");
     try {
         var exec = Components.classes["@mozilla.org/file/local;1"].
         createInstance(Components.interfaces.nsILocalFile);
@@ -576,8 +576,8 @@ MailboxAlert.executeCommand = function (alert_data, command, escape_html) {
         if (!exec.exists()) {
             var stringsBundle = document.getElementById("mailboxalert_strings");
             alert(stringsBundle.getString('mailboxalert.error')+"\n" + exec.leafName + " " + stringsBundle.getString('mailboxalert.error.notfound') + "\n\nFull path: "+executable_name+"\n");
-            dump("Failed command:  " +executable_name + "\r\n");
-            dump("Arguments: " + args + "\r\n");
+            MailboxAlertUtil.logMessage(1, "Failed command:  " +executable_name + "\r\n");
+            MailboxAlertUtil.logMessage(1, "Arguments: " + args + "\r\n");
             var caller = window.arguments[0];
             if (caller) {
                 var executecommandcheckbox = document.getElementById('mailboxalert_execute_command');
@@ -588,8 +588,8 @@ MailboxAlert.executeCommand = function (alert_data, command, escape_html) {
                 prefs.setBoolPref("extensions.mailboxalert.execute_command." + alert_data.folder_name_with_server, false);
             }
         } else {
-            dump("Command:  " +executable_name + "\r\n");
-            dump("Arguments: " + args + "\r\n");
+            MailboxAlertUtil.logMessage(1, "Command:  " +executable_name + "\r\n");
+            MailboxAlertUtil.logMessage(1, "Arguments: " + args + "\r\n");
             var res1 = pr.init(exec);
             var result = pr.run(false, args, args.length);
         }
@@ -608,7 +608,7 @@ MailboxAlert.executeCommand = function (alert_data, command, escape_html) {
                 prefs.setBoolPref("extensions.mailboxalert.execute_command." + folder, false);
             }
         } else if (e.name == "NS_ERROR_FILE_UNRECOGNIZED_PATH") {
-            dump("NS_ERROR_FILE_UNRECOGNIZED_PATH\n");
+            MailboxAlertUtil.logMessage(1, "NS_ERROR_FILE_UNRECOGNIZED_PATH\n");
             var stringsBundle = document.getElementById("mailboxalert_strings");
             alert(stringsBundle.getString('mailboxalert.error') + "\r\n\r\n" +
                   stringsBundle.getString('mailboxalert.error.badcommandpath1') +
