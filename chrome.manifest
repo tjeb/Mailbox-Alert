@@ -1,7 +1,8 @@
+content	mailboxalert 			jar:chrome/mailboxalert.jar!/content/mailboxalert/
+
 overlay chrome://messenger/content/messenger.xul	chrome://mailboxalert/content/mailboxalertOverlay.xul
 overlay chrome://messenger/content/FilterEditor.xul    chrome://mailboxalert/content/filterEditorOverlay.xul
 
-content	mailboxalert 			jar:chrome/mailboxalert.jar!/content/mailboxalert/
 skin	mailboxalert	classic/1.0 	jar:chrome/mailboxalert.jar!/skin/classic/
 
 locale	mailboxalert	da          jar:chrome/mailboxalert.jar!/locale/da/

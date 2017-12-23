@@ -579,12 +579,11 @@ MailboxAlert.executeCommand = function (alert_data, command, escape_html) {
     MailboxAlertUtil.logMessage(1, executable_name);
     MailboxAlertUtil.logMessage(1, "\n");
     try {
-        var exec = Components.classes["@mozilla.org/file/local;1"].
-        createInstance(Components.interfaces.nsILocalFile);
+        var FileUtils = Components.utils.import("resource://gre/modules/FileUtils.jsm").FileUtils
+        var exec = new FileUtils.File( executable_name )
         var pr = Components.classes["@mozilla.org/process/util;1"].
         createInstance(Components.interfaces.nsIProcess);
 
-        exec.initWithPath(executable_name);
         // isExecutable is horribly broken in OSX, see
         // https://bugzilla.mozilla.org/show_bug.cgi?id=322865
         // It turns out to be broken in windows too...

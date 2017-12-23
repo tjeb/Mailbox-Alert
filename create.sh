@@ -25,7 +25,7 @@ if [ -z $1 ] || [ -z $2 ]; then
     exit 1;
 fi;
 
-# check prerequisites; jar, find, 
+# check prerequisites; jar, find,
 jar --help 2>&1 > /dev/null
 if [ test -x `which jar` != 0 ] ; then
     echo "Error, jar not found or not executable"
@@ -61,7 +61,7 @@ find . -name create.sh -exec rm -rf {} \;
 
 # Now build the jars
 cd chrome
-jar -Mcvf ${ADDON}.jar content skin locale
+jar -Mcvf mailboxalert.jar content skin locale
 rm -rf content
 rm -rf skin
 rm -rf locale

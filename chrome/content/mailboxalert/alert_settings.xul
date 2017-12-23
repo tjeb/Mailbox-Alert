@@ -463,9 +463,8 @@ MailboxAlertAlertSettings.chooseIconFile = function () {
         if (pref_icon.substring(0, prefix.length) == prefix) {
             pref_icon = pref_icon.substring(prefix.length);
         }
-        var file = Components.classes["@mozilla.org/file/local;1"].
-             createInstance(Components.interfaces.nsILocalFile);
-        file.initWithPath(pref_icon);
+        var FileUtils = Components.utils.import("resource://gre/modules/FileUtils.jsm").FileUtils
+        var file = new FileUtils.File( pref_icon )
         if (file.exists()) {
             MailboxAlertAlertSettings.fp.displayDirectory = file.parent;
         }
@@ -500,9 +499,8 @@ MailboxAlertAlertSettings.chooseWavFile = function () {
   var wav_file_element = document.getElementById("play_sound_file_textbox");
   try {
     var wav_file = wav_file_element.value;
-    var exec = Components.classes["@mozilla.org/file/local;1"].
-         createInstance(Components.interfaces.nsILocalFile);
-    exec.initWithPath(wav_file);
+    var FileUtils = Components.utils.import("resource://gre/modules/FileUtils.jsm").FileUtils
+    var exec = new FileUtils.File( wav_file )
     if (exec.exists()) {
       MailboxAlertAlertSettings.fp.displayDirectory = exec.parent;
     }
@@ -528,9 +526,8 @@ MailboxAlertAlertSettings.chooseExecFile = function () {
     if (index > 0) {
         exec_file = exec_file.substring(0, index);
     }
-    var exec = Components.classes["@mozilla.org/file/local;1"].
-         createInstance(Components.interfaces.nsILocalFile);
-    exec.initWithPath(exec_file);
+    var FileUtils = Components.utils.import("resource://gre/modules/FileUtils.jsm").FileUtils
+    var exec = new FileUtils.File( exec_file )
     if (exec.exists()) {
       MailboxAlertAlertSettings.fp.displayDirectory = exec.parent;
     }
