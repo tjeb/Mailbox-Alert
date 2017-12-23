@@ -60,6 +60,9 @@ MailboxAlert.createAlertData = function (mailbox, last_unread) {
             this.subject = "Re: " + this.subject;
         }
         this.sender = this.last_unread.mime2DecodedAuthor;
+        if (this.sender == null) {
+            this.sender = "<no sender set in mail>";
+        }
         this.sender_name = this.sender;
         this.sender_address = this.sender;
         if (this.sender.indexOf('<') > 0 && this.sender.indexOf('>') > 0) {
@@ -67,6 +70,9 @@ MailboxAlert.createAlertData = function (mailbox, last_unread) {
             this.sender_address = this.sender.substring(this.sender.indexOf('<') + 1, this.sender.indexOf('>'));
         }
         this.recipient = this.last_unread.mime2DecodedRecipients;
+        if (this.recipient == null) {
+            this.recipient = "<no recipient set in mail>";
+        }
         this.recipient_name = this.recipient;
         this.recipient_address = this.recipient;
         if (this.recipient.indexOf('<') > 0 && this.recipient.indexOf('>') > 0) {

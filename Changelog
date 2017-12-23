@@ -1,3 +1,6 @@
+[0.16.6-0.16.7]
+  o Missed a fix for a changed interface class in the upload for 0.16.6, fixed in this version
+
 [0.16.5-0.16.6]
   o Updated to changed interfaces up to Thunderbird 57
 

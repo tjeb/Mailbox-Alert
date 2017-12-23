@@ -116,7 +116,7 @@ MailboxAlert.checkOldSettings = function () {
 // If either happens and the stack is locked, we run a retry-timer;
 // so we need an additional queue; for items that have yet to be added.
 
-// 
+//
 
 MailboxAlert.alertQueue = {};
 MailboxAlert.alertQueue.entries = new Array();
@@ -131,7 +131,7 @@ MailboxAlert.alertQueueItemAdder = function(folder, item) {
     item_adder.folder = folder;
     item_adder.item = item;
     item_adder.attempts = 0;
-    
+
     item_adder.notify = function(timer) {
         if (this.attempts > MailboxAlert.ATTEMPTS) {
             this.timer.cancel();
@@ -267,7 +267,7 @@ MailboxAlert.FolderListener.prototype =
         var folder = MailboxAlert.getInterface(parentItem, Components.interfaces.nsIMsgFolder);
         var message;
         try {
-            //item.QueryInterface(Components.interfaces.nsIMsgDBHdr, message);
+            item.QueryInterface(Components.interfaces.nsIMsgDBHdr, message);
             MailboxAlert.alertQueue.addItem(folder, item);
         } catch (exception2) {
             MailboxAlertUtil.logMessage(1, "Exception: " + exception2 + "\n");
