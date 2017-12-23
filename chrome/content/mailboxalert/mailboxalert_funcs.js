@@ -66,6 +66,13 @@ MailboxAlert.createAlertData = function (mailbox, last_unread) {
             this.sender_name = this.sender.substring(0, this.sender.indexOf('<'));
             this.sender_address = this.sender.substring(this.sender.indexOf('<') + 1, this.sender.indexOf('>'));
         }
+        this.recipient = this.last_unread.mime2DecodedRecipients;
+        this.recipient_name = this.recipient;
+        this.recipient_address = this.recipient;
+        if (this.recipient.indexOf('<') > 0 && this.recipient.indexOf('>') > 0) {
+            this.recipient_name = this.recipient.substring(0, this.recipient.indexOf('<'));
+            this.recipient_address = this.recipient.substring(this.recipient.indexOf('<') + 1, this.recipient.indexOf('>'));
+        }
         // is there a more default default?
         this.charset = "ISO-8859-1";
         // not all folders have charset
@@ -115,6 +122,7 @@ MailboxAlert.createAlertData = function (mailbox, last_unread) {
         this.last_unread = {};
         this.last_unread.mime2DecodedSubject = "Test subject";
         this.last_unread.mime2DecodedAuthor = "Theo Est <test@example.com>";
+        this.last_unread.mime2DecodedRecipients = "R. Ecipient <test@example.com>";
         this.last_unread.Charset = "ISO-8859-1";
         this.last_unread.messageSize = 1;
         now = new Date();
@@ -213,6 +221,9 @@ MailboxAlert.createAlertData = function (mailbox, last_unread) {
         result += "sender: " + this.sender + "\n";
         result += "sender_name: " + this.sender_name + "\n";
         result += "sender_address: " + this.sender_address + "\n";
+        result += "recipient: " + this.recipient + "\n";
+        result += "recipient_name: " + this.recipient_name + "\n";
+        result += "recipient_address: " + this.recipient_address + "\n";
         result += "charset: " + this.charset + "\n";
         result += "messageBytes: " + this.messageBytes + "\n";
         result += "date: " + this.date + "\n";
@@ -394,6 +405,9 @@ MailboxAlert.showMessage = function (alert_data, show_icon, icon_file, subject_p
     subject_pref = MailboxAlert.replace(subject_pref, "%senderaddress", alert_data.sender_address);
     subject_pref = MailboxAlert.replace(subject_pref, "%sendername", alert_data.sender_name);
     subject_pref = MailboxAlert.replace(subject_pref, "%sender", alert_data.sender);
+    subject_pref = MailboxAlert.replace(subject_pref, "%recipientaddress", alert_data.recipient_address);
+    subject_pref = MailboxAlert.replace(subject_pref, "%recipientname", alert_data.recipient_name);
+    subject_pref = MailboxAlert.replace(subject_pref, "%recipient", alert_data.recipient);
     subject_pref = MailboxAlert.replace(subject_pref, "%charset", alert_data.charset);
     subject_pref = MailboxAlert.replace(subject_pref, "%messagebytes", alert_data.messageBytes);
     subject_pref = MailboxAlert.replace(subject_pref, "%messagesize", messageSize);
@@ -413,6 +427,9 @@ MailboxAlert.showMessage = function (alert_data, show_icon, icon_file, subject_p
     message_text = MailboxAlert.replace(message_text, "%senderaddress", alert_data.sender_address);
     message_text = MailboxAlert.replace(message_text, "%sendername", alert_data.sender_name);
     message_text = MailboxAlert.replace(message_text, "%sender", alert_data.sender);
+    message_text = MailboxAlert.replace(message_text, "%recipientaddress", alert_data.recipient_address);
+    message_text = MailboxAlert.replace(message_text, "%recipientname", alert_data.recipient_name);
+    message_text = MailboxAlert.replace(message_text, "%recipient", alert_data.recipient);
     message_text = MailboxAlert.replace(message_text, "%charset", alert_data.charset);
     message_text = MailboxAlert.replace(message_text, "%messagebytes", alert_data.messageBytes);
     message_text = MailboxAlert.replace(message_text, "%messagesize", messageSize);

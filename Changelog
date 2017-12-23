@@ -1,4 +1,5 @@
 [0.16.4-0.16.5]
+  o Added %recipient, %recipientname and %recipientaddress macros
   o Resize the settings window if a larger icon is set
   
 [0.16.3-0.16.4]
