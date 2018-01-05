@@ -41,14 +41,15 @@ MailboxAlert.getInterface = function (item, iff) {
 MailboxAlert.max_folder_depth = 10;
 
 /* Time to wait before trying for the first time, so that
-   the adaptive junk filter can have its way with the folder
-   first (in milliseconds) */
-MailboxAlert.INITIAL_WAIT_TIME = 3000;
+ * Thunderbird can mark that messages need processing
+ * (in milliseconds)
+ */
+MailboxAlert.INITIAL_WAIT_TIME = 50;
 
 /* Time to wait if the alert queue is locked */
-MailboxAlert.WAIT_TIME = 500;
-/* Stop after 10 attempts */
-MailboxAlert.ATTEMPTS = 10;
+MailboxAlert.WAIT_TIME = 100;
+/* Stop after 50 attempts (5 seconds) */
+MailboxAlert.ATTEMPTS = 50;
 
 /* Variable to store a renamed folder (we're assuming there's only
  * going to be one renamed folder at a time)

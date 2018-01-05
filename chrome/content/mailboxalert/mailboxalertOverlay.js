@@ -165,6 +165,18 @@ MailboxAlert.alertQueue.releaseLock = function() {
     this.locked = false;
 }
 
+// Returns True if TB has a 'processing' flag set, indicating the msg
+// is still running filters or scheduled to move
+MailboxAlert.checkProcessing = function(msg, folder) {
+    var pflags = msg.folder.getProcessingFlags(msg.messageKey);
+    return (
+        (pflags & Components.interfaces.nsMsgProcessingFlags.ClassifyJunk) ||
+        (pflags & Components.interfaces.nsMsgProcessingFlags.ClassifyTraits) ||
+        (pflags & Components.interfaces.nsMsgProcessingFlags.NotReportedClassified) ||
+        (pflags & Components.interfaces.nsMsgProcessingFlags.FilterToMove)
+    );
+}
+
 // This adds an entry to a stack, and removes it from any other queues it is in
 // The queue must have been locked already.
 MailboxAlert.alertQueue.addItem = function (folder, item) {
@@ -231,9 +243,17 @@ MailboxAlert.alertQueue.addItem = function (folder, item) {
                 try {
                     var idx = MailboxAlert.alertQueue.entries.indexOf(this);
                     folder = this.folder;
-                    // popping it is no problem; we'll destroy this whole array anyway
-                    alert_msg = this.items.pop();
-                    MailboxAlert.alertQueue.entries.splice(idx, 1);
+
+                    // check if TB isn't still processing
+                    var msg = this.items[this.items.length-1];
+                    if (MailboxAlert.checkProcessing(msg, folder)) {
+                        // try again in 100 ms
+                        this.timer.initWithCallback(new_entry, MailboxAlert.WAIT_TIME, new_entry.timer.TYPE_ONE_SHOT);
+                    } else {
+                        // popping it is no problem; we'll destroy this whole array anyway
+                        alert_msg = this.items.pop();
+                        MailboxAlert.alertQueue.entries.splice(idx, 1);
+                    }
                 } catch (e) {
                     MailboxAlertUtil.logMessage(1, "Error while adding item to alert queue: " + e + "\n");
                 }
@@ -291,7 +311,8 @@ MailboxAlert.onLoad = function ()
     Components.classes["@mozilla.org/messenger/services/session;1"]
     .getService(Components.interfaces.nsIMsgMailSession)
     .AddFolderListener(new MailboxAlert.FolderListener(),
-    Components.interfaces.nsIFolderListener.added);
+    Components.interfaces.nsIFolderListener.all);
+    //Components.interfaces.nsIFolderListener.added);
 
     // with IMAP, the 'view' can be updated (i.e. new mail has arrived and
     // this is visible in the treeview), but the folder itself may not have
