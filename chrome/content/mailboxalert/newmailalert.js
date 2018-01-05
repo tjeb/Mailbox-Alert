@@ -25,6 +25,8 @@
  *   Scott MacGregor <mscott@mozilla.org>
  *   Jens Bannmann <jens.b@web.de>
  *
+ * Mailbox Alert code written by Jelte Jansen <Tjebbe@kanariepiet.com>
+ *
  * Alternatively, the contents of this file may be used under the terms of
  * either the GNU General Public License Version 2 or later (the "GPL"), or
  * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
@@ -36,6 +38,7 @@
  * and other provisions required by the GPL or the LGPL. If you do not delete
  * the provisions above, a recipient may use your version of this file under
  * the terms of any one of the MPL, the GPL or the LGPL.
+ *
  *
  * ***** END LICENSE BLOCK ***** */
 
@@ -303,6 +306,10 @@ MailboxAlertNewMail.slideInTop = function ()
 MailboxAlertNewMail.slideOutTop = function ()
 {
     MailboxAlertUtil.logStart("MailboxAlertNewMail.slideOutTop");
+    if (!window) {
+        this.timer.cancel();
+        return;
+    }
     // if something goes wrong, we simply give up and close the window
     try {
         var y_pos = window.screenY;
@@ -324,8 +331,8 @@ MailboxAlertNewMail.slideOutTop = function ()
             return;
         }
     } catch (e) {
-        MailboxAlertUtil.logMessage(0, "Error moving window, closing window\n");
         this.timer.cancel();
+        MailboxAlertUtil.logMessage(0, "Error moving window, closing window: " + e + "\n");
         MailboxAlertUtil.logEnd("MailboxAlertNewMail.slideOutTop", "close window on error");
         window.close();
         return;

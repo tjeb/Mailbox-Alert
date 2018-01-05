@@ -5,6 +5,7 @@
 MailboxAlertUtil = {}
 
 MailboxAlertUtil.getInterface = function (iff) {
+    var windowManager = Components.classes['@mozilla.org/appshell/window-mediator;1'].getService();
     var interface = windowManager.QueryInterface(iff);
     return interface;
 }
