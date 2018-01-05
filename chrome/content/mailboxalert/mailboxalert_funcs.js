@@ -446,7 +446,10 @@ MailboxAlert.showMessage = function (alert_data, show_icon, icon_file, subject_p
     message_text = MailboxAlert.replace(message_text, "%msg_uri", alert_data.msg_uri);
 
     try {
-        window.openDialog('chrome://mailboxalert/content/newmailalert.xul', "new mail", "chrome,titlebar=no,popup=yes,modal=no", subject_pref, message_text, show_icon, icon_file, alert_data.orig_mailbox, alert_data.last_unread, position, duration, effect, onclick, custom_position_x, custom_position_y, custom_position_anchor);
+        // use some unique value to identify the alert window, so they do not interfere
+        // with each other
+        var date = Date.now();
+        window.openDialog('chrome://mailboxalert/content/newmailalert.xul', date, "chrome,titlebar=no,popup=yes,modal=no", subject_pref, message_text, show_icon, icon_file, alert_data.orig_mailbox, alert_data.last_unread, position, duration, effect, onclick, custom_position_x, custom_position_y, custom_position_anchor);
     } catch (e) {
         alert(e);
     }

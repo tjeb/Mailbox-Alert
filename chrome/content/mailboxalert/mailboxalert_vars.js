@@ -44,7 +44,7 @@ MailboxAlert.max_folder_depth = 10;
  * Thunderbird can mark that messages need processing
  * (in milliseconds)
  */
-MailboxAlert.INITIAL_WAIT_TIME = 50;
+MailboxAlert.INITIAL_WAIT_TIME = 100;
 
 /* Time to wait if the alert queue is locked */
 MailboxAlert.WAIT_TIME = 100;

@@ -169,6 +169,7 @@ MailboxAlert.alertQueue.releaseLock = function() {
 // is still running filters or scheduled to move
 MailboxAlert.checkProcessing = function(msg, folder) {
     var pflags = msg.folder.getProcessingFlags(msg.messageKey);
+    //dump("[XX] mail in " + folder.name + " (" + msg.folder.name + ") pflags: " + pflags + "\n");
     return (
         (pflags & Components.interfaces.nsMsgProcessingFlags.ClassifyJunk) ||
         (pflags & Components.interfaces.nsMsgProcessingFlags.ClassifyTraits) ||
@@ -184,6 +185,7 @@ MailboxAlert.alertQueue.addItem = function (folder, item) {
     for (var i = 0; i < this.entries.length; i++) {
         var cur_entry = this.entries[i];
         if (cur_entry.folder == folder) {
+            //dump("[XX] mail still in same folder\n");
             // Add to queue
             cur_entry.items.push(item);
             found = true;
@@ -193,6 +195,7 @@ MailboxAlert.alertQueue.addItem = function (folder, item) {
                                              MailboxAlert.INITIAL_WAIT_TIME,
                                              cur_entry.timer.TYPE_ONE_SHOT);
         } else {
+            //dump("[XX] mail no longer in same folder\n");
             // Remove from any other queues
             var idx;
 
