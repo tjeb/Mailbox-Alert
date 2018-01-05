@@ -30,13 +30,15 @@ MailboxAlertUtil.logMessage = function (level, msg) {
 }
 
 MailboxAlertUtil.logStart = function (name) {
-    MailboxAlertUtil.logMessage(5, name + " called");
+    //MailboxAlertUtil.logMessage(5, name + " called");
 }
 
 MailboxAlertUtil.logEnd = function (name, reason) {
+    /*
     if (reason) {
         MailboxAlertUtil.logMessage(5, name + " finished (" + reason + ")");
     } else {
         MailboxAlertUtil.logMessage(5, name + " finished");
     }
+    */
 }
