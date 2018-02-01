@@ -729,6 +729,16 @@ MailboxAlert.fillFolderMenu = function(alert_menu, folder) {
 
     alert_menu.appendChild(MailboxAlert.createMenuSeparator());
 
+    // Clone the delay menu from Tools
+    var delay_menu = document.getElementById("mailboxalert-moz-tool-menu-delay").cloneNode(true);
+    // make sure we change the relevant IDs; otherwise changing the checked status will be
+    // messed up
+    delay_menu.id = "mailboxalert-moz-tool-menu-delay-clone";
+    delay_menu.firstChild.id = "mailboxalert-moz-tool-menu-delay-popup-clone";
+    alert_menu.appendChild(delay_menu);
+
+    alert_menu.appendChild(MailboxAlert.createMenuSeparator());
+
     alert_menuitem = MailboxAlert.createMenuItem(stringsBundle.getString('mailboxalert.menu.editalerts'), null, false);
     alert_menuitem.addEventListener("command",
         function(){window.openDialog('chrome://mailboxalert/content/alert_list.xul',

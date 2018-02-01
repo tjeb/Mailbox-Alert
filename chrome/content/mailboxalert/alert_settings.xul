@@ -582,10 +582,9 @@ MailboxAlertAlertSettings.selectPosition = function () {
     <checkbox id="play_sound_checkbox" label="Play a sound" oncommand="MailboxAlertAlertSettings.checkUIPlaySound(true);"/>
     <checkbox id="execute_command_checkbox" label="Execute a command" oncommand="MailboxAlertAlertSettings.checkUIExecuteCommand(true);" />
   </hbox>
-
   <tabbox id="tab_list" selectedIndex="-1">
     <tabs>
-      <tab id="show_message_tab" label="Message" disabled="true"/>
+      <tab id="show_message_tab" label="Message" disabled="true" />
       <tab id="play_sound_tab" label="Sound" disabled="true"/>
       <tab id="execute_command_tab" label="Command" disabled="true"/>
     </tabs>
@@ -688,18 +687,6 @@ MailboxAlertAlertSettings.selectPosition = function () {
             </menupopup>
             </menulist>
           </hbox>
-
-          <hbox>
-            <stack id="alertContainer" mousethrough="never" style="border: solid #000000 1px;">
-              <hbox id="alertBox">
-                <hbox id ="alertImageBox" align="center" valign="center">
-                  <image id="alertImage" valign="center"/>
-                </hbox>
-              </hbox>
-            </stack>
-            <span flex="1"/>
-          </hbox>
-
         </vbox>
       </tabpanel>
 

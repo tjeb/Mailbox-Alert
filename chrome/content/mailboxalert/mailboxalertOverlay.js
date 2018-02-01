@@ -60,6 +60,36 @@ MailboxAlert.setMuteMenuitem = function(muted) {
     }
 }
 
+MailboxAlert.setAlertDelay = function(delay_time) {
+    var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
+    prefs.setIntPref("extensions.mailboxalert.delay", delay_time);
+    MailboxAlert.setAlertDelayMenuItem(delay_time);
+}
+
+MailboxAlert.setAlertDelayFromPrefs = function() {
+    var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
+    var delay_time = 0;
+    try {
+        delay_time = prefs.getIntPref("extensions.mailboxalert.delay");
+    } catch (e) {
+        // setting never set, default to 0
+    }
+
+    MailboxAlert.setAlertDelayMenuItem(delay_time);
+}
+
+MailboxAlert.setAlertDelayMenuItem = function(delay_time) {
+    var submenu = document.getElementById("mailboxalert-alert-delay-popup");
+    for (var i = 0; i < submenu.children.length; i++) {
+        var item = submenu.children[i];
+        if (''+delay_time == item.getAttribute("value")) {
+            item.setAttribute("checked", true);
+        } else {
+            item.removeAttribute("checked");
+        }
+    }
+}
+
 MailboxAlert.checkOldSettings = function () {
     // get the value for 'prefsversion'. If it doesn't exist, assume
     // (0.)14. If it is 14, call conversion routines.
@@ -167,9 +197,7 @@ MailboxAlert.alertQueue.releaseLock = function() {
 
 // Returns True if TB has a 'processing' flag set, indicating the msg
 // is still running filters or scheduled to move
-MailboxAlert.checkProcessing = function(msg, folder) {
-    var pflags = msg.folder.getProcessingFlags(msg.messageKey);
-    //dump("[XX] mail in " + folder.name + " (" + msg.folder.name + ") pflags: " + pflags + "\n");
+MailboxAlert.checkProcessing = function(msg, folder, pflags) {
     return (
         (pflags & Components.interfaces.nsMsgProcessingFlags.ClassifyJunk) ||
         (pflags & Components.interfaces.nsMsgProcessingFlags.ClassifyTraits) ||
@@ -177,6 +205,8 @@ MailboxAlert.checkProcessing = function(msg, folder) {
         (pflags & Components.interfaces.nsMsgProcessingFlags.FilterToMove)
     );
 }
+
+
 
 // This adds an entry to a stack, and removes it from any other queues it is in
 // The queue must have been locked already.
@@ -239,6 +269,11 @@ MailboxAlert.alertQueue.addItem = function (folder, item) {
         new_entry.items = new Array();
         new_entry.items.push(item);
         new_entry.timer = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
+        // XX remove this; always wait 5 times first
+        new_entry.check_count = 0
+        // The notification function on the timer:
+        // check if the message isn't being processed, and alert
+        // if it is still in the same folder and not read yet
         new_entry.notify = function(timer) {
             var folder = null;
             var alert_msg = null;
@@ -249,14 +284,23 @@ MailboxAlert.alertQueue.addItem = function (folder, item) {
 
                     // check if TB isn't still processing
                     var msg = this.items[this.items.length-1];
-                    if (MailboxAlert.checkProcessing(msg, folder)) {
+                    var pflags = msg.folder.getProcessingFlags(msg.messageKey);
+                    if (MailboxAlert.checkProcessing(msg, folder, pflags)) {
                         // try again in 100 ms
                         this.timer.initWithCallback(new_entry, MailboxAlert.WAIT_TIME, new_entry.timer.TYPE_ONE_SHOT);
                     } else {
+                        // If both flags are zero, this message has been moved and is no longer relevant
+                        if (pflags == 0 && msg.flags == 0) {
+                            // just cancel and stop
+                            this.timer.cancel();
+                            MailboxAlert.alertQueue.releaseLock();
+                            return;
+                        }
                         // popping it is no problem; we'll destroy this whole array anyway
                         alert_msg = this.items.pop();
                         MailboxAlert.alertQueue.entries.splice(idx, 1);
                     }
+                    //} // XX remove this line too
                 } catch (e) {
                     MailboxAlertUtil.logMessage(1, "Error while adding item to alert queue: " + e + "\n");
                 }
@@ -271,7 +315,16 @@ MailboxAlert.alertQueue.addItem = function (folder, item) {
                 MailboxAlert.new_alert(folder, alert_msg);
             }
         }
-        new_entry.timer.initWithCallback(new_entry, MailboxAlert.INITIAL_WAIT_TIME, new_entry.timer.TYPE_ONE_SHOT);
+        // Start the timer with the above values and function, and add a user-set delay, if set
+        var alert_delay = 0;
+        var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
+        try {
+            alert_delay = prefs.getIntPref("extensions.mailboxalert.delay");
+        } catch (e) {
+            // ok, default to INITIAL_WAIT_TIME
+            alert_delay = MailboxAlert.INITIAL_WAIT_TIME;
+        }
+        new_entry.timer.initWithCallback(new_entry, alert_delay, new_entry.timer.TYPE_ONE_SHOT);
         this.entries.push(new_entry);
     }
 }
@@ -334,6 +387,9 @@ MailboxAlert.onLoad = function ()
 
     // check if we exited with muted on last time
     MailboxAlert.setMuteMenuitem(MailboxAlert.muted());
+
+    // Set delay menu item, if configured
+    MailboxAlert.setAlertDelayFromPrefs();
 
     // And finally, add our shiny custom filter action
     var filterService = Components.classes["@mozilla.org/messenger/services/filters;1"]

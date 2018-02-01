@@ -47,9 +47,9 @@ MailboxAlert.max_folder_depth = 10;
 MailboxAlert.INITIAL_WAIT_TIME = 100;
 
 /* Time to wait if the alert queue is locked */
-MailboxAlert.WAIT_TIME = 100;
-/* Stop after 50 attempts (5 seconds) */
-MailboxAlert.ATTEMPTS = 50;
+MailboxAlert.WAIT_TIME = 250;
+/* Stop after 20 attempts (5 seconds) */
+MailboxAlert.ATTEMPTS = 20;
 
 /* Variable to store a renamed folder (we're assuming there's only
  * going to be one renamed folder at a time)
@@ -213,7 +213,7 @@ MailboxAlert.alertPrefDefs = {
 "show_message_onclick": [ "string", "close" ],
 "show_message_custom_position_x": [ "integer", -1 ],
 "show_message_custom_position_y": [ "integer", -1 ],
-"show_message_custom_position_anchor": [ "string", "topleft" ]
+"show_message_custom_position_anchor": [ "string", "topleft" ],
 }
 
 // This returns the preferences for the folder in mailboxalert

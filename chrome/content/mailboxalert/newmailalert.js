@@ -215,6 +215,7 @@ MailboxAlertNewMail.onAlertLoad = function ()
     var alertContainer = document.getElementById('alertContainer');
     alertContainer.style.opacity = 1;
     this.placeAlert();
+    this.resizeAlert(false);
     this.timer_state = this.WAITING;
     if (this.duration > 0) {
         this.timer.cancel();
@@ -411,6 +412,7 @@ MailboxAlertNewMail.showAlertFade = function ()
     alertContainer.style.opacity = 0;
     this.resizeAlert(false);
     this.placeAlert();
+    this.resizeAlert(false);
     this.timer_state = this.FADING_IN;
     this.timer.cancel();
     this.timer.initWithCallback(this, this.gFadeTime, this.timer.TYPE_REPEATING_PRECISE);
@@ -693,7 +695,7 @@ MailboxAlertNewMail.performAction = function (action)
                         // Running out of ideas here...
                     }
                 }
-                mailWindow.restore();
+                //mailWindow.restore();
                 mailWindow.focus();
             } else {
                 MailboxAlertUtil.logMessage(1, "did not get mailWindow\n");
