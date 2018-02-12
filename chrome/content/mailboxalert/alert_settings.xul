@@ -415,15 +415,19 @@ MailboxAlertAlertSettings.getPrefsFromWindow = function (alert_id) {
 }
 
 MailboxAlertAlertSettings.storePrefs = function (alert_id) {
-    var alert_prefs = MailboxAlertAlertSettings.getPrefsFromWindow(alert_id);
-    if (alert_prefs.index == 0) {
-        alert_prefs.createNewIndex();
-    }
-    alert_prefs.store();
-    // if the parent is the alert list, update it
-    var parent_window = this.getParent();
-    if (parent_window) {
-        parent_window.fillAlertList();
+    try {
+        var alert_prefs = MailboxAlertAlertSettings.getPrefsFromWindow(alert_id);
+        if (alert_prefs.index == 0) {
+            alert_prefs.createNewIndex();
+        }
+        alert_prefs.store();
+        // if the parent is the alert list, update it
+        var parent_window = this.getParent();
+        if (parent_window) {
+            parent_window.fillAlertList();
+        }
+    } catch (e) {
+        alert("Error saving alert " + alert_id + ": " + e);
     }
 }
 
@@ -506,6 +510,7 @@ MailboxAlertAlertSettings.chooseWavFile = function () {
     }
   } catch (e) {
     // Specified directory does not seem to exist, use default
+    alert("Error, unable to find selected audio file. Using default.");
   }
 
   // use whatever nsIFilePicker options are suitable
