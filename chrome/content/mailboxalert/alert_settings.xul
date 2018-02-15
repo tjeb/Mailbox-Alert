@@ -25,9 +25,7 @@
 <script src="chrome://mailboxalert/content/mailboxalert_util.js" />
 <script src="chrome://mailboxalert/content/mailboxalert_vars.js" />
 <script src="chrome://mailboxalert/content/mailboxalert_common.js" />
-
-<script src="chrome://mailboxalert/content/mailboxalert_funcs.js"
-        type="application/javascript;version=1.7" />
+<script src="chrome://mailboxalert/content/mailboxalert_funcs.js" />
 
 <script type="application/x-javascript">
 <![CDATA[

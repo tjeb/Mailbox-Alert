@@ -13,13 +13,9 @@
     </stringbundleset>
 
     <script src="chrome://mailboxalert/content/mailboxalert_util.js" />
-    <script src="chrome://mailboxalert/content/mailboxalert_vars.js">
-    </script>
-    <script src="chrome://mailboxalert/content/mailboxalert_funcs.js"
-            type="application/javascript;version=1.7">
-    </script>
-    <script src="chrome://mailboxalert/content/mailboxalertOverlay.js">
-    </script>
+    <script src="chrome://mailboxalert/content/mailboxalert_vars.js" />
+    <script src="chrome://mailboxalert/content/mailboxalert_funcs.js" />
+    <script src="chrome://mailboxalert/content/mailboxalertOverlay.js" />
 
     <!-- Firefox / Thunderbird Tools Menu -->
     <menupopup id="menu_ToolsPopup">

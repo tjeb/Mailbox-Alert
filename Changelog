@@ -1,3 +1,12 @@
+[0.16.7-0.17]
+  o Made the code compatible with Thunderbird 59beta
+  o Improved internal checks to see if a message is still being processed by filters
+  o Built-in delay before an alert fires is now much shorter
+  o Added new setting 'delay', for users that do want or need a delay before an alert fires
+  o Fixed an issue that cause 'open message in current window' to fail
+  o Fixed an issue where multiple alerts at the same time could interfere
+    with each other, causing one of them to get 'stuck'
+
 [0.16.6-0.16.7]
   o Missed a fix for a changed interface class in the upload for 0.16.6, fixed in this version
 
