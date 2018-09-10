@@ -518,8 +518,9 @@ MailboxAlert.finalizeCommandPart = function (command_part, alert_data, escape_ht
         var tocharset = env.get("LANG").split(".")[1];
         if (alert_data.charset && tocharset) {
             try {
+                var csconv = Components.classes["@mozilla.org/intl/saveascharset;1"].createInstance(Components.interfaces.nsISaveAsCharset);
                 csconv.Init(tocharset, 0, 0);
-                    command_part = csconv.Convert(command_part);
+                command_part = csconv.Convert(command_part);
             } catch (ce) {
                 MailboxAlertUtil.logMessage(1, "Error converting " + command_part + ", leaving as is\n");
             }
@@ -545,7 +546,6 @@ MailboxAlert.executeCommand = function (alert_data, command, escape_html) {
     MailboxAlertUtil.logMessage(1, "command now: " + command + "\n");
 
     var env = Components.classes["@mozilla.org/process/environment;1"].createInstance(Components.interfaces.nsIEnvironment);
-    var csconv = Components.classes["@mozilla.org/intl/saveascharset;1"].createInstance(Components.interfaces.nsISaveAsCharset);
 
     MailboxAlertUtil.logMessage(1, "Command to execute: ");
     MailboxAlertUtil.logMessage(1, command);

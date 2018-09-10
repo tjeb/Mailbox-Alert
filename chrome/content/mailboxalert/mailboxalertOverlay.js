@@ -339,6 +339,7 @@ MailboxAlert.FolderListener.prototype =
     OnItemAdded: function(parentItem, item)
     {
         const MSG_FOLDER_FLAG_OFFLINE = 0x8000000;
+        //MailboxAlertUtil.logMessage(1, "OnItemAdded start\n");
 
         var folder = MailboxAlert.getInterface(parentItem, Components.interfaces.nsIMsgFolder);
         var message;
@@ -349,6 +350,7 @@ MailboxAlert.FolderListener.prototype =
             MailboxAlertUtil.logMessage(1, "Exception: " + exception2 + "\n");
             MailboxAlertUtil.logMessage(1, "the item was: " + item + "\n");
         }
+        //MailboxAlertUtil.logMessage(1, "OnItemAdded done\n");
     }
 }
 
@@ -356,6 +358,7 @@ MailboxAlert.onLoad = function ()
 {
     // remove to avoid duplicate initialization
     removeEventListener("load", MailboxAlert.onLoad, true);
+    //MailboxAlertUtil.logMessage(1, "Loading Mailbox Alert\n");
 
     //var notificationService =
     //Components.classes["@mozilla.org/messenger/msgnotificationservice;1"]
@@ -368,6 +371,8 @@ MailboxAlert.onLoad = function ()
     .getService(Components.interfaces.nsIMsgMailSession)
     .AddFolderListener(new MailboxAlert.FolderListener(),
     Components.interfaces.nsIFolderListener.all);
+    //MailboxAlertUtil.logMessage(1, "Mailbox Alert folder listener initialized\n");
+
     //Components.interfaces.nsIFolderListener.added);
 
     // with IMAP, the 'view' can be updated (i.e. new mail has arrived and
@@ -396,6 +401,7 @@ MailboxAlert.onLoad = function ()
                         .getService(Components.interfaces.nsIMsgFilterService);
 
     filterService.addCustomAction(MailboxAlert.filter_action);
+    //MailboxAlertUtil.logMessage(1, "Mailbox Alert Loaded\n");
 }
 
 addEventListener("load", MailboxAlert.onLoad, true);
