@@ -9,7 +9,7 @@ xmlns:em="http://www.mozilla.org/2004/em-rdf#">
 			<Description>
 				<em:id>{3550f703-e582-4d05-9a08-453d09bdfdc6}</em:id>
 				<em:minVersion>3.0</em:minVersion>
-				<em:maxVersion>60.*</em:maxVersion>
+				<em:maxVersion>67.*</em:maxVersion>
 			</Description>
 		</em:targetApplication>
 
@@ -24,10 +24,10 @@ xmlns:em="http://www.mozilla.org/2004/em-rdf#">
 		<em:id>{9c21158b-2c76-4d0a-980a-c51fc9cefaa7}</em:id>
 		<em:name>Mailbox Alert</em:name>
                 <em:type>2</em:type>
-		<em:version>0.18.0</em:version>
+		<em:version>0.19.0</em:version>
 		<em:description>Mailbox Alert - Extension for Thunderbird.</em:description>
 		<em:creator>Jelte Jansen</em:creator>
-		<em:homepageURL>http://tjeb.nl/Projects/Mailbox_Alert</em:homepageURL>
+		<em:homepageURL>https://tjeb.nl/Projects/Mailbox_Alert</em:homepageURL>
 		<em:iconURL>chrome://mailboxalert/skin/mailboxalert.png</em:iconURL>
 		<em:aboutURL>chrome://mailboxalert/content/about.xul</em:aboutURL>
 
