@@ -8,7 +8,7 @@
 	orient="vertical"
 	autostretch="always"
 	onload="sizeToContent()"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+	xmlns="https://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 
 
@@ -22,14 +22,14 @@
 <groupbox align="center" orient="horizontal">
 <vbox>
   <text value="&mailboxalert.name;" style="font-weight: bold; font-size: x-large;"/>
-  <text value="&mailboxalert.version;: 0.18.0"/>
+  <text value="&mailboxalert.version;: 0.19.0"/>
   <separator class="thin"/>
   <text value="&mailboxalert.about.created;:" style="font-weight: bold;"/>
   <text value="&mailboxalert.author;" class="url"
         onclick="window.open('http://tjeb.nl'); window.close();"/>
   <separator class="thin"/>
     <text value="&mailboxalert.website;" style="font-weight: bold;"/>
-    <text value="http://tjeb.nl/Projects/Mailbox_Alert"
+    <text value="https://tjeb.nl/Projects/Mailbox_Alert"
           class="url"
         onclick="window.open('http://tjeb.nl'); window.close();"/>
   <separator class="thin"/>
