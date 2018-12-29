@@ -26,12 +26,12 @@
   <separator class="thin"/>
   <text value="&mailboxalert.about.created;:" style="font-weight: bold;"/>
   <text value="&mailboxalert.author;" class="url"
-        onclick="window.open('http://tjeb.nl'); window.close();"/>
+        onclick="window.open('https://tjeb.nl'); window.close();"/>
   <separator class="thin"/>
     <text value="&mailboxalert.website;" style="font-weight: bold;"/>
     <text value="https://tjeb.nl/Projects/Mailbox_Alert"
           class="url"
-        onclick="window.open('http://tjeb.nl'); window.close();"/>
+        onclick="window.open('https://tjeb.nl'); window.close();"/>
   <separator class="thin"/>
 </vbox>
 <spring flex="1"/>
