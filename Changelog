@@ -1,8 +1,9 @@
 [0.18-0.19]
-  o Update for new Trhunderbird APIs
+  o Update for new Thunderbird APIs
   o Should fix 'browse' buttons
   o Should fix installation/compatiblity errors up to 67 (beta)
   o Added Norwegian Bokmål translation (thanks @DandelionSprout)
+  o Remove error popup for unknown folder in audio browse file picker
 
 [0.17-0.18]
   o Updated for compatibility with Thunderbird 60

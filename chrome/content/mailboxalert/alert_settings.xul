@@ -525,7 +525,10 @@ MailboxAlertAlertSettings.chooseWavFile = function () {
     }
   } catch (e) {
     // Specified directory does not seem to exist, use default
-    alert("Error, unable to find selected audio file. Using default.");
+    // but only if it not empty
+    if (wav_file && wav_file !== "") {
+        alert("Error, unable to find selected audio file. Using default.");
+    }
   }
 
   // use whatever nsIFilePicker options are suitable

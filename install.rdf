@@ -17,7 +17,7 @@ xmlns:em="http://www.mozilla.org/2004/em-rdf#">
 		<em:name>Mailbox Alert</em:name>
                 <em:type>2</em:type>
 		<em:version>0.19.0</em:version>
-		<em:description>Mailbox Alert - Extension for Thunderbird.</em:description>
+		<em:description>Mailbox Alert</em:description>
 		<em:creator>Jelte Jansen</em:creator>
 		<em:homepageURL>https://tjeb.nl/Projects/Mailbox_Alert</em:homepageURL>
 		<em:iconURL>chrome://mailboxalert/skin/mailboxalert.png</em:iconURL>
