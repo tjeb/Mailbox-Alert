@@ -643,7 +643,7 @@ MailboxAlert.filter_action =
             var alert_prefs = MailboxAlert.getAlertPreferences(value);
             return null;
         } catch (e) {
-            return document.getElementById('mailboxalert_strings').getString('mailboxalert.alert_deleted');
+            return document.getElementById('mailboxalert_strings').GetStringFromName('mailboxalert.alert_deleted');
         }
     },
     allowDuplicates: true,
@@ -889,7 +889,7 @@ MailboxAlert.convertAllFolderPreferences14toAlertPreferences = function () {
 
     // also add two defaults if it does not exist yet
     var default_alert = MailboxAlert.getAlertPreferences(0);
-    default_alert.set("name", stringsBundle.getString('mailboxalert.default_message'));
+    default_alert.set("name", stringsBundle.GetStringFromName('mailboxalert.default_message'));
     default_alert.set("show_message", true);
     default_alert.set("show_message_subject", "%sendername on %originalfolder");
     default_alert.set("show_message_message", "%subject");
@@ -908,7 +908,7 @@ MailboxAlert.convertAllFolderPreferences14toAlertPreferences = function () {
     }
 
     var default_alert = MailboxAlert.getAlertPreferences(0);
-    default_alert.set("name", stringsBundle.getString('mailboxalert.default_sound'));
+    default_alert.set("name", stringsBundle.GetStringFromName('mailboxalert.default_sound'));
     default_alert.set("play_sound", true);
     // TODO: find a nice built-in wav
     var all_alerts = MailboxAlert.getAllAlertPrefs();

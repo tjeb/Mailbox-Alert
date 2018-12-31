@@ -600,7 +600,7 @@ MailboxAlert.executeCommand = function (alert_data, command, escape_html) {
         // then catch NS_UNEXPECTED
         if (!exec.exists()) {
             var stringsBundle = document.getElementById("mailboxalert_strings");
-            alert(stringsBundle.getString('mailboxalert.error')+"\n" + exec.leafName + " " + stringsBundle.getString('mailboxalert.error.notfound') + "\n\nFull path: "+executable_name+"\n");
+            alert(stringsBundle.GetStringFromName('mailboxalert.error')+"\n" + exec.leafName + " " + stringsBundle.GetStringFromName('mailboxalert.error.notfound') + "\n\nFull path: "+executable_name+"\n");
             MailboxAlertUtil.logMessage(1, "Failed command:  " +executable_name + "\r\n");
             MailboxAlertUtil.logMessage(1, "Arguments: " + args + "\r\n");
             var caller = window.arguments[0];
@@ -623,7 +623,7 @@ MailboxAlert.executeCommand = function (alert_data, command, escape_html) {
             e.name == "NS_ERROR_UNEXPECTED"
            ) {
             var stringsBundle = document.getElementById("mailboxalert_strings");
-            alert(stringsBundle.getString('mailboxalert.error')+"\n" + exec.leafName + " " + stringsBundle.getString('mailboxalert.error.notfound') + "\n\nFull path: "+executable_name+"\n");
+            alert(stringsBundle.GetStringFromName('mailboxalert.error')+"\n" + exec.leafName + " " + stringsBundle.GetStringFromName('mailboxalert.error.notfound') + "\n\nFull path: "+executable_name+"\n");
             if (caller) {
                 var executecommandcheckbox = document.getElementById('mailboxalert_execute_command');
                 executecommandcheckbox.checked = false;
@@ -635,10 +635,10 @@ MailboxAlert.executeCommand = function (alert_data, command, escape_html) {
         } else if (e.name == "NS_ERROR_FILE_UNRECOGNIZED_PATH") {
             MailboxAlertUtil.logMessage(1, "NS_ERROR_FILE_UNRECOGNIZED_PATH\n");
             var stringsBundle = document.getElementById("mailboxalert_strings");
-            alert(stringsBundle.getString('mailboxalert.error') + "\r\n\r\n" +
-                  stringsBundle.getString('mailboxalert.error.badcommandpath1') +
+            alert(stringsBundle.GetStringFromName('mailboxalert.error') + "\r\n\r\n" +
+                  stringsBundle.GetStringFromName('mailboxalert.error.badcommandpath1') +
                   " " + alert_data.folder_name_with_server + " " +
-                  stringsBundle.getString('mailboxalert.error.badcommandpath2'));
+                  stringsBundle.GetStringFromName('mailboxalert.error.badcommandpath2'));
                     var caller = window.arguments[0];
         } else {
             throw e;
@@ -671,7 +671,7 @@ MailboxAlert.createMenuSeparator = function () {
 MailboxAlert.fillFolderMenu = function(alert_menu, folder) {
     var folder_prefs = MailboxAlert.getFolderPrefs(folder.URI);
     var all_alerts = MailboxAlert.getAllAlertPrefs();
-    var stringsBundle = document.getElementById("mailboxalert_strings");
+    var stringsBundle = Services.strings.createBundle("chrome://mailboxalert/locale/mailboxalert.properties");
     var alert_menuitem;
     var alerts_set = false;
 
@@ -682,8 +682,8 @@ MailboxAlert.fillFolderMenu = function(alert_menu, folder) {
 
     // need to make these first, as modifying the alerts that are set can
     // toggle whether these are enabled or not
-    var alertforchildren_menuitem = MailboxAlert.createMenuItem(stringsBundle.getString('mailboxalert.menu.alertforchildren'), null, true);
-    var alertnoparent_menuitem = MailboxAlert.createMenuItem(stringsBundle.getString('mailboxalert.menu.noalerttoparent'), null, true);
+    var alertforchildren_menuitem = MailboxAlert.createMenuItem(stringsBundle.GetStringFromName('mailboxalert.menu.alertforchildren'), null, true);
+    var alertnoparent_menuitem = MailboxAlert.createMenuItem(stringsBundle.GetStringFromName('mailboxalert.menu.noalerttoparent'), null, true);
 
     for (var alert_i = 0; alert_i < all_alerts.length; ++alert_i) {
         let alert = all_alerts[alert_i];
@@ -739,7 +739,7 @@ MailboxAlert.fillFolderMenu = function(alert_menu, folder) {
 
     alert_menu.appendChild(MailboxAlert.createMenuSeparator());
 
-    alert_menuitem = MailboxAlert.createMenuItem(stringsBundle.getString('mailboxalert.menu.editalerts'), null, false);
+    alert_menuitem = MailboxAlert.createMenuItem(stringsBundle.GetStringFromName('mailboxalert.menu.editalerts'), null, false);
     alert_menuitem.addEventListener("command",
         function(){window.openDialog('chrome://mailboxalert/content/alert_list.xul',
                                      'mailboxalert_prefs', 'chrome');},

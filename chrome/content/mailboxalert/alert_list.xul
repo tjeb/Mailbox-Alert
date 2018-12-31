@@ -66,7 +66,7 @@ MailboxAlertList.deleteAlert = function () {
 
         if (folders.length > 0) {
             var stringsBundle = document.getElementById("mailboxalert-string-bundle");
-            if (confirm(stringsBundle.getString("mailboxalert.alert_settings.alertset"))) {
+            if (confirm(stringsBundle.GetStringFromName("mailboxalert.alert_settings.alertset"))) {
                 for (var i = 0; i < folders.length; ++i) {
                     folders[i].removeAlert(alert_index);
                     folders[i].store();
@@ -78,7 +78,7 @@ MailboxAlertList.deleteAlert = function () {
 
         if (delete_ok && MailboxAlert.alertIsFilterTarget(alert_index)) {
             var stringsBundle = document.getElementById("mailboxalert-string-bundle");
-            if (confirm(stringsBundle.getString("mailboxalert.alert_settings.alertsetforfilter"))) {
+            if (confirm(stringsBundle.GetStringFromName("mailboxalert.alert_settings.alertsetforfilter"))) {
                 MailboxAlert.removeAlertFilters(alert_index);
             } else {
                 delete_ok = false;
@@ -112,19 +112,16 @@ MailboxAlertList.alertListCount = function () {
 
 MailboxAlertList.clearAlertList = function () {
   var alert_listbox = document.getElementById("alert_listbox");
-  try {
-    while (alert_listbox.getItemAtIndex(0)) {
-      alert_listbox.removeItemAt(0);
-    }
-  } catch (e) {
-    // no biggie, list empty
+  var child = alert_listbox.getItemAtIndex(0)
+  while (child) {
+    alert_listbox.removeChild(child);
+    child = alert_listbox.getItemAtIndex(0)
   }
 }
 
 MailboxAlertList.fillAlertList = function () {
   var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
   var alert_listbox = document.getElementById("alert_listbox");
-
   MailboxAlertList.clearAlertList();
   var alert_list = MailboxAlert.getAllAlertPrefs();
   for (var i = 0; i < alert_list.length; ++i) {
@@ -155,7 +152,7 @@ MailboxAlertList.init = function () {
   <label value="Mailbox Alert Alert List"/>
   <hbox>
 
-  <listbox
+  <richlistbox
     id="alert_listbox"
     onselect="MailboxAlertList.enableButton('edit_button', true);MailboxAlertList.enableButton('delete_button', true);"
     ondblclick="MailboxAlertList.editAlert();"
