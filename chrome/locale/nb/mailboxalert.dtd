@@ -1,0 +1,75 @@
+<!ENTITY mailboxalert.name "Mailbox Alert">
+<!ENTITY mailboxalert.author "Jelte Jansen">
+<!ENTITY mailboxalert.website "Nettsted:">
+<!ENTITY mailboxalert.version "Versjon">
+<!ENTITY mailboxalert.about.title "Om Mailbox Alert">
+<!ENTITY mailboxalert.about.created "Laget av">
+<!ENTITY mailboxalert.mute "Demp Mailbox Alert-lyder">
+<!ENTITY mailboxalert.prefs.title "Mailbox Alert-innstillinger">
+<!ENTITY mailboxalert.prefs.icon "Ikon">
+<!ENTITY mailboxalert.prefs.customwav "Selvvalgt .wav-fil">
+<!ENTITY mailboxalert.prefs.escapehtml "Bruk HTML-koder for spesialtegn i makroer">
+<!ENTITY mailboxalert.prefs.test "Test disse innstillingene">
+<!ENTITY mailboxalert.prefs.close "Lukk">
+<!ENTITY mailboxalert.prefs.expl.escape "Dersom noen filer eller argumenter inneholder mellomrom, sørg for å tøyle dem fast med ">
+<!ENTITY mailboxalert.prefs.expl.macros "Du kan bruke de følgende makroene">
+<!ENTITY mailboxalert.prefs.expl.servername "Tjenerens navn">
+<!ENTITY mailboxalert.prefs.expl.foldername "E-postmappens navn">
+<!ENTITY mailboxalert.prefs.expl.originalfolder "Navnet til undermappen som mottok meldingen">
+<!ENTITY mailboxalert.prefs.expl.numunread "Antall uleste meldinger i denne mappen">
+<!ENTITY mailboxalert.prefs.expl.totalunread "Antall uleste meldinger i denne mappen og i alle dens undermapper">
+<!ENTITY mailboxalert.prefs.expl.sender "Senderen av den seneste uleste meldingen">
+<!ENTITY mailboxalert.prefs.expl.sendername "Delen av senderen av den seneste uleste meldingen frem til dens første &apos;&lt;&apos;">
+<!ENTITY mailboxalert.prefs.expl.senderaddress "Adressedelen til senderen av den seneste uleste meldingen (mellom &apos;&lt;&apos; og &apos;&gt;&apos;)">
+<!ENTITY mailboxalert.prefs.expl.subject "Temaet til den seneste uleste meldingen">
+<!ENTITY mailboxalert.prefs.expl.charset "Tegnsettet til mappen">
+<!ENTITY mailboxalert.prefs.expl.see "Se">
+<!ENTITY mailboxalert.prefs.expl.information "for mere informasjon">
+<!ENTITY mailboxalert.prefs.expl.messagebytes "Meldingens størrelse i bytes">
+<!ENTITY mailboxalert.prefs.expl.messagesize "Meldingens størrelse i menneskelesbart format (for eksempel 2.1M)">
+<!ENTITY mailboxalert.prefs.expl.date "Datoen når meldingen ble sendt">
+<!ENTITY mailboxalert.prefs.expl.time "Tidspunktet meldingen ble sendt">
+<!ENTITY mailboxalert.prefs.expl.msg_preview "En kort forhåndsvisning av meldingens innhold">
+<!ENTITY mailboxalert.prefs.expl.msg_body "En tekstvisning av meldingen">
+<!ENTITY mailboxalert.prefs.expl.msg_full "Meldingens fulle innhold i råformat">
+<!ENTITY mailboxalert.prefs.expl.msg_uri "Meldingens fulle URI">
+<!ENTITY mailboxalert.prefs.expl.enter "Linjeknekk (virker ikke i det første feltet i &apos;vis en melding&apos;)">
+<!ENTITY mailboxalert.prefs.browse "Let">
+<!ENTITY mailboxalert.prefs.default "Bruk forvalget">
+<!ENTITY mailboxalert.prefs.systemdefault "Systemets forvalg">
+<!ENTITY mailboxalert.alert.prefs.caption_general "Generelt">
+<!ENTITY mailboxalert.alert.prefs.caption_alert "Alarmoppsprett">
+<!ENTITY mailboxalert.alert_prefs.position "Posisjon">
+<!ENTITY mailboxalert.alert_prefs.position.bottomright "Nederst til høyre">
+<!ENTITY mailboxalert.alert_prefs.position.bottomleft "Nederst til venstre">
+<!ENTITY mailboxalert.alert_prefs.position.topright "Øverst til høyre">
+<!ENTITY mailboxalert.alert_prefs.position.topleft "Øverst til venstre">
+<!ENTITY mailboxalert.alert_prefs.position.center "I midten">
+<!ENTITY mailboxalert.alert_prefs.position.custom "Tilpasset">
+<!ENTITY mailboxalert.alert_prefs.position.custom_select "Velg en posisjon">
+<!ENTITY mailboxalert.alert_prefs.custom_position_x "X">
+<!ENTITY mailboxalert.alert_prefs.custom_position_y "Y">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_title "Velg en tilpasset posisjon for Mailbox Alert">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_text1 "Dra dette vinduet dit du vil at alarmen skal vises">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_text2 "Og klikk på knappen som samsvarer med hjørnet">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_text3 "du vil at alarmen skal vises i">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_topleft "Øverst til venstre">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_topright "Øverst til høyre">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_bottomleft "Nederst til venstre">
+<!ENTITY mailboxalert.alert_prefs.custom_position_selector_bottomright "Nederst til høyre">
+<!ENTITY mailboxalert.alert_prefs.effect "Effekt">
+<!ENTITY mailboxalert.alert_prefs.effect.none "Ingen">
+<!ENTITY mailboxalert.alert_prefs.effect.slide "Gli">
+<!ENTITY mailboxalert.alert_prefs.effect.fade "Ton ut">
+<!ENTITY mailboxalert.alert_prefs.delay "Forsinkelse før alarmen">
+<!ENTITY mailboxalert.alert_prefs.time_unit "sekunder">
+<!ENTITY mailboxalert.alert_prefs.duration "Oppsprettens varighet">
+<!ENTITY mailboxalert.alert_prefs.onclick "Ved klikking">
+<!ENTITY mailboxalert.alert_prefs.onclick.close "Lukk oppspretten">
+<!ENTITY mailboxalert.alert_prefs.onclick.openmail "Åpne meldingen i et nytt vindu">
+<!ENTITY mailboxalert.alert_prefs.onclick.selectmail "Åpne meldingen i det nåværende vinduet">
+<!ENTITY mailboxalert.alert_prefs.onclick.deletemail "Slett meldingen">
+<!ENTITY mailboxalert.alert_list.add "Legg til">
+<!ENTITY mailboxalert.alert_list.edit "Rediger">
+<!ENTITY mailboxalert.alert_list.delete "Slett">
+<!ENTITY mailboxalert.menu.editalerts "Rediger Mailbox Alert-alarmer">
