@@ -599,7 +599,7 @@ MailboxAlert.executeCommand = function (alert_data, command, escape_html) {
         // removing the check, we shall have to try and run it
         // then catch NS_UNEXPECTED
         if (!exec.exists()) {
-            var stringsBundle = document.getElementById("mailboxalert_strings");
+            var stringsBundle = Services.strings.createBundle("chrome://mailboxalert/locale/mailboxalert.properties");
             alert(stringsBundle.GetStringFromName('mailboxalert.error')+"\n" + exec.leafName + " " + stringsBundle.GetStringFromName('mailboxalert.error.notfound') + "\n\nFull path: "+executable_name+"\n");
             MailboxAlertUtil.logMessage(1, "Failed command:  " +executable_name + "\r\n");
             MailboxAlertUtil.logMessage(1, "Arguments: " + args + "\r\n");
@@ -622,7 +622,7 @@ MailboxAlert.executeCommand = function (alert_data, command, escape_html) {
         if (e.name == "NS_ERROR_FAILURE" ||
             e.name == "NS_ERROR_UNEXPECTED"
            ) {
-            var stringsBundle = document.getElementById("mailboxalert_strings");
+            var stringsBundle = Services.strings.createBundle("chrome://mailboxalert/locale/mailboxalert.properties");
             alert(stringsBundle.GetStringFromName('mailboxalert.error')+"\n" + exec.leafName + " " + stringsBundle.GetStringFromName('mailboxalert.error.notfound') + "\n\nFull path: "+executable_name+"\n");
             if (caller) {
                 var executecommandcheckbox = document.getElementById('mailboxalert_execute_command');
@@ -634,7 +634,7 @@ MailboxAlert.executeCommand = function (alert_data, command, escape_html) {
             }
         } else if (e.name == "NS_ERROR_FILE_UNRECOGNIZED_PATH") {
             MailboxAlertUtil.logMessage(1, "NS_ERROR_FILE_UNRECOGNIZED_PATH\n");
-            var stringsBundle = document.getElementById("mailboxalert_strings");
+            var stringsBundle = Services.strings.createBundle("chrome://mailboxalert/locale/mailboxalert.properties");
             alert(stringsBundle.GetStringFromName('mailboxalert.error') + "\r\n\r\n" +
                   stringsBundle.GetStringFromName('mailboxalert.error.badcommandpath1') +
                   " " + alert_data.folder_name_with_server + " " +

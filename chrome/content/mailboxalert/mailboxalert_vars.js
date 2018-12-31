@@ -885,7 +885,7 @@ MailboxAlert.convertAllFolderPreferences14toAlertPreferences = function () {
     // (and cache) the configs, if any. Then convert them to
     // AlertPrefs. Finally tie the index to the folder
 
-    var stringsBundle = document.getElementById("mailboxalert-string-bundle");
+    var stringsBundle = Services.strings.createBundle("chrome://mailboxalert/locale/mailboxalert.properties");
 
     // also add two defaults if it does not exist yet
     var default_alert = MailboxAlert.getAlertPreferences(0);
