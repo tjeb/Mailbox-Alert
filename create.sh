@@ -26,16 +26,16 @@ if [ -z $1 ] || [ -z $2 ]; then
 fi;
 
 # check prerequisites; jar, find,
-jar --help 2>&1 > /dev/null
-if [ test -x `which jar` != 0 ] ; then
-    echo "Error, jar not found or not executable"
-    exit 1;
-fi;
-find --help 2>&1 > /dev/null
-if [ $? != 0 ] ; then
-    echo "Error, find not found or not executable"
-    exit 1;
-fi;
+#jar 2>&1 > /dev/null
+#if [ test -x `which jar` != 0 ] ; then
+#    echo "Error, jar not found or not executable"
+#    exit 1;
+#fi;
+#find --help 2>&1 > /dev/null
+#if [ $? != 0 ] ; then
+#    echo "Error, find not found or not executable"
+#    exit 1;
+#fi;
 
 ADDON_DIR=$1
 ADDON=$2
@@ -50,13 +50,16 @@ fi;
 rm -rf ${BUILDDIR}
 cp -r ${ADDON_DIR} ${BUILDDIR}
 
-cd ${BUILDDIR}
+#find . -name .git -exec rm -rf {} \; &&\
 # Clean out unnecessary files
-find . -name .svn -exec rm -rf {} \;
-find . -name .git -exec rm -rf {} \;
-find . -name \*~ -exec rm -rf {} \;
-find . -name DEADJOE -exec rm -rf {} \;
-find . -name TODO -exec rm -rf {} \;
+cd ${BUILDDIR} &&\
+find . -name .svn -exec rm -rf {} \; &&\
+find . -name \*~ -exec rm -rf {} \; &&\
+rm -rf .git &&\
+rmdir .sbd &&\
+rmdir _build &&\
+find . -name DEADJOE -exec rm -rf {} \; &&\
+find . -name TODO -exec rm -rf {} \; &&\
 find . -name create.sh -exec rm -rf {} \;
 
 # Now build the jars

@@ -2,7 +2,11 @@
 
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <?xml-stylesheet href='chrome://mailboxalert/content/mailboxalert_filter.css' type='text/css'?>
-<!DOCTYPE overlay SYSTEM "chrome://mailboxalert/locale/mailboxalert.dtd">
+<!DOCTYPE overlay [
+  <!ENTITY % mailboxAlertDTD SYSTEM "chrome://mailboxalert/locale/mailboxalert.dtd">
+  %mailboxAlertDTD;
+]>
+
 
 <overlay id="mailboxalertOverlay"
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
@@ -19,18 +23,10 @@
     <script src="chrome://mailboxalert/content/mailboxalert_funcs.js" />
     <script src="chrome://mailboxalert/content/mailboxalertOverlay.js" />
 
-    <!-- Firefox / Thunderbird Tools Menu -->
-    <menupopup id="menu_ToolsPopup">
-        <menuseparator id="mailboxalertSeperator" insertbefore="devToolsSeparator" />
-        <menuitem id="mailboxalert-tools-menu-prefs" label="&mailboxalert.menu.editalerts;"
-                    accesskey="L" class="menuitem-iconic"
-                    insertbefore="devToolsSeparator"
-                    oncommand="window.openDialog('chrome://mailboxalert/content/alert_list.xul', 'mailboxalert_prefs', 'chrome');"/>
-    </menupopup>
-
     <!-- Mozilla Tools Menu -->
     <menupopup id="taskPopup">
         <menuseparator id="mailboxalertSeperator" insertbefore="devToolsSeparator" />
+        <separator id="mailboxalertSeperator" insertbefore="devToolsSeparator" />
         <menuitem id="mailboxalert-moz-tools-menu-prefs"
             label="&mailboxalert.menu.editalerts;" accesskey="L"
             insertbefore="devToolsSeparator"

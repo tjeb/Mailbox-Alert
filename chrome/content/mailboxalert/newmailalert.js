@@ -422,8 +422,8 @@ MailboxAlertNewMail.showAlertFade = function ()
 MailboxAlertNewMail.getWindowHeight = function ()
 {
     MailboxAlertUtil.logStart("MailboxAlertNewMail.getWindowHeight");
-    var result = 10 + Math.max (document.getBoxObjectFor(document.getElementById('alertTextBox')).height,
-                              document.getBoxObjectFor(document.getElementById('alertImage')).height);
+    var result = 10 + Math.max (document.getElementById('alertTextBox').getBoundingClientRect().height,
+                              document.getElementById('alertImage').getBoundingClientRect().height);
     MailboxAlertUtil.logEnd("MailboxAlertNewMail.getWindowHeight");
     return result;
 }
@@ -432,9 +432,9 @@ MailboxAlertNewMail.getWindowWidth = function ()
 {
     MailboxAlertUtil.logStart("MailboxAlertNewMail.getWindowWidth");
     result =  30
-            + document.getBoxObjectFor(document.getElementById('alertImage')).width
-            + Math.max (document.getBoxObjectFor(document.getElementById('subject')).width,
-                        document.getBoxObjectFor(document.getElementById('message_field')).width);
+            + document.getElementById('alertImage').getBoundingClientRect().width
+            + Math.max (document.getElementById('subject').getBoundingClientRect().width,
+                        document.getElementById('message_field').getBoundingClientRect().width);
     MailboxAlertUtil.logEnd("MailboxAlertNewMail.getWindowWidth");
     return result;
 }

@@ -2,7 +2,7 @@
  * Miscellaneous utility functions for mailbox alert
  */
 
-MailboxAlertUtil = {}
+var MailboxAlertUtil = {};
 
 MailboxAlertUtil.getInterface = function (iff) {
     var windowManager = Components.classes['@mozilla.org/appshell/window-mediator;1'].getService();

@@ -746,3 +746,4 @@ MailboxAlert.fillFolderMenu = function(alert_menu, folder) {
         false);
     alert_menu.appendChild(alert_menuitem);
 }
+

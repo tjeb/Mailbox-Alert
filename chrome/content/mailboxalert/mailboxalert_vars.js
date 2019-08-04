@@ -24,9 +24,7 @@
 // Use a namespace for global variables
 //
 
-if (typeof(MailboxAlert) == "undefined") {
-    var MailboxAlert = {};
-}
+var MailboxAlert = {};
 
 /* simple lock */
 MailboxAlert.running = false;

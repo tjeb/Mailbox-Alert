@@ -1,3 +1,7 @@
+[0.19-0.20]
+  o Fixed issues due to API changes in thunderbird
+  o Updated compatibility to TB 0.69b
+
 [0.18-0.19]
   o Update for new Thunderbird APIs
   o Should fix 'browse' buttons
