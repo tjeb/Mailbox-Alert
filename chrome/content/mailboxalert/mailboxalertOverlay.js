@@ -358,34 +358,11 @@ MailboxAlert.onLoad = function ()
 {
     // remove to avoid duplicate initialization
     removeEventListener("load", MailboxAlert.onLoad, true);
-    //MailboxAlertUtil.logMessage(1, "Loading Mailbox Alert\n");
-
-    //var notificationService =
-    //Components.classes["@mozilla.org/messenger/msgnotificationservice;1"]
-    //.getService(Components.interfaces.nsIMsgFolderNotificationService);
-
-    //notificationService.addListener(MailboxAlert.newMailListener,
-    //                                notificationService.msgsClassified);
 
     Components.classes["@mozilla.org/messenger/services/session;1"]
     .getService(Components.interfaces.nsIMsgMailSession)
     .AddFolderListener(new MailboxAlert.FolderListener(),
     Components.interfaces.nsIFolderListener.all);
-    //MailboxAlertUtil.logMessage(1, "Mailbox Alert folder listener initialized\n");
-
-    //Components.interfaces.nsIFolderListener.added);
-
-    // with IMAP, the 'view' can be updated (i.e. new mail has arrived and
-    // this is visible in the treeview), but the folder itself may not have
-    // been, until the folder is clicked. In this case no 'real' state has
-    // changed, and no notification would have been sent. So Mailbox Alert
-    // needs the folder to be really updated, as if the user has selected
-    // the folder (this happens for instance when procmail drops mail into
-    // a subfolder)
-    //Components.classes["@mozilla.org/messenger/services/session;1"]
-    //.getService(Components.interfaces.nsIMsgMailSession)
-    //.AddFolderListener(MailboxAlert.folderUpdater,
-    //Components.interfaces.nsIFolderListener.intPropertyChanged);
 
     // check if there are old settings (pre 0.14) to copy
     MailboxAlert.checkOldSettings();

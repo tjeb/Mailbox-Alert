@@ -626,7 +626,7 @@ MailboxAlert.filter_action =
             for (var i = 0; i < aMsgHdrs.length; ++i) {
                 var cur_msg_hdr = aMsgHdrs.queryElementAt(i, Components.interfaces.nsIMsgDBHdr);
                 if (!cur_msg_hdr.isRead) {
-					MailboxAlertUtil.logMessage(1, "Alert called from Filter Action\r\n");
+                    MailboxAlertUtil.logMessage(1, "Alert called from Filter Action\r\n");
                     var alert_data = MailboxAlert.createAlertData(cur_msg_hdr.folder, cur_msg_hdr);
                     alert.run(alert_data);
                 }
@@ -641,7 +641,8 @@ MailboxAlert.filter_action =
             var alert_prefs = MailboxAlert.getAlertPreferences(value);
             return null;
         } catch (e) {
-            return document.getElementById('mailboxalert_strings').GetStringFromName('mailboxalert.alert_deleted');
+            var stringsBundle = Services.strings.createBundle("chrome://mailboxalert/locale/mailboxalert.properties");
+            return stringsBundle.GetStringFromName('mailboxalert.alert_deleted');
         }
     },
     allowDuplicates: true,

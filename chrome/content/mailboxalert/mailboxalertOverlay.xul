@@ -1,29 +1,22 @@
 <?xml version="1.0"?>
 
-<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <?xml-stylesheet href='chrome://mailboxalert/content/mailboxalert_filter.css' type='text/css'?>
+<!--
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <!DOCTYPE overlay [
   <!ENTITY % mailboxAlertDTD SYSTEM "chrome://mailboxalert/locale/mailboxalert.dtd">
   %mailboxAlertDTD;
 ]>
-
+-->
+<!DOCTYPE overlay SYSTEM "chrome://mailboxalert/locale/mailboxalert.dtd">
 
 <overlay id="mailboxalertOverlay"
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-
-    <script type="application/x-javascript" src="chrome://global/content/elements/stringbundle.js"/>
-
-    <stringbundleset id="stringbundleset">
-        <stringbundle id="mailboxalert-string-bundle" src="chrome://mailboxalert/locale/mailboxalert.properties"/>
-        <stringbundle id="mailboxalert_strings" src="chrome://mailboxalert/locale/mailboxalert.properties"/>
-    </stringbundleset>
-
     <script src="chrome://mailboxalert/content/mailboxalert_util.js" />
     <script src="chrome://mailboxalert/content/mailboxalert_vars.js" />
     <script src="chrome://mailboxalert/content/mailboxalert_funcs.js" />
     <script src="chrome://mailboxalert/content/mailboxalertOverlay.js" />
 
-    <!-- Mozilla Tools Menu -->
     <menupopup id="taskPopup">
         <menuseparator id="mailboxalertSeperator" insertbefore="devToolsSeparator" />
         <menuitem id="mailboxalert-moz-tools-menu-prefs"
@@ -78,7 +71,6 @@
 
     </menupopup>
 
-    <!-- Folder Popup Menu -->
     <popup id="folderPaneContext">
         <menu
             label="&mailboxalert.name;"
@@ -86,7 +78,6 @@
             insertbefore="folderPaneContext-properties"
             index="10"
         >
-            <!-- the function call MUST check whether this menupopup is the actual element that is popped; it will also fire on popups of child menus -->
             <menupopup
                 id="folderPaneContext-mailboxalert"
                 onpopupshowing="if (event.target == this) { MailboxAlert.fillFolderMenu(this, MailboxAlert.getFolder()); }"

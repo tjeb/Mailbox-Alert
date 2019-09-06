@@ -1,12 +1,10 @@
 <?xml version='1.0' encoding='UTF-8'?>
+
+<!DOCTYPE overlay SYSTEM "chrome://mailboxalert/locale/mailboxalert.dtd">
 <?xml-stylesheet href='chrome://mailboxalert/content/mailboxalert_filter.css' type='text/css'?>
+
 <overlay id='MailboxAlertFilterEditorOverlay'
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-    <script type="application/x-javascript" src="chrome://global/content/elements/stringbundle.js"/>
-
-    <stringbundleset id="stringbundleset">
-        <stringbundle id="mailboxalert_strings" src="chrome://mailboxalert/locale/mailboxalert.properties"/>
-    </stringbundleset>
     <script src="chrome://mailboxalert/content/mailboxalert_util.js" />
     <script src="chrome://mailboxalert/content/mailboxalert_vars.js" />
     <script src="chrome://mailboxalert/content/mailboxalert_funcs.js" />
