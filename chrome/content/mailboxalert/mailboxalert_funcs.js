@@ -668,6 +668,15 @@ MailboxAlert.createMenuSeparator = function () {
     return item;
 }
 
+var mailboxalert_clone_id = 1;
+
+MailboxAlert.deleteNodeRecurse = function(node) {
+    while (node.firstChild) {
+        let child = node.removeChild(node.firstChild);
+        MailboxAlert.deleteNodeRecurse(child);
+    }
+}
+
 MailboxAlert.fillFolderMenu = function(alert_menu, folder) {
     var folder_prefs = MailboxAlert.getFolderPrefs(folder.URI);
     var all_alerts = MailboxAlert.getAllAlertPrefs();
@@ -676,9 +685,10 @@ MailboxAlert.fillFolderMenu = function(alert_menu, folder) {
     var alerts_set = false;
 
     // clear it first
-    while (alert_menu.firstChild) {
-        alert_menu.removeChild(alert_menu.firstChild);
-    }
+    //while (alert_menu.firstChild) {
+    //    alert_menu.removeChild(alert_menu.firstChild);
+    //}
+    MailboxAlert.deleteNodeRecurse(alert_menu);
 
     // need to make these first, as modifying the alerts that are set can
     // toggle whether these are enabled or not
@@ -729,21 +739,20 @@ MailboxAlert.fillFolderMenu = function(alert_menu, folder) {
 
     alert_menu.appendChild(MailboxAlert.createMenuSeparator());
 
-    // Clone the delay menu from Tools
-    var delay_menu = document.getElementById("mailboxalert-moz-tool-menu-delay").cloneNode(true);
-    // make sure we change the relevant IDs; otherwise changing the checked status will be
-    // messed up
-    delay_menu.id = "mailboxalert-moz-tool-menu-delay-clone";
-    delay_menu.firstChild.id = "mailboxalert-moz-tool-menu-delay-popup-clone";
-    alert_menu.appendChild(delay_menu);
-
-    alert_menu.appendChild(MailboxAlert.createMenuSeparator());
-
     alert_menuitem = MailboxAlert.createMenuItem(stringsBundle.GetStringFromName('mailboxalert.menu.editalerts'), null, false);
     alert_menuitem.addEventListener("command",
         function(){window.openDialog('chrome://mailboxalert/content/alert_list.xul',
                                      'mailboxalert_prefs', 'chrome');},
         false);
     alert_menu.appendChild(alert_menuitem);
+
+    MailboxAlertUtil.logMessage(1, "MENU NOW HAS:\n");
+    var nodeList = alert_menu.childNodes;
+    for(var i = 0; i < nodeList.length; i++) {
+       MailboxAlertUtil.logMessage(1, "id: " + nodeList[i].id);
+       MailboxAlertUtil.logMessage(1, "name: " + nodeList[i].nodeName);
+       MailboxAlertUtil.logMessage(1, "label: " + nodeList[i].label);
+    }
+    MailboxAlertUtil.logMessage(1, "END OF MENU\n");
 }
 

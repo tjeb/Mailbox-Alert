@@ -26,7 +26,6 @@
     <!-- Mozilla Tools Menu -->
     <menupopup id="taskPopup">
         <menuseparator id="mailboxalertSeperator" insertbefore="devToolsSeparator" />
-        <separator id="mailboxalertSeperator" insertbefore="devToolsSeparator" />
         <menuitem id="mailboxalert-moz-tools-menu-prefs"
             label="&mailboxalert.menu.editalerts;" accesskey="L"
             insertbefore="devToolsSeparator"
@@ -38,13 +37,42 @@
             autocheck="false"/>
         <menu id="mailboxalert-moz-tool-menu-delay" label="&mailboxalert.alert_prefs.delay;">
             <menupopup id="mailboxalert-alert-delay-popup">
-                <menuitem label="&mailboxalert.alert_prefs.effect.none;" id="mailboxalert-alert-delay-0" checked="true" value="0" oncommand="MailboxAlert.setAlertDelay(0);" />
-                <menuitem label="1 &mailboxalert.alert_prefs.time_unit;" id="mailboxalert-alert-delay-1000" value="1000" oncommand="MailboxAlert.setAlertDelay(1000);" />
-                <menuitem label="2 &mailboxalert.alert_prefs.time_unit;" id="mailboxalert-alert-delay-2000" value="2000" oncommand="MailboxAlert.setAlertDelay(2000);" />
-                <menuitem label="3 &mailboxalert.alert_prefs.time_unit;" id="mailboxalert-alert-delay-3000" value="3000" oncommand="MailboxAlert.setAlertDelay(3000);" />
-                <menuitem label="5 &mailboxalert.alert_prefs.time_unit;" id="mailboxalert-alert-delay-5000" value="5000" oncommand="MailboxAlert.setAlertDelay(5000);" />
-                <menuitem label="10 &mailboxalert.alert_prefs.time_unit;" id="mailboxalert-alert-delay-10000" value="10000" oncommand="MailboxAlert.setAlertDelay(10000);" />
-                <menuitem label="30 &mailboxalert.alert_prefs.time_unit;" id="mailboxalert-alert-delay-30000" value="20000" oncommand="MailboxAlert.setAlertDelay(20000);" />
+                <menuitem label="&mailboxalert.alert_prefs.effect.none;"
+                          type="checkbox"
+                          id="mailboxalert-alert-delay-0"
+                          checked="true"
+                          value="0"
+                          oncommand="MailboxAlert.setAlertDelay(0);" />
+                <menuitem label="1 &mailboxalert.alert_prefs.time_unit;"
+                          type="checkbox"
+                          id="mailboxalert-alert-delay-1000"
+                          value="1000"
+                          oncommand="MailboxAlert.setAlertDelay(1000);" />
+                <menuitem label="2 &mailboxalert.alert_prefs.time_unit;"
+                          type="checkbox"
+                          id="mailboxalert-alert-delay-2000"
+                          value="2000"
+                          oncommand="MailboxAlert.setAlertDelay(2000);" />
+                <menuitem label="3 &mailboxalert.alert_prefs.time_unit;"
+                          type="checkbox"
+                          id="mailboxalert-alert-delay-3000"
+                          value="3000"
+                          oncommand="MailboxAlert.setAlertDelay(3000);" />
+                <menuitem label="5 &mailboxalert.alert_prefs.time_unit;"
+                          type="checkbox"
+                          id="mailboxalert-alert-delay-5000"
+                          value="5000"
+                          oncommand="MailboxAlert.setAlertDelay(5000);" />
+                <menuitem label="10 &mailboxalert.alert_prefs.time_unit;"
+                          type="checkbox"
+                          id="mailboxalert-alert-delay-10000"
+                          value="10000"
+                          oncommand="MailboxAlert.setAlertDelay(10000);" />
+                <menuitem label="30 &mailboxalert.alert_prefs.time_unit;"
+                          type="checkbox"
+                          id="mailboxalert-alert-delay-30000"
+                          value="20000"
+                          oncommand="MailboxAlert.setAlertDelay(20000);" />
             </menupopup>
         </menu>
 
