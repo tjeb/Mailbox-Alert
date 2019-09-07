@@ -63,12 +63,12 @@ find . -name TODO -exec rm -rf {} \; &&\
 find . -name create.sh -exec rm -rf {} \;
 
 # Now build the jars
-cd chrome
-jar -Mcvf mailboxalert.jar content skin locale
-rm -rf content
-rm -rf skin
-rm -rf locale
-cd ../
+#cd chrome
+#jar -Mcvf mailboxalert.jar content skin locale
+#rm -rf content
+#rm -rf skin
+#rm -rf locale
+#cd ../
 jar -cvfM ${OUTPUT} *
 mv ${OUTPUT} ../
 rm -rf ${BUILDDIR}
