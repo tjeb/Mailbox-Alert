@@ -1,5 +1,8 @@
 Open issue: I am aware that the custom Filter action for Mailbox Alert isn't working (due to the removal of XBL bindings), but have yet to discover how the new interfaces work.
 
+[0.22-0.23]
+  o Fixed issue where %server and %folder macros were no longer working
+
 [0.21-0.22]
   o Update the overlay system, this should fix an issue with tag colors disappearing in folder lists
 
