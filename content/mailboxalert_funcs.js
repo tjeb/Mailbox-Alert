@@ -102,12 +102,12 @@ MailboxAlert.createAlertData = function (mailbox, last_unread) {
     this.createFakeFolder = function () {
         var fake_parent_folder = {};
         fake_parent_folder.isServer = true;
-        fake_parent_folder.prettiestName = "SomeServer";
+        fake_parent_folder.prettyName = "SomeServer";
 
         var fake_folder = {};
         fake_folder.parent = fake_parent_folder;
         fake_folder.isServer = false;
-        fake_folder.prettiestName = "SomeFolder";
+        fake_folder.prettyName = "SomeFolder";
         fake_folder.getNumUnread = function (all) {
             if (all) {
                 return 10;
@@ -295,12 +295,12 @@ MailboxAlert.getFullFolderName = function (folder, include_server) {
     var folderName = "";
     var i = 0;
     while(!folder.isServer && i < MailboxAlert.max_folder_depth) {
-        folderName = folder.prettiestName + "/" + folderName;
+        folderName = folder.prettyName + "/" + folderName;
         folder = folder.parent;
         i++;
     }
     if (include_server) {
-        folderName = folder.prettiestName + "/" + folderName;
+        folderName = folder.prettyName + "/" + folderName;
     }
 
     return folderName;
@@ -310,11 +310,11 @@ MailboxAlert.getServerName = function (folder) {
     var i = 0;
     var folderName;
     while(!folder.isServer && i < MailboxAlert.max_folder_depth) {
-        folderName = folder.prettiestName + "/" + folderName;
+        folderName = folder.prettyName + "/" + folderName;
         folder = folder.parent;
         i++;
     }
-    return folder.prettiestName;
+    return folder.prettyName;
 }
 
 /* split-join method for replaceAll() */
