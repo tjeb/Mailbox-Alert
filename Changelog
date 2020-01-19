@@ -1,4 +1,3 @@
-Open issue: I am aware that the custom Filter action for Mailbox Alert isn't working (due to the removal of XBL bindings), but have yet to discover how the new interfaces work.
 
 [0.23-0.24]
   o The Mailbox Alert action for Message Filters now works with Thunderbird 68
@@ -6,6 +5,7 @@ Open issue: I am aware that the custom Filter action for Mailbox Alert isn't wor
     versions (Thunderbird 60 and before), so from now on, older versions of TB
     are no longer supported by new versions of Mailbox Alert. From now on, the
     minimum TB version is 68, and I will start removing legacy code in the future.
+  o The %folder macro no longer adds a trailing / to the final folder (thanks to https://github.com/rnc)
 
 [0.22-0.23]
   o Fixed issue where %server and %folder macros were no longer working
