@@ -295,12 +295,12 @@ MailboxAlert.getFullFolderName = function (folder, include_server) {
     var folderName = "";
     var i = 0;
     while(!folder.isServer && i < MailboxAlert.max_folder_depth) {
-        folderName = folder.prettyName + "/" + folderName;
+        folderName = folder.prettyName + ( folderName == "" ? "" : "/" + folderName);
         folder = folder.parent;
         i++;
     }
     if (include_server) {
-        folderName = folder.prettyName + "/" + folderName;
+        folderName = folder.prettyName +  ( folderName == "" ? "" : "/" + folderName);
     }
 
     return folderName;
