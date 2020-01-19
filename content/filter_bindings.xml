@@ -3,6 +3,10 @@
             xmlns="http://www.mozilla.org/xbl"
             xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
             xmlns:xbl="http://www.mozilla.org/xbl">
+    <script src="chrome://mailboxalert/content/mailboxalert_util.js" />
+    <script src="chrome://mailboxalert/content/mailboxalert_vars.js" />
+    <script src="chrome://mailboxalert/content/mailboxalert_funcs.js" />
+    <script src="chrome://mailboxalert/content/filter_bindings.js" />
     <binding id="ruleactiontarget-filteralert" extends="chrome://messenger/content/searchWidgets.xml#ruleactiontarget-base">
         <content>
             <xul:menulist>

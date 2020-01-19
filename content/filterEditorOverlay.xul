@@ -8,4 +8,5 @@
     <script src="chrome://mailboxalert/content/mailboxalert_util.js" />
     <script src="chrome://mailboxalert/content/mailboxalert_vars.js" />
     <script src="chrome://mailboxalert/content/mailboxalert_funcs.js" />
+    <script src="chrome://mailboxalert/content/new_filterEditor.js" />
 </overlay>

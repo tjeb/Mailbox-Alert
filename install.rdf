@@ -16,7 +16,7 @@ xmlns:em="http://www.mozilla.org/2004/em-rdf#">
 		<em:id>{9c21158b-2c76-4d0a-980a-c51fc9cefaa7}</em:id>
 		<em:name>Mailbox Alert</em:name>
                 <em:type>2</em:type>
-		<em:version>0.23</em:version>
+		<em:version>0.23.1</em:version>
 		<em:description>Mailbox Alert</em:description>
 		<em:creator>Jelte Jansen</em:creator>
 		<em:homepageURL>https://tjeb.nl/Projects/Mailbox_Alert</em:homepageURL>

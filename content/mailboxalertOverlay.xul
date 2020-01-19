@@ -16,6 +16,7 @@
     <script src="chrome://mailboxalert/content/mailboxalert_vars.js" />
     <script src="chrome://mailboxalert/content/mailboxalert_funcs.js" />
     <script src="chrome://mailboxalert/content/mailboxalertOverlay.js" />
+    <script src="chrome://mailboxalert/content/new_filterEditor.js" />
 
     <menupopup id="taskPopup">
         <menuseparator id="mailboxalertSeperator" insertbefore="devToolsSeparator" />

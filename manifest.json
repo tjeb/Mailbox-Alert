@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Mailbox Alert",
   "description": "Custom popup, sounds or scripts for new mail, configurable for each folder",
-  "version": "0.23",
+  "version": "0.23.1",
   "author": "Jelte Jansen",
   "legacy": true,
   "applications": {

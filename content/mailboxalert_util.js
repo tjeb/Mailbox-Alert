@@ -24,6 +24,7 @@ MailboxAlertUtil.init = function () {
 MailboxAlertUtil.init();
 
 MailboxAlertUtil.logMessage = function (level, msg) {
+    MailboxAlertUtil.console.logStringMessage("[MailboxAlert] " + msg);
     if (level >= MailboxAlertUtil.logLevel) {
         MailboxAlertUtil.console.logStringMessage("[MailboxAlert] " + msg);
     }
