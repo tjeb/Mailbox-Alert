@@ -499,6 +499,9 @@ MailboxAlert.replaceCommandPart = function (alert_data, command, escape_html, al
     command = MailboxAlert.replaceEscape(already_quoted, command, "%sendername", MailboxAlert.escapeHTML(escape_html, alert_data.sender_name));
     //alert("6 is now: '" + command + "'");
     command = MailboxAlert.replaceEscape(already_quoted, command, "%sender", MailboxAlert.escapeHTML(escape_html, alert_data.sender));
+    command = MailboxAlert.replaceEscape(already_quoted, command, "%recipientaddress", MailboxAlert.escapeHTML(escape_html, alert_data.recipient_address));
+    command = MailboxAlert.replaceEscape(already_quoted, command, "%recipientname", MailboxAlert.escapeHTML(escape_html, alert_data.recipient_name));
+    command = MailboxAlert.replaceEscape(already_quoted, command, "%recipient", MailboxAlert.escapeHTML(escape_html, alert_data.recipient));
     command = MailboxAlert.replaceEscape(already_quoted, command, "%charset", MailboxAlert.escapeHTML(escape_html, alert_data.charset));
     command = MailboxAlert.replace(command, "%messagebytes", alert_data.message_bytes);
     command = MailboxAlert.replace(command, "%messagesize", alert_data.messageSize);
