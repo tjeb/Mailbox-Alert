@@ -9,7 +9,7 @@ Services.scriptloader.loadSubScript("chrome://mailboxalert/content/mailboxalertO
 Services.scriptloader.loadSubScript("chrome://mailboxalert/content/new_filterEditor.js", window, "UTF-8");
 
 function onLoad(activatedWhileWindowOpen) {
-  
+
   WL.injectCSS("chrome://mailboxalert/content/mailboxalert_filter.css");
   WL.injectElements(`
 <menupopup id="taskPopup">
@@ -79,6 +79,9 @@ function onLoad(activatedWhileWindowOpen) {
         </menu>
     </popup>`,
   ["chrome://mailboxalert/locale/mailboxalert.dtd"]);
+
+  window.MailboxAlert.onLoad();
+
 }
 
 function onUnload(deactivatedWhileWindowOpen) {
