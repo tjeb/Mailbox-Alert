@@ -35,7 +35,7 @@
   <separator class="thin"/>
 </vbox>
 <spring flex="1"/>
-<image src="chrome://mailboxalert/skin/mailboxalertb.png"/>
+<image src="resource://mailboxalert-skin/mailboxalertb.png"/>
 </groupbox>
 
   <hbox>

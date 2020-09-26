@@ -173,7 +173,7 @@ MailboxAlert.getGlobalPreferences14 = function() {
 MailboxAlert.folderPrefDefs14 = {
 "show_message": [ "bool", false],
 "show_message_icon": [ "bool", true ],
-"icon_file": [ "string", "chrome://mailboxalert/skin/mailboxalert.png" ],
+"icon_file": [ "string", "resource://mailboxalert-skin/mailboxalert.png" ],
 "subject": [ "string", "" ],
 "message": [ "string", "" ],
 "play_sound": [ "bool", false ],
@@ -195,7 +195,7 @@ MailboxAlert.folderPrefDefs14 = {
 MailboxAlert.alertPrefDefs = {
 "show_message": [ "bool", false],
 "show_message_icon": [ "bool", true ],
-"show_message_icon_file": [ "string", "chrome://mailboxalert/skin/mailboxalert.png" ],
+"show_message_icon_file": [ "string", "resource://mailboxalert-skin/mailboxalert.png" ],
 "show_message_subject": [ "string", "" ],
 "show_message_message": [ "string", "" ],
 "play_sound": [ "bool", false ],
