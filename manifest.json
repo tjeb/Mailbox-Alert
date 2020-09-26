@@ -4,10 +4,25 @@
   "description": "Custom popup, sounds or scripts for new mail, configurable for each folder",
   "version": "0.24",
   "author": "Jelte Jansen",
-  "legacy": true,
+  "experiment_apis": {
+    "WindowListener": {
+      "schema": "api/WindowListener/schema.json",
+      "parent": {
+        "scopes": ["addon_parent"],
+        "paths": [["WindowListener"]],
+        "script": "api/WindowListener/implementation.js"
+      }
+    }
+  },
+  "background": {
+    "scripts": [
+      "background.js"
+    ]
+  },
   "applications": {
     "gecko": {
       "id": "{9c21158b-2c76-4d0a-980a-c51fc9cefaa7}",
       "strict_min_version": "68.0"
     }
-  }}
+  }
+}

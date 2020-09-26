@@ -481,8 +481,8 @@ MailboxAlertAlertSettings.chooseIconFile = function () {
 
 MailboxAlertAlertSettings.setDefaultIconFile = function () {
     var icon_image_element = document.getElementById("show_message_icon_image");
-    if (icon_image_element.src != "chrome://mailboxalert/skin/mailboxalert.png") {
-        icon_image_element.src = "chrome://mailboxalert/skin/mailboxalert.png";
+    if (icon_image_element.src != "resource://mailboxalert-skin/mailboxalert.png") {
+        icon_image_element.src = "resource://mailboxalert-skin/mailboxalert.png";
         //alert("changed");
         MailboxAlertAlertSettings.resize();
     }

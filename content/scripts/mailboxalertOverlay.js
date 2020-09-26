@@ -1,32 +1,25 @@
-<?xml version="1.0"?>
+// Import any needed modules.
+var { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
 
-<?xml-stylesheet href='chrome://mailboxalert/content/mailboxalert_filter.css' type='text/css'?>
-<!--
-<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
-<!DOCTYPE overlay [
-  <!ENTITY % mailboxAlertDTD SYSTEM "chrome://mailboxalert/locale/mailboxalert.dtd">
-  %mailboxAlertDTD;
-]>
--->
-<!DOCTYPE overlay SYSTEM "chrome://mailboxalert/locale/mailboxalert.dtd">
+// Load an additional JavaScript file.
+Services.scriptloader.loadSubScript("chrome://mailboxalert/content/mailboxalert_util.js", window, "UTF-8");
+Services.scriptloader.loadSubScript("chrome://mailboxalert/content/mailboxalert_vars.js", window, "UTF-8");
+Services.scriptloader.loadSubScript("chrome://mailboxalert/content/mailboxalert_funcs.js", window, "UTF-8");
+Services.scriptloader.loadSubScript("chrome://mailboxalert/content/mailboxalertOverlay.js", window, "UTF-8");
+Services.scriptloader.loadSubScript("chrome://mailboxalert/content/new_filterEditor.js", window, "UTF-8");
 
-<overlay id="mailboxalertOverlay"
-         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-    <script src="chrome://mailboxalert/content/mailboxalert_util.js" />
-    <script src="chrome://mailboxalert/content/mailboxalert_vars.js" />
-    <script src="chrome://mailboxalert/content/mailboxalert_funcs.js" />
-    <script src="chrome://mailboxalert/content/mailboxalertOverlay.js" />
-    <script src="chrome://mailboxalert/content/new_filterEditor.js" />
-
-    <menupopup id="taskPopup">
-        <menuseparator id="mailboxalertSeperator" insertbefore="devToolsSeparator" />
+function onLoad(activatedWhileWindowOpen) {
+  
+  WL.injectCSS("chrome://mailboxalert/content/mailboxalert_filter.css");
+  WL.injectElements(`
+<menupopup id="taskPopup">
+        <menuseparator id="mailboxalertSeperator" />
         <menuitem id="mailboxalert-moz-tools-menu-prefs"
             label="&mailboxalert.menu.editalerts;" accesskey="L"
-            insertbefore="devToolsSeparator"
             oncommand="window.openDialog('chrome://mailboxalert/content/alert_list.xul', 'mailboxalert_prefs', 'chrome');"/>
         <menuitem id="mailboxalert-moz-tools-menu-mute"
             type="checkbox"
-            label="&mailboxalert.mute;" accesskey="M" insertbefore="devToolsSeparator"
+            label="&mailboxalert.mute;" accesskey="M"
             oncommand="MailboxAlert.toggleMute();"
             autocheck="false"/>
         <menu id="mailboxalert-moz-tool-menu-delay" label="&mailboxalert.alert_prefs.delay;">
@@ -84,6 +77,9 @@
                 onpopupshowing="if (event.target == this) { MailboxAlert.fillFolderMenu(this, MailboxAlert.getFolder()); }"
             />
         </menu>
-    </popup>
-</overlay>
+    </popup>`,
+  ["chrome://mailboxalert/locale/mailboxalert.dtd"]);
+}
 
+function onUnload(deactivatedWhileWindowOpen) {
+}
