@@ -1,4 +1,4 @@
-var alert_menu = document.getAnonymousNodes(this)[0].menupopup;
+var alert_menu = document.getElementById('menupopup');
 var all_alerts = MailboxAlert.getAllAlertPrefs();
 
 MailboxAlertUtil.logMessage(0, "[MailboxAlert] BINDING INIT!!!\n");

@@ -16,7 +16,7 @@
         <implementation>
             <constructor>
                 <![CDATA[
-                var alert_menu = document.getAnonymousNodes(this)[0].menupopup;
+                var alert_menu = document.getElementById('menupopup');
                 var all_alerts = MailboxAlert.getAllAlertPrefs();
                 for (var alert_i = 0; alert_i < all_alerts.length; ++alert_i) {
                     var alert = all_alerts[alert_i];
