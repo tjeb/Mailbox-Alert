@@ -652,7 +652,7 @@ MailboxAlert.executeCommand = function (alert_data, command, escape_html) {
 // Function to create one menu item as used in fillFolderMenu
 MailboxAlert.createMenuItem = function (label, value, checkbox) {
     const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
-    var item = document.createXulElement("menuitem"); // create a new XUL menuitem
+    var item = document.createXULElement("menuitem"); // create a new XUL menuitem
     item.setAttribute("label", label);
     if (value) {
         item.setAttribute("value", value);
@@ -667,7 +667,7 @@ MailboxAlert.createMenuItem = function (label, value, checkbox) {
 
 MailboxAlert.createMenuSeparator = function () {
     const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
-    var item = document.createXulElement("menuseparator"); // create a new XUL menuitem
+    var item = document.createXULElement("menuseparator"); // create a new XUL menuitem
     return item;
 }
 

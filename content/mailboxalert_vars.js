@@ -716,7 +716,8 @@ MailboxAlert.getAllFolderURIs = function () {
     var all_folder_uris = [];
 
     for (var i = 0; i < all_servers.length; ++i) {
-        var server = all_servers.queryElementAt(i, Components.interfaces.nsIMsgIncomingServer);
+        //var server = all_servers.queryElementAt(i, Components.interfaces.nsIMsgIncomingServer);
+        var server = all_servers[i];
         var root_folder = server.rootFolder;
         if (root_folder) {
             MailboxAlert.getChildFolderURIs(root_folder, all_folder_uris);
