@@ -33,18 +33,12 @@
   <label value="Mailbox Alert Alert Configuration"/>
   <hbox>
     <vbox>
-      <hbox class="input-container">
-          <spacer />
-      </hbox>
+      <spacer flex="1"/>
       <label value="Name"/>
-      <hbox class="input-container">
-          <spacer />
-      </hbox>
+      <spacer flex="1"/>
     </vbox>
     <html:input id="alert_name_html:input" size="40" oninput="MailboxAlertAlertSettings.checkUIOkButton();"/>
-    <hbox class="input-container">
-        <spacer />
-    </hbox>
+    <spacer flex="1"/>
   </hbox>
   <hbox>
     <checkbox id="show_message_checkbox" label="Show a message" oncommand="MailboxAlertAlertSettings.checkUIShowMessage(true);"/>
@@ -66,13 +60,9 @@
           </hbox>
           <hbox>
             <vbox >
-              <hbox class="input-container">
-                  <spacer />
-              </hbox>
+              <spacer flex="1"/>
               <checkbox id="show_message_icon_checkbox" label="&mailboxalert.prefs.icon;" oncommand="MailboxAlertAlertSettings.checkUIShowMessageIcon();"  disabled="true" />
-              <hbox class="input-container">
-                  <spacer />
-              </hbox>
+              <spacer flex="1"/>
             </vbox>
             <image id="show_message_icon_image" maxheight="64" maxwidth="64" disabled="true"/>
             <vbox>
@@ -80,48 +70,30 @@
                 <button id="show_message_icon_browse_button" label="&mailboxalert.prefs.browse;" oncommand="MailboxAlertAlertSettings.chooseIconFile();" onerror="imageError();"  disabled="true" />
                 <button id="show_message_icon_default_button" label="&mailboxalert.prefs.default;" oncommand="MailboxAlertAlertSettings.setDefaultIconFile();"  disabled="true" />
               </hbox>
-              <hbox class="input-container">
-                  <spacer />
-              </hbox>
+              <spacer flex="1"/>
             </vbox>
           </hbox>
           <hbox>
             <vbox>
-            <hbox class="input-container">
-                <spacer />
-            </hbox>
+            <spacer flex="1"/>
             <label id="show_message_duration_label" value="&mailboxalert.alert_prefs.duration;" align="start"  disabled="true"/>
-            <hbox class="input-container">
-                <spacer />
-            </hbox>
+            <spacer flex="1"/>
             </vbox>
-            <hbox class="input-container">
-                <spacer />
-            </hbox>
+            <spacer flex="1"/>
             <html:input id="show_message_duration_html:input" size="2" align="end" onfocus="select();"  disabled="true" />
             <vbox>
-            <hbox class="input-container">
-                <spacer />
-            </hbox>
+            <spacer flex="1"/>
             <label id="show_message_duration_time_unit_label" value="&mailboxalert.alert_prefs.time_unit;" align="end"  disabled="true" />
-            <hbox class="input-container">
-                <spacer />
-            </hbox>
+            <spacer flex="1"/>
             </vbox>
           </hbox>
           <hbox>
             <vbox>
-            <hbox class="input-container">
-                <spacer />
-            </hbox>
+            <spacer flex="1"/>
             <label id="show_message_position_label" value="&mailboxalert.alert_prefs.position;"  disabled="true" />
-            <hbox class="input-container">
-                <spacer />
-            </hbox>
+            <spacer flex="1"/>
             </vbox>
-            <hbox class="input-container">
-                <spacer />
-            </hbox>
+            <spacer flex="1"/>
             <menulist id="show_message_position_menulist" label="&mailboxalert.alert_prefs.position;"  disabled="true" oncommand="MailboxAlertAlertSettings.checkUIShowMessageCustomPosition();">
             <menupopup align="end">
             <menuitem id="show_message_position_top-left" value="top-left" label="&mailboxalert.alert_prefs.position.topleft;"/>
@@ -134,9 +106,7 @@
             </menulist>
             <hbox id="show_message_custom_position_options" disabled="true" hidden="true" >
                 <vbox>
-                  <hbox class="input-container">
-                      <spacer />
-                  </hbox>
+                  <spacer flex="1"/>
                   <hbox>
                     <label id="show_message_custom_position_x_label" value="&mailboxalert.alert_prefs.custom_position_x;" disabled="true" />
                     <label id="show_message_custom_position_x_val_label" size="5" disabled="true" />
@@ -144,26 +114,18 @@
                     <label id="show_message_custom_position_y_val_label" size="5" disabled="true" />
                     <label id="show_message_custom_position_anchor_label" size="5" disabled="true" />
                   </hbox>
-                  <hbox class="input-container">
-                      <spacer />
-                  </hbox>
+                  <spacer flex="1"/>
                 </vbox>
                 <button id="show_message_custom_position_choose" label="&mailboxalert.alert_prefs.position.custom_select;" disabled="true" onclick="MailboxAlertAlertSettings.selectPosition();" />
             </hbox>
           </hbox>
           <hbox>
             <vbox>
-            <hbox class="input-container">
-                <spacer />
-            </hbox>
+            <spacer flex="1"/>
             <label id="show_message_effect_label" value="&mailboxalert.alert_prefs.effect;"  disabled="true" />
-            <hbox class="input-container">
-                <spacer />
-            </hbox>
+            <spacer flex="1"/>
             </vbox>
-            <hbox class="input-container">
-                <spacer />
-            </hbox>
+            <spacer flex="1"/>
             <menulist id="show_message_effect_menulist" label="&mailboxalert.alert_prefs.effect;"  disabled="true">
             <menupopup align="end">
               <menuitem id="show_message_effect_none" value="none" label="&mailboxalert.alert_prefs.effect.none;"/>
@@ -174,17 +136,11 @@
           </hbox>
           <hbox>
             <vbox>
-            <hbox class="input-container">
-                <spacer />
-            </hbox>
+            <spacer flex="1"/>
             <label id="show_message_onclick_label" value="&mailboxalert.alert_prefs.onclick;"  disabled="true" />
-            <hbox class="input-container">
-                <spacer />
-            </hbox>
+            <spacer flex="1"/>
             </vbox>
-            <hbox class="input-container">
-                <spacer />
-            </hbox>
+            <spacer flex="1"/>
             <menulist id="show_message_onclick_menulist" label="&mailboxalert.alert_prefs.onclick;"  disabled="true">
             <menupopup align="end">
               <menuitem value="close" label="&mailboxalert.alert_prefs.onclick.close;"/>
@@ -216,13 +172,11 @@
             <html:input id="execute_command_html:input" size="50"  disabled="true" />
             <button id="execute_command_browse_button" label="&mailboxalert.prefs.browse;" oncommand="MailboxAlertAlertSettings.chooseExecFile();"  disabled="true" />
           </hbox>
-          <hbox class="input-container">
-            <box pack="start">
+          <hbox>
+            <box flex="1" pack="start">
               <checkbox id="execute_command_escape_html_checkbox" label="&mailboxalert.prefs.escapehtml;" disabled="true" />
             </box>
-            <hbox class="input-container">
-                <spacer />
-            </hbox>
+            <spacer flex="1"/>
           </hbox>
         </vbox>
       </tabpanel>

@@ -44,14 +44,12 @@
       }
       this.textContent = "";
       this.appendChild(MozXULElement.parseXULToFragment(`
-        <hbox class="intput-container">
-          <menulist class="ruleactionitem" inherits="disabled"
-                    onchange="this.parentNode.updateValue(this);"
-                    oncommand="this.parentNode.updateValue(this);"
-          >
-            <menupopup></menupopup>
-          </menulist>
-        </hbox>
+        <menulist flex="1" class="ruleactionitem" inherits="disabled"
+                  onchange="this.parentNode.updateValue(this);"
+                  oncommand="this.parentNode.updateValue(this);"
+        >
+          <menupopup></menupopup>
+        </menulist>
       `));
 
       //var alert_menu = document.getAnonymousNodes(this)[0].menupopup;
@@ -68,7 +66,7 @@
       }
       updateParentNode(this.closest(".ruleaction"));
     }
-
+    
     updateValue(element) {
       element.parentNode.setAttribute('value', element.value);
       element.parentNode.value=element.value;
@@ -104,7 +102,7 @@
     }
   }
 
-  if (!customElements.get("ruleactiontarget-filteralert")) {
+  if (!customElements.get("ruleactiontarget-filteralert")) { 
     customElements.define("ruleactiontarget-filteralert", MozRuleactiontargetFilteralert);
     patchTarget();
   }
