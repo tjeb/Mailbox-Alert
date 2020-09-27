@@ -164,7 +164,8 @@ MailboxAlertAlertSettings.setUIExecuteCommand = function (execute_command) {
     "execute_command_tab",
     "execute_command_html:input",
     "execute_command_browse_button",
-    "execute_command_escape_html_checkbox"
+    "execute_command_escape_html_checkbox",
+    "execute_command_escape_windows_quotes_checkbox"
   ], execute_command);
 }
 
@@ -327,6 +328,7 @@ MailboxAlertAlertSettings.readPrefs = function (alert_id) {
 
     MailboxAlertAlertSettings.setUIPrefTextbox(alert_prefs, "command", "execute_command_html:input");
     MailboxAlertAlertSettings.setUIPrefCheckbox(alert_prefs, "command_escape", "execute_command_escape_html_checkbox", false);
+    MailboxAlertAlertSettings.setUIPrefCheckbox(alert_prefs, "command_escape_windows_quotes", "execute_command_escape_windows_quotes_checkbox", false);
 
   } catch (e) {
     alert(e);
@@ -399,6 +401,7 @@ MailboxAlertAlertSettings.getPrefsFromWindow = function (alert_id) {
 
     MailboxAlertAlertSettings.storeUIPrefTextbox(alert_prefs, "command", "execute_command_html:input");
     MailboxAlertAlertSettings.storeUIPrefCheckbox(alert_prefs, "command_escape", "execute_command_escape_html_checkbox");
+    MailboxAlertAlertSettings.storeUIPrefCheckbox(alert_prefs, "command_escape_windows_quotes", "execute_command_escape_windows_quotes_checkbox");
 
     return alert_prefs;
   } catch (e) {

@@ -204,6 +204,7 @@ MailboxAlert.alertPrefDefs = {
 "execute_command": [ "bool", false ],
 "command": [ "string", "" ],
 "command_escape": [ "bool", false ],
+"command_escape_windows_quotes": [ "bool", false ],
 "name": [ "string", "" ],
 "show_message_duration": [ "integer", 5 ],
 "show_message_position": [ "string", "top-left" ],
@@ -500,7 +501,8 @@ MailboxAlert.getAlertPreferences = function (index) {
         if (this.get("execute_command")) {
             MailboxAlert.executeCommand(alert_data,
                                         this.get("command"),
-                                        this.get("command_escape"));
+                                        this.get("command_escape"),
+                                        this.get("command_escape_windows_quotes"));
         }
     }
 

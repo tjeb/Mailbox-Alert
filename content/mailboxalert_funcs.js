@@ -536,7 +536,7 @@ MailboxAlert.finalizeCommandPart = function (command_part, alert_data, escape_ht
 }
 
 
-MailboxAlert.executeCommand = function (alert_data, command, escape_html) {
+MailboxAlert.executeCommand = function (alert_data, command, escape_html, escape_windows_quotes) {
     var date_obj = new Date();
     date_obj.setTime(alert_data.date);
     var date_str = date_obj.toLocaleDateString()
@@ -580,6 +580,10 @@ MailboxAlert.executeCommand = function (alert_data, command, escape_html) {
                 }
             } else {
                 command_part = MailboxAlert.finalizeCommandPart(command_part, alert_data, escape_html, in_quote, date_str, time_str);
+                // If 'escape windows quotes' was selected, escape the single quotes again
+                if (escape_windows_quotes) {
+                    command_part = MailboxAlert.replace(command_part, '"', '""')
+                }
                 args.push(command_part);
             }
         }
