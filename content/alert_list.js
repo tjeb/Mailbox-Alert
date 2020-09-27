@@ -22,13 +22,13 @@ MailboxAlertList.enableButton = function (name, enabled) {
 }
 
 MailboxAlertList.addAlert = function (id, name) {
-    window.openDialog('chrome://mailboxalert/content/alert_settings.xul', '_blank', '', 0, this);
+    window.openDialog('chrome://mailboxalert/content/alert_settings.xhtml', '_blank', '', 0, this);
     MailboxAlertList.fillAlertList();
 }
 
 MailboxAlertList.editAlert = function() {
     var alert_listbox = document.getElementById("alert_listbox");
-    window.openDialog('chrome://mailboxalert/content/alert_settings.xul', '_blank', 'dependent=no', alert_listbox.selectedItem.value, this);
+    window.openDialog('chrome://mailboxalert/content/alert_settings.xhtml', '_blank', 'dependent=no', alert_listbox.selectedItem.value, this);
     MailboxAlertList.fillAlertList();
 }
 

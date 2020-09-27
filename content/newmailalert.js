@@ -705,7 +705,7 @@ MailboxAlertNewMail.performAction = function (action)
             // get the messenger window open service and ask it to open a new window for us
             var mailWindowService = Components.classes["@mozilla.org/messenger/windowservice;1"].getService(Components.interfaces.nsIMessengerWindowService);
             if (mailWindowService) {
-                window.openDialog( "chrome://messenger/content/messageWindow.xul", "_blank", "all,chrome,dialog=no,status,toolbar", this.message_hdr, null );
+                window.openDialog( "chrome://messenger/content/messageWindow.xhtml", "_blank", "all,chrome,dialog=no,status,toolbar", this.message_hdr, null );
             } else {
                 MailboxAlertUtil.logMessage(1, "Could not get nsIMsgWindow service\n");
             }

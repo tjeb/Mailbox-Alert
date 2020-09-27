@@ -19,11 +19,11 @@
     ]);
 
     messenger.WindowListener.registerWindow(
-        "chrome://messenger/content/messenger.xul",
+        "chrome://messenger/content/messenger.xhtml",
         "chrome://mailboxalert/content/scripts/mailboxalertOverlay.js");
 
     messenger.WindowListener.registerWindow(
-        "chrome://messenger/content/FilterEditor.xul",
+        "chrome://messenger/content/FilterEditor.xhtml",
         "chrome://mailboxalert/content/scripts/filterEditorOverlay.js");
 
     messenger.WindowListener.startListening();

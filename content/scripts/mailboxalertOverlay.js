@@ -16,7 +16,7 @@ function onLoad(activatedWhileWindowOpen) {
         <menuseparator id="mailboxalertSeperator" />
         <menuitem id="mailboxalert-moz-tools-menu-prefs"
             label="&mailboxalert.menu.editalerts;" accesskey="L"
-            oncommand="window.openDialog('chrome://mailboxalert/content/alert_list.xul', 'mailboxalert_prefs', 'chrome');"/>
+            oncommand="window.openDialog('chrome://mailboxalert/content/alert_list.xhtml', 'mailboxalert_prefs', 'chrome');"/>
         <menuitem id="mailboxalert-moz-tools-menu-mute"
             type="checkbox"
             label="&mailboxalert.mute;" accesskey="M"

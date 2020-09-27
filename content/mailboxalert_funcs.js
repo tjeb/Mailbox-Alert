@@ -449,7 +449,7 @@ MailboxAlert.showMessage = function (alert_data, show_icon, icon_file, subject_p
         // use some unique value to identify the alert window, so they do not interfere
         // with each other
         var date = Date.now();
-        window.openDialog('chrome://mailboxalert/content/newmailalert.xul', date, "chrome,titlebar=no,popup=yes,modal=no", subject_pref, message_text, show_icon, icon_file, alert_data.orig_mailbox, alert_data.last_unread, position, duration, effect, onclick, custom_position_x, custom_position_y, custom_position_anchor);
+        window.openDialog('chrome://mailboxalert/content/newmailalert.xhtml', date, "chrome,titlebar=no,popup=yes,modal=no", subject_pref, message_text, show_icon, icon_file, alert_data.orig_mailbox, alert_data.last_unread, position, duration, effect, onclick, custom_position_x, custom_position_y, custom_position_anchor);
     } catch (e) {
         alert(e);
     }
@@ -744,7 +744,7 @@ MailboxAlert.fillFolderMenu = function(alert_menu, folder) {
 
     alert_menuitem = MailboxAlert.createMenuItem(stringsBundle.GetStringFromName('mailboxalert.menu.editalerts'), null, false);
     alert_menuitem.addEventListener("command",
-        function(){window.openDialog('chrome://mailboxalert/content/alert_list.xul',
+        function(){window.openDialog('chrome://mailboxalert/content/alert_list.xhtml',
                                      'mailboxalert_prefs', 'chrome');},
         false);
     alert_menu.appendChild(alert_menuitem);

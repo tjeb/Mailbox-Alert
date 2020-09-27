@@ -552,7 +552,7 @@ MailboxAlertAlertSettings.selectPosition = function () {
   dialog_positions.y = y_pos_label.value;
   dialog_positions.anchor = anchor_label.value;
   dialog_positions.changed = false;
-  window.openDialog('chrome://mailboxalert/content/alert_settings_position.xul', "_blank", "chrome,titlebar=yes,modal=yes", dialog_positions);
+  window.openDialog('chrome://mailboxalert/content/alert_settings_position.xhtml', "_blank", "chrome,titlebar=yes,modal=yes", dialog_positions);
   if (dialog_positions.changed) {
     x_pos_label.value = dialog_positions.x;
     y_pos_label.value = dialog_positions.y;
