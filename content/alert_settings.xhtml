@@ -2,7 +2,9 @@
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <!DOCTYPE window SYSTEM "chrome://mailboxalert/locale/mailboxalert.dtd">
 
-<dialog xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" id="mailboxalert_alert_prefs_dialog"
+<dialog xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        xmlns:html="http://www.w3.org/1999/xhtml"
+        id="mailboxalert_alert_prefs_dialog"
         onload="MailboxAlertAlertSettings.init();"
         buttons="help, cancel, accept, extra1"
         buttonlabelextra1="&mailboxalert.prefs.test;"
@@ -35,7 +37,7 @@
       <label value="Name"/>
       <spacer flex="1"/>
     </vbox>
-    <textbox id="alert_name_textbox" size="40" oninput="MailboxAlertAlertSettings.checkUIOkButton();"/>
+    <html:input id="alert_name_html:input" size="40" oninput="MailboxAlertAlertSettings.checkUIOkButton();"/>
     <spacer flex="1"/>
   </hbox>
   <hbox>
@@ -53,8 +55,8 @@
       <tabpanel id="show_message_tabpanel">
         <vbox>
           <hbox>
-            <textbox id="show_message_subject_textbox" size="20" disabled="true"/>
-            <textbox id="show_message_content_textbox" size="40" disabled="true"/>
+            <html:input id="show_message_subject_html:input" size="20" disabled="true"/>
+            <html:input id="show_message_content_html:input" size="40" disabled="true"/>
           </hbox>
           <hbox>
             <vbox >
@@ -78,7 +80,7 @@
             <spacer flex="1"/>
             </vbox>
             <spacer flex="1"/>
-            <textbox id="show_message_duration_textbox" size="2" align="end" onfocus="select();"  disabled="true" />
+            <html:input id="show_message_duration_html:input" size="2" align="end" onfocus="select();"  disabled="true" />
             <vbox>
             <spacer flex="1"/>
             <label id="show_message_duration_time_unit_label" value="&mailboxalert.alert_prefs.time_unit;" align="end"  disabled="true" />
@@ -157,7 +159,7 @@
           <radio id="play_sound_radio_default" label="&mailboxalert.prefs.systemdefault;"  disabled="true" />
           <hbox>
           <radio id="play_sound_radio_file" label="&mailboxalert.prefs.customwav;"  disabled="true" />
-          <textbox id="play_sound_file_textbox" size="30"  disabled="true" />
+          <html:input id="play_sound_file_html:input" size="30"  disabled="true" />
           <button id="play_sound_browse_button" label="&mailboxalert.prefs.browse;" oncommand="MailboxAlertAlertSettings.chooseWavFile();"  disabled="true"/>
           </hbox>
           </radiogroup>
@@ -167,7 +169,7 @@
       <tabpanel id="execute_command_tabpanel">
         <vbox>
           <hbox>
-            <textbox id="execute_command_textbox" size="50"  disabled="true" />
+            <html:input id="execute_command_html:input" size="50"  disabled="true" />
             <button id="execute_command_browse_button" label="&mailboxalert.prefs.browse;" oncommand="MailboxAlertAlertSettings.chooseExecFile();"  disabled="true" />
           </hbox>
           <hbox>
