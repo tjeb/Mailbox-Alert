@@ -356,9 +356,6 @@ MailboxAlert.FolderListener.prototype =
 
 MailboxAlert.onLoad = function ()
 {
-    // remove to avoid duplicate initialization
-    removeEventListener("load", MailboxAlert.onLoad, true);
-
     Components.classes["@mozilla.org/messenger/services/session;1"]
     .getService(Components.interfaces.nsIMsgMailSession)
     .AddFolderListener(new MailboxAlert.FolderListener(),
@@ -380,5 +377,3 @@ MailboxAlert.onLoad = function ()
     filterService.addCustomAction(MailboxAlert.filter_action);
     //MailboxAlertUtil.logMessage(1, "Mailbox Alert Loaded\n");
 }
-
-addEventListener("load", MailboxAlert.onLoad, true);
