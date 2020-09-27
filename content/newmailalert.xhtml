@@ -12,7 +12,7 @@
         xhtml2:role="wairole:alert"
         align="start"
         onload="MailboxAlertNewMail.onAlertLoad()">
-  
+
   <stringbundle id="bundle_messenger" src="chrome://messenger/locale/messenger.properties"/>
   <script type="application/x-javascript" src="chrome://mailboxalert/content/mailboxalert_util.js" />
   <script type="application/x-javascript" src="chrome://mailboxalert/content/newmailalert_vars.js" />
@@ -38,13 +38,15 @@
   </popupset>
 
   <stack id="alertContainer" mousethrough="never" onclick="MailboxAlertNewMail.handleClick(event);" context="newMailHandle">
-    <hbox id="alertBox">
-      <hbox id ="alertImageBox" align="center" valign="center" flex="1">
+    <hbox id="alertBox" class="intput-container">
+      <hbox id ="alertImageBox" align="center" valign="center">
         <image id="alertImage" valign="center"/>
       </hbox>
 
       <vbox id="alertTextBox">
-        <label id="subject" flex="1"/>
+        <hbox class="input-container">
+          <label id="subject" />
+        </hbox>
 	<vbox id="alertMessageField" hidden="true">
 	  <!--
       <label id="message_field" value="" hidden="true"/>
@@ -60,7 +62,7 @@
 	</vbox>
       </vbox>
     </hbox>
-    
+
   </stack>
   <!-- This method is called inline because we want to make sure we establish the width
        and height of the alert before we fire the onload handler. -->

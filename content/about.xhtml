@@ -34,13 +34,17 @@
         onclick="window.open('https://tjeb.nl'); window.close();"/>
   <separator class="thin"/>
 </vbox>
-<spring flex="1"/>
+<hbox class="input-container">
+    <spring/>
+</hbox>
 <image src="resource://mailboxalert-skin/mailboxalertb.png"/>
 </groupbox>
 
   <hbox>
-  <spacer flex="1"/>
-   <button label="&mailboxalert.prefs.close;" oncommand="window.close();"/>
+    <hbox class="input-container">
+      <spacer />
+    </hbox>
+    <button label="&mailboxalert.prefs.close;" oncommand="window.close();"/>
   </hbox>
 
 </window>
