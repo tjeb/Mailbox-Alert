@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Mailbox Alert",
   "description": "Custom popup, sounds or scripts for new mail, configurable for each folder",
-  "version": "0.25-beta1",
+  "version": "0.25",
   "author": "Jelte Jansen",
   "experiment_apis": {
     "WindowListener": {
@@ -22,8 +22,7 @@
   "applications": {
     "gecko": {
       "id": "{9c21158b-2c76-4d0a-980a-c51fc9cefaa7}",
-      "strict_min_version": "78.0",
-      "strict_max_version": "82.*"
+      "strict_min_version": "78.0"
     }
   }
 }
