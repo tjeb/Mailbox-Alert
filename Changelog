@@ -1,3 +1,9 @@
+[0.24-0.25]
+  o Made Mailbox Alert compatible with Thunderbird 78 by using the
+    windowListener experiment from John Bieling
+    (See https://github.com/thundernest/addon-developer-support)
+  o Added an option to execute command to let double-quotes in arguments
+    be escaped by another double-quote, for use with Windows cmd.exe
 
 [0.23-0.24]
   o The Mailbox Alert action for Message Filters now works with Thunderbird 68

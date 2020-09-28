@@ -574,7 +574,10 @@ MailboxAlert.executeCommand = function (alert_data, command, escape_html, escape
                     var command_part_part = command_part_parts[j];
                     if (command_part_part.length > 0) {
                         command_part_part = MailboxAlert.finalizeCommandPart(command_part_part, alert_data, escape_html, in_quote, date_str, time_str);
-                        // finalize; put back original markers, and to conversion
+                        // If 'escape windows quotes' was selected, escape the single quotes again
+                        if (escape_windows_quotes) {
+                            command_part_part = MailboxAlert.replace(command_part_part, '"', '""')
+                        }
                         args.push(command_part_part);
                     }
                 }

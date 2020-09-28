@@ -690,7 +690,7 @@ MailboxAlert.getAllFolders = function () {
     var all_folders = [];
 
     for (var i = 0; i < all_servers.length; ++i) {
-        var server = all_servers.queryElementAt(i, Components.interfaces.nsIMsgIncomingServer);
+        var server = all_servers[i];
         var root_folder = server.rootFolder;
         if (root_folder) {
             MailboxAlert.getChildFolders(root_folder, all_folders);
