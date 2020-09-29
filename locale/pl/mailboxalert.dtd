@@ -9,6 +9,7 @@
 <!ENTITY mailboxalert.prefs.icon "Ikona">
 <!ENTITY mailboxalert.prefs.customwav "Użyj pliku .wav">
 <!ENTITY mailboxalert.prefs.escapehtml "Użyj znaczników HTML dla znaków specjalnych w makrach">
+<!ENTITY mailboxalert.prefs.escapewindowsquotes "Escape double quotes with another double quote (for windows cmd.exe)">
 <!ENTITY mailboxalert.prefs.test "Testuj te ustawienia">
 <!ENTITY mailboxalert.prefs.close "Zamknij">
 <!ENTITY mailboxalert.prefs.expl.escape "Jeśli jakiś plik lub argument zawiera spacje, upewnij się, że poprzedzasz je ">

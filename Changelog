@@ -1,3 +1,6 @@
+[0.25-0.25.1]
+  O Fixed the issue 'undefined entity' when using a language setting other than en-US
+
 [0.24-0.25]
   o Made Mailbox Alert compatible with Thunderbird 78 by using the
     windowListener experiment from John Bieling

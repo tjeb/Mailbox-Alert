@@ -9,6 +9,7 @@
 <!ENTITY mailboxalert.prefs.icon "图标">
 <!ENTITY mailboxalert.prefs.customwav "自定义 .wav 文件">
 <!ENTITY mailboxalert.prefs.escapehtml "在宏中对特殊字符使用 HTML 代码">
+<!ENTITY mailboxalert.prefs.escapewindowsquotes "Escape double quotes with another double quote (for windows cmd.exe)">
 <!ENTITY mailboxalert.prefs.test "测试这些设置">
 <!ENTITY mailboxalert.prefs.close "关闭">
 <!ENTITY mailboxalert.prefs.expl.escape "如果任何文件或参数包含空格，请确认使用转义">

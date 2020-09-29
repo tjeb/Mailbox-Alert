@@ -9,6 +9,7 @@
 <!ENTITY mailboxalert.prefs.icon "Symbol">
 <!ENTITY mailboxalert.prefs.customwav "Benutzerdefinierte WAV-Datei">
 <!ENTITY mailboxalert.prefs.escapehtml "HTML-Kodierung für Sonderzeichen in Makros benutzen">
+<!ENTITY mailboxalert.prefs.escapewindowsquotes "Escape double quotes with another double quote (for windows cmd.exe)">
 <!ENTITY mailboxalert.prefs.test "Diese Einstellungen testen">
 <!ENTITY mailboxalert.prefs.close "Schließen">
 <!ENTITY mailboxalert.prefs.expl.escape "Sollte irgendeine Datei oder ein Argument Leerzeichen enthalten, so stellen Sie bitte einen Backslash () voran">

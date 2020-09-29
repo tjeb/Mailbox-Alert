@@ -9,6 +9,7 @@
 <!ENTITY mailboxalert.prefs.icon "Icona">
 <!ENTITY mailboxalert.prefs.customwav "File .wav personalizzato">
 <!ENTITY mailboxalert.prefs.escapehtml "Utilizza i codici HTML per i caratteri speciali contenuti nelle macro">
+<!ENTITY mailboxalert.prefs.escapewindowsquotes "Escape double quotes with another double quote (for windows cmd.exe)">
 <!ENTITY mailboxalert.prefs.test "Prova le impostazioni">
 <!ENTITY mailboxalert.prefs.close "Chiudi">
 <!ENTITY mailboxalert.prefs.expl.escape "Se il nome di un file o un parametro contengono spazi, assicurarsi di farli precedere dal simbolo ''">
