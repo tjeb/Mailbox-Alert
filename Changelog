@@ -1,3 +1,6 @@
+[upcoming]
+  O Fix an error ("ReferenceError: Services not found") when trying to execute a command that itself contains an error. See https://github.com/tjeb/Mailbox-Alert/issues/24
+
 [0.25-0.25.1]
   O Fixed the issue 'undefined entity' when using a language setting other than en-US
 

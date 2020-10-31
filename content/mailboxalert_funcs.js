@@ -6,6 +6,7 @@
 //
 // This file contains most of the supporting functionality of Mailbox Alert
 //
+var { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
 
 MailboxAlert.showMethods = function (obj) {
     MailboxAlertUtil.logMessage(1, "[Object] Type: " + obj + "\n");
@@ -613,15 +614,6 @@ MailboxAlert.executeCommand = function (alert_data, command, escape_html, escape
             alert(stringsBundle.GetStringFromName('mailboxalert.error')+"\n" + exec.leafName + " " + stringsBundle.GetStringFromName('mailboxalert.error.notfound') + "\n\nFull path: "+executable_name+"\n");
             MailboxAlertUtil.logMessage(1, "Failed command:  " +executable_name + "\r\n");
             MailboxAlertUtil.logMessage(1, "Arguments: " + args + "\r\n");
-            var caller = window.arguments[0];
-            if (caller) {
-                var executecommandcheckbox = document.getElementById('mailboxalert_execute_command');
-                executecommandcheckbox.checked = false;
-                setUIExecuteCommandPrefs(false);
-            } else {
-                var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
-                prefs.setBoolPref("extensions.mailboxalert.execute_command." + alert_data.folder_name_with_server, false);
-            }
         } else {
             MailboxAlertUtil.logMessage(1, "Command:  " +executable_name + "\r\n");
             MailboxAlertUtil.logMessage(1, "Arguments: " + args + "\r\n");
