@@ -81,7 +81,7 @@ MailboxAlert.createAlertData = function (mailbox, last_unread) {
             this.recipient_address = this.recipient.substring(this.recipient.indexOf('<') + 1, this.recipient.indexOf('>'));
         }
         // is there a more default default?
-        this.charset = "ISO-8859-1";
+        this.charset = "UTF-8";
         // not all folders have charset
         // some messages have charset
         try {
@@ -618,7 +618,13 @@ MailboxAlert.executeCommand = function (alert_data, command, escape_html, escape
             MailboxAlertUtil.logMessage(1, "Command:  " +executable_name + "\r\n");
             MailboxAlertUtil.logMessage(1, "Arguments: " + args + "\r\n");
             var res1 = pr.init(exec);
-            var result = pr.run(false, args, args.length);
+            // Pretend this is UTF-16; this is not likely to be the actual case,
+            // but this way, Thunderbird automatically converts it to UTF-8 in
+            // nsIProcessCommon.cpp; otherwise it'll just memcopy the arguments,
+            // and we are likely to endup with ISO-8859, which some programs can't
+            // handle anymore (see https://github.com/tjeb/Mailbox-Alert/issues/22)
+            pr.runw(false, args, args.length);
+            MailboxAlertUtil.logMessage(1, "Command run, exitval: " + pr.exitValue + "\r\n");
         }
     } catch (e) {
         if (e.name == "NS_ERROR_FAILURE" ||
