@@ -1,8 +1,9 @@
-[upcoming]
-  O Fix an error ("ReferenceError: Services not found") when trying to execute a command that itself contains an error. See https://github.com/tjeb/Mailbox-Alert/issues/24
+[0.26]
+  o Fix an error ("ReferenceError: Services not found") when trying to execute a command that itself contains an error. See https://github.com/tjeb/Mailbox-Alert/issues/24
+  o Workaround for an issue with running commands with arguments that have non-ascii characters, by forcing TB to convert it to utf-8
 
 [0.25-0.25.1]
-  O Fixed the issue 'undefined entity' when using a language setting other than en-US
+  o Fixed the issue 'undefined entity' when using a language setting other than en-US
 
 [0.24-0.25]
   o Made Mailbox Alert compatible with Thunderbird 78 by using the
@@ -259,23 +260,22 @@
   This is replaced by the name part of the sender's address (up to the first <).
    2. %senderaddress
   This is replaced by the address part of the sender's address (between the < and the >).
+  If the address does not contain < and >, these values are the same as %sender
 
-+ If the address does not contain < and >, these values are the same as %sender
+* [0.4-0.5]
 
-# [0.4-0.5]
+  o Arguments to executable are nog longer prepended by a space (which breaks everything you call with it that uses options).
+  o The actual command and it's arguments are now dump()ed if you set browser.dom.window.dump.enabled to true.
 
-* Arguments to executable are nog longer prepended by a space (which breaks everything you call with it that uses options).
-* The actual command and it's arguments are now dump()ed if you set browser.dom.window.dump.enabled to true.
+* [0.3-0.4]
 
-# [0.3-0.4]
+  o Added some debug messages using the dump() function (enable them by setting browser.dom.window.dump.enabled to true in your settings)
+  o No longer alerts with 'locked' or exceptions, instead it ignores the locked setting (doesn't seem to matter anyway for reading out folder data) and uses dump() for exceptions.
 
-* Added some debug messages using the dump() function (enable them by setting browser.dom.window.dump.enabled to true in your settings)
-* No longer alerts with 'locked' or exceptions, instead it ignores the locked setting (doesn't seem to matter anyway for reading out folder data) and uses dump() for exceptions.
+* [0.2-0.3]
 
-# [0.2-0.3]
+  o Changed the possible Thunderbird version to 1.0 - 1.9+ so that it also works in 1.5
+  o Fixed bad backslashes in front of < > and & characters in the messages
 
-* Changed the possible Thunderbird version to 1.0 - 1.9+ so that it also works in 1.5
-* Fixed bad backslashes in front of < > and & characters in the messages
-
-# [0.1-0.2] Made the function call non-blocking
-# [0.0-0.1] Initial version
+* [0.1-0.2] Made the function call non-blocking
+* [0.0-0.1] Initial version

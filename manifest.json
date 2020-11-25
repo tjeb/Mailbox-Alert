@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Mailbox Alert",
   "description": "Custom popup, sounds or scripts for new mail, configurable for each folder",
-  "version": "0.25.1",
+  "version": "0.26",
   "author": "Jelte Jansen",
   "experiment_apis": {
     "WindowListener": {
