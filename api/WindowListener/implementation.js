@@ -2,6 +2,33 @@
  * This file is provided by the addon-developer-support repository at
  * https://github.com/thundernest/addon-developer-support
  *
+ * Version: 1.34
+ * - fix error in unload
+ *
+ * Version: 1.33
+ * - fix for e10s
+ *
+ * Version: 1.30
+ * - replace setCharPref by setStringPref to cope with URTF-8 encoding
+ *
+ * Version: 1.29
+ * - open options window centered
+ *
+ * Version: 1.28
+ * - do not crash on missing icon
+ *
+ * Version: 1.27
+ * - add openOptionsDialog()
+ *
+ * Version: 1.26
+ * - pass WL object to legacy preference window
+ *
+ * Version: 1.25
+ * - adding waitForMasterPassword
+ *
+ * Version: 1.24
+ * - automatically localize i18n locale strings in injectElements()
+ *
  * Version: 1.22
  * - to reduce confusions, only check built-in URLs as add-on URLs cannot
  *   be resolved if a temp installed add-on has bin zipped
@@ -70,15 +97,73 @@ var WindowListener = class extends ExtensionCommon.ExtensionAPI {
   log(msg) {
     if (this.debug) console.log("WindowListener API: " + msg);
   }
+  
+  getMessenger(context) {   
+    let apis = [
+      "storage",
+      "runtime",
+      "extension",
+      "i18n",
+    ];
+
+    function getStorage() {
+      let localstorage = null;
+      try {
+        localstorage = context.apiCan.findAPIPath("storage");
+        localstorage.local.get = (...args) =>
+          localstorage.local.callMethodInParentProcess("get", args);
+        localstorage.local.set = (...args) =>
+          localstorage.local.callMethodInParentProcess("set", args);
+        localstorage.local.remove = (...args) =>
+          localstorage.local.callMethodInParentProcess("remove", args);
+        localstorage.local.clear = (...args) =>
+          localstorage.local.callMethodInParentProcess("clear", args);
+      } catch (e) {
+        console.info("Storage permission is missing");
+      }
+      return localstorage;
+    }
+    
+    let messenger = {};    
+    for (let api of apis) {
+      switch (api) {
+        case "storage":
+          XPCOMUtils.defineLazyGetter(messenger, "storage", () =>
+            getStorage()
+          );
+        break;
+
+        default:
+          XPCOMUtils.defineLazyGetter(messenger, api, () =>
+            context.apiCan.findAPIPath(api)
+          );
+      }
+    }
+    return messenger;
+  }
 
   error(msg) {
     if (this.debug) console.error("WindowListener API: " + msg);
   }
   
+  // async sleep function using Promise
+  async sleep(delay) {
+    let timer =  Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
+    return new Promise(function(resolve, reject) {
+      let event = {
+        notify: function(timer) {
+          resolve();
+        }
+      }
+      timer.initWithCallback(event, delay, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+    });
+  }
+          
   getAPI(context) {
     // track if this is the background/main context
     this.isBackgroundContext = (context.viewType == "background");
-
+    this.context = context;
+    
     this.uniqueRandomID = "AddOnNS" + context.extension.instanceId;
     this.menu_addonsManager_id ="addonsManager";
     this.menu_addonsManager_prefs_id = "addonsManager_prefs_revived";
@@ -101,6 +186,15 @@ var WindowListener = class extends ExtensionCommon.ExtensionAPI {
 
     return {
       WindowListener: {
+
+        async waitForMasterPassword() {
+          // Wait until master password has been entered (if needed)
+          while (!Services.logins.isLoggedIn) {
+            self.log("Waiting for master password.");
+            await self.sleep(1000);
+          }          
+          self.log("Master password has been entered.");
+        },
 
         aDocumentExistsAt(uriString) {
           self.log("Checking if document at <" + uriString + "> used in registration actually exists.");
@@ -129,7 +223,7 @@ var WindowListener = class extends ExtensionCommon.ExtensionAPI {
             let defaults = Services.prefs.getDefaultBranch("");
             switch (typeof aDefault) {
               case "string":
-                  return defaults.setCharPref(aName, aDefault);
+                  return defaults.setStringPref(aName, aDefault);
 
               case "number":
                   return defaults.setIntPref(aName, aDefault);
@@ -221,20 +315,15 @@ var WindowListener = class extends ExtensionCommon.ExtensionAPI {
             : context.extension.rootURI.resolve(aPath);
         },
 
-        async startListening() {
-          // async sleep function using Promise
-          async function sleep(delay) {
-            let timer =  Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
-            return new Promise(function(resolve, reject) {
-              let event = {
-                notify: function(timer) {
-                  resolve();
-                }
-              }
-              timer.initWithCallback(event, delay, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
-            });
-          };
+        openOptionsDialog(windowId) {
+          let window = context.extension.windowManager.get(windowId, context).window
+          let WL = {}
+          WL.extension = self.extension;
+          WL.messenger = self.getMessenger(self.context);
+          window.openDialog(self.pathToOptionsPage, "AddonOptions", "chrome,resizable,centerscreen", WL);
+        },
 
+        async startListening() {
           if (!self.isBackgroundContext)
             throw new Error("The WindowListener API may only be called from the background page.");
 
@@ -244,9 +333,7 @@ var WindowListener = class extends ExtensionCommon.ExtensionAPI {
             let startupJS = {};
             startupJS.WL = {}
             startupJS.WL.extension = self.extension;
-            startupJS.WL.messenger = Array.from(self.extension.views).find(
-              view => view.viewType === "background").xulBrowser.contentWindow
-              .wrappedJSObject.browser;
+            startupJS.WL.messenger = self.getMessenger(self.context);
             try {
               if (self.pathToStartupScript) {
                 Services.scriptloader.loadSubScript(self.pathToStartupScript, startupJS, "UTF-8");
@@ -306,16 +393,25 @@ var WindowListener = class extends ExtensionCommon.ExtensionAPI {
                       let id = self.menu_addonPrefs_id + "_" + self.uniqueRandomID;
 
                       // Get the best size of the icon (16px or bigger)
-                      let iconSizes = Object.keys(self.extension.manifest.icons);
+                      let iconSizes = self.extension.manifest.icons 
+                        ? Object.keys(self.extension.manifest.icons)
+                        : [];
                       iconSizes.sort((a,b)=>a-b);
                       let bestSize = iconSizes.filter(e => parseInt(e) >= 16).shift();
                       let icon = bestSize ? self.extension.manifest.icons[bestSize] : "";
 
                       let name = self.extension.manifest.name;
-                      let entry = window.MozXULElement.parseXULToFragment(
-                        `<menuitem class="menuitem-iconic" id="${id}" image="${icon}" label="${name}" />`);
+                      let entry = icon
+                        ? window.MozXULElement.parseXULToFragment(
+                            `<menuitem class="menuitem-iconic" id="${id}" image="${icon}" label="${name}" />`)
+                        :  window.MozXULElement.parseXULToFragment(
+                            `<menuitem id="${id}" label="${name}" />`);
+                      
                       element_addonPrefs.appendChild(entry);
-                      window.document.getElementById(id).addEventListener("command", function() {window.openDialog(self.pathToOptionsPage, "AddonOptions")});
+                      let WL = {}
+                      WL.extension = self.extension;
+                      WL.messenger = self.getMessenger(self.context);
+                      window.document.getElementById(id).addEventListener("command", function() {window.openDialog(self.pathToOptionsPage, "AddonOptions", "chrome,resizable,centerscreen", WL)});
                     } catch (e) {
                       Components.utils.reportError(e)
                     }
@@ -335,7 +431,7 @@ var WindowListener = class extends ExtensionCommon.ExtensionAPI {
                             // On my system it takes 70ms.
                             let loaded = false;
                             for (let i=0; i < 100 && !loaded; i++) {
-                              await sleep(100);
+                              await self.sleep(100);
                               let targetWindow = mutation.target.contentWindow.wrappedJSObject;
                               if (targetWindow && targetWindow.location.href == mutation.target.getAttribute("src") && targetWindow.document.readyState == "complete") {
                                 loaded = true;
@@ -353,7 +449,7 @@ var WindowListener = class extends ExtensionCommon.ExtensionAPI {
                       });
                   });
 
-                  for (let element of browserElements) {
+                 for (let element of browserElements) {
                       if (self.registeredWindows.hasOwnProperty(element.getAttribute("src"))) {
                         let targetWindow = element.contentWindow.wrappedJSObject;
                         // Create add-on scope
@@ -389,7 +485,8 @@ var WindowListener = class extends ExtensionCommon.ExtensionAPI {
       if (window.hasOwnProperty(this.uniqueRandomID) && this.registeredWindows.hasOwnProperty(window.location.href)) {
         try {
           let uniqueRandomID = this.uniqueRandomID;
-
+          let extension = this.extension;
+          
           // Add reference to window to add-on scope
           window[this.uniqueRandomID].window = window;
           window[this.uniqueRandomID].document = window.document;
@@ -435,6 +532,10 @@ var WindowListener = class extends ExtensionCommon.ExtensionAPI {
               return null;
             }
 
+            function localize(entity) {
+              let msg = entity.slice("__MSG_".length,-2);
+              return extension.localeData.localizeMessage(msg)
+            }
 
             function injectChildren(elements, container) {
               if (debug) console.log(elements);
@@ -509,7 +610,8 @@ var WindowListener = class extends ExtensionCommon.ExtensionAPI {
             }
 
             if (debug) console.log ("Injecting into root document:");
-            injectChildren(Array.from(window.MozXULElement.parseXULToFragment(xulString, dtdFiles).children), window.document.documentElement);
+            let localicedXulString = xulString.replace(/__MSG_(.*?)__/g, localize);
+            injectChildren(Array.from(window.MozXULElement.parseXULToFragment(localicedXulString, dtdFiles).children), window.document.documentElement);
 
             for (let bar of toolbarsToResolve) {
               let currentset = Services.xulStore.getValue(
@@ -528,9 +630,7 @@ var WindowListener = class extends ExtensionCommon.ExtensionAPI {
           // Add extension object to WLDATA object
           window[this.uniqueRandomID].WL.extension = this.extension;
           // Add messenger object to WLDATA object
-          window[this.uniqueRandomID].WL.messenger = Array.from(this.extension.views).find(
-            view => view.viewType === "background").xulBrowser.contentWindow
-            .wrappedJSObject.browser;
+          window[this.uniqueRandomID].WL.messenger = this.getMessenger(this.context);
           // Load script into add-on scope
           Services.scriptloader.loadSubScript(this.registeredWindows[window.location.href], window[this.uniqueRandomID], "UTF-8");
           window[this.uniqueRandomID].onLoad(isAddonActivation);
@@ -546,7 +646,9 @@ var WindowListener = class extends ExtensionCommon.ExtensionAPI {
         window[this.uniqueRandomID]._mObserver.disconnect();
         let browserElements = window.document.getElementsByTagName("browser");
         for (let element of browserElements) {
-          this._unloadFromWindow(element.contentWindow.wrappedJSObject, isAddonDeactivation);
+          if (element.contentWindow) {
+            this._unloadFromWindow(element.contentWindow.wrappedJSObject, isAddonDeactivation);
+          }
         }
       }
 
