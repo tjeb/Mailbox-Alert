@@ -45,23 +45,23 @@
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 
 window {
-  border: solid #000000 1px;
-  /*background-color: transparent;*/
+  background-color: transparent;
 }
 
 
 #alertImage {
+  margin: 15px 0px 0px 15px;
   list-style-image: url("chrome://branding/content/icon64.png");
 }
 
 #subject {
+  margin: 10px 20px 0px 10px;
   font-weight: bold;
 }
 
 #alertMessageField {
-  margin: 0px 0px 0px 4px;
+  margin: 0px 10px 0px 4px;
   padding: 0px 1px 0px 1px;
-  background-color: white;
-  border: solid #000000 1px;
+  background-color: -moz-field;
+  color: -moz-fieldtext;
 }
-
