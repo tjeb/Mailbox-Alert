@@ -14,6 +14,11 @@
       }
     }
   },
+  "icons": {
+    "16": "skin/classic/mailboxalert.png",
+    "32": "skin/classic/mailboxalert.png",
+    "64": "skin/classic/mailboxalert.png"
+  },
   "background": {
     "scripts": [
       "background.js"
