@@ -675,10 +675,11 @@ MailboxAlert.getAllAlertPrefs = function () {
 MailboxAlert.getChildFolders = function (folder, ar) {
     ar.push(folder);
     var sub_folders = folder.subFolders;
-    while (sub_folders && sub_folders.hasMoreElements()) {
-		var next_folder = MailboxAlert.getInterface(sub_folders.getNext(), Components.interfaces.nsIMsgFolder);
-        if (next_folder) {
-            MailboxAlert.getChildFolders(next_folder, ar);
+    if (sub_folders) {
+        for (let next_folder of sub_folders) {
+            if (next_folder) {
+                MailboxAlert.getChildFolders(next_folder, ar);
+            }
         }
     }
 }
@@ -703,10 +704,11 @@ MailboxAlert.getAllFolders = function () {
 MailboxAlert.getChildFolderURIs = function (folder, ar) {
     ar.push(folder.URI);
     var sub_folders = folder.subFolders;
-    while (sub_folders && sub_folders.hasMoreElements()) {
-        var next_folder = MailboxAlert.getInterface(sub_folders.getNext(), Components.interfaces.nsIMsgFolder);
-        if (next_folder) {
-            MailboxAlert.getChildFolderURIs(next_folder, ar);
+    if (sub_folders) {
+        for (let next_folder of sub_folders) {
+            if (next_folder) {
+                MailboxAlert.getChildFolderURIs(next_folder, ar);
+            }
         }
     }
 }
