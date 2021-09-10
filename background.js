@@ -18,6 +18,8 @@
         ["locale",   "mailboxalert",      "zh-CN",  "locale/zh-CN/"],
     ]);
 
+    messenger.WindowListener.registerOptionsPage("chrome://mailboxalert/content/alert_list.xhtml");
+    
     messenger.WindowListener.registerWindow(
         "chrome://messenger/content/messenger.xhtml",
         "chrome://mailboxalert/content/scripts/mailboxalertOverlay.js");
