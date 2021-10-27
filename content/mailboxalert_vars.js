@@ -130,9 +130,9 @@ MailboxAlert.getGlobalPreferences14 = function() {
         alert_prefs.set("show_message_onclick", this.whenclicked);
     }
 
-    global_prefs.deleteBranch = function (branchname) {
+    global_prefs.clearUserPref = function (branchname) {
         try {
-            MailboxAlert.prefService.deleteBranch(branchname);
+            MailboxAlert.prefService.clearUserPref(branchname);
         } catch (e) {
             // ok leave them then
         }
@@ -140,11 +140,11 @@ MailboxAlert.getGlobalPreferences14 = function() {
 
     global_prefs.deleteAll = function () {
         // TODO: can we delete delay now?
-        //this.deleteBranch("extensions.mailboxalert.alert_delay");
-        this.deleteBranch("extensions.mailboxalert.alert_position");
-        this.deleteBranch("extensions.mailboxalert.alert_effect");
-        this.deleteBranch("extensions.mailboxalert.alert_duration");
-        this.deleteBranch("extensions.mailboxalert.alert_onclick");
+        //this.clearUserPref("extensions.mailboxalert.alert_delay");
+        this.clearUserPref("extensions.mailboxalert.alert_position");
+        this.clearUserPref("extensions.mailboxalert.alert_effect");
+        this.clearUserPref("extensions.mailboxalert.alert_duration");
+        this.clearUserPref("extensions.mailboxalert.alert_onclick");
     }
 
     return global_prefs;
@@ -470,7 +470,7 @@ MailboxAlert.getAlertPreferences = function (index) {
     // removes all preferences for this alert. ONLY call this if there
     // are no folders set!
     alert_prefs.remove = function () {
-        MailboxAlert.prefService.deleteBranch("extensions.mailboxalert.alerts." + this.index);
+        MailboxAlert.prefService.clearUserPref("extensions.mailboxalert.alerts." + this.index);
         this.index = 0;
     }
 
@@ -599,7 +599,6 @@ MailboxAlert.getFolderPrefs = function (uri) {
             MailboxAlertUtil.logMessage(1, "Alert for children: true\n");
         } else {
             // remove if exists
-            MailboxAlert.prefService.deleteBranch("extensions.mailboxalert.folders." + this.uri + ".alert_for_children");
             MailboxAlert.prefService.clearUserPref("extensions.mailboxalert.folders." + this.uri + ".alert_for_children");
             MailboxAlertUtil.logMessage(1, "Alert for children: false\n");
         }
@@ -608,7 +607,6 @@ MailboxAlert.getFolderPrefs = function (uri) {
             MailboxAlertUtil.logMessage(1, "No alert to parent: true\n");
         } else {
             // remove if exists
-            MailboxAlert.prefService.deleteBranch("extensions.mailboxalert.folders." + this.uri + ".no_alert_to_parent");
             MailboxAlert.prefService.clearUserPref("extensions.mailboxalert.folders." + this.uri + ".no_alert_to_parent");
             MailboxAlertUtil.logMessage(1, "No alert to parent: false\n");
         }
@@ -617,7 +615,6 @@ MailboxAlert.getFolderPrefs = function (uri) {
             MailboxAlertUtil.logMessage(1, "Alerts: " + this.alerts.join(",") + "\n");
         } else {
             // remove if exists
-            MailboxAlert.prefService.deleteBranch("extensions.mailboxalert.folders." + this.uri + ".alerts");
             MailboxAlert.prefService.clearUserPref("extensions.mailboxalert.folders." + this.uri + ".alerts");
             MailboxAlertUtil.logMessage(1, "No alerts\n");
         }
@@ -625,7 +622,6 @@ MailboxAlert.getFolderPrefs = function (uri) {
     }
 
     folder_prefs.hasAlerts = function () {
-        MailboxAlertUtil.logMessage(1, "Has alerts?\n");
         MailboxAlertUtil.logMessage(1, "Folder " + this.uri + " has alerts: " + (this.alerts.length > 0));
         //alert("hasAlerts: " + this.alerts.length + " " + this.alerts);
         return (this.alerts.length > 0);
