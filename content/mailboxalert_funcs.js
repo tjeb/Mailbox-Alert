@@ -686,6 +686,7 @@ MailboxAlert.deleteNodeRecurse = function(node) {
 }
 
 MailboxAlert.fillFolderMenu = function(alert_menu, folder) {
+    MailboxAlertUtil.logMessage(1, "fillFolderMenu called\n");
     var folder_prefs = MailboxAlert.getFolderPrefs(folder.URI);
     var all_alerts = MailboxAlert.getAllAlertPrefs();
     var stringsBundle = Services.strings.createBundle("chrome://mailboxalert/locale/mailboxalert.properties");
@@ -764,5 +765,6 @@ MailboxAlert.fillFolderMenu = function(alert_menu, folder) {
     }
     MailboxAlertUtil.logMessage(1, "END OF MENU\n");
     */
+    MailboxAlertUtil.logMessage(1, "fillFolderMenu done\n");
 }
 

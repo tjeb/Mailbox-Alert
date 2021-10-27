@@ -24,6 +24,9 @@ MailboxAlertUtil.init = function () {
 MailboxAlertUtil.init();
 
 MailboxAlertUtil.logMessage = function (level, msg) {
+    if (msg == undefined) {
+        throw "Undefined message logged";
+    }
     MailboxAlertUtil.console.logStringMessage("[MailboxAlert] " + msg);
     if (level >= MailboxAlertUtil.logLevel) {
         MailboxAlertUtil.console.logStringMessage("[MailboxAlert] " + msg);
