@@ -693,9 +693,6 @@ MailboxAlert.fillFolderMenu = function(alert_menu, folder) {
     var alerts_set = false;
 
     // clear it first
-    //while (alert_menu.firstChild) {
-    //    alert_menu.removeChild(alert_menu.firstChild);
-    //}
     MailboxAlert.deleteNodeRecurse(alert_menu);
 
     // need to make these first, as modifying the alerts that are set can
@@ -712,9 +709,12 @@ MailboxAlert.fillFolderMenu = function(alert_menu, folder) {
             alerts_set = true;
         }
         alert_menuitem.addEventListener("command",
-            function(){MailboxAlert.switchFolderAlert(folder.URI, alert_index,
-                                                      alertforchildren_menuitem,
-                                                      alertnoparent_menuitem)},
+            function(){
+                MailboxAlert.switchFolderAlert(folder_prefs, alert_index,
+                                               alertforchildren_menuitem,
+                                               alertnoparent_menuitem)
+
+            },
             false);
         alert_menu.appendChild(alert_menuitem);
     }
@@ -754,6 +754,7 @@ MailboxAlert.fillFolderMenu = function(alert_menu, folder) {
         false);
     alert_menu.appendChild(alert_menuitem);
 
+    /*
     MailboxAlertUtil.logMessage(1, "MENU NOW HAS:\n");
     var nodeList = alert_menu.childNodes;
     for(var i = 0; i < nodeList.length; i++) {
@@ -762,5 +763,6 @@ MailboxAlert.fillFolderMenu = function(alert_menu, folder) {
        MailboxAlertUtil.logMessage(1, "label: " + nodeList[i].label);
     }
     MailboxAlertUtil.logMessage(1, "END OF MENU\n");
+    */
 }
 
