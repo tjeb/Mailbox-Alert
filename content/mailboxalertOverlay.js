@@ -354,6 +354,35 @@ MailboxAlert.FolderListener.prototype =
     }
 }
 
+// Since we can't unload custom filter actions, and there appears to be
+// no way to replace them, we use a fixed placeholder and an actual that
+// contains the implementation. This way, future upgrades will not require
+// that Thunderbird is restarted
+MailboxAlert.filterActionActual = null;
+MailboxAlert.filterActionPlaceholder = {
+    id: "mailboxalert@tjeb.nl#mailboxalertfilter",
+    name: "Mailbox Alert",
+    applyAction(aMsgHdrs, aActionValue, aListener, aType, aMsgWindow) {
+        if (MailboxAlert.filterActionActual) {
+            return MailboxAlert.filterActionActual.applyAction(aMsgHdrs, aActionValue, aListener, aType, aMsgWindow);
+        }
+    },
+    isValidForType(type, scope) {
+        if (MailboxAlert.filterActionActual) {
+            return MailboxAlert.filterActionActual.isValidForType(type, scope);
+        }
+    },
+    // return null if value is OK, error string otherwise
+    validateActionValue(value, folder, type) {
+        if (MailboxAlert.filterActionActual) {
+            return MailboxAlert.filterActionActual.validateActionValue(value, folder, type);
+        }
+    },
+    allowDuplicates: true,
+    needsBody: false
+};
+
+
 MailboxAlert.onLoad = function ()
 {
     Components.classes["@mozilla.org/messenger/services/session;1"]
@@ -373,18 +402,16 @@ MailboxAlert.onLoad = function ()
     // And finally, add our shiny custom filter action
     // Because the add-on can now be re-loaded, we need to check that we
     // did not do this before
+    MailboxAlert.filterActionActual = MailboxAlert.filterActionImplementation;
     var filterService = Components.classes["@mozilla.org/messenger/services/filters;1"]
                         .getService(Components.interfaces.nsIMsgFilterService);
+    var placeholderLoaded = false;
     try {
-        if (!filterService.getCustomAction("mailboxalert@tjeb.nl#mailboxalertfilter")) {
-            MailboxAlertUtil.logMessage(1, "Adding custom action for filters");
-            filterService.addCustomAction(MailboxAlert.filter_action);
-        } else {
-            MailboxAlertUtil.logMessage(1, "Custom action for filters already exists, not setting");
-        }
+        placeholderLoaded = filterService.getCustomAction("mailboxalert@tjeb.nl#mailboxalertfilter");
     } catch (error) {
-        // At startup (not reload) the get() can raise an error, add the action in that case too
-        filterService.addCustomAction(MailboxAlert.filter_action);
+        // Skip, placeholder not loaded at startup
     }
-    //MailboxAlertUtil.logMessage(1, "Mailbox Alert Loaded\n");
+    if (!placeholderLoaded) {
+        filterService.addCustomAction(MailboxAlert.filterActionPlaceholder);
+    }
 }

@@ -630,17 +630,14 @@ MailboxAlert.getFolderPrefs = function (uri) {
     return folder_prefs;
 }
 
-MailboxAlert.filter_action =
-{
-    id: "mailboxalert@tjeb.nl#mailboxalertfilter",
-    name: "Mailbox Alert",
-    apply: function(aMsgHdrs, aActionValue, aListener, aType, aMsgWindow)
+MailboxAlert.filterActionImplementation = {
+    applyAction: function(aMsgHdrs, aActionValue, aListener, aType, aMsgWindow)
     {
         MailboxAlertUtil.logMessage(1, "Filter triggered with actionValue " + aActionValue);
         var alert = MailboxAlert.getAlertPreferences(aActionValue);
         if (alert) {
             for (var i = 0; i < aMsgHdrs.length; ++i) {
-                var cur_msg_hdr = aMsgHdrs.queryElementAt(i, Components.interfaces.nsIMsgDBHdr);
+                var cur_msg_hdr = aMsgHdrs[i];
                 if (!cur_msg_hdr.isRead) {
                     MailboxAlertUtil.logMessage(1, "Alert called from Filter Action\r\n");
                     var alert_data = MailboxAlert.createAlertData(cur_msg_hdr.folder, cur_msg_hdr);
@@ -661,8 +658,6 @@ MailboxAlert.filter_action =
             return stringsBundle.GetStringFromName('mailboxalert.alert_deleted');
         }
     },
-    allowDuplicates: true,
-    needsBody: false
 };
 
 // Returns an array with all the alert prefs in the configuration
@@ -733,7 +728,6 @@ MailboxAlert.getAllFolderURIs = function () {
     var all_folder_uris = [];
 
     for (var i = 0; i < all_servers.length; ++i) {
-        //var server = all_servers.queryElementAt(i, Components.interfaces.nsIMsgIncomingServer);
         var server = all_servers[i];
         var root_folder = server.rootFolder;
         if (root_folder) {
