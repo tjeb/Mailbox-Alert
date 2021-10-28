@@ -1,3 +1,11 @@
+[next]
+  o Fixed the issue where changing folder alert configuration would either not work or revert to original settings
+  o Fixed the issue where using the Mailbox Alert message filter target would not work
+  o Fixed the issue where 'delete' option from the popup would not work
+
+[0.28]
+  o Update the compatibility layer to TB 91 (thanks to John Bieling)
+
 [0.27]
   o Update the popup notification to work better with (dark) themes
   o Update the windowListener API to work with upcoming Thunderbird versions
