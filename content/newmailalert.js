@@ -711,9 +711,8 @@ MailboxAlertNewMail.performAction = function (action)
             }
         } else if (action == "deletemail") {
             if (this.message_hdr.folder) {
-                var messages = Components.classes["@mozilla.org/array;1"]
-                    .createInstance(Components.interfaces.nsIMutableArray);
-                messages.appendElement(this.message_hdr, false);
+                var messages = [];
+                messages.push(this.message_hdr);
                 var windowManager = Cc['@mozilla.org/appshell/window-mediator;1'].getService();
                 var windowManagerInterface = MailboxAlertUtil.getInterface(Ci.nsIWindowMediator);
                 var mailWindow = windowManagerInterface.getMostRecentWindow( "mail:3pane" );
