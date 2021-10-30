@@ -1,12 +1,29 @@
 // Import any needed modules.
 var { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
 
+
+
 // Load an additional JavaScript file.
 Services.scriptloader.loadSubScript("chrome://mailboxalert/content/mailboxalert_util.js", window, "UTF-8");
 Services.scriptloader.loadSubScript("chrome://mailboxalert/content/mailboxalert_vars.js", window, "UTF-8");
 Services.scriptloader.loadSubScript("chrome://mailboxalert/content/mailboxalert_funcs.js", window, "UTF-8");
 Services.scriptloader.loadSubScript("chrome://mailboxalert/content/mailboxalertOverlay.js", window, "UTF-8");
 Services.scriptloader.loadSubScript("chrome://mailboxalert/content/new_filterEditor.js", window, "UTF-8");
+
+var ADDON_ID = "{9c21158b-2c76-4d0a-980a-c51fc9cefaa7}";
+
+// Import any needed modules.
+var { ExtensionParent } = ChromeUtils.import("resource://gre/modules/ExtensionParent.jsm");
+
+// Get our extension object.
+let extension = ExtensionParent.GlobalManager.getExtension(ADDON_ID);
+
+// Load notifyTools into a custom namespace, to prevent clashes with other add-ons.
+//window.MailboxAlert = {};
+Services.scriptloader.loadSubScript(extension.rootURI.resolve("content/notifyTools/notifyTools.js"), window.MailboxAlert, "UTF-8");
+
+
+//Services.scriptloader.loadSubScript("chrome://mailboxalert/content/notifyTools/notifyTools.js", window.MailboxAlert, "UTF-8");
 
 function onLoad(activatedWhileWindowOpen) {
 
@@ -85,4 +102,5 @@ function onLoad(activatedWhileWindowOpen) {
 }
 
 function onUnload(deactivatedWhileWindowOpen) {
+    window.MailboxAlert.onUnload();
 }

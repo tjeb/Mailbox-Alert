@@ -339,7 +339,6 @@ MailboxAlert.FolderListener.prototype =
     OnItemAdded: function(parentItem, item)
     {
         const MSG_FOLDER_FLAG_OFFLINE = 0x8000000;
-        //MailboxAlertUtil.logMessage(1, "OnItemAdded start\n");
 
         var folder = MailboxAlert.getInterface(parentItem, Components.interfaces.nsIMsgFolder);
         var message;
@@ -350,7 +349,6 @@ MailboxAlert.FolderListener.prototype =
             MailboxAlertUtil.logMessage(1, "Exception: " + exception2 + "\n");
             MailboxAlertUtil.logMessage(1, "the item was: " + item + "\n");
         }
-        //MailboxAlertUtil.logMessage(1, "OnItemAdded done\n");
     }
 }
 
@@ -383,12 +381,20 @@ MailboxAlert.filterActionPlaceholder = {
 };
 
 
-MailboxAlert.onLoad = function ()
+MailboxAlert.onLoad = async function ()
 {
-    Components.classes["@mozilla.org/messenger/services/session;1"]
-    .getService(Components.interfaces.nsIMsgMailSession)
-    .AddFolderListener(new MailboxAlert.FolderListener(),
-    Components.interfaces.nsIFolderListener.all);
+    // Set up the folder listener, but only once
+    // In order to not duplicate this action, we ask the background
+    // script how often mailbox alert has been initialized
+    window.MailboxAlert.notifyTools.setAddOnId("{9c21158b-2c76-4d0a-980a-c51fc9cefaa7}");
+    response = await window.MailboxAlert.notifyTools.notifyBackground({ command: "getInitializationCount" });
+    if (response == 0) {
+        MailboxAlertUtil.logMessage(1, "Add folder listener\n");
+        Components.classes["@mozilla.org/messenger/services/session;1"]
+        .getService(Components.interfaces.nsIMsgMailSession)
+        .AddFolderListener(new MailboxAlert.FolderListener(),
+        Components.interfaces.nsIFolderListener.all);
+    }
 
     // check if there are old settings (pre 0.14) to copy
     MailboxAlert.checkOldSettings();
@@ -414,4 +420,10 @@ MailboxAlert.onLoad = function ()
     if (!placeholderLoaded) {
         filterService.addCustomAction(MailboxAlert.filterActionPlaceholder);
     }
+}
+
+MailboxAlert.onUnload = function ()
+{
+    // We currently don't listen for commands from the background script,
+    // but if we do, we need to unregister the listener here
 }
