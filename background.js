@@ -1,5 +1,4 @@
 (async () => {
-
     messenger.WindowListener.registerDefaultPrefs("skin/defaults/preferences/mailboxalert_default.js");
 
     messenger.WindowListener.registerChromeUrl([
