@@ -329,12 +329,12 @@ MailboxAlert.alertQueue.addItem = function (folder, item) {
     }
 }
 
-MailboxAlert.FolderListener = function ()
+MailboxAlert.OLDFolderListenerImplementation = function ()
 {
     // empty constructor
 }
 
-MailboxAlert.FolderListener.prototype =
+MailboxAlert.OLDFolderListenerImplementation.prototype =
 {
     OnItemAdded: function(parentItem, item)
     {
@@ -348,6 +348,47 @@ MailboxAlert.FolderListener.prototype =
         } catch (exception2) {
             MailboxAlertUtil.logMessage(1, "Exception: " + exception2 + "\n");
             MailboxAlertUtil.logMessage(1, "the item was: " + item + "\n");
+        }
+    }
+}
+
+MailboxAlert.OLDFolderListenerActual = null;
+MailboxAlert.OLDFolderListener = function() {}
+MailboxAlert.OLDFolderListener.prototype =
+{
+    OnItemAdded: function(parentItem, item) {
+        if (MailboxAlert.FolderListenerActual) {
+            return MailboxAlert.FolderListenerActual.OnItemAdded(parentItem, item);
+        } else {
+            MailboxAlertUtil.logMessage(1, "Error, no FolderListener implementation set\n");
+        }
+    }
+}
+
+MailboxAlert.folderListenerImplementation = {
+    OnItemAdded: function(parentItem, item)
+    {
+        const MSG_FOLDER_FLAG_OFFLINE = 0x8000000;
+
+        var folder = MailboxAlert.getInterface(parentItem, Components.interfaces.nsIMsgFolder);
+        var message;
+        try {
+            item.QueryInterface(Components.interfaces.nsIMsgDBHdr, message);
+            MailboxAlert.alertQueue.addItem(folder, item);
+        } catch (exception2) {
+            MailboxAlertUtil.logMessage(1, "Exception: " + exception2 + "\n");
+            MailboxAlertUtil.logMessage(1, "the item was: " + item + "\n");
+        }
+    }
+}
+MailboxAlert.folderListenerActual = null;
+MailboxAlert.folderListenerPlaceholder = function() {}
+MailboxAlert.folderListenerPlaceholder.prototype = {
+    OnItemAdded(parentItem, item) {
+        if (MailboxAlert.folderListenerActual) {
+            return MailboxAlert.folderListenerActual.OnItemAdded(parentItem, item);
+        } else {
+            MailboxAlertUtil.logMessage(1, "Error, no FolderListener implementation set\n");
         }
     }
 }
@@ -386,13 +427,15 @@ MailboxAlert.onLoad = async function ()
     // Set up the folder listener, but only once
     // In order to not duplicate this action, we ask the background
     // script how often mailbox alert has been initialized
+    MailboxAlert.folderListenerActual = MailboxAlert.folderListenerImplementation;
+    console.log("[XX] FOLDER LISTENER ACTUAL: " + MailboxAlert.FolderListenerActual);
     window.MailboxAlert.notifyTools.setAddOnId("{9c21158b-2c76-4d0a-980a-c51fc9cefaa7}");
     response = await window.MailboxAlert.notifyTools.notifyBackground({ command: "getInitializationCount" });
     if (response == 0) {
         MailboxAlertUtil.logMessage(1, "Add folder listener\n");
         Components.classes["@mozilla.org/messenger/services/session;1"]
         .getService(Components.interfaces.nsIMsgMailSession)
-        .AddFolderListener(new MailboxAlert.FolderListener(),
+        .AddFolderListener(new MailboxAlert.folderListenerPlaceholder(),
         Components.interfaces.nsIFolderListener.all);
     }
 
