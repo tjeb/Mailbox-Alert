@@ -402,19 +402,23 @@ MailboxAlert.filterActionPlaceholder = {
     id: "mailboxalert@tjeb.nl#mailboxalertfilter",
     name: "Mailbox Alert",
     applyAction(aMsgHdrs, aActionValue, aListener, aType, aMsgWindow) {
-        if (MailboxAlert.filterActionActual) {
+        if (MailboxAlert && MailboxAlert.filterActionActual) {
             return MailboxAlert.filterActionActual.applyAction(aMsgHdrs, aActionValue, aListener, aType, aMsgWindow);
         }
     },
     isValidForType(type, scope) {
-        if (MailboxAlert.filterActionActual) {
+        if (MailboxAlert && MailboxAlert.filterActionActual) {
             return MailboxAlert.filterActionActual.isValidForType(type, scope);
+        } else {
+            return false;
         }
     },
     // return null if value is OK, error string otherwise
     validateActionValue(value, folder, type) {
-        if (MailboxAlert.filterActionActual) {
+        if (MailboxAlert && MailboxAlert.filterActionActual) {
             return MailboxAlert.filterActionActual.validateActionValue(value, folder, type);
+        } else {
+            return null;
         }
     },
     allowDuplicates: true,
@@ -428,7 +432,6 @@ MailboxAlert.onLoad = async function ()
     // In order to not duplicate this action, we ask the background
     // script how often mailbox alert has been initialized
     MailboxAlert.folderListenerActual = MailboxAlert.folderListenerImplementation;
-    console.log("[XX] FOLDER LISTENER ACTUAL: " + MailboxAlert.FolderListenerActual);
     window.MailboxAlert.notifyTools.setAddOnId("{9c21158b-2c76-4d0a-980a-c51fc9cefaa7}");
     response = await window.MailboxAlert.notifyTools.notifyBackground({ command: "getInitializationCount" });
     if (response == 0) {
