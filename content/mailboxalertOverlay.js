@@ -385,7 +385,7 @@ MailboxAlert.folderListenerActual = null;
 MailboxAlert.folderListenerPlaceholder = function() {}
 MailboxAlert.folderListenerPlaceholder.prototype = {
     OnItemAdded(parentItem, item) {
-        if (MailboxAlert.folderListenerActual) {
+        if (MailboxAlert && MailboxAlert.folderListenerActual) {
             return MailboxAlert.folderListenerActual.OnItemAdded(parentItem, item);
         } else {
             MailboxAlertUtil.logMessage(1, "Error, no FolderListener implementation set\n");
@@ -472,4 +472,5 @@ MailboxAlert.onUnload = function ()
 {
     // We currently don't listen for commands from the background script,
     // but if we do, we need to unregister the listener here
+    delete MailboxAlert;
 }
