@@ -200,7 +200,7 @@ MailboxAlert.createAlertData = function (mailbox, last_unread) {
                             // On some folders (news for instance), and in
                             // some other cases, fetch just throws an exception
                             // if so, just set an empty previewtext
-                            this.last_unread.setProperty("preview", [e4.message,e4.data,e4].map(fe=>JSON.stringify(fe)).join('|') + "<empty>" + [e3.message,e3.data,e3].map(fe=>JSON.stringify(fe)).join('|'));
+                            this.last_unread.setProperty("preview", "<empty>");
                         }
                     }
                 }
