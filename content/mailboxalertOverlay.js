@@ -9,102 +9,102 @@
 //
 
 MailboxAlert.getFolder = function () {
-        try {
-                var folderResource = GetFirstSelectedMsgFolder();
-                if (folderResource)
-                {
-                        var msgFolder = MailboxAlert.getInterface(folderResource, Components.interfaces.nsIMsgFolder);
-                        return msgFolder;
-                }
-        } catch (ex) {
-                MailboxAlertUtil.logMessage(1, "ex="+ex+"\n");
-        }
-        MailboxAlertUtil.logMessage(1, "error: folder not found\n");
-        return null;
+    try {
+            var folderResource = GetFirstSelectedMsgFolder();
+            if (folderResource)
+            {
+                    var msgFolder = MailboxAlert.getInterface(folderResource, Components.interfaces.nsIMsgFolder);
+                    return msgFolder;
+            }
+    } catch (ex) {
+            MailboxAlertUtil.logMessage(1, "ex="+ex+"\n");
+    }
+    MailboxAlertUtil.logMessage(1, "error: folder not found\n");
+    return null;
 }
 
 MailboxAlert.toggleMute = function () {
-    var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
-    var muted = true;
-    try {
-        muted = !prefs.getBoolPref("extensions.mailboxalert.mute");
-    }
-    catch (e) {
-        // Ignore, mute never saved
-    }
-    prefs.setBoolPref("extensions.mailboxalert.mute", muted);
-    /* should we check whether the user has made the mute state out of sync, by
-     toggling mute in different windows? */
-    /* window_muted = menuitem.hasAttribute("checked");*/
-    MailboxAlert.setMuteMenuitem(muted);
+var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
+var muted = true;
+try {
+    muted = !prefs.getBoolPref("extensions.mailboxalert.mute");
+}
+catch (e) {
+    // Ignore, mute never saved
+}
+prefs.setBoolPref("extensions.mailboxalert.mute", muted);
+/* should we check whether the user has made the mute state out of sync, by
+ toggling mute in different windows? */
+/* window_muted = menuitem.hasAttribute("checked");*/
+MailboxAlert.setMuteMenuitem(muted);
 }
 
 MailboxAlert.muted = function() {
-    var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
-    var muted = false;
-    try {
-        muted = prefs.getBoolPref("extensions.mailboxalert.mute");
-    }
-    catch (e) {
-        // Ignore, mute never saved
-    }
-    return muted;
+var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
+var muted = false;
+try {
+    muted = prefs.getBoolPref("extensions.mailboxalert.mute");
+}
+catch (e) {
+    // Ignore, mute never saved
+}
+return muted;
 }
 
 MailboxAlert.setMuteMenuitem = function(muted) {
-    var menuitem = document.getElementById("mailboxalert-moz-tools-menu-mute");
-    if (muted) {
-        menuitem.setAttribute("checked", true);
-    } else {
-        menuitem.removeAttribute("checked");
-    }
+var menuitem = document.getElementById("mailboxalert-moz-tools-menu-mute");
+if (muted) {
+    menuitem.setAttribute("checked", true);
+} else {
+    menuitem.removeAttribute("checked");
+}
 }
 
 MailboxAlert.setAlertDelay = function(delay_time) {
-    var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
-    prefs.setIntPref("extensions.mailboxalert.delay", delay_time);
-    MailboxAlert.setAlertDelayMenuItem(delay_time);
+var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
+prefs.setIntPref("extensions.mailboxalert.delay", delay_time);
+MailboxAlert.setAlertDelayMenuItem(delay_time);
 }
 
 MailboxAlert.setAlertDelayFromPrefs = function() {
-    var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
-    var delay_time = 0;
-    try {
-        delay_time = prefs.getIntPref("extensions.mailboxalert.delay");
-    } catch (e) {
-        // setting never set, default to 0
-    }
+var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
+var delay_time = 0;
+try {
+    delay_time = prefs.getIntPref("extensions.mailboxalert.delay");
+} catch (e) {
+    // setting never set, default to 0
+}
 
-    MailboxAlert.setAlertDelayMenuItem(delay_time);
+MailboxAlert.setAlertDelayMenuItem(delay_time);
 }
 
 MailboxAlert.setAlertDelayMenuItem = function(delay_time) {
-    var submenu = document.getElementById("mailboxalert-alert-delay-popup");
-    for (var i = 0; i < submenu.children.length; i++) {
-        var item = submenu.children[i];
-        if (''+delay_time == item.getAttribute("value")) {
-            item.setAttribute("checked", true);
-        } else {
-            item.removeAttribute("checked");
-        }
+var submenu = document.getElementById("mailboxalert-alert-delay-popup");
+for (var i = 0; i < submenu.children.length; i++) {
+    var item = submenu.children[i];
+    if (''+delay_time == item.getAttribute("value")) {
+        item.setAttribute("checked", true);
+    } else {
+        item.removeAttribute("checked");
     }
+}
 }
 
 MailboxAlert.checkOldSettings = function () {
-    // get the value for 'prefsversion'. If it doesn't exist, assume
-    // (0.)14. If it is 14, call conversion routines.
-    var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
-    var prefsversion;
-    try {
-        prefsversion = prefs.getIntPref("extensions.mailboxalert.prefsversion");
-    } catch (e) {
-        // ok, it doesn't exist yet, assume 14
-        prefsversion = 14;
-    }
-    if (prefsversion < 15) {
-        MailboxAlert.convertAllFolderPreferences14toAlertPreferences();
-        prefs.setIntPref("extensions.mailboxalert.prefsversion", 15);
-    }
+// get the value for 'prefsversion'. If it doesn't exist, assume
+// (0.)14. If it is 14, call conversion routines.
+var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
+var prefsversion;
+try {
+    prefsversion = prefs.getIntPref("extensions.mailboxalert.prefsversion");
+} catch (e) {
+    // ok, it doesn't exist yet, assume 14
+    prefsversion = 14;
+}
+if (prefsversion < 15) {
+    MailboxAlert.convertAllFolderPreferences14toAlertPreferences();
+    prefs.setIntPref("extensions.mailboxalert.prefsversion", 15);
+}
 }
 
 // Alert Queue
@@ -156,54 +156,54 @@ MailboxAlert.alertQueue.entries = new Array();
 // to add it as soon as the queue becomes unlocked (or until a number
 // of attempts to get the lock has failed)
 MailboxAlert.alertQueueItemAdder = function(folder, item) {
-    var item_adder = {}
-    item_adder.timer = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
-    item_adder.folder = folder;
-    item_adder.item = item;
-    item_adder.attempts = 0;
+var item_adder = {}
+item_adder.timer = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
+item_adder.folder = folder;
+item_adder.item = item;
+item_adder.attempts = 0;
 
-    item_adder.notify = function(timer) {
-        if (this.attempts > MailboxAlert.ATTEMPTS) {
-            this.timer.cancel();
-            return;
-        }
-        if (MailboxAlert.alertQueue.getLock()) {
-            try {
-                MailboxAlert.alertQueue.addItem(folder, item);
-            } catch (e) {
-                MailboxAlertUtil.logMessage(1, "Error while adding item to alert queue: " + e + "\n");
-            }
-            MailboxAlert.alertQueue.releaseLock();
-        } else {
-            item_adder.timer.initWithCallback(item_adder, MailboxAlert.WAIT_TIME, item_adder.timer.TYPE_ONE_SHOT);
-        }
+item_adder.notify = function(timer) {
+    if (this.attempts > MailboxAlert.ATTEMPTS) {
+        this.timer.cancel();
+        return;
     }
-    // Immediately fire it once
-    item_adder.timer.initWithCallback(item_adder, 0, item_adder.timer.TYPE_ONE_SHOT);
+    if (MailboxAlert.alertQueue.getLock()) {
+        try {
+            MailboxAlert.alertQueue.addItem(folder, item);
+        } catch (e) {
+            MailboxAlertUtil.logMessage(1, "Error while adding item to alert queue: " + e + "\n");
+        }
+        MailboxAlert.alertQueue.releaseLock();
+    } else {
+        item_adder.timer.initWithCallback(item_adder, MailboxAlert.WAIT_TIME, item_adder.timer.TYPE_ONE_SHOT);
+    }
+}
+// Immediately fire it once
+item_adder.timer.initWithCallback(item_adder, 0, item_adder.timer.TYPE_ONE_SHOT);
 }
 
 MailboxAlert.alertQueue.getLock = function() {
-    if (!this.locked) {
-        this.locked = true;
-        return true;
-    } else {
-        return false;
-    }
+if (!this.locked) {
+    this.locked = true;
+    return true;
+} else {
+    return false;
+}
 }
 
 MailboxAlert.alertQueue.releaseLock = function() {
-    this.locked = false;
+this.locked = false;
 }
 
 // Returns True if TB has a 'processing' flag set, indicating the msg
 // is still running filters or scheduled to move
 MailboxAlert.checkProcessing = function(msg, folder, pflags) {
-    return (
-        (pflags & Components.interfaces.nsMsgProcessingFlags.ClassifyJunk) ||
-        (pflags & Components.interfaces.nsMsgProcessingFlags.ClassifyTraits) ||
-        (pflags & Components.interfaces.nsMsgProcessingFlags.NotReportedClassified) ||
-        (pflags & Components.interfaces.nsMsgProcessingFlags.FilterToMove)
-    );
+return (
+    (pflags & Components.interfaces.nsMsgProcessingFlags.ClassifyJunk) ||
+    (pflags & Components.interfaces.nsMsgProcessingFlags.ClassifyTraits) ||
+    (pflags & Components.interfaces.nsMsgProcessingFlags.NotReportedClassified) ||
+    (pflags & Components.interfaces.nsMsgProcessingFlags.FilterToMove)
+);
 }
 
 
@@ -211,186 +211,186 @@ MailboxAlert.checkProcessing = function(msg, folder, pflags) {
 // This adds an entry to a stack, and removes it from any other queues it is in
 // The queue must have been locked already.
 MailboxAlert.alertQueue.addItem = function (folder, item) {
-    var found = false;
-    for (var i = 0; i < this.entries.length; i++) {
-        var cur_entry = this.entries[i];
-        if (cur_entry.folder == folder) {
-            //dump("[XX] mail still in same folder\n");
-            // Add to queue
-            cur_entry.items.push(item);
-            found = true;
-            // Reset timer
+var found = false;
+for (var i = 0; i < this.entries.length; i++) {
+    var cur_entry = this.entries[i];
+    if (cur_entry.folder == folder) {
+        //dump("[XX] mail still in same folder\n");
+        // Add to queue
+        cur_entry.items.push(item);
+        found = true;
+        // Reset timer
+        cur_entry.timer.cancel();
+        cur_entry.timer.initWithCallback(cur_entry,
+                                         MailboxAlert.INITIAL_WAIT_TIME,
+                                         cur_entry.timer.TYPE_ONE_SHOT);
+    } else {
+        //dump("[XX] mail no longer in same folder\n");
+        // Remove from any other queues
+        var idx;
+
+        // TB may have performed some cleanup already, so we might need to
+        // do the same
+        var items_to_keep = new Array();
+        for (idx = 0; idx < cur_entry.items.length; idx++) {
+            if (cur_entry.items[idx].messageId != "") {
+                items_to_keep.push(cur_entry.items[idx]);
+            }
+        }
+        cur_entry.items = items_to_keep;
+
+        // Now see if it is still present
+        for (idx = cur_entry.items.length -1; idx >= -1; idx--) {
+            if (idx == -1) {
+                break;
+            }
+
+            if (cur_entry.items[idx].messageId == item.messageId) {
+                break;
+            }
+        }
+        if (idx != -1) {
+            cur_entry.items.splice(idx, 1);
+        }
+        // If the entry now has no items, remove it from the queue
+        if (cur_entry.items.length == 0) {
             cur_entry.timer.cancel();
-            cur_entry.timer.initWithCallback(cur_entry,
-                                             MailboxAlert.INITIAL_WAIT_TIME,
-                                             cur_entry.timer.TYPE_ONE_SHOT);
-        } else {
-            //dump("[XX] mail no longer in same folder\n");
-            // Remove from any other queues
-            var idx;
-
-            // TB may have performed some cleanup already, so we might need to
-            // do the same
-            var items_to_keep = new Array();
-            for (idx = 0; idx < cur_entry.items.length; idx++) {
-                if (cur_entry.items[idx].messageId != "") {
-                    items_to_keep.push(cur_entry.items[idx]);
-                }
-            }
-            cur_entry.items = items_to_keep;
-
-            // Now see if it is still present
-            for (idx = cur_entry.items.length -1; idx >= -1; idx--) {
-                if (idx == -1) {
-                    break;
-                }
-
-                if (cur_entry.items[idx].messageId == item.messageId) {
-                    break;
-                }
-            }
+            idx = this.entries.indexOf(cur_entry);
             if (idx != -1) {
-                cur_entry.items.splice(idx, 1);
-            }
-            // If the entry now has no items, remove it from the queue
-            if (cur_entry.items.length == 0) {
-                cur_entry.timer.cancel();
-                idx = this.entries.indexOf(cur_entry);
-                if (idx != -1) {
-                    this.entries.splice(idx, 1);
-                }
+                this.entries.splice(idx, 1);
             }
         }
     }
-    if (!found) {
-        // Create and entry and start the timer
-        var new_entry = {};
-        new_entry.folder = folder;
-        new_entry.items = new Array();
-        new_entry.items.push(item);
-        new_entry.timer = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
-        // XX remove this; always wait 5 times first
-        new_entry.check_count = 0
-        // The notification function on the timer:
-        // check if the message isn't being processed, and alert
-        // if it is still in the same folder and not read yet
-        new_entry.notify = function(timer) {
-            var folder = null;
-            var alert_msg = null;
-            if (MailboxAlert.alertQueue.getLock()) {
-                try {
-                    var idx = MailboxAlert.alertQueue.entries.indexOf(this);
-                    folder = this.folder;
+}
+if (!found) {
+    // Create and entry and start the timer
+    var new_entry = {};
+    new_entry.folder = folder;
+    new_entry.items = new Array();
+    new_entry.items.push(item);
+    new_entry.timer = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
+    // XX remove this; always wait 5 times first
+    new_entry.check_count = 0
+    // The notification function on the timer:
+    // check if the message isn't being processed, and alert
+    // if it is still in the same folder and not read yet
+    new_entry.notify = function(timer) {
+        var folder = null;
+        var alert_msg = null;
+        if (MailboxAlert.alertQueue.getLock()) {
+            try {
+                var idx = MailboxAlert.alertQueue.entries.indexOf(this);
+                folder = this.folder;
 
-                    // check if TB isn't still processing
-                    var msg = this.items[this.items.length-1];
-                    var pflags = msg.folder.getProcessingFlags(msg.messageKey);
-                    if (MailboxAlert.checkProcessing(msg, folder, pflags)) {
-                        // try again in 100 ms
-                        this.timer.initWithCallback(new_entry, MailboxAlert.WAIT_TIME, new_entry.timer.TYPE_ONE_SHOT);
-                    } else {
-                        // If both flags are zero, this message has been moved and is no longer relevant
-                        if (pflags == 0 && msg.flags == 0) {
-                            // just cancel and stop
-                            this.timer.cancel();
-                            MailboxAlert.alertQueue.releaseLock();
-                            return;
-                        }
-                        // popping it is no problem; we'll destroy this whole array anyway
-                        alert_msg = this.items.pop();
-                        MailboxAlert.alertQueue.entries.splice(idx, 1);
+                // check if TB isn't still processing
+                var msg = this.items[this.items.length-1];
+                var pflags = msg.folder.getProcessingFlags(msg.messageKey);
+                if (MailboxAlert.checkProcessing(msg, folder, pflags)) {
+                    // try again in 100 ms
+                    this.timer.initWithCallback(new_entry, MailboxAlert.WAIT_TIME, new_entry.timer.TYPE_ONE_SHOT);
+                } else {
+                    // If both flags are zero, this message has been moved and is no longer relevant
+                    if (pflags == 0 && msg.flags == 0) {
+                        // just cancel and stop
+                        this.timer.cancel();
+                        MailboxAlert.alertQueue.releaseLock();
+                        return;
                     }
-                    //} // XX remove this line too
-                } catch (e) {
-                    MailboxAlertUtil.logMessage(1, "Error while adding item to alert queue: " + e + "\n");
+                    // popping it is no problem; we'll destroy this whole array anyway
+                    alert_msg = this.items.pop();
+                    MailboxAlert.alertQueue.entries.splice(idx, 1);
                 }
-                MailboxAlert.alertQueue.releaseLock();
-            } else {
-                // try again in 100 ms
-                this.timer.initWithCallback(new_entry, MailboxAlert.WAIT_TIME, new_entry.timer.TYPE_ONE_SHOT);
+                //} // XX remove this line too
+            } catch (e) {
+                MailboxAlertUtil.logMessage(1, "Error while adding item to alert queue: " + e + "\n");
             }
-            // Only alert if it hasn't already been read
-            if (folder != null && alert_msg != null &&
-                !alert_msg.isRead && alert_msg.messageId != "") {
-                MailboxAlert.new_alert(folder, alert_msg);
-            }
+            MailboxAlert.alertQueue.releaseLock();
+        } else {
+            // try again in 100 ms
+            this.timer.initWithCallback(new_entry, MailboxAlert.WAIT_TIME, new_entry.timer.TYPE_ONE_SHOT);
         }
-        // Start the timer with the above values and function, and add a user-set delay, if set
-        var alert_delay = 0;
-        var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
-        try {
-            alert_delay = prefs.getIntPref("extensions.mailboxalert.delay");
-        } catch (e) {
-            // ok, default to INITIAL_WAIT_TIME
-            alert_delay = MailboxAlert.INITIAL_WAIT_TIME;
+        // Only alert if it hasn't already been read
+        if (folder != null && alert_msg != null &&
+            !alert_msg.isRead && alert_msg.messageId != "") {
+            MailboxAlert.new_alert(folder, alert_msg);
         }
-        new_entry.timer.initWithCallback(new_entry, alert_delay, new_entry.timer.TYPE_ONE_SHOT);
-        this.entries.push(new_entry);
     }
+    // Start the timer with the above values and function, and add a user-set delay, if set
+    var alert_delay = 0;
+    var prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
+    try {
+        alert_delay = prefs.getIntPref("extensions.mailboxalert.delay");
+    } catch (e) {
+        // ok, default to INITIAL_WAIT_TIME
+        alert_delay = MailboxAlert.INITIAL_WAIT_TIME;
+    }
+    new_entry.timer.initWithCallback(new_entry, alert_delay, new_entry.timer.TYPE_ONE_SHOT);
+    this.entries.push(new_entry);
+}
 }
 
 MailboxAlert.OLDFolderListenerImplementation = function ()
 {
-    // empty constructor
+// empty constructor
 }
 
 MailboxAlert.OLDFolderListenerImplementation.prototype =
 {
-    OnItemAdded: function(parentItem, item)
-    {
-        const MSG_FOLDER_FLAG_OFFLINE = 0x8000000;
+onMessageAdded: function(parentItem, item)
+{
+    const MSG_FOLDER_FLAG_OFFLINE = 0x8000000;
 
-        var folder = MailboxAlert.getInterface(parentItem, Components.interfaces.nsIMsgFolder);
-        var message;
-        try {
-            item.QueryInterface(Components.interfaces.nsIMsgDBHdr, message);
-            MailboxAlert.alertQueue.addItem(folder, item);
-        } catch (exception2) {
-            MailboxAlertUtil.logMessage(1, "Exception: " + exception2 + "\n");
-            MailboxAlertUtil.logMessage(1, "the item was: " + item + "\n");
-        }
+    var folder = MailboxAlert.getInterface(parentItem, Components.interfaces.nsIMsgFolder);
+    var message;
+    try {
+        item.QueryInterface(Components.interfaces.nsIMsgDBHdr, message);
+        MailboxAlert.alertQueue.addItem(folder, item);
+    } catch (exception2) {
+        MailboxAlertUtil.logMessage(1, "Exception: " + exception2 + "\n");
+        MailboxAlertUtil.logMessage(1, "the item was: " + item + "\n");
     }
+}
 }
 
 MailboxAlert.OLDFolderListenerActual = null;
 MailboxAlert.OLDFolderListener = function() {}
 MailboxAlert.OLDFolderListener.prototype =
 {
-    OnItemAdded: function(parentItem, item) {
-        if (MailboxAlert.FolderListenerActual) {
-            return MailboxAlert.FolderListenerActual.OnItemAdded(parentItem, item);
-        } else {
-            MailboxAlertUtil.logMessage(1, "Error, no FolderListener implementation set\n");
-        }
+onMessageAdded: function(parentItem, item) {
+    if (MailboxAlert.FolderListenerActual) {
+        return MailboxAlert.FolderListenerActual.onMessageAdded(parentItem, item);
+    } else {
+        MailboxAlertUtil.logMessage(1, "Error, no FolderListener implementation set\n");
     }
+}
 }
 
 MailboxAlert.folderListenerImplementation = {
-    OnItemAdded: function(parentItem, item)
-    {
-        const MSG_FOLDER_FLAG_OFFLINE = 0x8000000;
+onMessageAdded: function(parentItem, item)
+{
+    const MSG_FOLDER_FLAG_OFFLINE = 0x8000000;
 
-        var folder = MailboxAlert.getInterface(parentItem, Components.interfaces.nsIMsgFolder);
-        var message;
-        try {
-            item.QueryInterface(Components.interfaces.nsIMsgDBHdr, message);
-            MailboxAlert.alertQueue.addItem(folder, item);
-        } catch (exception2) {
-            MailboxAlertUtil.logMessage(1, "Exception: " + exception2 + "\n");
-            MailboxAlertUtil.logMessage(1, "the item was: " + item + "\n");
-        }
+    var folder = MailboxAlert.getInterface(parentItem, Components.interfaces.nsIMsgFolder);
+    var message;
+    try {
+        item.QueryInterface(Components.interfaces.nsIMsgDBHdr, message);
+        MailboxAlert.alertQueue.addItem(folder, item);
+    } catch (exception2) {
+        MailboxAlertUtil.logMessage(1, "Exception: " + exception2 + "\n");
+        MailboxAlertUtil.logMessage(1, "the item was: " + item + "\n");
     }
+}
 }
 MailboxAlert.folderListenerActual = null;
 MailboxAlert.folderListenerPlaceholder = function() {}
 MailboxAlert.folderListenerPlaceholder.prototype = {
-    OnItemAdded(parentItem, item) {
-        if (MailboxAlert && MailboxAlert.folderListenerActual) {
-            return MailboxAlert.folderListenerActual.OnItemAdded(parentItem, item);
-        } else {
-            MailboxAlertUtil.logMessage(1, "Error, no FolderListener implementation set\n");
-        }
+onMessageAdded(parentItem, item) {
+    if (MailboxAlert && MailboxAlert.folderListenerActual) {
+        return MailboxAlert.folderListenerActual.onMessageAdded(parentItem, item);
+    } else {
+        MailboxAlertUtil.logMessage(1, "Error, no FolderListener implementation set\n");
     }
+}
 }
 
 // Since we can't unload custom filter actions, and there appears to be
@@ -399,78 +399,78 @@ MailboxAlert.folderListenerPlaceholder.prototype = {
 // that Thunderbird is restarted
 MailboxAlert.filterActionActual = null;
 MailboxAlert.filterActionPlaceholder = {
-    id: "mailboxalert@tjeb.nl#mailboxalertfilter",
-    name: "Mailbox Alert",
-    applyAction(aMsgHdrs, aActionValue, aListener, aType, aMsgWindow) {
-        if (MailboxAlert && MailboxAlert.filterActionActual) {
-            return MailboxAlert.filterActionActual.applyAction(aMsgHdrs, aActionValue, aListener, aType, aMsgWindow);
-        }
-    },
-    isValidForType(type, scope) {
-        if (MailboxAlert && MailboxAlert.filterActionActual) {
-            return MailboxAlert.filterActionActual.isValidForType(type, scope);
-        } else {
-            return false;
-        }
-    },
-    // return null if value is OK, error string otherwise
-    validateActionValue(value, folder, type) {
-        if (MailboxAlert && MailboxAlert.filterActionActual) {
-            return MailboxAlert.filterActionActual.validateActionValue(value, folder, type);
-        } else {
-            return null;
-        }
-    },
-    allowDuplicates: true,
-    needsBody: false
+id: "mailboxalert@tjeb.nl#mailboxalertfilter",
+name: "Mailbox Alert",
+applyAction(aMsgHdrs, aActionValue, aListener, aType, aMsgWindow) {
+    if (MailboxAlert && MailboxAlert.filterActionActual) {
+        return MailboxAlert.filterActionActual.applyAction(aMsgHdrs, aActionValue, aListener, aType, aMsgWindow);
+    }
+},
+isValidForType(type, scope) {
+    if (MailboxAlert && MailboxAlert.filterActionActual) {
+        return MailboxAlert.filterActionActual.isValidForType(type, scope);
+    } else {
+        return false;
+    }
+},
+// return null if value is OK, error string otherwise
+validateActionValue(value, folder, type) {
+    if (MailboxAlert && MailboxAlert.filterActionActual) {
+        return MailboxAlert.filterActionActual.validateActionValue(value, folder, type);
+    } else {
+        return null;
+    }
+},
+allowDuplicates: true,
+needsBody: false
 };
 
 
 MailboxAlert.onLoad = async function ()
 {
-    // Set up the folder listener, but only once
-    // In order to not duplicate this action, we ask the background
-    // script how often mailbox alert has been initialized
-    MailboxAlert.folderListenerActual = MailboxAlert.folderListenerImplementation;
-    window.MailboxAlert.notifyTools.setAddOnId("{9c21158b-2c76-4d0a-980a-c51fc9cefaa7}");
-    response = await window.MailboxAlert.notifyTools.notifyBackground({ command: "getInitializationCount" });
-    if (response == 0) {
-        MailboxAlertUtil.logMessage(1, "Add folder listener\n");
-        Components.classes["@mozilla.org/messenger/services/session;1"]
-        .getService(Components.interfaces.nsIMsgMailSession)
-        .AddFolderListener(new MailboxAlert.folderListenerPlaceholder(),
-        Components.interfaces.nsIFolderListener.all);
-    }
+// Set up the folder listener, but only once
+// In order to not duplicate this action, we ask the background
+// script how often mailbox alert has been initialized
+MailboxAlert.folderListenerActual = MailboxAlert.folderListenerImplementation;
+window.MailboxAlert.notifyTools.setAddOnId("{9c21158b-2c76-4d0a-980a-c51fc9cefaa7}");
+response = await window.MailboxAlert.notifyTools.notifyBackground({ command: "getInitializationCount" });
+if (response == 0) {
+    MailboxAlertUtil.logMessage(1, "Add folder listener\n");
+    Components.classes["@mozilla.org/messenger/services/session;1"]
+    .getService(Components.interfaces.nsIMsgMailSession)
+    .AddFolderListener(new MailboxAlert.folderListenerPlaceholder(),
+    Components.interfaces.nsIFolderListener.all);
+}
 
-    // check if there are old settings (pre 0.14) to copy
-    MailboxAlert.checkOldSettings();
+// check if there are old settings (pre 0.14) to copy
+MailboxAlert.checkOldSettings();
 
-    // check if we exited with muted on last time
-    MailboxAlert.setMuteMenuitem(MailboxAlert.muted());
+// check if we exited with muted on last time
+MailboxAlert.setMuteMenuitem(MailboxAlert.muted());
 
-    // Set delay menu item, if configured
-    MailboxAlert.setAlertDelayFromPrefs();
+// Set delay menu item, if configured
+MailboxAlert.setAlertDelayFromPrefs();
 
-    // And finally, add our shiny custom filter action
-    // Because the add-on can now be re-loaded, we need to check that we
-    // did not do this before
-    MailboxAlert.filterActionActual = MailboxAlert.filterActionImplementation;
-    var filterService = Components.classes["@mozilla.org/messenger/services/filters;1"]
-                        .getService(Components.interfaces.nsIMsgFilterService);
-    var placeholderLoaded = false;
-    try {
-        placeholderLoaded = filterService.getCustomAction("mailboxalert@tjeb.nl#mailboxalertfilter");
-    } catch (error) {
-        // Skip, placeholder not loaded at startup
-    }
-    if (!placeholderLoaded) {
-        filterService.addCustomAction(MailboxAlert.filterActionPlaceholder);
-    }
+// And finally, add our shiny custom filter action
+// Because the add-on can now be re-loaded, we need to check that we
+// did not do this before
+MailboxAlert.filterActionActual = MailboxAlert.filterActionImplementation;
+var filterService = Components.classes["@mozilla.org/messenger/services/filters;1"]
+                    .getService(Components.interfaces.nsIMsgFilterService);
+var placeholderLoaded = false;
+try {
+    placeholderLoaded = filterService.getCustomAction("mailboxalert@tjeb.nl#mailboxalertfilter");
+} catch (error) {
+    // Skip, placeholder not loaded at startup
+}
+if (!placeholderLoaded) {
+    filterService.addCustomAction(MailboxAlert.filterActionPlaceholder);
+}
 }
 
 MailboxAlert.onUnload = function ()
 {
-    // We currently don't listen for commands from the background script,
-    // but if we do, we need to unregister the listener here
-    delete MailboxAlert;
+// We currently don't listen for commands from the background script,
+// but if we do, we need to unregister the listener here
+delete MailboxAlert;
 }

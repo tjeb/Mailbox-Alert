@@ -1,3 +1,6 @@
+[0.30]
+  o Fixed v102  nsifolderlistner OnItemAdded -> OnMessageAdded event changes (https://developer.thunderbird.net/add-ons/updating/tb102/adapt-to-changes-in-thunderbird-92-102#nsifolderlistener)
+
 [0.29]
   o Fixed the issue where changing folder alert configuration would either not work or revert to original settings
   o Fixed the issue where using the Mailbox Alert message filter target would not work
