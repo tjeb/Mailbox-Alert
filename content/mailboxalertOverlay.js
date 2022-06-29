@@ -336,7 +336,7 @@ MailboxAlert.OLDFolderListenerImplementation = function ()
 
 MailboxAlert.OLDFolderListenerImplementation.prototype =
 {
-    OnItemAdded: function(parentItem, item)
+    onMessageAdded: function(parentItem, item)
     {
         const MSG_FOLDER_FLAG_OFFLINE = 0x8000000;
 
@@ -356,9 +356,9 @@ MailboxAlert.OLDFolderListenerActual = null;
 MailboxAlert.OLDFolderListener = function() {}
 MailboxAlert.OLDFolderListener.prototype =
 {
-    OnItemAdded: function(parentItem, item) {
+    onMessageAdded: function(parentItem, item) {
         if (MailboxAlert.FolderListenerActual) {
-            return MailboxAlert.FolderListenerActual.OnItemAdded(parentItem, item);
+            return MailboxAlert.FolderListenerActual.onMessageAdded(parentItem, item);
         } else {
             MailboxAlertUtil.logMessage(1, "Error, no FolderListener implementation set\n");
         }
@@ -366,7 +366,7 @@ MailboxAlert.OLDFolderListener.prototype =
 }
 
 MailboxAlert.folderListenerImplementation = {
-    OnItemAdded: function(parentItem, item)
+    onMessageAdded: function(parentItem, item)
     {
         const MSG_FOLDER_FLAG_OFFLINE = 0x8000000;
 
@@ -384,9 +384,9 @@ MailboxAlert.folderListenerImplementation = {
 MailboxAlert.folderListenerActual = null;
 MailboxAlert.folderListenerPlaceholder = function() {}
 MailboxAlert.folderListenerPlaceholder.prototype = {
-    OnItemAdded(parentItem, item) {
+    onMessageAdded(parentItem, item) {
         if (MailboxAlert && MailboxAlert.folderListenerActual) {
-            return MailboxAlert.folderListenerActual.OnItemAdded(parentItem, item);
+            return MailboxAlert.folderListenerActual.onMessageAdded(parentItem, item);
         } else {
             MailboxAlertUtil.logMessage(1, "Error, no FolderListener implementation set\n");
         }
