@@ -741,8 +741,22 @@ MailboxAlertNewMail.notify = function(timer) {
     try {
         if (this.timer_state == this.SLIDING_IN_TOP) {
             this.slideInTop();
+            // Due to some unknown issue in TB102, the window would not
+            // redraw correctly when moving from offscreen, resulting in
+            // a grey window
+            // We can force-update by callign sizeToContent, but we do
+            // need to resize it to the actual size again
+            window.sizeToContent();
+            this.resizeAlert(false);
         } else if (this.timer_state == this.SLIDING_IN_BOTTOM) {
             this.slideInBottom();
+            // Due to some unknown issue in TB102, the window would not
+            // redraw correctly when moving from offscreen, resulting in
+            // a grey window
+            // We can force-update by callign sizeToContent, but we do
+            // need to resize it to the actual size again
+            window.sizeToContent();
+            this.resizeAlert(false);
         } else if (this.timer_state == this.SLIDING_OUT_TOP) {
             this.slideOutTop();
         } else if (this.timer_state == this.SLIDING_OUT_BOTTOM) {
