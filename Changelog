@@ -1,3 +1,7 @@
+[0.30]
+  o Updated new message trigger to Thunderbird 102+ (thanks @EnigmaPatrick and @jobisoft)
+  o Fixed msg_preview macro (thanks @phil294)
+  
 [0.29]
   o Fixed the issue where changing folder alert configuration would either not work or revert to original settings
   o Fixed the issue where using the Mailbox Alert message filter target would not work
