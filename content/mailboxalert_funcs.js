@@ -169,26 +169,40 @@ MailboxAlert.createAlertData = function (mailbox, last_unread) {
             // (we may have the parent by now)
             var url_listener = MailboxAlert.createUrlListener();
             var urlscalled = false;
-            // API changed from TB2 to TB3, first try TB3 API, if
-            // exception, try the other one
+            // API changed several times in the past, try from newest to oldest
             try {
                 urlscalled = this.last_unread.folder.fetchMsgPreviewText(
                                         [this.last_unread.messageKey],
-                                        1, false, url_listener);
-            } catch(e) {
+                                        url_listener);
+            } catch(e4) {
                 try {
-                    var aOutAsync = {};
-                    this.last_unread.folder.fetchMsgPreviewText(
-                              [this.last_unread.messageKey],
-                              1, false, url_listener, aOutAsync);
-                    if (aOutAsync && aOutAsync.value) {
-                        urlscalled = true;
+                    // Since TB v73
+                    urlscalled = this.last_unread.folder.fetchMsgPreviewText(
+                                            [this.last_unread.messageKey],
+                                            false, url_listener);
+                } catch(e3) {
+                    try {
+                        // Since TB v3
+                        urlscalled = this.last_unread.folder.fetchMsgPreviewText(
+                                                [this.last_unread.messageKey],
+                                                1, false, url_listener);
+                    } catch(e2) {
+                        try {
+                            var aOutAsync = {};
+                            // TB <= v2
+                            this.last_unread.folder.fetchMsgPreviewText(
+                                    [this.last_unread.messageKey],
+                                    1, false, url_listener, aOutAsync);
+                            if (aOutAsync && aOutAsync.value) {
+                                urlscalled = true;
+                            }
+                        } catch(e1) {
+                            // On some folders (news for instance), and in
+                            // some other cases, fetch just throws an exception
+                            // if so, just set an empty previewtext
+                            this.last_unread.setProperty("preview", "<empty>");
+                        }
                     }
-                } catch(e2) {
-                    // On some folders (news for instance), and in
-                    // some other cases, fetch just throws an exception
-                    // if so, just set an empty previewtext
-                    this.last_unread.setProperty("preview", "<empty>");
                 }
             }
             if (urlscalled) {
