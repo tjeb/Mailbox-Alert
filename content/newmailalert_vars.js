@@ -14,8 +14,8 @@ if (typeof(MailboxAlertNewMail) == "undefined") {
 MailboxAlertNewMail.LEFT = 2;
 MailboxAlertNewMail.TOP = 4;
 
-MailboxAlertNewMail.gSlideDistance = 1;
-MailboxAlertNewMail.gSlideTime = 15;
+MailboxAlertNewMail.gSlideDistance = 2;
+MailboxAlertNewMail.gSlideTime = 30;
 MailboxAlertNewMail.gFadeTime = 50;
 MailboxAlertNewMail.gFadeIncrement = .05;
 MailboxAlertNewMail.gOrigin = 0;
