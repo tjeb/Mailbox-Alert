@@ -1,5 +1,5 @@
 [0.30]
-  o Updated new message trigger to Thunderbird 102+ (thanks @EnigmaPatrick and @jobisoft)
+  o Updated new message trigger for compatibility with Thunderbird 102+ (thanks @EnigmaPatrick and @jobisoft)
   o Fixed msg_preview macro (thanks @phil294)
   
 [0.29]
