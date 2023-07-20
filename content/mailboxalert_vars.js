@@ -470,7 +470,14 @@ MailboxAlert.getAlertPreferences = function (index) {
     // removes all preferences for this alert. ONLY call this if there
     // are no folders set!
     alert_prefs.remove = function () {
-        MailboxAlert.prefService.clearUserPref("extensions.mailboxalert.alerts." + this.index);
+        for (var name in MailboxAlert.alertPrefDefs) {
+            try {
+                MailboxAlert.prefService.clearUserPref("extensions.mailboxalert.alerts." + this.index + "." + name);
+            } catch (e) {
+                // That did not work, oh well, just leave it.
+            }
+        }
+//        MailboxAlert.prefService.clearUserPref("extensions.mailboxalert.alerts." + this.index);
         this.index = 0;
     }
 

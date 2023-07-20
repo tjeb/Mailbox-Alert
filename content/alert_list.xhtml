@@ -25,6 +25,7 @@
 
   <richlistbox
     id="alert_listbox"
+    flex="1"
     onselect="MailboxAlertList.enableButton('edit_button', true);MailboxAlertList.enableButton('delete_button', true);"
     ondblclick="MailboxAlertList.editAlert();"
     onkeypress="if (event.keyCode == 13) { MailboxAlertList.editAlert(); }"
