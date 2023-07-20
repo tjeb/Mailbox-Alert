@@ -34,7 +34,7 @@ MailboxAlertList.editAlert = function() {
 
 MailboxAlertList.deleteAlert = function () {
     try {
-        MailboxAlertUtil.logMessage("[MailboxAlert] start delete");
+        MailboxAlertUtil.logMessage(1, "[MailboxAlert] start delete");
         var alert_listbox = document.getElementById("alert_listbox");
         var alert_index = alert_listbox.selectedItem.value;
 
@@ -42,7 +42,7 @@ MailboxAlertList.deleteAlert = function () {
         var folders = MailboxAlert.getAllFoldersForAlertIndex(alert_index);
         var delete_ok = true;
 
-        MailboxAlertUtil.logMessage("[MailboxAlert] start delete 2");
+        MailboxAlertUtil.logMessage(1, "[MailboxAlert] start delete 2");
         if (folders.length > 0) {
             var stringsBundle = document.getElementById("mailboxalert-string-bundle");
             if (confirm(stringsBundle.getString("mailboxalert.alert_settings.alertset"))) {
@@ -55,7 +55,7 @@ MailboxAlertList.deleteAlert = function () {
             }
         }
 
-        MailboxAlertUtil.logMessage("[MailboxAlert] start delete 3");
+        MailboxAlertUtil.logMessage(1, "[MailboxAlert] start delete 3");
         if (delete_ok && MailboxAlert.alertIsFilterTarget(alert_index)) {
             var stringsBundle = document.getElementById("mailboxalert-string-bundle");
             if (confirm(stringsBundle.getString("mailboxalert.alert_settings.alertsetforfilter"))) {
@@ -65,18 +65,18 @@ MailboxAlertList.deleteAlert = function () {
             }
         }
 
-        MailboxAlertUtil.logMessage("[MailboxAlert] start delete 4");
+        MailboxAlertUtil.logMessage(1, "[MailboxAlert] start delete 4");
         if (delete_ok) {
-        MailboxAlertUtil.logMessage("[MailboxAlert] start delete 5");
-            alert_prefs.remove();
+          MailboxAlertUtil.logMessage(1, "[MailboxAlert] start delete 5");
+          alert_prefs.remove();
         }
-        MailboxAlertUtil.logMessage("[MailboxAlert] start delete 6");
+        MailboxAlertUtil.logMessage(1, "[MailboxAlert] start delete 6");
 
         MailboxAlertList.enableButton('edit_button', false);
         MailboxAlertList.enableButton('delete_button', false);
         MailboxAlertList.fillAlertList();
     } catch (e) {
-        MailboxAlertUtil.logMessage("[MailboxAlert] error at " + e.fileName + ":" + e.lineNumber + ": " + e);
+        MailboxAlertUtil.logMessage(1, "[MailboxAlert] error at " + e.fileName + ":" + e.lineNumber + ": " + e);
         throw e
     }
 }
