@@ -1,0 +1,266 @@
+{
+    "extensions.{9c21158b-2c76-4d0a-980a-c51fc9cefaa7}.description": {
+        "message": "Tillater deg å bestemme spesifikke alarmer for nye E-poster fra mappe til mappe"
+    },
+    "mailboxalert.about.created": {
+        "message": "Laget av"
+    },
+    "mailboxalert.about.title": {
+        "message": "Om Mailbox Alert"
+    },
+    "mailboxalert.alert.prefs.caption_alert": {
+        "message": "Alarmoppsprett"
+    },
+    "mailboxalert.alert.prefs.caption_general": {
+        "message": "Generelt"
+    },
+    "mailboxalert.alert_deleted": {
+        "message": "Klarte ikke å sette alarmen, så alarmen har blitt fjernet"
+    },
+    "mailboxalert.alert_list.add": {
+        "message": "Legg til"
+    },
+    "mailboxalert.alert_list.delete": {
+        "message": "Slett"
+    },
+    "mailboxalert.alert_list.edit": {
+        "message": "Rediger"
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_bottomleft": {
+        "message": "Nederst til venstre"
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_bottomright": {
+        "message": "Nederst til høyre"
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_text1": {
+        "message": "Dra dette vinduet dit du vil at alarmen skal vises"
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_text2": {
+        "message": "Og klikk på knappen som samsvarer med hjørnet"
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_text3": {
+        "message": "du vil at alarmen skal vises i"
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_title": {
+        "message": "Velg en tilpasset posisjon for Mailbox Alert"
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_topleft": {
+        "message": "Øverst til venstre"
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_topright": {
+        "message": "Øverst til høyre"
+    },
+    "mailboxalert.alert_prefs.custom_position_x": {
+        "message": "X"
+    },
+    "mailboxalert.alert_prefs.custom_position_y": {
+        "message": "Y"
+    },
+    "mailboxalert.alert_prefs.delay": {
+        "message": "Forsinkelse før alarmen"
+    },
+    "mailboxalert.alert_prefs.duration": {
+        "message": "Oppsprettens varighet"
+    },
+    "mailboxalert.alert_prefs.effect": {
+        "message": "Effekt"
+    },
+    "mailboxalert.alert_prefs.effect.fade": {
+        "message": "Ton ut"
+    },
+    "mailboxalert.alert_prefs.effect.none": {
+        "message": "Ingen"
+    },
+    "mailboxalert.alert_prefs.effect.slide": {
+        "message": "Gli"
+    },
+    "mailboxalert.alert_prefs.onclick": {
+        "message": "Ved klikking"
+    },
+    "mailboxalert.alert_prefs.onclick.close": {
+        "message": "Lukk oppspretten"
+    },
+    "mailboxalert.alert_prefs.onclick.deletemail": {
+        "message": "Slett meldingen"
+    },
+    "mailboxalert.alert_prefs.onclick.openmail": {
+        "message": "Åpne meldingen i et nytt vindu"
+    },
+    "mailboxalert.alert_prefs.onclick.selectmail": {
+        "message": "Åpne meldingen i det nåværende vinduet"
+    },
+    "mailboxalert.alert_prefs.position": {
+        "message": "Posisjon"
+    },
+    "mailboxalert.alert_prefs.position.bottomleft": {
+        "message": "Nederst til venstre"
+    },
+    "mailboxalert.alert_prefs.position.bottomright": {
+        "message": "Nederst til høyre"
+    },
+    "mailboxalert.alert_prefs.position.center": {
+        "message": "I midten"
+    },
+    "mailboxalert.alert_prefs.position.custom": {
+        "message": "Tilpasset"
+    },
+    "mailboxalert.alert_prefs.position.custom_select": {
+        "message": "Velg en posisjon"
+    },
+    "mailboxalert.alert_prefs.position.topleft": {
+        "message": "Øverst til venstre"
+    },
+    "mailboxalert.alert_prefs.position.topright": {
+        "message": "Øverst til høyre"
+    },
+    "mailboxalert.alert_prefs.time_unit": {
+        "message": "sekunder"
+    },
+    "mailboxalert.alert_settings.alertset": {
+        "message": "Denne alarmen er tilegnet én eller flere mapper. Er du sikker på at du vil slette den?"
+    },
+    "mailboxalert.alert_settings.alertsetforfilter": {
+        "message": "Denne alarmen er tilegnet én eller flere filtre. Er du sikker på at du vil slette den?"
+    },
+    "mailboxalert.author": {
+        "message": "Jelte Jansen"
+    },
+    "mailboxalert.default_message": {
+        "message": "Standardmelding"
+    },
+    "mailboxalert.default_sound": {
+        "message": "Standardlyd"
+    },
+    "mailboxalert.error": {
+        "message": "[Mailbox Alert-feil]"
+    },
+    "mailboxalert.error.badcommandpath1": {
+        "message": "Kommandoen som skal iverksettes for E-postmappen"
+    },
+    "mailboxalert.error.badcommandpath2": {
+        "message": "inneholder et feilformulert filnavn til iverksettingsfilen. Alltid bruk det fulle filnavnet til utvidelsen. Dersom det inneholder mellomrom, må du plassere en bakoverskråstrek (\\) foran hvert mellomrom; å bruke hermetegn rundt filbanen vil ikke fungere."
+    },
+    "mailboxalert.error.notfound": {
+        "message": "Ikke funnet"
+    },
+    "mailboxalert.menu.alertforchildren": {
+        "message": "Alarm for undermapper (dersom de ikke har sine egne alarmer)"
+    },
+    "mailboxalert.menu.editalerts": {
+        "message": "Rediger Mailbox Alert-alarmer"
+    },
+    "mailboxalert.menu.noalerttoparent": {
+        "message": "Ikke la overmapper sette av alarmen for denne"
+    },
+    "mailboxalert.mute": {
+        "message": "Demp Mailbox Alert-lyder"
+    },
+    "mailboxalert.name": {
+        "message": "Mailbox Alert"
+    },
+    "mailboxalert.prefs.browse": {
+        "message": "Let"
+    },
+    "mailboxalert.prefs.close": {
+        "message": "Lukk"
+    },
+    "mailboxalert.prefs.customwav": {
+        "message": "Selvvalgt .wav-fil"
+    },
+    "mailboxalert.prefs.default": {
+        "message": "Bruk forvalget"
+    },
+    "mailboxalert.prefs.escapehtml": {
+        "message": "Bruk HTML-koder for spesialtegn i makroer"
+    },
+    "mailboxalert.prefs.escapewindowsquotes": {
+        "message": "Escape double quotes with another double quote (for windows cmd.exe)"
+    },
+    "mailboxalert.prefs.expl.charset": {
+        "message": "Tegnsettet til mappen"
+    },
+    "mailboxalert.prefs.expl.date": {
+        "message": "Datoen når meldingen ble sendt"
+    },
+    "mailboxalert.prefs.expl.enter": {
+        "message": "Linjeknekk (virker ikke i det første feltet i &apos;vis en melding&apos;)"
+    },
+    "mailboxalert.prefs.expl.escape": {
+        "message": "Dersom noen filer eller argumenter inneholder mellomrom, sørg for å tøyle dem fast med "
+    },
+    "mailboxalert.prefs.expl.foldername": {
+        "message": "E-postmappens navn"
+    },
+    "mailboxalert.prefs.expl.information": {
+        "message": "for mere informasjon"
+    },
+    "mailboxalert.prefs.expl.macros": {
+        "message": "Du kan bruke de følgende makroene"
+    },
+    "mailboxalert.prefs.expl.messagebytes": {
+        "message": "Meldingens størrelse i bytes"
+    },
+    "mailboxalert.prefs.expl.messagesize": {
+        "message": "Meldingens størrelse i menneskelesbart format (for eksempel 2.1M)"
+    },
+    "mailboxalert.prefs.expl.msg_body": {
+        "message": "En tekstvisning av meldingen"
+    },
+    "mailboxalert.prefs.expl.msg_full": {
+        "message": "Meldingens fulle innhold i råformat"
+    },
+    "mailboxalert.prefs.expl.msg_preview": {
+        "message": "En kort forhåndsvisning av meldingens innhold"
+    },
+    "mailboxalert.prefs.expl.msg_uri": {
+        "message": "Meldingens fulle URI"
+    },
+    "mailboxalert.prefs.expl.numunread": {
+        "message": "Antall uleste meldinger i denne mappen"
+    },
+    "mailboxalert.prefs.expl.originalfolder": {
+        "message": "Navnet til undermappen som mottok meldingen"
+    },
+    "mailboxalert.prefs.expl.see": {
+        "message": "Se"
+    },
+    "mailboxalert.prefs.expl.sender": {
+        "message": "Senderen av den seneste uleste meldingen"
+    },
+    "mailboxalert.prefs.expl.senderaddress": {
+        "message": "Adressedelen til senderen av den seneste uleste meldingen (mellom &apos;&lt;&apos; og &apos;&gt;&apos;)"
+    },
+    "mailboxalert.prefs.expl.sendername": {
+        "message": "Delen av senderen av den seneste uleste meldingen frem til dens første &apos;&lt;&apos;"
+    },
+    "mailboxalert.prefs.expl.servername": {
+        "message": "Tjenerens navn"
+    },
+    "mailboxalert.prefs.expl.subject": {
+        "message": "Temaet til den seneste uleste meldingen"
+    },
+    "mailboxalert.prefs.expl.time": {
+        "message": "Tidspunktet meldingen ble sendt"
+    },
+    "mailboxalert.prefs.expl.totalunread": {
+        "message": "Antall uleste meldinger i denne mappen og i alle dens undermapper"
+    },
+    "mailboxalert.prefs.icon": {
+        "message": "Ikon"
+    },
+    "mailboxalert.prefs.systemdefault": {
+        "message": "Systemets forvalg"
+    },
+    "mailboxalert.prefs.test": {
+        "message": "Test disse innstillingene"
+    },
+    "mailboxalert.prefs.title": {
+        "message": "Mailbox Alert-innstillinger"
+    },
+    "mailboxalert.version": {
+        "message": "Versjon"
+    },
+    "mailboxalert.website": {
+        "message": "Nettsted:"
+    }
+}

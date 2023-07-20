@@ -1,0 +1,269 @@
+{
+    "extensions.{9c21158b-2c76-4d0a-980a-c51fc9cefaa7}.description": {
+        "message": "Konfigurierbare Hinweise auf neue Nachrichten in Form von Pop-ups, Klängen und ausführbaren Dateien"
+    },
+    "mailboxalert.about.created": {
+        "message": "Erstellt von"
+    },
+    "mailboxalert.about.title": {
+        "message": "Über Mailbox Alert"
+    },
+    "mailboxalert.alert.prefs.caption_alert": {
+        "message": "Pop-up"
+    },
+    "mailboxalert.alert.prefs.caption_general": {
+        "message": "Allgemein"
+    },
+    "mailboxalert.alert_deleted": {
+        "message": "Alarm konnte nicht gespeichert werden und deshalb entfernt"
+    },
+    "mailboxalert.alert_list.add": {
+        "message": "Hinzufügen"
+    },
+    "mailboxalert.alert_list.delete": {
+        "message": "Entfernen"
+    },
+    "mailboxalert.alert_list.edit": {
+        "message": "Bearbeiten"
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_bottomleft": {
+        "message": "unten links"
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_bottomright": {
+        "message": "unten rechts"
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_text1": {
+        "message": "Zuerst Fenster auf die gewünschte Position der Benachrichtigung ziehen."
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_text2": {
+        "message": "Anschließend die Schaltfläche klicken,"
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_text3": {
+        "message": "welche die Ausrichtung der Benachrichtigung an diesem Fenster festlegt."
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_title": {
+        "message": "Position des Benachrichigungsfenster für neue Nachrichten festlegen"
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_topleft": {
+        "message": "oben links"
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_topright": {
+        "message": "oben rechts"
+    },
+    "mailboxalert.alert_prefs.custom_position_x": {
+        "message": "Abstand links (Pixel)"
+    },
+    "mailboxalert.alert_prefs.custom_position_y": {
+        "message": "Abstand rechts (Pixel)"
+    },
+    "mailboxalert.alert_prefs.delay": {
+        "message": "Benachrichtigungsverzögerung:"
+    },
+    "mailboxalert.alert_prefs.duration": {
+        "message": "Anzeigedauer:"
+    },
+    "mailboxalert.alert_prefs.effect": {
+        "message": "Effekt:"
+    },
+    "mailboxalert.alert_prefs.effect.fade": {
+        "message": "Ein- und ausblenden"
+    },
+    "mailboxalert.alert_prefs.effect.none": {
+        "message": "Keiner"
+    },
+    "mailboxalert.alert_prefs.effect.slide": {
+        "message": "Ein- und ausgleiten"
+    },
+    "mailboxalert.alert_prefs.onclick": {
+        "message": "Beim Klick auf das Pop-up:"
+    },
+    "mailboxalert.alert_prefs.onclick.close": {
+        "message": "Pop-up schließen"
+    },
+    "mailboxalert.alert_prefs.onclick.deletemail": {
+        "message": "Nachricht löschen"
+    },
+    "mailboxalert.alert_prefs.onclick.openmail": {
+        "message": "Nachricht in neuem Fenster öffnen"
+    },
+    "mailboxalert.alert_prefs.onclick.selectmail": {
+        "message": "Nachricht in aktuellem Fenster öffnen"
+    },
+    "mailboxalert.alert_prefs.position": {
+        "message": "Position:"
+    },
+    "mailboxalert.alert_prefs.position.bottomleft": {
+        "message": "unten links"
+    },
+    "mailboxalert.alert_prefs.position.bottomright": {
+        "message": "unten rechts"
+    },
+    "mailboxalert.alert_prefs.position.center": {
+        "message": "zentriert"
+    },
+    "mailboxalert.alert_prefs.position.custom": {
+        "message": "Benutzerdefiniert"
+    },
+    "mailboxalert.alert_prefs.position.custom_select": {
+        "message": "Position wählen"
+    },
+    "mailboxalert.alert_prefs.position.topleft": {
+        "message": "oben links"
+    },
+    "mailboxalert.alert_prefs.position.topright": {
+        "message": "oben rechts"
+    },
+    "mailboxalert.alert_prefs.time_unit": {
+        "message": "Sekunden"
+    },
+    "mailboxalert.alert_settings.alertset": {
+        "message": "Dieser Alarm gilt für mindestens einen Ordner. Soll er wirklich gelöscht werden?"
+    },
+    "mailboxalert.alert_settings.alertsetforfilter": {
+        "message": "Dieser Alarm gilt für mindestens einen Filter. Soll er wirklich gelöscht werden?"
+    },
+    "mailboxalert.author": {
+        "message": "Jelte Jansen"
+    },
+    "mailboxalert.default_message": {
+        "message": "Standardnachricht"
+    },
+    "mailboxalert.default_sound": {
+        "message": "Standardklang"
+    },
+    "mailboxalert.error": {
+        "message": "[Mailbox Alert - Fehler]"
+    },
+    "mailboxalert.error.badcommandpath1": {
+        "message": "Der für den Ordner auszuführende Befehl"
+    },
+    "mailboxalert.error.badcommandpath2": {
+        "message": "stellt eine inkorrekte Pfadangabe dar. Bitte geben Sie immer den vollständigen Pfad an. Wenn er Leerzeichen enthält, so müssen Sie einen Backslash () vor dem Leerzeichen einfügen, die Begrenzung des Pfades mit Anführungszeichen funktioniert nicht."
+    },
+    "mailboxalert.error.disableexecutefor": {
+        "message": "Befehl für diesen Ordner nicht ausführen"
+    },
+    "mailboxalert.error.notfound": {
+        "message": "Nicht gefunden"
+    },
+    "mailboxalert.menu.alertforchildren": {
+        "message": "Untergeordnete Ordner nutzen diesen Alarme (falls sie keinen eigenen haben)"
+    },
+    "mailboxalert.menu.editalerts": {
+        "message": "Hinweise von Mailbox Alert bearbeiten"
+    },
+    "mailboxalert.menu.noalerttoparent": {
+        "message": "Übergeordnete Ordner erzeugen für diesen Ordner keine Alarme"
+    },
+    "mailboxalert.mute": {
+        "message": "Akustische Hinweise von Mailbox Alert deaktivieren"
+    },
+    "mailboxalert.name": {
+        "message": "Mailbox Alert"
+    },
+    "mailboxalert.prefs.browse": {
+        "message": "Durchsuchen..."
+    },
+    "mailboxalert.prefs.close": {
+        "message": "Schließen"
+    },
+    "mailboxalert.prefs.customwav": {
+        "message": "Benutzerdefinierte WAV-Datei"
+    },
+    "mailboxalert.prefs.default": {
+        "message": "Standardsymbol verwenden"
+    },
+    "mailboxalert.prefs.escapehtml": {
+        "message": "HTML-Kodierung für Sonderzeichen in Makros benutzen"
+    },
+    "mailboxalert.prefs.escapewindowsquotes": {
+        "message": "Escape double quotes with another double quote (for windows cmd.exe)"
+    },
+    "mailboxalert.prefs.expl.charset": {
+        "message": "Zeichensatz des Ordners"
+    },
+    "mailboxalert.prefs.expl.date": {
+        "message": "Sendedatum der Nachricht"
+    },
+    "mailboxalert.prefs.expl.enter": {
+        "message": "Zeilenumbruch (Hinweis: wird nur im zweiten Feld von &quot;Nachricht anzeigen&quot; berücksichtigt)"
+    },
+    "mailboxalert.prefs.expl.escape": {
+        "message": "Sollte irgendeine Datei oder ein Argument Leerzeichen enthalten, so stellen Sie bitte einen Backslash () voran"
+    },
+    "mailboxalert.prefs.expl.foldername": {
+        "message": "Ordnername"
+    },
+    "mailboxalert.prefs.expl.information": {
+        "message": "für weitere Informationen"
+    },
+    "mailboxalert.prefs.expl.macros": {
+        "message": "Folgende Makros stehen zur Verfügung"
+    },
+    "mailboxalert.prefs.expl.messagebytes": {
+        "message": "Größe der Nachricht in Bytes"
+    },
+    "mailboxalert.prefs.expl.messagesize": {
+        "message": "Größe der Nachricht in gekürzter Form (zum Beispiel 2.1M)"
+    },
+    "mailboxalert.prefs.expl.msg_body": {
+        "message": "Textdarstellung des Nachrichteninhalts"
+    },
+    "mailboxalert.prefs.expl.msg_full": {
+        "message": "Der rohe Nachrichtentext"
+    },
+    "mailboxalert.prefs.expl.msg_preview": {
+        "message": "Anfang des Nachrichteninhalts"
+    },
+    "mailboxalert.prefs.expl.msg_uri": {
+        "message": "Die vollständige Nachrichtenadresse"
+    },
+    "mailboxalert.prefs.expl.numunread": {
+        "message": "Anzahl der ungelesenen Nachrichten in diesem Ordner"
+    },
+    "mailboxalert.prefs.expl.originalfolder": {
+        "message": "Name des Ordners, der die Nachricht ursprünglich erhielt"
+    },
+    "mailboxalert.prefs.expl.see": {
+        "message": "Besuchen Sie"
+    },
+    "mailboxalert.prefs.expl.sender": {
+        "message": "Absender der letzten ungelesenen Nachricht"
+    },
+    "mailboxalert.prefs.expl.senderaddress": {
+        "message": "E-Mail-Adresse des Absenders (zwischen &apos;&lt;&apos; und &apos;&gt;&apos;)"
+    },
+    "mailboxalert.prefs.expl.sendername": {
+        "message": "Name des Absenders der letzten ungelesenen Nachricht (Absender bis zum ersten &apos;&lt;&apos;)"
+    },
+    "mailboxalert.prefs.expl.servername": {
+        "message": "Servername"
+    },
+    "mailboxalert.prefs.expl.subject": {
+        "message": "Der Betreff der letzten ungelesenen Nachricht"
+    },
+    "mailboxalert.prefs.expl.time": {
+        "message": "Sendezeit der Nachricht"
+    },
+    "mailboxalert.prefs.expl.totalunread": {
+        "message": "Anzahl der ungelesenen Nachrichten in diesem Ordner und allen Unterordnern"
+    },
+    "mailboxalert.prefs.icon": {
+        "message": "Symbol"
+    },
+    "mailboxalert.prefs.systemdefault": {
+        "message": "Standardklang des Betriebssystems verwenden"
+    },
+    "mailboxalert.prefs.test": {
+        "message": "Diese Einstellungen testen"
+    },
+    "mailboxalert.prefs.title": {
+        "message": "Mailbox Alert - Einstellungen"
+    },
+    "mailboxalert.version": {
+        "message": "Version"
+    },
+    "mailboxalert.website": {
+        "message": "Homepage:"
+    }
+}

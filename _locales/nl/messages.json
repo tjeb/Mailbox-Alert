@@ -1,0 +1,269 @@
+{
+    "extensions.{9c21158b-2c76-4d0a-980a-c51fc9cefaa7}.description": {
+        "message": "Stel per folder aparte notificatie in voor nieuwe berichten"
+    },
+    "mailboxalert.about.created": {
+        "message": "Gecreëerd door"
+    },
+    "mailboxalert.about.title": {
+        "message": "Over Mailbox Alert"
+    },
+    "mailboxalert.alert.prefs.caption_alert": {
+        "message": "Alert Popup"
+    },
+    "mailboxalert.alert.prefs.caption_general": {
+        "message": "General"
+    },
+    "mailboxalert.alert_deleted": {
+        "message": "Kan deze alert niet selecteren, de alert is verwijderd"
+    },
+    "mailboxalert.alert_list.add": {
+        "message": "Toevoegen"
+    },
+    "mailboxalert.alert_list.delete": {
+        "message": "Verwijderen"
+    },
+    "mailboxalert.alert_list.edit": {
+        "message": "Bewerken"
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_bottomleft": {
+        "message": "Linksonder"
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_bottomright": {
+        "message": "Rechtsonder"
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_text1": {
+        "message": "Sleep dit scherm naar de positie waar U de alert wilt laten verschijnen"
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_text2": {
+        "message": "En klik op de knop die overeenkomt met de hoek van dit window"
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_text3": {
+        "message": "waar U het bericht wilt laten verschijnen"
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_title": {
+        "message": "Kies een positie"
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_topleft": {
+        "message": "Linksboven"
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_topright": {
+        "message": "Rechtsboven"
+    },
+    "mailboxalert.alert_prefs.custom_position_x": {
+        "message": "X"
+    },
+    "mailboxalert.alert_prefs.custom_position_y": {
+        "message": "Y"
+    },
+    "mailboxalert.alert_prefs.delay": {
+        "message": "Vertraging voor notificatie"
+    },
+    "mailboxalert.alert_prefs.duration": {
+        "message": "Duur notificatie"
+    },
+    "mailboxalert.alert_prefs.effect": {
+        "message": "Effect"
+    },
+    "mailboxalert.alert_prefs.effect.fade": {
+        "message": "Vervagen"
+    },
+    "mailboxalert.alert_prefs.effect.none": {
+        "message": "Geen"
+    },
+    "mailboxalert.alert_prefs.effect.slide": {
+        "message": "Schuiven"
+    },
+    "mailboxalert.alert_prefs.onclick": {
+        "message": "Bij klikken"
+    },
+    "mailboxalert.alert_prefs.onclick.close": {
+        "message": "Sluit popup"
+    },
+    "mailboxalert.alert_prefs.onclick.deletemail": {
+        "message": "Verwijder het bericht"
+    },
+    "mailboxalert.alert_prefs.onclick.openmail": {
+        "message": "Open het bericht in een nieuw venster"
+    },
+    "mailboxalert.alert_prefs.onclick.selectmail": {
+        "message": "Open het bericht in het huidige venster"
+    },
+    "mailboxalert.alert_prefs.position": {
+        "message": "Positie"
+    },
+    "mailboxalert.alert_prefs.position.bottomleft": {
+        "message": "Linksonder"
+    },
+    "mailboxalert.alert_prefs.position.bottomright": {
+        "message": "Rechtsonder"
+    },
+    "mailboxalert.alert_prefs.position.center": {
+        "message": "Midden"
+    },
+    "mailboxalert.alert_prefs.position.custom": {
+        "message": "Gekozen positie"
+    },
+    "mailboxalert.alert_prefs.position.custom_select": {
+        "message": "Kies een positie"
+    },
+    "mailboxalert.alert_prefs.position.topleft": {
+        "message": "Linksboven"
+    },
+    "mailboxalert.alert_prefs.position.topright": {
+        "message": "Rechtsboven"
+    },
+    "mailboxalert.alert_prefs.time_unit": {
+        "message": "seconden"
+    },
+    "mailboxalert.alert_settings.alertset": {
+        "message": "Deze alert staat ingesteld voor een of meerdere mappen. Weet U zeker dat U het wilt verwijderen?"
+    },
+    "mailboxalert.alert_settings.alertsetforfilter": {
+        "message": "Deze alert staat ingesteld voor een of meer filters. Weet U zeker dat U het wilt verwijderen?"
+    },
+    "mailboxalert.author": {
+        "message": "Jelte Jansen"
+    },
+    "mailboxalert.default_message": {
+        "message": "Standaard bericht"
+    },
+    "mailboxalert.default_sound": {
+        "message": "Standaard geluid"
+    },
+    "mailboxalert.error": {
+        "message": "[Mailbox Alert Fout]"
+    },
+    "mailboxalert.error.badcommandpath1": {
+        "message": "Het commando om uit te voeren voor map"
+    },
+    "mailboxalert.error.badcommandpath2": {
+        "message": "bevat een fout. Gebruik altijd het volledige pad naar het uit te voeren programma. Als deze spaties bevat dient u hier backslashes (\\) voor te zetten, quotes eromheen werkt niet."
+    },
+    "mailboxalert.error.disableexecutefor": {
+        "message": "Commando uitvoeren wordt uitgeschakeld voor map"
+    },
+    "mailboxalert.error.notfound": {
+        "message": "Niet gevonden"
+    },
+    "mailboxalert.menu.alertforchildren": {
+        "message": "Notificatie voor submappen (als die zelf geen notificatie hebben)"
+    },
+    "mailboxalert.menu.editalerts": {
+        "message": "Bewerk Mailbox Alert notificaties"
+    },
+    "mailboxalert.menu.noalerttoparent": {
+        "message": "Laat hogere mappen geen notificatie uitvoeren"
+    },
+    "mailboxalert.mute": {
+        "message": "Geluid uit voor Mailbox Alert"
+    },
+    "mailboxalert.name": {
+        "message": "Mailbox Alert"
+    },
+    "mailboxalert.prefs.browse": {
+        "message": "Bladeren"
+    },
+    "mailboxalert.prefs.close": {
+        "message": "Sluiten"
+    },
+    "mailboxalert.prefs.customwav": {
+        "message": "Specifiek .wav bestand"
+    },
+    "mailboxalert.prefs.default": {
+        "message": "Gebruik standaard"
+    },
+    "mailboxalert.prefs.escapehtml": {
+        "message": "Gebruik HTML codes voor speciale karakters in macro's"
+    },
+    "mailboxalert.prefs.escapewindowsquotes": {
+        "message": "Escape double quotes with another double quote (for windows cmd.exe)"
+    },
+    "mailboxalert.prefs.expl.charset": {
+        "message": "De karakterset van de map"
+    },
+    "mailboxalert.prefs.expl.date": {
+        "message": "De datum waarop het bericht verzonden is"
+    },
+    "mailboxalert.prefs.expl.enter": {
+        "message": "Nieuwe regel (werk niet in het eerste veld van 'toon bericht')"
+    },
+    "mailboxalert.prefs.expl.escape": {
+        "message": "Als een bestandsnaam of argument spaties bevat, vergeet niet deze vooraf te gaan met een "
+    },
+    "mailboxalert.prefs.expl.foldername": {
+        "message": "The naam van de map"
+    },
+    "mailboxalert.prefs.expl.information": {
+        "message": "voor meer informatie"
+    },
+    "mailboxalert.prefs.expl.macros": {
+        "message": "U kunt de volgende macro's gebruiken"
+    },
+    "mailboxalert.prefs.expl.messagebytes": {
+        "message": "De grootte van het bericht in bytes"
+    },
+    "mailboxalert.prefs.expl.messagesize": {
+        "message": "De grootte van het bericht in leesbare vorm (bijvoorbeeld 2.1M)"
+    },
+    "mailboxalert.prefs.expl.msg_body": {
+        "message": "Tekst van het bericht"
+    },
+    "mailboxalert.prefs.expl.msg_full": {
+        "message": "Volledige data van het bericht"
+    },
+    "mailboxalert.prefs.expl.msg_preview": {
+        "message": "Kort overzicht van de inhoud van het bericht"
+    },
+    "mailboxalert.prefs.expl.msg_uri": {
+        "message": "Interne URI van het bericht"
+    },
+    "mailboxalert.prefs.expl.numunread": {
+        "message": "Het aantal ongelezen berichten in de map waar het bericht binnenkwam"
+    },
+    "mailboxalert.prefs.expl.originalfolder": {
+        "message": "The naam van de onderliggende map waar het bericht binnenkwam"
+    },
+    "mailboxalert.prefs.expl.see": {
+        "message": "Zie"
+    },
+    "mailboxalert.prefs.expl.sender": {
+        "message": "De afzender van het laatste ongelezen bericht"
+    },
+    "mailboxalert.prefs.expl.senderaddress": {
+        "message": "Het deel van de afzender van het laatste ongelezen bericht (tussen de '&lt;' en de '&gt;' in)"
+    },
+    "mailboxalert.prefs.expl.sendername": {
+        "message": "Het deel van de afzender van het laatste ongelezen bericht (tot aan de eerste '&lt;')"
+    },
+    "mailboxalert.prefs.expl.servername": {
+        "message": "The naam van de server"
+    },
+    "mailboxalert.prefs.expl.subject": {
+        "message": "Het onderwerp van het laatste ongelezen bericht"
+    },
+    "mailboxalert.prefs.expl.time": {
+        "message": "De tijd dat het bericht verzonden is"
+    },
+    "mailboxalert.prefs.expl.totalunread": {
+        "message": "Het aantal ongelezen berichten in deze map en alle onderliggende mappen"
+    },
+    "mailboxalert.prefs.icon": {
+        "message": "Icoon"
+    },
+    "mailboxalert.prefs.systemdefault": {
+        "message": "Systeemstandaard"
+    },
+    "mailboxalert.prefs.test": {
+        "message": "Test deze instellingen"
+    },
+    "mailboxalert.prefs.title": {
+        "message": "Mailbox Alert Instellingen"
+    },
+    "mailboxalert.version": {
+        "message": "Versie"
+    },
+    "mailboxalert.website": {
+        "message": "Website:"
+    }
+}

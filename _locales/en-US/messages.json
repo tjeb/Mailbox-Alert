@@ -1,0 +1,266 @@
+{
+    "extensions.{9c21158b-2c76-4d0a-980a-c51fc9cefaa7}.description": {
+        "message": "Allows you to specify seperate new mail alerts on a folder-by-folder basis"
+    },
+    "mailboxalert.about.created": {
+        "message": "Created by"
+    },
+    "mailboxalert.about.title": {
+        "message": "About Mailbox Alert"
+    },
+    "mailboxalert.alert.prefs.caption_alert": {
+        "message": "Alert Popup"
+    },
+    "mailboxalert.alert.prefs.caption_general": {
+        "message": "General"
+    },
+    "mailboxalert.alert_deleted": {
+        "message": "Unable to set alert, the alert has been removed"
+    },
+    "mailboxalert.alert_list.add": {
+        "message": "Add"
+    },
+    "mailboxalert.alert_list.delete": {
+        "message": "Delete"
+    },
+    "mailboxalert.alert_list.edit": {
+        "message": "Edit"
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_bottomleft": {
+        "message": "Bottom left"
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_bottomright": {
+        "message": "Bottom right"
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_text1": {
+        "message": "Drag this window to where you want the alert to appear"
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_text2": {
+        "message": "And click the button that corresponds to the corner"
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_text3": {
+        "message": "where you want the alert to appear"
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_title": {
+        "message": "Select Mailbox Alert Custom Position"
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_topleft": {
+        "message": "Top left"
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_topright": {
+        "message": "Top right"
+    },
+    "mailboxalert.alert_prefs.custom_position_x": {
+        "message": "X"
+    },
+    "mailboxalert.alert_prefs.custom_position_y": {
+        "message": "Y"
+    },
+    "mailboxalert.alert_prefs.delay": {
+        "message": "Delay before alert"
+    },
+    "mailboxalert.alert_prefs.duration": {
+        "message": "Popup duration"
+    },
+    "mailboxalert.alert_prefs.effect": {
+        "message": "Effect"
+    },
+    "mailboxalert.alert_prefs.effect.fade": {
+        "message": "Fade"
+    },
+    "mailboxalert.alert_prefs.effect.none": {
+        "message": "None"
+    },
+    "mailboxalert.alert_prefs.effect.slide": {
+        "message": "Slide"
+    },
+    "mailboxalert.alert_prefs.onclick": {
+        "message": "On click"
+    },
+    "mailboxalert.alert_prefs.onclick.close": {
+        "message": "Close popup"
+    },
+    "mailboxalert.alert_prefs.onclick.deletemail": {
+        "message": "Delete the message"
+    },
+    "mailboxalert.alert_prefs.onclick.openmail": {
+        "message": "Open the message in a new window"
+    },
+    "mailboxalert.alert_prefs.onclick.selectmail": {
+        "message": "Open the message in the current window"
+    },
+    "mailboxalert.alert_prefs.position": {
+        "message": "Position"
+    },
+    "mailboxalert.alert_prefs.position.bottomleft": {
+        "message": "Bottom-left"
+    },
+    "mailboxalert.alert_prefs.position.bottomright": {
+        "message": "Bottom-right"
+    },
+    "mailboxalert.alert_prefs.position.center": {
+        "message": "Center"
+    },
+    "mailboxalert.alert_prefs.position.custom": {
+        "message": "Custom"
+    },
+    "mailboxalert.alert_prefs.position.custom_select": {
+        "message": "Select a position"
+    },
+    "mailboxalert.alert_prefs.position.topleft": {
+        "message": "Top-left"
+    },
+    "mailboxalert.alert_prefs.position.topright": {
+        "message": "Top-right"
+    },
+    "mailboxalert.alert_prefs.time_unit": {
+        "message": "seconds"
+    },
+    "mailboxalert.alert_settings.alertset": {
+        "message": "This alert is set to one or more folders. Are you sure you want to delete it?"
+    },
+    "mailboxalert.alert_settings.alertsetforfilter": {
+        "message": "This alert is set to one or more filters. Are you sure you want to delete it?"
+    },
+    "mailboxalert.author": {
+        "message": "Jelte Jansen"
+    },
+    "mailboxalert.default_message": {
+        "message": "Default message"
+    },
+    "mailboxalert.default_sound": {
+        "message": "Default sound"
+    },
+    "mailboxalert.error": {
+        "message": "[Mailbox Alert Error]"
+    },
+    "mailboxalert.error.badcommandpath1": {
+        "message": "The command to execute for mail folder"
+    },
+    "mailboxalert.error.badcommandpath2": {
+        "message": "contains an erronneous pathname to the executable. Always use the full path to the executable. If it contains spaces, you must place a backslash (\\) character in front of each space, putting quotes around the path does not work."
+    },
+    "mailboxalert.error.notfound": {
+        "message": "Not Found"
+    },
+    "mailboxalert.menu.alertforchildren": {
+        "message": "Alert for child folders (if they have no alerts themselves)"
+    },
+    "mailboxalert.menu.editalerts": {
+        "message": "Edit Mailbox Alert alerts"
+    },
+    "mailboxalert.menu.noalerttoparent": {
+        "message": "Don't let parent folders alert for this one"
+    },
+    "mailboxalert.mute": {
+        "message": "Mute Mailbox Alert Sounds"
+    },
+    "mailboxalert.name": {
+        "message": "Mailbox Alert"
+    },
+    "mailboxalert.prefs.browse": {
+        "message": "Browse"
+    },
+    "mailboxalert.prefs.close": {
+        "message": "Close"
+    },
+    "mailboxalert.prefs.customwav": {
+        "message": "Custom .wav file"
+    },
+    "mailboxalert.prefs.default": {
+        "message": "Use default"
+    },
+    "mailboxalert.prefs.escapehtml": {
+        "message": "Use HTML codes for special characters in macros"
+    },
+    "mailboxalert.prefs.escapewindowsquotes": {
+        "message": "Escape double quotes with another double quote (for windows cmd.exe)"
+    },
+    "mailboxalert.prefs.expl.charset": {
+        "message": "The character set of the folder"
+    },
+    "mailboxalert.prefs.expl.date": {
+        "message": "The date the message was sent"
+    },
+    "mailboxalert.prefs.expl.enter": {
+        "message": "Line break (does not work in the first field of &apos;show a message&apos;)"
+    },
+    "mailboxalert.prefs.expl.escape": {
+        "message": "If any file or argument contains spaces, be sure to escape them with "
+    },
+    "mailboxalert.prefs.expl.foldername": {
+        "message": "The name of the mail folder"
+    },
+    "mailboxalert.prefs.expl.information": {
+        "message": "for more information"
+    },
+    "mailboxalert.prefs.expl.macros": {
+        "message": "You can use the following macros"
+    },
+    "mailboxalert.prefs.expl.messagebytes": {
+        "message": "The size of the message in bytes"
+    },
+    "mailboxalert.prefs.expl.messagesize": {
+        "message": "The size of the message in human readable form (for instance 2.1M)"
+    },
+    "mailboxalert.prefs.expl.msg_body": {
+        "message": "A text view of the message body"
+    },
+    "mailboxalert.prefs.expl.msg_full": {
+        "message": "The raw full message body"
+    },
+    "mailboxalert.prefs.expl.msg_preview": {
+        "message": "A short preview of the message content"
+    },
+    "mailboxalert.prefs.expl.msg_uri": {
+        "message": "The full URI of the message"
+    },
+    "mailboxalert.prefs.expl.numunread": {
+        "message": "The number of unread messages in this folder"
+    },
+    "mailboxalert.prefs.expl.originalfolder": {
+        "message": "The name of the subfolder that received the message"
+    },
+    "mailboxalert.prefs.expl.see": {
+        "message": "See"
+    },
+    "mailboxalert.prefs.expl.sender": {
+        "message": "The sender of the last unread message"
+    },
+    "mailboxalert.prefs.expl.senderaddress": {
+        "message": "The address part of the sender of the last unread message (between &apos;&lt;&apos; and &apos;&gt;&apos;)"
+    },
+    "mailboxalert.prefs.expl.sendername": {
+        "message": "The part of the sender of the last unread message up to the first &apos;&lt;&apos; in it"
+    },
+    "mailboxalert.prefs.expl.servername": {
+        "message": "The name of the server"
+    },
+    "mailboxalert.prefs.expl.subject": {
+        "message": "The subject of the last unread message"
+    },
+    "mailboxalert.prefs.expl.time": {
+        "message": "The time the message was sent"
+    },
+    "mailboxalert.prefs.expl.totalunread": {
+        "message": "The number of unread messages in this folder and all of its subfolders"
+    },
+    "mailboxalert.prefs.icon": {
+        "message": "Icon"
+    },
+    "mailboxalert.prefs.systemdefault": {
+        "message": "System default"
+    },
+    "mailboxalert.prefs.test": {
+        "message": "Test these settings"
+    },
+    "mailboxalert.prefs.title": {
+        "message": "Mailbox Alert Preferences"
+    },
+    "mailboxalert.version": {
+        "message": "Version"
+    },
+    "mailboxalert.website": {
+        "message": "Website:"
+    }
+}

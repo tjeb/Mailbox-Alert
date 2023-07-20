@@ -1,0 +1,269 @@
+{
+    "extensions.{9c21158b-2c76-4d0a-980a-c51fc9cefaa7}.description": {
+        "message": "Permítelle especificar avisos separados de novos correos baseados en cartafol por cartafol"
+    },
+    "mailboxalert.about.created": {
+        "message": "Creado por"
+    },
+    "mailboxalert.about.title": {
+        "message": "Sobre o Mailbox Alert"
+    },
+    "mailboxalert.alert.prefs.caption_alert": {
+        "message": "Ventá de aviso"
+    },
+    "mailboxalert.alert.prefs.caption_general": {
+        "message": "Xeral"
+    },
+    "mailboxalert.alert_deleted": {
+        "message": "Unable to set alert, the alert has been removed"
+    },
+    "mailboxalert.alert_list.add": {
+        "message": "Add"
+    },
+    "mailboxalert.alert_list.delete": {
+        "message": "Delete"
+    },
+    "mailboxalert.alert_list.edit": {
+        "message": "Edit"
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_bottomleft": {
+        "message": "Bottom left"
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_bottomright": {
+        "message": "Bottom right"
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_text1": {
+        "message": "Drag this window to where you want the alert to appear"
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_text2": {
+        "message": "And click the button that corresponds to the corner"
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_text3": {
+        "message": "where you want the alert to appear"
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_title": {
+        "message": "Select Mailbox Alert Custom Position"
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_topleft": {
+        "message": "Top left"
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_topright": {
+        "message": "Top right"
+    },
+    "mailboxalert.alert_prefs.custom_position_x": {
+        "message": "X"
+    },
+    "mailboxalert.alert_prefs.custom_position_y": {
+        "message": "Y"
+    },
+    "mailboxalert.alert_prefs.delay": {
+        "message": "Atraso antes do aviso"
+    },
+    "mailboxalert.alert_prefs.duration": {
+        "message": "Duración da ventá de aviso"
+    },
+    "mailboxalert.alert_prefs.effect": {
+        "message": "Efecto"
+    },
+    "mailboxalert.alert_prefs.effect.fade": {
+        "message": "Intensidade"
+    },
+    "mailboxalert.alert_prefs.effect.none": {
+        "message": "Ningún"
+    },
+    "mailboxalert.alert_prefs.effect.slide": {
+        "message": "Esbarante"
+    },
+    "mailboxalert.alert_prefs.onclick": {
+        "message": "Ao premer"
+    },
+    "mailboxalert.alert_prefs.onclick.close": {
+        "message": "Pechar a ventá de aviso"
+    },
+    "mailboxalert.alert_prefs.onclick.deletemail": {
+        "message": "Delete the message"
+    },
+    "mailboxalert.alert_prefs.onclick.openmail": {
+        "message": "Abrir a mensaxe"
+    },
+    "mailboxalert.alert_prefs.onclick.selectmail": {
+        "message": "Open the message in the current window"
+    },
+    "mailboxalert.alert_prefs.position": {
+        "message": "Colocación"
+    },
+    "mailboxalert.alert_prefs.position.bottomleft": {
+        "message": "Marxe inferior esquerda"
+    },
+    "mailboxalert.alert_prefs.position.bottomright": {
+        "message": "Marxe inferior dereita"
+    },
+    "mailboxalert.alert_prefs.position.center": {
+        "message": "Centro"
+    },
+    "mailboxalert.alert_prefs.position.custom": {
+        "message": "Custom"
+    },
+    "mailboxalert.alert_prefs.position.custom_select": {
+        "message": "Select a position"
+    },
+    "mailboxalert.alert_prefs.position.topleft": {
+        "message": "Marxe superior esquerda"
+    },
+    "mailboxalert.alert_prefs.position.topright": {
+        "message": "Marxe superior dereita"
+    },
+    "mailboxalert.alert_prefs.time_unit": {
+        "message": "segundos"
+    },
+    "mailboxalert.alert_settings.alertset": {
+        "message": "This alert is set to one or more folders. Are you sure you want to delete it?"
+    },
+    "mailboxalert.alert_settings.alertsetforfilter": {
+        "message": "This alert is set to one or more filters. Are you sure you want to delete it?"
+    },
+    "mailboxalert.author": {
+        "message": "Jeite Jansen"
+    },
+    "mailboxalert.default_message": {
+        "message": "Default message"
+    },
+    "mailboxalert.default_sound": {
+        "message": "Default sound"
+    },
+    "mailboxalert.error": {
+        "message": "[Erro do Mailbox Alert]"
+    },
+    "mailboxalert.error.badcommandpath1": {
+        "message": "A orde que se executará para o cartafol de correo"
+    },
+    "mailboxalert.error.badcommandpath2": {
+        "message": "contén un camiño errado para o executable. Debe empregar sempre o camiño completo para o executable. Se este contén espazos, debe colocar un ha barra inversa (\\) en cada espazo. Colocar aspas arredor do camiño non funciona."
+    },
+    "mailboxalert.error.disableexecutefor": {
+        "message": "A desactivar a execución de ordes para o cartafol"
+    },
+    "mailboxalert.error.notfound": {
+        "message": "Non se achou"
+    },
+    "mailboxalert.menu.alertforchildren": {
+        "message": "Alert for child folders (if they have no alerts themselves)"
+    },
+    "mailboxalert.menu.editalerts": {
+        "message": "Edit Mailbox Alert alerts"
+    },
+    "mailboxalert.menu.noalerttoparent": {
+        "message": "Don't let parent folders alert for this one"
+    },
+    "mailboxalert.mute": {
+        "message": "Mute Mailbox Alert Sounds"
+    },
+    "mailboxalert.name": {
+        "message": "Mailbox Alert"
+    },
+    "mailboxalert.prefs.browse": {
+        "message": "Explorar"
+    },
+    "mailboxalert.prefs.close": {
+        "message": "Pechar"
+    },
+    "mailboxalert.prefs.customwav": {
+        "message": "Ficheiro .wav personalizado"
+    },
+    "mailboxalert.prefs.default": {
+        "message": "Usar o valor por omisión"
+    },
+    "mailboxalert.prefs.escapehtml": {
+        "message": "Usar códigos de HTML para os caracteres especiais nas macros"
+    },
+    "mailboxalert.prefs.escapewindowsquotes": {
+        "message": "Escape double quotes with another double quote (for windows cmd.exe)"
+    },
+    "mailboxalert.prefs.expl.charset": {
+        "message": "O conxunto de caracteres do cartafol"
+    },
+    "mailboxalert.prefs.expl.date": {
+        "message": "The date the message was sent"
+    },
+    "mailboxalert.prefs.expl.enter": {
+        "message": "Quebra de liña (esta acción non funciona no primeiro campo de &quot;amosar a mensaxe&quot;)"
+    },
+    "mailboxalert.prefs.expl.escape": {
+        "message": "Se calquera ficheiro ou argumento contén espazos, compre asegurarse de lle pór "
+    },
+    "mailboxalert.prefs.expl.foldername": {
+        "message": "O nome do cartafol de correo"
+    },
+    "mailboxalert.prefs.expl.information": {
+        "message": "para máis información"
+    },
+    "mailboxalert.prefs.expl.macros": {
+        "message": "Pode empregar as macros seguintes"
+    },
+    "mailboxalert.prefs.expl.messagebytes": {
+        "message": "O tamaño da mensaxe en bytes"
+    },
+    "mailboxalert.prefs.expl.messagesize": {
+        "message": "O tamaño da mensaxe en formato lido polo humano (por exemplo 2.1M)"
+    },
+    "mailboxalert.prefs.expl.msg_body": {
+        "message": "A text view of the message body"
+    },
+    "mailboxalert.prefs.expl.msg_full": {
+        "message": "The raw full message body"
+    },
+    "mailboxalert.prefs.expl.msg_preview": {
+        "message": "A short preview of the message content"
+    },
+    "mailboxalert.prefs.expl.msg_uri": {
+        "message": "The full URI of the message"
+    },
+    "mailboxalert.prefs.expl.numunread": {
+        "message": "O número de mensaxes sen ler neste cartafol"
+    },
+    "mailboxalert.prefs.expl.originalfolder": {
+        "message": "O nome do cartafol inferiro que recibiu a mensaxe"
+    },
+    "mailboxalert.prefs.expl.see": {
+        "message": "Vexa"
+    },
+    "mailboxalert.prefs.expl.sender": {
+        "message": "O remitente da última mensaxe sen ler"
+    },
+    "mailboxalert.prefs.expl.senderaddress": {
+        "message": "A parte do enderezo do remitente da última mensaxe sen ler (entre &lt; e &gt;)"
+    },
+    "mailboxalert.prefs.expl.sendername": {
+        "message": "A parte do remitente da última mensaxe sen ler até o primeiro &lt; nel"
+    },
+    "mailboxalert.prefs.expl.servername": {
+        "message": "O nome do servidor"
+    },
+    "mailboxalert.prefs.expl.subject": {
+        "message": "O asunto da última mensaxe sen ler"
+    },
+    "mailboxalert.prefs.expl.time": {
+        "message": "The time the message was sent"
+    },
+    "mailboxalert.prefs.expl.totalunread": {
+        "message": "O número de mensaxes sen ler neste cartafol e nos seus cartafoles inferiores"
+    },
+    "mailboxalert.prefs.icon": {
+        "message": "Icona"
+    },
+    "mailboxalert.prefs.systemdefault": {
+        "message": "Sistema por omisión"
+    },
+    "mailboxalert.prefs.test": {
+        "message": "Probar esta configuración"
+    },
+    "mailboxalert.prefs.title": {
+        "message": "Preferencias do Mailbox Alert"
+    },
+    "mailboxalert.version": {
+        "message": "Versión"
+    },
+    "mailboxalert.website": {
+        "message": "Sitio web:"
+    }
+}

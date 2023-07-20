@@ -1,0 +1,269 @@
+{
+    "extensions.{9c21158b-2c76-4d0a-980a-c51fc9cefaa7}.description": {
+        "message": "让您可以定制不同的新邮件提醒，在不同文件夹的基础上。"
+    },
+    "mailboxalert.about.created": {
+        "message": "创建者"
+    },
+    "mailboxalert.about.title": {
+        "message": "关于邮箱提醒"
+    },
+    "mailboxalert.alert.prefs.caption_alert": {
+        "message": "提醒弹出框"
+    },
+    "mailboxalert.alert.prefs.caption_general": {
+        "message": "常规"
+    },
+    "mailboxalert.alert_deleted": {
+        "message": "Unable to set alert, the alert has been removed"
+    },
+    "mailboxalert.alert_list.add": {
+        "message": "Add"
+    },
+    "mailboxalert.alert_list.delete": {
+        "message": "Delete"
+    },
+    "mailboxalert.alert_list.edit": {
+        "message": "Edit"
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_bottomleft": {
+        "message": "Bottom left"
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_bottomright": {
+        "message": "Bottom right"
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_text1": {
+        "message": "Drag this window to where you want the alert to appear"
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_text2": {
+        "message": "And click the button that corresponds to the corner"
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_text3": {
+        "message": "where you want the alert to appear"
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_title": {
+        "message": "Select Mailbox Alert Custom Position"
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_topleft": {
+        "message": "Top left"
+    },
+    "mailboxalert.alert_prefs.custom_position_selector_topright": {
+        "message": "Top right"
+    },
+    "mailboxalert.alert_prefs.custom_position_x": {
+        "message": "X"
+    },
+    "mailboxalert.alert_prefs.custom_position_y": {
+        "message": "Y"
+    },
+    "mailboxalert.alert_prefs.delay": {
+        "message": "提示前延迟"
+    },
+    "mailboxalert.alert_prefs.duration": {
+        "message": "弹出持续时间"
+    },
+    "mailboxalert.alert_prefs.effect": {
+        "message": "效果"
+    },
+    "mailboxalert.alert_prefs.effect.fade": {
+        "message": "淡入"
+    },
+    "mailboxalert.alert_prefs.effect.none": {
+        "message": "无"
+    },
+    "mailboxalert.alert_prefs.effect.slide": {
+        "message": "滑入"
+    },
+    "mailboxalert.alert_prefs.onclick": {
+        "message": "点击时"
+    },
+    "mailboxalert.alert_prefs.onclick.close": {
+        "message": "关闭弹出框"
+    },
+    "mailboxalert.alert_prefs.onclick.deletemail": {
+        "message": "Delete the message"
+    },
+    "mailboxalert.alert_prefs.onclick.openmail": {
+        "message": "打开消息"
+    },
+    "mailboxalert.alert_prefs.onclick.selectmail": {
+        "message": "Open the message in the current window"
+    },
+    "mailboxalert.alert_prefs.position": {
+        "message": "位置"
+    },
+    "mailboxalert.alert_prefs.position.bottomleft": {
+        "message": "左下"
+    },
+    "mailboxalert.alert_prefs.position.bottomright": {
+        "message": "右下"
+    },
+    "mailboxalert.alert_prefs.position.center": {
+        "message": "正中"
+    },
+    "mailboxalert.alert_prefs.position.custom": {
+        "message": "Custom"
+    },
+    "mailboxalert.alert_prefs.position.custom_select": {
+        "message": "Select a position"
+    },
+    "mailboxalert.alert_prefs.position.topleft": {
+        "message": "左上"
+    },
+    "mailboxalert.alert_prefs.position.topright": {
+        "message": "右上"
+    },
+    "mailboxalert.alert_prefs.time_unit": {
+        "message": "秒"
+    },
+    "mailboxalert.alert_settings.alertset": {
+        "message": "This alert is set to one or more folders. Are you sure you want to delete it?"
+    },
+    "mailboxalert.alert_settings.alertsetforfilter": {
+        "message": "This alert is set to one or more filters. Are you sure you want to delete it?"
+    },
+    "mailboxalert.author": {
+        "message": "Jelte Jansen"
+    },
+    "mailboxalert.default_message": {
+        "message": "Default message"
+    },
+    "mailboxalert.default_sound": {
+        "message": "Default sound"
+    },
+    "mailboxalert.error": {
+        "message": "[邮件提示器错误]"
+    },
+    "mailboxalert.error.badcommandpath1": {
+        "message": "邮件文件夹执行的命令"
+    },
+    "mailboxalert.error.badcommandpath2": {
+        "message": "包含了错误的执行文件路径。请使用执行文件的全路径。如果有空格，你必须在每个空格添加反斜杠(\\)，用引号包含路径没有作用。"
+    },
+    "mailboxalert.error.disableexecutefor": {
+        "message": "禁止目录的命令执行"
+    },
+    "mailboxalert.error.notfound": {
+        "message": "未找到"
+    },
+    "mailboxalert.menu.alertforchildren": {
+        "message": "Alert for child folders (if they have no alerts themselves)"
+    },
+    "mailboxalert.menu.editalerts": {
+        "message": "Edit Mailbox Alert alerts"
+    },
+    "mailboxalert.menu.noalerttoparent": {
+        "message": "Don't let parent folders alert for this one"
+    },
+    "mailboxalert.mute": {
+        "message": "禁用邮箱提箱音"
+    },
+    "mailboxalert.name": {
+        "message": "邮箱提醒"
+    },
+    "mailboxalert.prefs.browse": {
+        "message": "浏览"
+    },
+    "mailboxalert.prefs.close": {
+        "message": "关闭"
+    },
+    "mailboxalert.prefs.customwav": {
+        "message": "自定义 .wav 文件"
+    },
+    "mailboxalert.prefs.default": {
+        "message": "使用默认值"
+    },
+    "mailboxalert.prefs.escapehtml": {
+        "message": "在宏中对特殊字符使用 HTML 代码"
+    },
+    "mailboxalert.prefs.escapewindowsquotes": {
+        "message": "Escape double quotes with another double quote (for windows cmd.exe)"
+    },
+    "mailboxalert.prefs.expl.charset": {
+        "message": "此目录的字符集"
+    },
+    "mailboxalert.prefs.expl.date": {
+        "message": "The date the message was sent"
+    },
+    "mailboxalert.prefs.expl.enter": {
+        "message": "Line break (does not work in the first field of &apos;show a message&apos;)"
+    },
+    "mailboxalert.prefs.expl.escape": {
+        "message": "如果任何文件或参数包含空格，请确认使用转义"
+    },
+    "mailboxalert.prefs.expl.foldername": {
+        "message": "邮件文件夹名称"
+    },
+    "mailboxalert.prefs.expl.information": {
+        "message": "以获得更多信息"
+    },
+    "mailboxalert.prefs.expl.macros": {
+        "message": "您可以使用下列宏"
+    },
+    "mailboxalert.prefs.expl.messagebytes": {
+        "message": "消息的字节数"
+    },
+    "mailboxalert.prefs.expl.messagesize": {
+        "message": "The size of the message in human readable form (for instance 2.1M)"
+    },
+    "mailboxalert.prefs.expl.msg_body": {
+        "message": "A text view of the message body"
+    },
+    "mailboxalert.prefs.expl.msg_full": {
+        "message": "The raw full message body"
+    },
+    "mailboxalert.prefs.expl.msg_preview": {
+        "message": "A short preview of the message content"
+    },
+    "mailboxalert.prefs.expl.msg_uri": {
+        "message": "The full URI of the message"
+    },
+    "mailboxalert.prefs.expl.numunread": {
+        "message": "此目录中未读消息的条数"
+    },
+    "mailboxalert.prefs.expl.originalfolder": {
+        "message": "接受消息的子目录名称"
+    },
+    "mailboxalert.prefs.expl.see": {
+        "message": "查看"
+    },
+    "mailboxalert.prefs.expl.sender": {
+        "message": "最新未读消息的发送者"
+    },
+    "mailboxalert.prefs.expl.senderaddress": {
+        "message": "最近未读消息的发送者的地址部分 (在 &apos;&lt;&apos; 与 &apos;&gt;&apos; 之间)"
+    },
+    "mailboxalert.prefs.expl.sendername": {
+        "message": "The part of the sender of the last unread message up to the first &apos;&lt;&apos; in it"
+    },
+    "mailboxalert.prefs.expl.servername": {
+        "message": "服务器名称"
+    },
+    "mailboxalert.prefs.expl.subject": {
+        "message": "最近未读消息的主题"
+    },
+    "mailboxalert.prefs.expl.time": {
+        "message": "The time the message was sent"
+    },
+    "mailboxalert.prefs.expl.totalunread": {
+        "message": "此目录和它的子目录中未读消息的条数"
+    },
+    "mailboxalert.prefs.icon": {
+        "message": "图标"
+    },
+    "mailboxalert.prefs.systemdefault": {
+        "message": "系统默认值"
+    },
+    "mailboxalert.prefs.test": {
+        "message": "测试这些设置"
+    },
+    "mailboxalert.prefs.title": {
+        "message": "邮箱提醒选项"
+    },
+    "mailboxalert.version": {
+        "message": "版本："
+    },
+    "mailboxalert.website": {
+        "message": "网站："
+    }
+}
