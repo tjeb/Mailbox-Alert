@@ -24,6 +24,9 @@ MailboxAlertAlertSettings.init = function () {
   document.addEventListener("dialogextra1", function(event) {
     MailboxAlertAlertSettings.testAlert();
   });
+  
+  // This button is not catched by i18n.js.
+  document.documentElement.getButton("extra1").label = MailboxAlertUtil.getLocaleString("mailboxalert.prefs.test");
 }
 
 MailboxAlertAlertSettings.getAlertId = function() {
