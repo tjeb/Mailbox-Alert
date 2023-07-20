@@ -3,52 +3,54 @@
 <?xml-stylesheet href="chrome://communicator/skin/" type="text/css"?>
 <?xml-stylesheet href="chrome://messenger/skin/prefPanels.css" type="text/css"?>
 
-<!DOCTYPE window SYSTEM "chrome://mailboxalert/locale/mailboxalert.dtd">
+<!DOCTYPE window>
 
-<window title="&mailboxalert.about.title;"
-	orient="vertical"
-	autostretch="always"
-	onload="sizeToContent()"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+<window title="__MSG_mailboxalert.about.title__"
+  orient="vertical"
+  autostretch="always"
+  onload="sizeToContent()"
+  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-<keyset>
-  <key id="cut_cmd" modifiers="accel" key="X"/>
-  <key id="copy_cmd" modifiers="accel" key="C"/>
-  <key id="paste_cmd" modifiers="accel" key="V"/>
-  <key id="close_cmd" modifiers="control" key="W" oncommand="window.close();"/>
-</keyset>
+  <keyset>
+    <key id="cut_cmd" modifiers="accel" key="X"/>
+    <key id="copy_cmd" modifiers="accel" key="C"/>
+    <key id="paste_cmd" modifiers="accel" key="V"/>
+    <key id="close_cmd" modifiers="control" key="W" oncommand="window.close();"/>
+  </keyset>
 
-<groupbox>
-	<caption id="mailboxalert_caption" label="&mailboxalert.name;"/>
+  <script src="chrome://mailboxalert/content/scripts/i18n.js" />
 
-	<separator class="thin"/>
-	<label value="&mailboxalert.prefs.expl.escape;"/>
-	<label value=""/>
-	<label value="&mailboxalert.prefs.expl.macros;:"/>
-	<label value="%server: &mailboxalert.prefs.expl.servername;"/>
-	<label value="%folder: &mailboxalert.prefs.expl.foldername;"/>
-	<label value="%originalfolder: &mailboxalert.prefs.expl.originalfolder;"/>
-	<label value="%count: &mailboxalert.prefs.expl.numunread;"/>
-	<label value="%countall: &mailboxalert.prefs.expl.totalunread;"/>
-	<label value="%sender: &mailboxalert.prefs.expl.sender;"/>
-	<label value="%sendername: &mailboxalert.prefs.expl.sendername;"/>
-	<label value="%senderaddress: &mailboxalert.prefs.expl.senderaddress;"/>
-	<label value="%subject: &mailboxalert.prefs.expl.subject;"/>
-	<label value="%charset: &mailboxalert.prefs.expl.charset;"/>
-	<label value="%messagebytes: &mailboxalert.prefs.expl.messagebytes;"/>
-	<label value="%messagesize: &mailboxalert.prefs.expl.messagesize;"/>
-	<label value="%date: &mailboxalert.prefs.expl.date;"/>
-	<label value="%time: &mailboxalert.prefs.expl.time;"/>
-    <label value="%msg_preview: &mailboxalert.prefs.expl.msg_preview;"/>
-    <label value="%msg_body: &mailboxalert.prefs.expl.msg_body;"/>
-    <label value="%msg_full: &mailboxalert.prefs.expl.msg_full;"/>
-    <label value="%msg_uri: &mailboxalert.prefs.expl.msg_uri;"/>
-	<label value="%enter: &mailboxalert.prefs.expl.enter;"/>
-	<label value=""/>
-	<text value="&mailboxalert.prefs.expl.see; http://tjeb.nl/Projects/Mailbox_Alert &mailboxalert.prefs.expl.information;" />
-</groupbox>
-<hbox align="right">
-	<button id="help_close" label="&mailboxalert.prefs.close;" oncommand="window.close();"/>
-</hbox>
+  <groupbox>
+    <caption id="mailboxalert_caption" label="__MSG_mailboxalert.name__"/>
+
+    <separator class="thin"/>
+    <label value="__MSG_mailboxalert.prefs.expl.escape__"/>
+    <label value=""/>
+    <label value="__MSG_mailboxalert.prefs.expl.macros__:"/>
+    <label value="%server: __MSG_mailboxalert.prefs.expl.servername__"/>
+    <label value="%folder: __MSG_mailboxalert.prefs.expl.foldername__"/>
+    <label value="%originalfolder: __MSG_mailboxalert.prefs.expl.originalfolder__"/>
+    <label value="%count: __MSG_mailboxalert.prefs.expl.numunread__"/>
+    <label value="%countall: __MSG_mailboxalert.prefs.expl.totalunread__"/>
+    <label value="%sender: __MSG_mailboxalert.prefs.expl.sender__"/>
+    <label value="%sendername: __MSG_mailboxalert.prefs.expl.sendername__"/>
+    <label value="%senderaddress: __MSG_mailboxalert.prefs.expl.senderaddress__"/>
+    <label value="%subject: __MSG_mailboxalert.prefs.expl.subject__"/>
+    <label value="%charset: __MSG_mailboxalert.prefs.expl.charset__"/>
+    <label value="%messagebytes: __MSG_mailboxalert.prefs.expl.messagebytes__"/>
+    <label value="%messagesize: __MSG_mailboxalert.prefs.expl.messagesize__"/>
+    <label value="%date: __MSG_mailboxalert.prefs.expl.date__"/>
+    <label value="%time: __MSG_mailboxalert.prefs.expl.time__"/>
+      <label value="%msg_preview: __MSG_mailboxalert.prefs.expl.msg_preview__"/>
+      <label value="%msg_body: __MSG_mailboxalert.prefs.expl.msg_body__"/>
+      <label value="%msg_full: __MSG_mailboxalert.prefs.expl.msg_full__"/>
+      <label value="%msg_uri: __MSG_mailboxalert.prefs.expl.msg_uri__"/>
+    <label value="%enter: __MSG_mailboxalert.prefs.expl.enter__"/>
+    <label value=""/>
+    <text value="__MSG_mailboxalert.prefs.expl.see__ http://tjeb.nl/Projects/Mailbox_Alert __MSG_mailboxalert.prefs.expl.information__" />
+  </groupbox>
+  <hbox align="right">
+    <button id="help_close" label="__MSG_mailboxalert.prefs.close__" oncommand="window.close();"/>
+  </hbox>
 
 </window>

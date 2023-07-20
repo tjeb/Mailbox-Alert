@@ -4,6 +4,7 @@
   "description": "Custom popup, sounds or scripts for new mail, configurable for each folder, and as a message filter target",
   "version": "0.30",
   "author": "Jelte Jansen",
+  "default_locale":"en-US",
   "experiment_apis": {
     "WindowListener": {
       "schema": "api/WindowListener/schema.json",

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
-<!DOCTYPE window SYSTEM "chrome://mailboxalert/locale/mailboxalert.dtd">
+<!DOCTYPE dialog>
 <dialog xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" id="mailboxalert_prefs_dialog"
         onload="MailboxAlertList.init();"
         buttons="help, accept"
@@ -13,11 +13,10 @@
   <key id="close_cmd" modifiers="control" key="W" oncommand="window.close();"/>
 </keyset>
 
-<stringbundle id="mailboxalert-string-bundle" src="chrome://mailboxalert/locale/mailboxalert.properties"/>
-
 <script src="chrome://mailboxalert/content/mailboxalert_util.js" />
 <script src="chrome://mailboxalert/content/mailboxalert_vars.js" />
 <script src="chrome://mailboxalert/content/alert_list.js" />
+<script src="chrome://mailboxalert/content/scripts/i18n.js" />
 
 <vbox>
   <label value="Mailbox Alert Alert List"/>
@@ -32,9 +31,9 @@
   />
 
   <vbox>
-    <button id="add_button" label="&mailboxalert.alert_list.add;" onclick="MailboxAlertList.addAlert('1', 'a');"/>
-    <button id="edit_button" label="&mailboxalert.alert_list.edit;" onclick="MailboxAlertList.editAlert();" />
-    <button id="delete_button" label="&mailboxalert.alert_list.delete;" onclick="MailboxAlertList.deleteAlert();" />
+    <button id="add_button" label="__MSG_mailboxalert.alert_list.add__" onclick="MailboxAlertList.addAlert('1', 'a');"/>
+    <button id="edit_button" label="__MSG_mailboxalert.alert_list.edit__" onclick="MailboxAlertList.editAlert();" />
+    <button id="delete_button" label="__MSG_mailboxalert.alert_list.delete__" onclick="MailboxAlertList.deleteAlert();" />
   </vbox>
   </hbox>
 </vbox>

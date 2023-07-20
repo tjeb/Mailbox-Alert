@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
-<!DOCTYPE window SYSTEM "chrome://mailboxalert/locale/mailboxalert.dtd">
+<!DOCTYPE dialog>
 
 <dialog xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" id="mailboxalert_prefs_select_position"
         onload="MailboxAlertSettingsPosition.init();"
         buttons="cancel"
-        title="&mailboxalert.alert_prefs.custom_position_selector_title;"
+        title="__MSG_mailboxalert.alert_prefs.custom_position_selector_title__"
 >
 
 <script type="application/x-javascript">
@@ -85,28 +85,29 @@ MailboxAlertSettingsPosition.accept = function(anchor_pos) {
 
 ]]>
 </script>
+<script src="chrome://mailboxalert/content/scripts/i18n.js" />
 
 <vbox>
   <hbox>
-    <button label="&mailboxalert.alert_prefs.custom_position_selector_topleft;" oncommand="MailboxAlertSettingsPosition.accept('topleft');" />
+    <button label="__MSG_mailboxalert.alert_prefs.custom_position_selector_topleft__" oncommand="MailboxAlertSettingsPosition.accept('topleft');" />
     <spacer flex="1"/>
-    <button label="&mailboxalert.alert_prefs.custom_position_selector_topright;" oncommand="MailboxAlertSettingsPosition.accept('topright');" />
+    <button label="__MSG_mailboxalert.alert_prefs.custom_position_selector_topright__" oncommand="MailboxAlertSettingsPosition.accept('topright');" />
   </hbox>
   <hbox>
     <spacer/>
     <vbox>
-      <label value="&mailboxalert.alert_prefs.custom_position_selector_text1;"/>
-      <label value="&mailboxalert.alert_prefs.custom_position_selector_text2;"/>
-      <label value="&mailboxalert.alert_prefs.custom_position_selector_text3;"/>
+      <label value="__MSG_mailboxalert.alert_prefs.custom_position_selector_text1__"/>
+      <label value="__MSG_mailboxalert.alert_prefs.custom_position_selector_text2__"/>
+      <label value="__MSG_mailboxalert.alert_prefs.custom_position_selector_text3__"/>
     </vbox>
     <spacer/>
   </hbox>
   <hbox>
-    <button label="&mailboxalert.alert_prefs.custom_position_selector_bottomleft;" oncommand="MailboxAlertSettingsPosition.accept('bottomleft');" />
+    <button label="__MSG_mailboxalert.alert_prefs.custom_position_selector_bottomleft__" oncommand="MailboxAlertSettingsPosition.accept('bottomleft');" />
     <spacer flex="1"/>
     <button dlgtype="cancel" />
     <spacer flex="1"/>
-    <button label="&mailboxalert.alert_prefs.custom_position_selector_bottomright;" oncommand="MailboxAlertSettingsPosition.accept('bottomright');" />
+    <button label="__MSG_mailboxalert.alert_prefs.custom_position_selector_bottomright__" oncommand="MailboxAlertSettingsPosition.accept('bottomright');" />
   </hbox>
   <hbox>
 

@@ -1,46 +1,47 @@
 <?xml version="1.0"?>
 
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
-<!DOCTYPE window SYSTEM "chrome://mailboxalert/locale/mailboxalert.dtd">
+<!DOCTYPE window>
 
 <window class="dialog"
-	title="&mailboxalert.about.title;"
-	orient="vertical"
-	autostretch="always"
-	onload="sizeToContent()"
-	xmlns="https://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  title="__MSG_mailboxalert.about.title__"
+  orient="vertical"
+  autostretch="always"
+  onload="sizeToContent()"
+  xmlns="https://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
+  <keyset>
+    <key id="cut_cmd" modifiers="accel" key="X"/>
+    <key id="copy_cmd" modifiers="accel" key="C"/>
+    <key id="paste_cmd" modifiers="accel" key="V"/>
+    <key id="close_cmd" modifiers="control" key="W" oncommand="window.close();"/>
+  </keyset>
 
+  <script src="chrome://mailboxalert/content/scripts/i18n.js" />
 
-	<keyset>
-	  <key id="cut_cmd" modifiers="accel" key="X"/>
-	  <key id="copy_cmd" modifiers="accel" key="C"/>
-	  <key id="paste_cmd" modifiers="accel" key="V"/>
-	  <key id="close_cmd" modifiers="control" key="W" oncommand="window.close();"/>
-	</keyset>
-<!-- Original template by Jed Brown -->
-<groupbox align="center" orient="horizontal">
-<vbox>
-  <text value="&mailboxalert.name;" style="font-weight: bold; font-size: x-large;"/>
-  <text value="&mailboxalert.version;: 0.30"/>
-  <separator class="thin"/>
-  <text value="&mailboxalert.about.created;:" style="font-weight: bold;"/>
-  <text value="&mailboxalert.author;" class="url"
-        onclick="window.open('https://tjeb.nl'); window.close();"/>
-  <separator class="thin"/>
-    <text value="&mailboxalert.website;" style="font-weight: bold;"/>
-    <text value="https://tjeb.nl/Projects/Mailbox_Alert"
-          class="url"
-        onclick="window.open('https://tjeb.nl'); window.close();"/>
-  <separator class="thin"/>
-</vbox>
-<spring flex="1"/>
-<image src="resource://mailboxalert-skin/mailboxalertb.png"/>
-</groupbox>
+  <!-- Original template by Jed Brown -->
+  <groupbox align="center" orient="horizontal">
+  <vbox>
+    <text value="__MSG_mailboxalert.name__" style="font-weight: bold; font-size: x-large;"/>
+    <text value="__MSG_mailboxalert.version__: 0.30"/>
+    <separator class="thin"/>
+    <text value="__MSG_mailboxalert.about.created__:" style="font-weight: bold;"/>
+    <text value="__MSG_mailboxalert.author__" class="url"
+          onclick="window.open('https://tjeb.nl'); window.close();"/>
+    <separator class="thin"/>
+      <text value="__MSG_mailboxalert.website__" style="font-weight: bold;"/>
+      <text value="https://tjeb.nl/Projects/Mailbox_Alert"
+            class="url"
+          onclick="window.open('https://tjeb.nl'); window.close();"/>
+    <separator class="thin"/>
+  </vbox>
+  <spring flex="1"/>
+  <image src="resource://mailboxalert-skin/mailboxalertb.png"/>
+  </groupbox>
 
   <hbox>
   <spacer flex="1"/>
-   <button label="&mailboxalert.prefs.close;" oncommand="window.close();"/>
+   <button label="__MSG_mailboxalert.prefs.close__" oncommand="window.close();"/>
   </hbox>
 
 </window>

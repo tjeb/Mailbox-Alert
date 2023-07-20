@@ -1,8 +1,6 @@
 <?xml version="1.0"?>
-
 <?xml-stylesheet href="chrome://mailboxalert/content/newmailalert.css" type="text/css"?>
-
-<!DOCTYPE dialog SYSTEM "chrome://mailboxalert/locale/mailboxalert.dtd">
+<!DOCTYPE window>
 
 <window id="alertWindow"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
@@ -13,25 +11,25 @@
         align="start"
         onload="MailboxAlertNewMail.onAlertLoad()">
   
-  <stringbundle id="bundle_messenger" src="chrome://messenger/locale/messenger.properties"/>
   <script type="application/x-javascript" src="chrome://mailboxalert/content/mailboxalert_util.js" />
   <script type="application/x-javascript" src="chrome://mailboxalert/content/newmailalert_vars.js" />
   <script type="application/x-javascript" src="chrome://mailboxalert/content/newmailalert.js" />
+  <script src="chrome://mailboxalert/content/scripts/i18n.js" />
 
   <popupset>
   <menupopup id="newMailHandle" onpopuphidden="MailboxAlertNewMail.restartTimer();">
-	<menuitem id="close" label="&mailboxalert.alert_prefs.onclick.close;"
+	<menuitem id="close" label="__MSG_mailboxalert.alert_prefs.onclick.close__"
 	          onclick="MailboxAlertNewMail.performAction('close');"
 	/>
 	<menuseparator/>
-	<menuitem id="openmail" label="&mailboxalert.alert_prefs.onclick.openmail;"
+	<menuitem id="openmail" label="__MSG_mailboxalert.alert_prefs.onclick.openmail__"
 	          onclick="MailboxAlertNewMail.performAction('openmail');"
 	/>
-	<menuitem id="selectmail" label="&mailboxalert.alert_prefs.onclick.selectmail;"
+	<menuitem id="selectmail" label="__MSG_mailboxalert.alert_prefs.onclick.selectmail__"
 	          onclick="MailboxAlertNewMail.performAction('selectmail');"
 	/>
 	<menuseparator/>
-	<menuitem id="deletemail" label="&mailboxalert.alert_prefs.onclick.deletemail;"
+	<menuitem id="deletemail" label="__MSG_mailboxalert.alert_prefs.onclick.deletemail__"
 	          onclick="MailboxAlertNewMail.performAction('deletemail');"
 	/>
   </menupopup>
