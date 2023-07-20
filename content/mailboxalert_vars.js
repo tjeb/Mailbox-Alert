@@ -661,8 +661,7 @@ MailboxAlert.filterActionImplementation = {
             var alert_prefs = MailboxAlert.getAlertPreferences(value);
             return null;
         } catch (e) {
-            var stringsBundle = Services.strings.createBundle("chrome://mailboxalert/locale/mailboxalert.properties");
-            return stringsBundle.GetStringFromName('mailboxalert.alert_deleted');
+            return MailboxAlertUtil.getLocaleString('mailboxalert.alert_deleted');
         }
     },
 };
@@ -904,11 +903,9 @@ MailboxAlert.convertAllFolderPreferences14toAlertPreferences = function () {
     // (and cache) the configs, if any. Then convert them to
     // AlertPrefs. Finally tie the index to the folder
 
-    var stringsBundle = Services.strings.createBundle("chrome://mailboxalert/locale/mailboxalert.properties");
-
     // also add two defaults if it does not exist yet
     var default_alert = MailboxAlert.getAlertPreferences(0);
-    default_alert.set("name", stringsBundle.GetStringFromName('mailboxalert.default_message'));
+    default_alert.set("name", MailboxAlertUtil.getLocaleString('mailboxalert.default_message'));
     default_alert.set("show_message", true);
     default_alert.set("show_message_subject", "%sendername on %originalfolder");
     default_alert.set("show_message_message", "%subject");
@@ -927,7 +924,7 @@ MailboxAlert.convertAllFolderPreferences14toAlertPreferences = function () {
     }
 
     var default_alert = MailboxAlert.getAlertPreferences(0);
-    default_alert.set("name", stringsBundle.GetStringFromName('mailboxalert.default_sound'));
+    default_alert.set("name", MailboxAlertUtil.getLocaleString('mailboxalert.default_sound'));
     default_alert.set("play_sound", true);
     // TODO: find a nice built-in wav
     var all_alerts = MailboxAlert.getAllAlertPrefs();

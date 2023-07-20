@@ -2,7 +2,14 @@
  * Miscellaneous utility functions for mailbox alert
  */
 
-var MailboxAlertUtil = {};
+var { ExtensionParent } = ChromeUtils.import("resource://gre/modules/ExtensionParent.jsm");
+
+var MailboxAlertUtil = {
+    extension: ExtensionParent.GlobalManager.getExtension("{9c21158b-2c76-4d0a-980a-c51fc9cefaa7}"),
+    getLocaleString: function (key) {
+        return this.extension.localeData.localizeMessage(key)
+    }
+};
 
 MailboxAlertUtil.getInterface = function (iff) {
     var windowManager = Components.classes['@mozilla.org/appshell/window-mediator;1'].getService();

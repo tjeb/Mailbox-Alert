@@ -44,8 +44,7 @@ MailboxAlertList.deleteAlert = function () {
 
         MailboxAlertUtil.logMessage(1, "[MailboxAlert] start delete 2");
         if (folders.length > 0) {
-            var stringsBundle = document.getElementById("mailboxalert-string-bundle");
-            if (confirm(stringsBundle.getString("mailboxalert.alert_settings.alertset"))) {
+            if (confirm(MailboxAlertUtil.getLocaleString("mailboxalert.alert_settings.alertset"))) {
                 for (var i = 0; i < folders.length; ++i) {
                     folders[i].removeAlert(alert_index);
                     folders[i].store();
@@ -57,8 +56,7 @@ MailboxAlertList.deleteAlert = function () {
 
         MailboxAlertUtil.logMessage(1, "[MailboxAlert] start delete 3");
         if (delete_ok && MailboxAlert.alertIsFilterTarget(alert_index)) {
-            var stringsBundle = document.getElementById("mailboxalert-string-bundle");
-            if (confirm(stringsBundle.getString("mailboxalert.alert_settings.alertsetforfilter"))) {
+            if (confirm(MailboxAlertUtil.getLocaleString("mailboxalert.alert_settings.alertsetforfilter"))) {
                 MailboxAlert.removeAlertFilters(alert_index);
             } else {
                 delete_ok = false;

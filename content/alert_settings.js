@@ -4,8 +4,6 @@ MailboxAlertAlertSettings.init = function () {
   MailboxAlertAlertSettings.resize();
   /* enable help button */
 
-  var stringsBundle = document.getElementById("mailboxalert-string-bundle");
-
   /* Issue when opening multiple of these windows */
   if (!window.arguments) {
     alert("no arguments");
