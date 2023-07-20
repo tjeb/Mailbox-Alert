@@ -32,47 +32,47 @@ function onLoad(activatedWhileWindowOpen) {
 <menupopup id="taskPopup">
         <menuseparator id="mailboxalertSeperator" />
         <menuitem id="mailboxalert-moz-tools-menu-prefs"
-            label="&mailboxalert.menu.editalerts;" accesskey="L"
+            label="${extension.localeData.localizeMessage("mailboxalert.menu.editalerts")}" accesskey="L"
             oncommand="window.openDialog('chrome://mailboxalert/content/alert_list.xhtml', 'mailboxalert_prefs', 'chrome');"/>
         <menuitem id="mailboxalert-moz-tools-menu-mute"
             type="checkbox"
-            label="&mailboxalert.mute;" accesskey="M"
+            label="${extension.localeData.localizeMessage("mailboxalert.mute")}" accesskey="M"
             oncommand="MailboxAlert.toggleMute();"
             autocheck="false"/>
-        <menu id="mailboxalert-moz-tool-menu-delay" label="&mailboxalert.alert_prefs.delay;">
+        <menu id="mailboxalert-moz-tool-menu-delay" label="${extension.localeData.localizeMessage("mailboxalert.alert_prefs.delay")}">
             <menupopup id="mailboxalert-alert-delay-popup">
-                <menuitem label="&mailboxalert.alert_prefs.effect.none;"
+                <menuitem label="${extension.localeData.localizeMessage("mailboxalert.alert_prefs.effect.none")}"
                           type="checkbox"
                           id="mailboxalert-alert-delay-0"
                           checked="true"
                           value="0"
                           oncommand="MailboxAlert.setAlertDelay(0);" />
-                <menuitem label="1 &mailboxalert.alert_prefs.time_unit;"
+                <menuitem label="1 ${extension.localeData.localizeMessage("mailboxalert.alert_prefs.time_unit")}"
                           type="checkbox"
                           id="mailboxalert-alert-delay-1000"
                           value="1000"
                           oncommand="MailboxAlert.setAlertDelay(1000);" />
-                <menuitem label="2 &mailboxalert.alert_prefs.time_unit;"
+                <menuitem label="2 ${extension.localeData.localizeMessage("mailboxalert.alert_prefs.time_unit")}"
                           type="checkbox"
                           id="mailboxalert-alert-delay-2000"
                           value="2000"
                           oncommand="MailboxAlert.setAlertDelay(2000);" />
-                <menuitem label="3 &mailboxalert.alert_prefs.time_unit;"
+                <menuitem label="3 ${extension.localeData.localizeMessage("mailboxalert.alert_prefs.time_unit")}"
                           type="checkbox"
                           id="mailboxalert-alert-delay-3000"
                           value="3000"
                           oncommand="MailboxAlert.setAlertDelay(3000);" />
-                <menuitem label="5 &mailboxalert.alert_prefs.time_unit;"
+                <menuitem label="5 ${extension.localeData.localizeMessage("mailboxalert.alert_prefs.time_unit")}"
                           type="checkbox"
                           id="mailboxalert-alert-delay-5000"
                           value="5000"
                           oncommand="MailboxAlert.setAlertDelay(5000);" />
-                <menuitem label="10 &mailboxalert.alert_prefs.time_unit;"
+                <menuitem label="10 ${extension.localeData.localizeMessage("mailboxalert.alert_prefs.time_unit")}"
                           type="checkbox"
                           id="mailboxalert-alert-delay-10000"
                           value="10000"
                           oncommand="MailboxAlert.setAlertDelay(10000);" />
-                <menuitem label="30 &mailboxalert.alert_prefs.time_unit;"
+                <menuitem label="30 ${extension.localeData.localizeMessage("mailboxalert.alert_prefs.time_unit")}"
                           type="checkbox"
                           id="mailboxalert-alert-delay-30000"
                           value="20000"
@@ -84,7 +84,7 @@ function onLoad(activatedWhileWindowOpen) {
 
     <popup id="folderPaneContext">
         <menu
-            label="&mailboxalert.name;"
+            label="${extension.localeData.localizeMessage("mailboxalert.name")}"
             accesskey="a"
             insertbefore="folderPaneContext-properties"
             index="10"
@@ -94,8 +94,7 @@ function onLoad(activatedWhileWindowOpen) {
                 onpopupshowing="if (event.target == this) { MailboxAlert.fillFolderMenu(this, MailboxAlert.getFolder()); }"
             />
         </menu>
-    </popup>`,
-  ["chrome://mailboxalert/locale/mailboxalert.dtd"]);
+    </popup>`);
 
   window.MailboxAlert.onLoad();
 
