@@ -265,5 +265,35 @@
     },
     "mailboxalert.website": {
         "message": "Domovská stránka:"
+    },
+    "mailboxalert.prefs.show_message": {
+        "message": "Zobraziť správu"
+    },
+    "mailboxalert.prefs.message": {
+        "message": "Správa"
+    },
+    "mailboxalert.prefs.playsound": {
+        "message": "Prehrajte zvuk"
+    },
+    "mailboxalert.prefs.sound": {
+        "message": "Zvuk"
+    },
+    "mailboxalert.prefs.executecommand": {
+        "message": "Vykonajte príkaz"
+    },
+    "mailboxalert.prefs.command": {
+        "message": "Príkaz"
+    },
+    "mailboxalert.prefs.escapedoublequotes": {
+        "message": "Opustiť dvojité úvodzovky pomocou ďalších dvojitých úvodzoviek (pre windows cmd.exe)"
+    },
+    "mailboxalert.prefs.configuration": {
+        "message": "Mailbox Alert konfigurácia výstrahy"
+    },
+    "mailboxalert.prefs.list": {
+        "message": "Mailbox Alert zoznam výstrah"
+    },
+    "mailboxalert.prefs.alert_name": {
+        "message": "Názov"
     }
 }

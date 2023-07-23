@@ -265,5 +265,35 @@
     },
     "mailboxalert.website": {
         "message": "网站："
+    },
+    "mailboxalert.prefs.show_message": {
+        "message": "显示消息"
+    },
+    "mailboxalert.prefs.message": {
+        "message": "信息"
+    },
+    "mailboxalert.prefs.playsound": {
+        "message": "播放声音"
+    },
+    "mailboxalert.prefs.sound": {
+        "message": "声音"
+    },
+    "mailboxalert.prefs.executecommand": {
+        "message": "执行命令"
+    },
+    "mailboxalert.prefs.command": {
+        "message": "命令"
+    },
+    "mailboxalert.prefs.escapedoublequotes": {
+        "message": "用另一个双引号转义双引号（对于 Windows cmd.exe）"
+    },
+    "mailboxalert.prefs.configuration": {
+        "message": "Mailbox Alert 警报配置"
+    },
+    "mailboxalert.prefs.list": {
+        "message": "Mailbox Alert 警报列表"
+    },
+    "mailboxalert.prefs.alert_name": {
+        "message": "姓名"
     }
 }

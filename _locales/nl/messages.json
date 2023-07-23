@@ -265,5 +265,35 @@
     },
     "mailboxalert.website": {
         "message": "Website:"
+    },
+    "mailboxalert.prefs.show_message": {
+        "message": "Laat een bericht zien"
+    },
+    "mailboxalert.prefs.message": {
+        "message": "Bericht"
+    },
+    "mailboxalert.prefs.playsound": {
+        "message": "Speel een geluid af"
+    },
+    "mailboxalert.prefs.sound": {
+        "message": "Geluid"
+    },
+    "mailboxalert.prefs.executecommand": {
+        "message": "Voer een commando uit"
+    },
+    "mailboxalert.prefs.command": {
+        "message": "Commando"
+    },
+    "mailboxalert.prefs.escapedoublequotes": {
+        "message": "Escape dubbele aanhalingstekens met een ander dubbel aanhalingsteken (voor Windows cmd.exe)"
+    },
+    "mailboxalert.prefs.configuration": {
+        "message": "Mailbox Alert Notificatie-instellingen"
+    },
+    "mailboxalert.prefs.list": {
+        "message": "Mailbox Alert Notificatie-lijst"
+    },
+    "mailboxalert.prefs.alert_name": {
+        "message": "Naam"
     }
 }

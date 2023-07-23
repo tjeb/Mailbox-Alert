@@ -265,5 +265,35 @@
     },
     "mailboxalert.website": {
         "message": "Websted:"
+    },
+    "mailboxalert.prefs.show_message": {
+        "message": "Vis en besked"
+    },
+    "mailboxalert.prefs.message": {
+        "message": "Besked"
+    },
+    "mailboxalert.prefs.playsound": {
+        "message": "Afspil en lyd"
+    },
+    "mailboxalert.prefs.sound": {
+        "message": "Lyd"
+    },
+    "mailboxalert.prefs.executecommand": {
+        "message": "Udføre en kommando"
+    },
+    "mailboxalert.prefs.command": {
+        "message": "Kommando"
+    },
+    "mailboxalert.prefs.escapedoublequotes": {
+        "message": "Undslip dobbelte anførselstegn med et andet dobbelt anførselstegn (for Windows cmd.exe)"
+    },
+    "mailboxalert.prefs.configuration": {
+        "message": "Mailbox Alert Alarmkonfiguration"
+    },
+    "mailboxalert.prefs.list": {
+        "message": "Mailbox Alert Alarmliste"
+    },
+    "mailboxalert.prefs.alert_name": {
+        "message": "navn"
     }
 }

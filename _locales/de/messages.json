@@ -265,5 +265,35 @@
     },
     "mailboxalert.website": {
         "message": "Homepage:"
+    },
+    "mailboxalert.prefs.show_message": {
+        "message": "Eine Nachricht anzeigen"
+    },
+    "mailboxalert.prefs.message": {
+        "message": "Nachricht"
+    },
+    "mailboxalert.prefs.playsound": {
+        "message": "Spiel ein Ton auf"
+    },
+    "mailboxalert.prefs.sound": {
+        "message": "Ton"
+    },
+    "mailboxalert.prefs.executecommand": {
+        "message": "Einen Befehl ausführen"
+    },
+    "mailboxalert.prefs.command": {
+        "message": "Befehl"
+    },
+    "mailboxalert.prefs.escapedoublequotes": {
+        "message": "Doppelte Anführungszeichen mit einem weiteren doppelten Anführungszeichen umgehen (für Windows cmd.exe)"
+    },
+    "mailboxalert.prefs.configuration": {
+        "message": "Mailbox Alert Alert Konfiguration"
+    },
+    "mailboxalert.prefs.list": {
+        "message": "Mailbox Alert Alert Liste"
+    },
+    "mailboxalert.prefs.alert_name": {
+        "message": "Name"
     }
 }

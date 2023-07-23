@@ -262,5 +262,35 @@
     },
     "mailboxalert.website": {
         "message": "Website:"
+    },
+    "mailboxalert.prefs.show_message": {
+        "message": "Show a message"
+    },
+    "mailboxalert.prefs.message": {
+        "message": "Message"
+    },
+    "mailboxalert.prefs.playsound": {
+        "message": "Play a sound"
+    },
+    "mailboxalert.prefs.sound": {
+        "message": "Sound"
+    },
+    "mailboxalert.prefs.executecommand": {
+        "message": "Execute a command"
+    },
+    "mailboxalert.prefs.command": {
+        "message": "Command"
+    },
+    "mailboxalert.prefs.escapedoublequotes": {
+        "message": "Escape double quotes with another double quote (for windows cmd.exe)"
+    },
+    "mailboxalert.prefs.configuration": {
+        "message": "Mailbox Alert Alert configuration"
+    },
+    "mailboxalert.prefs.list": {
+        "message": "Mailbox Alert Alert list"
+    },
+    "mailboxalert.prefs.alert_name": {
+        "message": "Name"
     }
 }

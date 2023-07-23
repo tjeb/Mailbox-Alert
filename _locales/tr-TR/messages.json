@@ -265,5 +265,35 @@
     },
     "mailboxalert.website": {
         "message": "Website:"
+    },
+    "mailboxalert.prefs.show_message": {
+        "message": ""
+    },
+    "mailboxalert.prefs.message": {
+        "message": ""
+    },
+    "mailboxalert.prefs.playsound": {
+        "message": ""
+    },
+    "mailboxalert.prefs.sound": {
+        "message": ""
+    },
+    "mailboxalert.prefs.executecommand": {
+        "message": ""
+    },
+    "mailboxalert.prefs.command": {
+        "message": ""
+    },
+    "mailboxalert.prefs.escapedoublequotes": {
+        "message": ""
+    },
+    "mailboxalert.prefs.configuration": {
+        "message": ""
+    },
+    "mailboxalert.prefs.list": {
+        "message": ""
+    },
+    "mailboxalert.prefs.alert_name": {
+        "message": ""
     }
 }

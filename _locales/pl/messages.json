@@ -265,5 +265,35 @@
     },
     "mailboxalert.website": {
         "message": "Strona domowa:"
+    },
+    "mailboxalert.prefs.show_message": {
+        "message": "Pokaż wiadomość"
+    },
+    "mailboxalert.prefs.message": {
+        "message": "Wiadomość"
+    },
+    "mailboxalert.prefs.playsound": {
+        "message": "Odtwórz dźwięk"
+    },
+    "mailboxalert.prefs.sound": {
+        "message": "Dźwięk"
+    },
+    "mailboxalert.prefs.executecommand": {
+        "message": "Wykonaj polecenie"
+    },
+    "mailboxalert.prefs.command": {
+        "message": "Polecenie"
+    },
+    "mailboxalert.prefs.escapedoublequotes": {
+        "message": "Unikaj podwójnych cudzysłowów za pomocą innego podwójnego cudzysłowu (dla systemu Windows cmd.exe)"
+    },
+    "mailboxalert.prefs.configuration": {
+        "message": "Mailbox Alert konfiguracja alertów"
+    },
+    "mailboxalert.prefs.list": {
+        "message": "Mailbox Alert lista alertów"
+    },
+    "mailboxalert.prefs.alert_name": {
+        "message": "Nazwa"
     }
 }

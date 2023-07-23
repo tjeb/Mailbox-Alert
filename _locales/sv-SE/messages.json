@@ -265,5 +265,35 @@
     },
     "mailboxalert.website": {
         "message": "Website:"
+    },
+    "mailboxalert.prefs.show_message": {
+        "message": "Visa ett meddelande"
+    },
+    "mailboxalert.prefs.message": {
+        "message": "Meddelande"
+    },
+    "mailboxalert.prefs.playsound": {
+        "message": "Spela ett ljud"
+    },
+    "mailboxalert.prefs.sound": {
+        "message": "Ljud"
+    },
+    "mailboxalert.prefs.executecommand": {
+        "message": "Utför ett kommando"
+    },
+    "mailboxalert.prefs.command": {
+        "message": "Kommando"
+    },
+    "mailboxalert.prefs.escapedoublequotes": {
+        "message": "Undvik dubbla citattecken med ett annat dubbelcitattecken (för Windows cmd.exe)"
+    },
+    "mailboxalert.prefs.configuration": {
+        "message": "Mailbox Alert varningskonfiguration"
+    },
+    "mailboxalert.prefs.list": {
+        "message": "Mailbox Alert varningslista"
+    },
+    "mailboxalert.prefs.alert_name": {
+        "message": "Namn"
     }
 }

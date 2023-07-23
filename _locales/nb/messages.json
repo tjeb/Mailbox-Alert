@@ -262,5 +262,35 @@
     },
     "mailboxalert.website": {
         "message": "Nettsted:"
+    },
+    "mailboxalert.prefs.show_message": {
+        "message": "Vis en melding"
+    },
+    "mailboxalert.prefs.message": {
+        "message": "Melding"
+    },
+    "mailboxalert.prefs.playsound": {
+        "message": "Spill av en lyd"
+    },
+    "mailboxalert.prefs.sound": {
+        "message": "Lyd"
+    },
+    "mailboxalert.prefs.executecommand": {
+        "message": "Utfør en kommando"
+    },
+    "mailboxalert.prefs.command": {
+        "message": "Kommando"
+    },
+    "mailboxalert.prefs.escapedoublequotes": {
+        "message": "Unngå doble anførselstegn med et annet dobbelt anførselstegn (for Windows cmd.exe)"
+    },
+    "mailboxalert.prefs.configuration": {
+        "message": "Mailbox Alert varselkonfigurasjon"
+    },
+    "mailboxalert.prefs.list": {
+        "message": "Mailbox Alert varslingsliste"
+    },
+    "mailboxalert.prefs.alert_name": {
+        "message": "Navn"
     }
 }

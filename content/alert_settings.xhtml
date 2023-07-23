@@ -7,6 +7,7 @@
         id="mailboxalert_alert_prefs_dialog"
         onload="MailboxAlertAlertSettings.init();"
         buttons="help, cancel, accept, extra1"
+        title="__MSG_mailboxalert.prefs.configuration__"
 >
 
 <keyset>
@@ -24,26 +25,25 @@
 <script src="chrome://mailboxalert/content/scripts/i18n.js" />
 
 <vbox>
-  <label value="Mailbox Alert Alert Configuration"/>
   <hbox>
     <vbox>
       <spacer flex="1"/>
-      <label value="Name"/>
+      <label value="__MSG_mailboxalert.prefs.alert_name__"/>
       <spacer flex="1"/>
     </vbox>
     <html:input id="alert_name_html:input" size="40" oninput="MailboxAlertAlertSettings.checkUIOkButton();"/>
     <spacer flex="1"/>
   </hbox>
   <hbox>
-    <checkbox id="show_message_checkbox" label="Show a message" oncommand="MailboxAlertAlertSettings.checkUIShowMessage(true);"/>
-    <checkbox id="play_sound_checkbox" label="Play a sound" oncommand="MailboxAlertAlertSettings.checkUIPlaySound(true);"/>
-    <checkbox id="execute_command_checkbox" label="Execute a command" oncommand="MailboxAlertAlertSettings.checkUIExecuteCommand(true);" />
+    <checkbox id="show_message_checkbox" label="__MSG_mailboxalert.prefs.show_message__" oncommand="MailboxAlertAlertSettings.checkUIShowMessage(true);"/>
+    <checkbox id="play_sound_checkbox" label="__MSG_mailboxalert.prefs.playsound__" oncommand="MailboxAlertAlertSettings.checkUIPlaySound(true);"/>
+    <checkbox id="execute_command_checkbox" label="__MSG_mailboxalert.prefs.executecommand__" oncommand="MailboxAlertAlertSettings.checkUIExecuteCommand(true);" />
   </hbox>
   <tabbox id="tab_list" selectedIndex="-1">
     <tabs>
-      <tab id="show_message_tab" label="Message" disabled="true" />
-      <tab id="play_sound_tab" label="Sound" disabled="true"/>
-      <tab id="execute_command_tab" label="Command" disabled="true"/>
+      <tab id="show_message_tab" label="__MSG_mailboxalert.prefs.message__" disabled="true" />
+      <tab id="play_sound_tab" label="__MSG_mailboxalert.prefs.sound__" disabled="true"/>
+      <tab id="execute_command_tab" label="__MSG_mailboxalert.prefs.command__" disabled="true"/>
     </tabs>
     <tabpanels>
       <tabpanel id="show_message_tabpanel">
