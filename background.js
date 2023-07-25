@@ -1,3 +1,5 @@
+import { getFolderPrefs, getAllAlertPrefs, initialAlertConfiguration } from "/scripts/preferences.js"
+
 (async () => {
 
     // Keep track of the number of times Mailbox Alert was initialized
@@ -40,4 +42,42 @@
         "chrome://mailboxalert/content/scripts/filterEditorOverlay.js");
 
     messenger.WindowListener.startListening();
+
+    initialAlertConfiguration();
+
+    // Folder context menu is dynamic based on preferences
+    messenger.menus.onShown.addListener(async ({ selectedFolder }, tab) => {
+        if (selectedFolder) {
+            console.log("[XX] yo");
+            let pfs = await getFolderPrefs(selectedFolder);
+            console.log("[XX] yo2: " + pfs);
+            let alertPrefs = await getAllAlertPrefs();
+            
+            console.log("[XX] Menu shown: " + selectedFolder);
+            messenger.menus.remove("mailboxalert_context_menu");
+            let top_menu = messenger.menus.create({
+                contexts: ["folder_pane"],
+                id: "mailboxalert_context_menu",
+                title: messenger.i18n.getMessage("mailboxalert.name")
+            });
+            let afc_id = messenger.menus.create({
+                contexts: ["folder_pane"],
+                parentId: "mailboxalert_context_menu",
+                id: "mailboxalert_context_menu_sub",
+                title: messenger.i18n.getMessage("mailboxalert.menu.alertforchildren"),
+                onclick: () => { console.log("alert for children clicked"); doNewLog(); }
+            });
+            //let element = messenger.menus.getTargetElement(afc_id);
+            //element.addEventListener("command", (ev) => { console.log("[XX] NEW EVENT!"); }, false);
+            messenger.menus.create({
+                contexts: ["folder_pane"],
+                parentId: "mailboxalert_context_menu",
+                type: "checkbox",
+                checked: true,
+                title: messenger.i18n.getMessage("mailboxalert.menu.noalerttoparent"),
+                onclick: (event) => { console.log("no alert to parent clicked: " + typeof(event)); event.stopPropagation(); doNewLog(); return false; }
+            });
+            messenger.menus.refresh();
+        }
+    })
 })();

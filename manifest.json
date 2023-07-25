@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Mailbox Alert",
   "description": "Custom popup, sounds or scripts for new mail, configurable for each folder, and as a message filter target",
-  "version": "0.30.1",
+  "version": "0.30.2",
   "author": "Jelte Jansen",
   "default_locale":"en-US",
   "experiment_apis": {
@@ -22,6 +22,20 @@
         "script": "api/NotifyTools/implementation.js",
         "events": ["startup"]        
       }
+    },
+    "LegacyPrefs": {
+      "schema": "api/LegacyPrefs/schema.json",
+      "parent": {
+        "scopes": [
+          "addon_parent"
+        ],
+        "paths": [
+          [
+            "LegacyPrefs"
+          ]
+        ],
+        "script": "api/LegacyPrefs/implementation.js"
+      }
     }
   },
   "icons": {
@@ -30,20 +44,20 @@
     "64": "skin/classic/mailboxalert.png"
   },
   "background": {
-    "scripts": [
-      "background.js"
-    ]
+    "page": "background.html"
   },
   "applications": {
     "gecko": {
       "id": "{9c21158b-2c76-4d0a-980a-c51fc9cefaa7}",
       "strict_min_version": "102.0",
-      "strict_max_version": "114.*"
+      "strict_max_version": "115.*"
     }
   },
   "permissions" : [
     "storage",
     "messagesRead",
-    "compose"
+    "compose",
+    "menus",
+    "accountsRead"
   ]
 }
