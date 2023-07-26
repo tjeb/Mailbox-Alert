@@ -166,10 +166,19 @@ var LegacyPrefs = class extends ExtensionCommon.ExtensionAPI {
         setPref: async function (aName, aValue) {
           let prefType = Services.prefs.getPrefType(aName);
           if (prefType == Services.prefs.PREF_INVALID) {
-            console.error(
-              `Unknown legacy preference <${aName}>, forgot to declare a default?.`
-            );
-            return false;
+            // Determine type by given value
+            if (typeof(aValue) == "string") {
+              prefType = Services.prefs.PREF_STRING;
+            } else if (typeof(aValue) == "number") {
+              prefType = Services.prefs.PREF_INT;
+            } else if (typeof(aValue) == "boolean") {
+              prefType = Services.prefs.PREF_BOOL;
+            } else {
+              console.error(
+                `Unknown legacy preference <${aName}>, forgot to declare a default?. Value type: <${typeof(aValue)}>`
+              );
+              return false;
+            }
           }
 
           switch (prefType) {

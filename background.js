@@ -1,4 +1,4 @@
-import { getFolderPrefs, getAllAlertPrefs, initialAlertConfiguration } from "/scripts/preferences.js"
+import { getFolderPrefs, getAllAlertPrefs, initialAlertConfiguration, toggleAlertForFolder } from "/scripts/preferences.js"
 
 (async () => {
 
@@ -49,8 +49,8 @@ import { getFolderPrefs, getAllAlertPrefs, initialAlertConfiguration } from "/sc
     messenger.menus.onShown.addListener(async ({ selectedFolder }, tab) => {
         if (selectedFolder) {
             console.log("[XX] yo");
-            let pfs = await getFolderPrefs(selectedFolder);
-            console.log("[XX] yo2: " + pfs);
+            let folderPrefs = await getFolderPrefs(selectedFolder);
+            console.log("[XX] yo2: " + folderPrefs);
             let alertPrefs = await getAllAlertPrefs();
             
             console.log("[XX] Menu shown: " + selectedFolder);
@@ -59,6 +59,19 @@ import { getFolderPrefs, getAllAlertPrefs, initialAlertConfiguration } from "/sc
                 contexts: ["folder_pane"],
                 id: "mailboxalert_context_menu",
                 title: messenger.i18n.getMessage("mailboxalert.name")
+            });
+            alertPrefs.forEach((alertPref) => {
+                console.log("[XX] ADD PREF TO MENU: " + alertPref.index);
+                messenger.menus.create({
+                    contexts: ["folder_pane"],
+                    parentId: "mailboxalert_context_menu",
+                    title: alertPref.values['name'],
+                    type: 'checkbox',
+                    checked: folderPrefs.alertActive(alertPref.index),
+                    onclick: () => { console.log(`toggle alert ${alertPref.index} for folder ${folderPrefs.uri} clicked`);
+                        toggleAlertForFolder(alertPref.index, folderPrefs);
+                    }
+                });
             });
             let afc_id = messenger.menus.create({
                 contexts: ["folder_pane"],

@@ -81,18 +81,20 @@ export async function getFolderPrefs(mailFolder) {
         logMessage(1, "Alerts: " + alerts_string + "\n");
         var alerts_parts = alerts_string.split(",");
         for (var i = 0; i < alerts_parts.length; i++) {
-            folder_prefs.alerts.push(alerts_parts[i]);
+            if (alerts_parts[i] != "") {
+                folder_prefs.alerts.push(alerts_parts[i]);
+            }
         }
     } catch (e) {
         // n/m, wasn't set
         logMessage(5, "Alerts for folder not set or error: " + e);
     }
 
-    // Returns true if the given alert (of type alertPrefs) is
+    // Returns true if the given alert (by index) is
     // enabled for this folder
-    folder_prefs.alertSelected = function (alert_index) {
+    folder_prefs.alertActive = function (alertIndex) {
         for (var i = 0; i < this.alerts.length; ++i) {
-            if (this.alerts[i] == alert_index) {
+            if (this.alerts[i] == alertIndex) {
                 return true;
             }
         }
@@ -100,15 +102,18 @@ export async function getFolderPrefs(mailFolder) {
     }
 
     // returns true if it got added, false if it was already present
-    folder_prefs.addAlert = function (alert_index) {
+    folder_prefs.addAlert = function (alertIndex) {
+        console.log("[XX] ADD ALERT " + alertIndex);
         var already_there = false;
         for (var i = 0; i < this.alerts.length; ++i) {
-            if (this.alerts[i] == alert_index) {
+            if (this.alerts[i] == alertIndex) {
+                console.log("[XX] alert already there " + alertIndex);
                 already_there = true;
             }
         }
         if (!already_there) {
-            this.alerts.push(alert_index);
+            console.log("[XX] alert not already there " + alertIndex);
+            this.alerts.push(alertIndex);
         }
         return !already_there;
     }
@@ -129,30 +134,31 @@ export async function getFolderPrefs(mailFolder) {
         return !was_there;
     }
 
-    folder_prefs.store = function () {
+    folder_prefs.store = async function () {
         logMessage(1, "Storing folder preferences for " + this.uri + "\n");
         if (this.alert_for_children) {
-            MailboxAlert.prefService.setBoolPref("extensions.mailboxalert.folders." + this.uri + ".alert_for_children", true);
+            await browser.LegacyPrefs.setPref("extensions.mailboxalert.folders." + this.uri + ".alert_for_children", true);
             logMessage(1, "Alert for children: true\n");
         } else {
             // remove if exists
-            MailboxAlert.prefService.clearUserPref("extensions.mailboxalert.folders." + this.uri + ".alert_for_children");
+            await browser.LegacyPrefs.clearUserPref("extensions.mailboxalert.folders." + this.uri + ".alert_for_children");
             logMessage(1, "Alert for children: false\n");
         }
         if (this.no_alert_to_parent) {
-            MailboxAlert.prefService.setBoolPref("extensions.mailboxalert.folders." + this.uri + ".no_alert_to_parent", true);
+            await browser.LegacyPrefs.setPref("extensions.mailboxalert.folders." + this.uri + ".no_alert_to_parent", true);
             logMessage(1, "No alert to parent: true\n");
         } else {
             // remove if exists
-            MailboxAlert.prefService.clearUserPref("extensions.mailboxalert.folders." + this.uri + ".no_alert_to_parent");
+            await browser.LegacyPrefs.clearUserPref("extensions.mailboxalert.folders." + this.uri + ".no_alert_to_parent");
             logMessage(1, "No alert to parent: false\n");
         }
         if (this.alerts.length != 0) {
-            MailboxAlert.prefService.setCharPref("extensions.mailboxalert.folders." + this.uri + ".alerts", this.alerts.join(","));
+            console.log("[XX] STORE ALERTS: " + JSON.stringify(this.alerts));
+            await browser.LegacyPrefs.setPref("extensions.mailboxalert.folders." + this.uri + ".alerts", this.alerts.join(","));
             logMessage(1, "Alerts: " + this.alerts.join(",") + "\n");
         } else {
             // remove if exists
-            MailboxAlert.prefService.clearUserPref("extensions.mailboxalert.folders." + this.uri + ".alerts");
+            await browser.LegacyPrefs.clearUserPref("extensions.mailboxalert.folders." + this.uri + ".alerts");
             logMessage(1, "No alerts\n");
         }
         logMessage(1, "Done storing folder preferences for " + this.uri + "\n");
@@ -178,9 +184,9 @@ export async function getAlertPreferences(index) {
     alert_prefs.get = async function (name) {
         if (!(name in this.values)) {
             var pref_name = "extensions.mailboxalert.alerts." + this.index + "." + name;
-            let pref_value = await browser.LegacyPrefs.getPref(pref_name);
-            if (pref_value != null) {
-                this.value[name] = pref_value;
+            let pref_value = await browser.LegacyPrefs.getPref(pref_name, "");
+            if (pref_value != "") {
+                this.values[name] = pref_value;
             } else {
                 var pref_data = alertPrefsDefs[name]
                 if (pref_data != null) {
@@ -199,7 +205,7 @@ export async function getAlertPreferences(index) {
         this.values[name] = value;
     }
 
-    alert_prefs.store = function() {
+    alert_prefs.store = async function() {
         if (!this.index || this.index == 0) {
             alert("Internal error. Attempting to store alert_prefs with index 0. Please contact the developers.");
             return;
@@ -209,17 +215,13 @@ export async function getAlertPreferences(index) {
             var pref_default = alertPrefsDefs[name][1];
             if (name in this.values && !(this.values[name] == pref_default)) {
                 // non-default, so store it
-                if (alertPrefsDefs[name][0] == "bool") {
-                    MailboxAlert.prefService.setBoolPref("extensions.mailboxalert.alerts." + this.index + "." + name, this.values[name]);
-                } else if (alertPrefsDefs[name][0] == "string") {
-                    MailboxAlert.prefService.setCharPref("extensions.mailboxalert.alerts." + this.index + "." + name, this.values[name]);
-                } else if (alertPrefsDefs[name][0] == "integer") {
-                    MailboxAlert.prefService.setIntPref("extensions.mailboxalert.alerts." + this.index + "." + name, this.values[name]);
-                }
+                console.log("[XX] SETPREF: " + "extensions.mailboxalert.alerts." + this.index + "." + name);
+                console.log("[XX] VALUE: " + this.values[name]);
+                await browser.LegacyPrefs.setPref("extensions.mailboxalert.alerts." + this.index + "." + name, this.values[name]);
             } else {
                 // it is unset or it is default, remove any pref previously set
                 try {
-                    MailboxAlert.prefService.clearUserPref("extensions.mailboxalert.alerts." + this.index + "." + name);
+                    await browser.LegacyPrefs.clearUserPref("extensions.mailboxalert.alerts." + this.index + "." + name);
                 } catch (e) {
                     // That did not work, oh well, just leave it.
                 }
@@ -243,12 +245,12 @@ export async function getAlertPreferences(index) {
         return true;
     }
 
-    alert_prefs.createNewIndex = function() {
+    alert_prefs.createNewIndex = async function() {
         if (this.index != 0) {
             alert("[MailboxAlert] Internal error. Attempting to create new index for alert that already has one (" + this.index + "), please contact the developers.");
             return;
         }
-        this.index = findAvailableAlertPrefsId();
+        this.index = await findAvailableAlertPrefsId();
         return this.index;
     }
 
@@ -263,15 +265,14 @@ export async function getAlertPreferences(index) {
 
     // removes all preferences for this alert. ONLY call this if there
     // are no folders set!
-    alert_prefs.remove = function () {
+    alert_prefs.remove = async function () {
         for (var name in alertPrefsDefs) {
             try {
-                MailboxAlert.prefService.clearUserPref("extensions.mailboxalert.alerts." + this.index + "." + name);
+                await browser.LegacyPrefs.clearUserPref("extensions.mailboxalert.alerts." + this.index + "." + name);
             } catch (e) {
                 // That did not work, oh well, just leave it.
             }
         }
-//        MailboxAlert.prefService.clearUserPref("extensions.mailboxalert.alerts." + this.index);
         this.index = 0;
     }
 
@@ -308,7 +309,7 @@ export async function getAlertPreferences(index) {
     }
 
     if (index != 0 && await alert_prefs.get("name") == "") {
-        //throw "Alert with index " + index + " not found";
+        // Alert with this index does not exist
         return null;
     }
 
@@ -323,11 +324,11 @@ export async function getAllAlertPrefs() {
     var alert_list = []
     for (var i = 1; i <= MAX_ALERTS; i++) {
         try {
-            var alert_prefs = await MailboxAlert.getAlertPreferences(i);
+            var alert_prefs = await getAlertPreferences(i);
             if (alert_prefs) {
                 alert_list.push(alert_prefs);
+                console.log("found alert for " + i + "!");
             }
-            console.log("found alert for " + i + "!");
         } catch (e) {
             console.log("no alert for " + i);
             // no alert with this id, skip
@@ -337,6 +338,7 @@ export async function getAllAlertPrefs() {
 }
 
 export async function findAvailableAlertPrefsId() {
+    var alert_list = []
     for (var i = 1; i <= MAX_ALERTS; i++) {
 //        try {
             var alert_prefs = await getAlertPreferences(i);
@@ -360,36 +362,48 @@ export async function initialAlertConfiguration() {
     default_alert.set("show_message", true);
     default_alert.set("show_message_subject", "%sendername on %originalfolder");
     default_alert.set("show_message_message", "%subject");
-    let all_alerts = getAllAlertPrefs();
-    let exists = false;
-    for (var i = 0; i < all_alerts.length; ++i) {
-        let existing_alert = all_alerts[i];
-        if (existing_alert.equals(default_alert)) {
-            // ok just stop and return
-            exists = true;
+    let all_alerts = await getAllAlertPrefs();
+    if (all_alerts.length == 0) {
+        logMessage(1, `Alerts configured: ${all_alerts.length}`);
+        let exists = false;
+        for (var i = 0; i < all_alerts.length; ++i) {
+            let existing_alert = all_alerts[i];
+            if (existing_alert.equals(default_alert)) {
+                // ok just stop and return
+                exists = true;
+            }
         }
-    }
-    if (!exists) {
-        default_alert.createNewIndex();
-        default_alert.store();
-    }
-
-    default_alert = MailboxAlert.getAlertPreferences(0);
-    default_alert.set("name", messenger.i18n.getMessage("mailboxalert.default_sound"));
-    default_alert.set("play_sound", true);
-    exists = false;
-    for (var i = 0; i < all_alerts.length; ++i) {
-        var existing_alert = all_alerts[i];
-        if (existing_alert.equals(default_alert)) {
-            // ok just stop and return
-            exists = true;
+        if (!exists) {
+            await default_alert.createNewIndex();
+            default_alert.store();
         }
-    }
-    if (!exists) {
-        default_alert.createNewIndex();
-        default_alert.store();
-    }
 
-    await LegacyPrefs.setPref("extensions.mailboxalert.prefsversion", 15);
-    MailboxAlertUtil.logMessage(1, "[Mailboxalert] Configuration initialized");
+        default_alert = await getAlertPreferences(0);
+        default_alert.set("name", messenger.i18n.getMessage("mailboxalert.default_sound"));
+        default_alert.set("play_sound", true);
+        exists = false;
+        for (var i = 0; i < all_alerts.length; ++i) {
+            var existing_alert = all_alerts[i];
+            if (existing_alert.equals(default_alert)) {
+                // ok just stop and return
+                exists = true;
+            }
+        }
+        if (!exists) {
+            await default_alert.createNewIndex();
+            default_alert.store();
+        }
+
+        await browser.LegacyPrefs.setPref("extensions.mailboxalert.prefsversion", 15);
+    }
+    logMessage(1, "Configuration initialized");
+}
+
+// If the given alert is disabled, enable it
+// If it is enabled, disable it
+export async function toggleAlertForFolder(alertIndex, folderPrefs) {
+    if (!folderPrefs.addAlert(alertIndex)) {
+        folderPrefs.removeAlert(alertIndex);
+    }
+    folderPrefs.store();
 }
